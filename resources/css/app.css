@@ -1,3 +1,58 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    .my-block {
+        @apply shadow-basic rounded-xl p-2
+    }
+    .red-btn {
+        @apply bg-button-red text-button-red-text
+    }
+    .violet-btn {
+        @apply bg-button-violet text-button-violet-text
+    }
+    .white-btn {
+        @apply bg-button-white text-button-white-text
+    }
+}
+
+.light {
+    --background: 249, 249, 249;
+    --background-block: 83, 83, 83;
+
+    /* Buttons */
+    --violet-button: 119, 93, 166;
+    --violet-button-text: 255, 255, 255;
+
+    --red-button: 215, 81, 81;
+    --red-button-text: 255, 255, 255;
+
+    --white-button: 255, 255, 255;
+    --white-button-text: 32, 32, 32;
+
+    --main-select: 209, 205, 217;
+    --primary-row: 255, 255, 255;
+    --secondary-row: 240, 240, 243;
+    --text-primary: 83, 83, 83
+}
+
+.dark {
+    --background: 130, 130, 130;
+    --background-block: 249, 249, 249;
+
+    /* Buttons */
+    --violet-button: 119, 93, 166;
+    --violet-button-text: 255, 255, 255;
+
+    --red-button: 119, 93, 166;
+    --red-button-text: 255, 255, 255;
+
+    --white-button: 119, 93, 166;
+    --white-button-text: 255, 255, 255;
+
+    --main-select: 209, 205, 217;
+    --primary-row: 255, 255, 255;
+    --secondary-row: 240, 240, 243;
+    --text-primary: 246, 222, 222
+}
