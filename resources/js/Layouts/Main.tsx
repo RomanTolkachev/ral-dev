@@ -21,8 +21,8 @@ export default function Main() {
     },[theme])
     return (
         <>
-            <div className={"h-svh bg-red-100 flex"}>
-                <section className={'bg-green-200 flex h-full flex-col w-72'}>
+            <div className={"h-svh bg-background flex"}>
+                <section className={'bg-background flex h-full flex-col w-72'}>
                     <Header>заголовок</Header>
                     <div className={"p-2 flex shrink grow"}>
                         <div className={'flex my-block shrink grow flex-col'}>
@@ -52,7 +52,7 @@ export default function Main() {
                     <div className={'shrink grow flex-col flex'}>
                         <div>верхняя пагинация</div>
                         <div className={'p-2 shrink grow'}>
-                            <div className={"text-5xl my-block w-full h-full bg-stone-400 flex justify-center items-center"}>
+                            <div className={"text-5xl my-block w-full h-full bg-background-block flex justify-center items-center"}>
                                 <span className={""}>табличка</span>
                             </div>
                         </div>
@@ -60,10 +60,6 @@ export default function Main() {
                     </div>
                 </section>
             </div>
-            {/*<div className={"p-10 bg-background-block"}>*/}
-            {/*    <h1 className={'mt-10 font-bold text-text-primary w-fit rounded-2xl p-6 mx-auto bg-background'}>Привет, мир</h1>*/}
-            {/*</div>*/}
-            {/*<button className={'bg-cyan-200 mt-10 rounded-2xl p-6 block w-fit mx-auto'} onClick={() => {setTheme(theme === "light" ? "dark" : "light"); localStorage.setItem('theme', theme === "light" ? "dark" : "light")}}> изменить тему</button>*/}
         </>
     );
 }

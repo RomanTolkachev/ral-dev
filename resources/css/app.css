@@ -19,7 +19,7 @@
 
 .light {
     --background: 249, 249, 249;
-    --background-block: 83, 83, 83;
+    --background-block: 255, 255, 255;
 
     /* Buttons */
     --violet-button: 119, 93, 166;
@@ -39,7 +39,7 @@
 
 .dark {
     --background: 130, 130, 130;
-    --background-block: 249, 249, 249;
+    --background-block: 83, 83, 83;
 
     /* Buttons */
     --violet-button: 119, 93, 166;
