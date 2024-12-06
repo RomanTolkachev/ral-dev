@@ -28,7 +28,7 @@ export const MainButton: FunctionComponent<PropsWithChildren<IProps>> = ({classN
     return (
         <motion.button
             onClick={onClick}
-            className={`${className} ${currentColor} text-sm rounded-xl shadow-button-main font-bold py-3 px-7 w-fit`}
+            className={`${className} ${currentColor} text-sm rounded-xl shadow-button-main font-bold py-3 px-7 w-fit select-none`}
             style={{boxShadow: '0px 5px 4px 0px rgba(0, 0, 0, 0.3)', scale: 1.01}}
             whileHover={{
                 scale: 1.03,

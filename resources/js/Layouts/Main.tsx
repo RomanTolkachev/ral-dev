@@ -45,7 +45,9 @@ export default function Main() {
                     <div className={'flex justify-end gap-3 pr-10'}>
                         <MainButton color={"red"}>Скрыть истекшие</MainButton>
                         <MainButton color={"white"}>Выгрузить</MainButton>
-                        <MainButton color={"violet"}>Обновить</MainButton>
+                        <MainButton color={"violet"}
+                                    onClick={() => {setTheme(theme === "light" ? "dark" : "light"); localStorage.setItem('theme', theme === "light" ? "dark" : "light")}}
+                        >изменить тему</MainButton>
                     </div>
                     <div className={'shrink grow flex-col flex'}>
                         <div>верхняя пагинация</div>
