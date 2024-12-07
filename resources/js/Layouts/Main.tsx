@@ -1,10 +1,14 @@
 import {useEffect, useState} from "react";
 import {Header} from "@/Components/Header";
 import {MainButton} from "@/Components/Buttons/MainButton";
+import {useDispatchTyped} from "@/services/hooks/typedUseSelector";
+import {requestRal, test} from "@/services/ral-slice";
 
 export default function Main() {
+    const dispatch = useDispatchTyped();
     const [theme, setTheme] = useState("light");
     useEffect(() => {
+        dispatch(requestRal());
         if (localStorage.getItem("theme")) {
             setTheme(localStorage.getItem("theme")!);
         }

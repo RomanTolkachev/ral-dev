@@ -1,21 +1,18 @@
-import {RAL_FETCH_FAIL, RAL_FETCH_START, RAL_FETCH_SUCCESS, RAL_UPDATE_DATA} from "@/services/actions/ral-actions";
-
-interface IRalFetchStart {
-    type: typeof RAL_FETCH_START
+export interface ralItem {
+    link: string | null
+    RegNumber: string | null
+    old_status_AL: string | null
+    new_status_AL: string | null
+    status_change_date: string | null
+    nameType: string | null
+    nameTypeActivity: string | null
+    regDate: string | null
+    fullName: string | null
+    address: string | null
+    applicantINN: string | null
+    applicantFullName: string | null
+    oaDescription: string | null
+    NPstatus: string | null
+    id: number
+    NP_status_change_date: string | null
 }
-
-interface IRalFetchSuccess {
-    type: typeof RAL_FETCH_SUCCESS
-}
-
-interface IRalFetchFail {
-    type: typeof RAL_FETCH_FAIL
-    payload: any
-}
-
-interface IRalUpdateData {
-    type: typeof RAL_UPDATE_DATA
-    payload: any
-}
-
-export type TRalActions = IRalFetchStart | IRalFetchSuccess | IRalFetchFail | IRalUpdateData;

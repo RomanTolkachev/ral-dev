@@ -13,6 +13,7 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 export const store = configureStore({
     reducer: rootReducer,
+    devTools: process.env.NODE_ENV !== 'production',
 })
 
 createInertiaApp({
