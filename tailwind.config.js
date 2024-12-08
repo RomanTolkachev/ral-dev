@@ -35,7 +35,7 @@ export default {
                 "text-primary": "rgba(var(--text-primary))"
             },
             boxShadow: {
-                "basic": "0px 1px 20px 0px rgba(0, 0, 0, 0.3);",
+                "basic": "0px 1px 9px 0px rgba(0, 0, 0, 0.3);",
                 "button-main": "0px 5px 4px 0px rgba(0, 0, 0, 0.3)"
             }
         },

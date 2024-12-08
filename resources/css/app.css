@@ -17,6 +17,9 @@
     }
 }
 
+:root {
+
+}
 .light {
     --background: 249, 249, 249;
     --background-block: 255, 255, 255;
@@ -55,4 +58,52 @@
     --primary-row: 255, 255, 255;
     --secondary-row: 240, 240, 243;
     --text-primary: 246, 222, 222
+}
+
+:root {
+    --scrollbar-track: rgba(119, 93, 166);
+    --scrollbar-thumb: rgba(119, 93, 166);
+    --scrollbar-thumb-hover: rgba(119, 93, 166);
+}
+
+/* Скролбар */
+
+/* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
+/** {
+  scrollbar-width: thin;
+  scrollbar-color: #A464BC #E9E1EB;
+}*/
+
+/* Chrome, Edge and Safari */
+*::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+*::-webkit-scrollbar-track {
+    border-radius: 20px;
+    background-color: #E9E1EB;
+    border: 2px solid transparent;
+    overflow: hidden;
+    background-clip: content-box;
+}
+
+*::-webkit-scrollbar-track:hover {
+    background-color: #E9E1EB;
+}
+
+*::-webkit-scrollbar-track:active {
+    background-color: #E9E1EB;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background-color: var(--scrollbar-thumb);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb);
+}
+
+*::-webkit-scrollbar-thumb:active {
+    background-color: var(--scrollbar-thumb);
 }

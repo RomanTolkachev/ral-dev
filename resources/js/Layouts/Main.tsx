@@ -2,7 +2,8 @@ import {useEffect, useState} from "react";
 import {Header} from "@/Components/Header";
 import {MainButton} from "@/Components/Buttons/MainButton";
 import {useDispatchTyped} from "@/services/hooks/typedUseSelector";
-import {requestRal, test} from "@/services/ral-slice";
+import {requestRal} from "@/services/ral-slice";
+import {Table} from "@/Components/Table";
 
 export default function Main() {
     const dispatch = useDispatchTyped();
@@ -25,7 +26,7 @@ export default function Main() {
     },[theme])
     return (
         <>
-            <div className={"h-svh bg-background flex"}>
+            <div className={"h-svh overflow-hidden bg-background flex"}>
                 <section className={'bg-background flex h-full flex-col w-72'}>
                     <Header>заголовок</Header>
                     <div className={"p-2 flex shrink grow"}>
@@ -53,11 +54,11 @@ export default function Main() {
                                     onClick={() => {setTheme(theme === "light" ? "dark" : "light"); localStorage.setItem('theme', theme === "light" ? "dark" : "light")}}
                         >изменить тему</MainButton>
                     </div>
-                    <div className={'shrink grow flex-col flex'}>
-                        <div>верхняя пагинация</div>
-                        <div className={'p-2 shrink grow'}>
-                            <div className={"text-5xl my-block w-full h-full bg-background-block flex justify-center items-center"}>
-                                <span className={""}>табличка</span>
+                    <div className={'h-full grow grid grid-rows-[auto_1fr_auto] overflow-hidden'}>
+                        <div className={""}>верхняя пагинация</div>
+                        <div className={'p-2 h-full grow flex overflow-y-hidden'}>
+                            <div className={"text-base my-block h-full w-full bg-background-block"}>
+                                <Table />
                             </div>
                         </div>
                         <div className={"text-end"}>нижняя пагинация</div>
