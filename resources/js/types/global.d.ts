@@ -3,7 +3,7 @@ import { AxiosInstance } from 'axios';
 import { route as ziggyRoute } from 'ziggy-js';
 import { PageProps as AppPageProps } from './';
 import {Action, ThunkAction} from "@reduxjs/toolkit";
-import {IRootState} from "@/services/reducers/root-reducer";
+import {IRootState} from "@/services/slices/root-reducer";
 
 declare global {
     interface Window {

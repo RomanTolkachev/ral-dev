@@ -54,7 +54,7 @@ const ralSliceAsync = createReducer(
 //     {
 //         name: "ralSliceName",
 //         initialState,
-//         reducers: {
+//         slices: {
 //             fetchRalStart: (state):IRalReducer => {
 //                 return {
 //                     ...state,

@@ -6,9 +6,10 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import {StrictMode} from "react";
 import {configureStore} from "@reduxjs/toolkit";
-import {rootReducer} from "@/services/reducers/root-reducer";
+import {rootReducer} from "@/services/slices/root-reducer";
 import {Provider} from "react-redux";
 
+// @ts-ignore
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 export const store = configureStore({
@@ -16,11 +17,12 @@ export const store = configureStore({
     devTools: process.env.NODE_ENV !== 'production',
 })
 
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) =>
         resolvePageComponent(
-            `./Layouts/${name}.tsx`,
+            `./Layouts/${name}.tsx`,// @ts-ignore
             import.meta.glob('./Layouts/**/*.tsx'),
         ),
     setup({ el, App, props }) {

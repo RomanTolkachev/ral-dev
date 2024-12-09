@@ -1,7 +1,7 @@
 import {store} from "@/app";
 import {combineReducers} from "@reduxjs/toolkit";
-import {userReducer} from "@/services/reducers/userReducer";
-import ralSliceToolkit from "@/services/ral-slice";
+import {userReducer} from "@/services/slices/userReducer";
+import ralSliceToolkit from "@/services/slices/ral-slice";
 
 export type IRootState = ReturnType<typeof store.getState>;
 export type TAppDispatch = typeof store.dispatch;

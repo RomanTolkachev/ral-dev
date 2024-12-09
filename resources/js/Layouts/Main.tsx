@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {Header} from "@/Components/Header";
 import {MainButton} from "@/Components/Buttons/MainButton";
 import {useDispatchTyped} from "@/services/hooks/typedUseSelector";
-import {requestRal} from "@/services/ral-slice";
+import {requestRal} from "@/services/slices/ral-slice";
 import {Table} from "@/Components/Table";
 
 export default function Main() {
@@ -54,15 +54,7 @@ export default function Main() {
                                     onClick={() => {setTheme(theme === "light" ? "dark" : "light"); localStorage.setItem('theme', theme === "light" ? "dark" : "light")}}
                         >изменить тему</MainButton>
                     </div>
-                    <div className={'h-full grow grid grid-rows-[auto_1fr_auto] overflow-hidden'}>
-                        <div className={""}>верхняя пагинация</div>
-                        <div className={'p-2 h-full grow flex overflow-y-hidden'}>
-                            <div className={"text-base my-block h-full w-full bg-background-block"}>
-                                <Table />
-                            </div>
-                        </div>
-                        <div className={"text-end"}>нижняя пагинация</div>
-                    </div>
+                    <Table />
                 </section>
             </div>
         </>
