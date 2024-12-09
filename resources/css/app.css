@@ -17,9 +17,6 @@
     }
 }
 
-:root {
-
-}
 .light {
     --background: 249, 249, 249;
     --background-block: 255, 255, 255;
@@ -37,7 +34,11 @@
     --main-select: 209, 205, 217;
     --primary-row: 255, 255, 255;
     --secondary-row: 240, 240, 243;
-    --text-primary: 83, 83, 83
+    --text-primary: 83, 83, 83;
+
+    --scrollbar-track: rgba(119, 93, 166);
+    --scrollbar-thumb: rgba(119, 93, 166);
+    --scrollbar-thumb-hover: rgba(119, 93, 166);
 }
 
 .dark {
@@ -57,13 +58,15 @@
     --main-select: 209, 205, 217;
     --primary-row: 255, 255, 255;
     --secondary-row: 240, 240, 243;
-    --text-primary: 246, 222, 222
+    --text-primary: 246, 222, 222;
+
+    --scrollbar-track: rgb(212, 206, 223);
+    --scrollbar-thumb: rgb(183, 157, 228);
+    --scrollbar-thumb-hover: rgb(212, 206, 223);
 }
 
 :root {
-    --scrollbar-track: rgba(119, 93, 166);
-    --scrollbar-thumb: rgba(119, 93, 166);
-    --scrollbar-thumb-hover: rgba(119, 93, 166);
+
 }
 
 /* Скролбар */
