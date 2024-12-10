@@ -1,6 +1,7 @@
 import React, {FunctionComponent, ReactNode, useEffect, useMemo} from 'react';
-import {flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {ColumnDef, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
 import {useSelectorTyped as useSelector} from "@/services/hooks/typedUseSelector";
+import {Preloader} from "@/Components/utils/Preloader";
 
 interface IProps {
     className?: string
@@ -8,6 +9,7 @@ interface IProps {
 
 export const Table: FunctionComponent<IProps> = () => {
     const data = useSelector(state => state.ralSliceToolkit.ralData);
+    const tableHeaders = useSelector(state => state.ralSliceToolkit.headers)
 
     let getHeaderName = (accessorKey: string) => {
         switch (accessorKey) {
@@ -31,40 +33,29 @@ export const Table: FunctionComponent<IProps> = () => {
         }
     }
 
-    const columns = useMemo(() => {
-        let headers: any[] = [];
-        let index = 0;
-        if (data) {
-            for (let key in data[0]) {
-                headers[index] = {
-                    accessorKey: key,
-                    header: getHeaderName(key),
+    let mockCells = [
+        {
+            accessorKey: 'regnumber',
+            header: 'bruh',
+            cell: (props: any) => <p>{props.getValue()}</p>
+        }
+    ]
+
+    const columns: ColumnDef<any>[] = useMemo(() => {
+        let colData: ColumnDef<any>[] = [];
+        if (tableHeaders.length !== 0) {
+            colData = tableHeaders.map((header, key) => {
+                return {
+                    accessorKey: header,
+                    header: getHeaderName(header),
                     cell: (props: any) => <p>{props.getValue()}</p>,
                     enableResizing: true,
                     size: 200
-                };
-                index++;
-            }
+                }
+            })
         }
-        return headers
-    },[data])
-
-    // const columns = [
-    // {
-    //     accessorKey: 'RegNumber',
-    //     header: "рег. номер",
-    //     cell: (props: any) => <p>{props.getValue()}</p>
-    // },
-    // {
-    //     accessorKey: 'old_status_AL',
-    //     header: "старый статус",
-    //     cell: (props: any) => <p>{props.getValue()}</p>
-    // },
-    // {
-    //     accessorKey: 'new_status_AL',
-    //     header: "новый статус",
-    //     cell: (props: any) => <p>{props.getValue()}</p>
-    // },]
+        return colData;
+    },[data, tableHeaders])
 
     const table = useReactTable({
         data,
@@ -72,28 +63,24 @@ export const Table: FunctionComponent<IProps> = () => {
         getCoreRowModel: getCoreRowModel(),
         columnResizeMode: "onChange",
         enableColumnResizing: true
+    })
 
-    }, )
-
-    useEffect(() => {
-        console.log(table.getHeaderGroups())
-    }, [table]);
-
-    return (
+    return (data.length !== 0 ?
         <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
             <div className={""}>верхняя пагинация</div>
-            <div className={'p-2 h-full w-full grow flex overflow-y-hidden bg-cyan-200'}>
-                <div className={"rim text-base my-block w-full h-full l bg-background-block "}>
-                    <table className={"block max-h-full w-full text-sm overflow-x-scroll overflow-y-scroll table-fixed"}>
-                        <thead className={"sticky bg-background-block top-0"}>
-                            <tr className={'flex w-fit'}>
-                                {table.getHeaderGroups()[0].headers.map((header, key) => {
+            <div className={'p-2 h-full w-full grow flex overflow-y-hidden'}>
+                <div className={"text-base my-block w-full h-full l bg-background-block "}>
+                    <table className={"block max-h-full w-full text-sm overflow-x-scroll overflow-y-scroll table-fixed rounded-t-md"}>
+                        <thead className={"sticky bg-background-block top-0 text-header-text font-medium"}>
+                            <tr className={'flex w-fit bg-row-even text-header-text'}>
+                                {table.getHeaderGroups()[0].headers.map((header) => {
                                     return (
                                         <th style={{width: header.column.getSize()}}
-                                            className={`border border-black relative p-2`}
-                                            key={header.id}>{header.column.columnDef.header as ReactNode}
+                                            className={`relative p-2 flex justify-center items-center`}
+                                            key={header.id}>
+                                            <span className={''}>{header.column.columnDef.header as ReactNode}</span>
                                             <div
-                                                className={`bg-resizer cursor-col-resize opacity-0 hover:opacity-100 z-10 w-1.5 bg-amber-700 absolute h-full top-0 right-0 translate-x-1/2`}
+                                                className={`bg-resizer cursor-col-resize opacity-0 hover:opacity-100 z-10 w-1.5 bg-button-violet absolute h-full top-0 right-0 translate-x-1/2`}
                                                 onMouseDown={header.getResizeHandler()}
                                                 onTouchStart={header.getResizeHandler()}
                                             ></div>
@@ -102,13 +89,13 @@ export const Table: FunctionComponent<IProps> = () => {
                                 })}
                             </tr>
                         </thead>
-                        <tbody className={'w-full min-h-max'}>
+                        <tbody className={'w-full min-h-max font-medium'}>
                         {table.getRowModel().rows.map(row => {
-                            return <tr className={'flex w-fit'} key={row.id}>
+                            return <tr className={'flex w-fit even:bg-row-even odd:bg-row-odd h-20'} key={row.id}>
                                 {row.getVisibleCells().map(cell => {
-                                    return <td key={cell.id} style={{width: cell.column.getSize()}} className={`border border-black overflow-hidden`}>{
-                                        flexRender(cell.column.columnDef.cell, cell.getContext())
-                                    }</td>
+                                    return <td key={cell.id} style={{width: cell.column.getSize()}} className={`overflow-hidden flex justify-center items-center`}>
+                                        <span className={"text-cell-text"}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</span>
+                                    </td>
                                 })}
                             </tr>
                         })}
@@ -117,7 +104,7 @@ export const Table: FunctionComponent<IProps> = () => {
                 </div>
             </div>
             <div className={"text-end"}>нижняя пагинация</div>
-        </div>
+        </div> : <Preloader className="w-16"/>
     )
 }
 

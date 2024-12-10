@@ -34,7 +34,13 @@ export default {
                 "secondary-row": "rgba(var(--secondary-row))",
                 "text-primary": "rgba(var(--text-primary))",
 
-                "resizer": "rgba(var(--violet-button))"
+                // Table
+                "row-even": "rgba(var(--row-even))",
+                "row-odd": "rgba(var(--row-odd))",
+
+                // Text
+                "header-text": "rgba(var(--header-text))",
+                "cell-text": "rgba(var(--cell-text))"
             },
             boxShadow: {
                 "basic": "0px 1px 9px 0px rgba(0, 0, 0, 0.3);",
