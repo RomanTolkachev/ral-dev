@@ -29,6 +29,8 @@ export default {
                 "button-red": "rgba(var(--red-button))",
                 "button-red-text": "rgba(var(--red-button-text))",
 
+                "filter-dropdown-button": "rgba(var(--filter-dropdown-button))",
+
                 "main-select": "rgba(var(--main-select))",
                 "primary-row": "rgba(var(--primary-row))",
                 "secondary-row": "rgba(var(--secondary-row))",

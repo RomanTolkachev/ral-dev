@@ -1,12 +1,14 @@
 import {useEffect, useState} from "react";
 import {Header} from "@/Components/Header";
 import {MainButton} from "@/Components/Buttons/MainButton";
-import {useDispatchTyped} from "@/services/hooks/typedUseSelector";
+import {useDispatchTyped, useSelectorTyped as useSelector} from "@/services/hooks/typedUseSelector";
 import {requestRal} from "@/services/slices/ral-slice";
 import {Table} from "@/Components/Table";
+import {Preloader} from "@/Components/utils/Preloader";
 
 export default function Main() {
     const dispatch = useDispatchTyped();
+    const menuItems = useSelector(state => state.ralSliceToolkit.headers)
     const [theme, setTheme] = useState("light");
     useEffect(() => {
         dispatch(requestRal());
@@ -26,17 +28,26 @@ export default function Main() {
     },[theme])
     return (
         <>
-            <div className={"h-svh mah-h-svh overflow-hidden bg-background flex"}>
-                <section className={'bg-background flex h-full flex-col shrink-0 w-72'}>
+            <div className={"h-svh mah-h-svh overflow-hidden bg-background flex w-screen"}>
+                <section className={'bg-background shrink-0 grid grid-rows-[auto_1fr_auto] !grid-cols-[300px] h-full overflow-hidden'}>
                     <Header>заголовок</Header>
-                    <div className={"p-2 flex shrink grow"}>
-                        <div className={'flex my-block shrink grow flex-col'}>
-                            <div className={"shrink grow"}>содержимое инпутов</div>
-                            <MainButton color={"violet"} className={"mx-auto"}>Применить</MainButton>
+                    <div className={"p-2 flex flex-col shrink grow overflow-hidden"}>
+                        <div className={'flex my-block shrink grow flex-col pt-6 overflow-hidden'}>
+                            <div className={"shrink grow px-6 w-full overflow-y-scroll space-y-4"}>
+                                {!menuItems.length ? <Preloader /> : (
+                                    menuItems.map((item, key) => {
+                                        return <div className={"bg-filter-dropdown-button rounded-2xl py-3 px-12"}>{item}</div>
+                                    })
+                                )}
+                            </div>
+                            <div className={"sticky bottom-0 flex flex-col bg-background py-6 space-y-4 gap-2"}>
+                                <MainButton color={"violet"} className={"mx-auto"}>Применить</MainButton>
+                                <button>сбросить</button>
+                            </div>
                         </div>
                     </div>
                 </section>
-                <section className={"shrink grow flex flex-col"}>
+                <section className={"shrink flex flex-col"}>
                     <Header className={"mb-6"}>
                         <nav className={"flex shrink grow"}>
                             <h2>тут будет заголовок раздела</h2>

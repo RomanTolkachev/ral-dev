@@ -33,14 +33,6 @@ export const Table: FunctionComponent<IProps> = () => {
         }
     }
 
-    let mockCells = [
-        {
-            accessorKey: 'regnumber',
-            header: 'bruh',
-            cell: (props: any) => <p>{props.getValue()}</p>
-        }
-    ]
-
     const columns: ColumnDef<any>[] = useMemo(() => {
         let colData: ColumnDef<any>[] = [];
         if (tableHeaders.length !== 0) {

@@ -8,23 +8,24 @@ import {
 } from "@reduxjs/toolkit";
 import {fetchRal} from "@/services/api";
 import {ralItem} from "@/types/ral";
-import {ColumnDef} from "@tanstack/react-table";
 
 export interface IRalReducer {
     ralFetchStart: boolean
     ralFetchError?: SerializedError | null
     ralData: [] | Array<ralItem>
     headers: string[]
+    filters: any
 }
 const initialState: IRalReducer = {
     ralFetchStart: false,
     ralFetchError: null,
     ralData: [],
-    headers: []
+    headers: [],
+    filters: null
 };
 
 export const requestRal = createAsyncThunk<Array<ralItem>, void>(
-    'ralSliceName/requestRal', fetchRal
+    'ralSlice/requestRal', fetchRal
 )
 
 const getHeaders = (data: Array<ralItem>): Array<string> => {
@@ -56,7 +57,7 @@ const getHeaders = (data: Array<ralItem>): Array<string> => {
 //     })
 
 
-const ralSliceToolkit = createSlice(
+const ralSlice = createSlice(
     {
         name: "ralSliceName",
         initialState,
@@ -85,7 +86,8 @@ const ralSliceToolkit = createSlice(
                     ...state,
                     ralFetchStart: false,
                     ralData: action.payload,
-                    headers: getHeaders(action.payload)
+                    headers: getHeaders(action.payload),
+
                 }
             })
             builder.addCase(requestRal.rejected, (state, action: PayloadAction<unknown>) => {
@@ -99,4 +101,4 @@ const ralSliceToolkit = createSlice(
     }
 )
 
-export default ralSliceToolkit.reducer;
+export default ralSlice.reducer;
