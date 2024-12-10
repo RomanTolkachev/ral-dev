@@ -68,16 +68,30 @@
 :root {
 
 }
+thead {
+    position: relative;
+}
+thead::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background-color: black;
+    bottom: 0.5px;
+    left: 0;
+}
 
-/* Скролбар */
+thead::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: .5px;
+    background-color: black;
+    top: 0px;
+    left: 0;
+}
 
-/* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
-/** {
-  scrollbar-width: thin;
-  scrollbar-color: #A464BC #E9E1EB;
-}*/
-
-/* Chrome, Edge and Safari */
+/* Скролбар Chrome, Edge and Safari */
 *::-webkit-scrollbar {
     height: 8px;
     width: 8px;
@@ -86,6 +100,7 @@
     border-radius: 20px;
     background-color: #E9E1EB;
     border: 2px solid transparent;
+    border-left: 10px;
     overflow: hidden;
     background-clip: content-box;
 }

@@ -32,7 +32,9 @@ export default {
                 "main-select": "rgba(var(--main-select))",
                 "primary-row": "rgba(var(--primary-row))",
                 "secondary-row": "rgba(var(--secondary-row))",
-                "text-primary": "rgba(var(--text-primary))"
+                "text-primary": "rgba(var(--text-primary))",
+
+                "resizer": "rgba(var(--violet-button))"
             },
             boxShadow: {
                 "basic": "0px 1px 9px 0px rgba(0, 0, 0, 0.3);",

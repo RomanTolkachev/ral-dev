@@ -11,7 +11,7 @@ class GetRalController extends Controller
 {
     public function __invoke(Request $request): JsonResponse
     {
-        $ral = RalShortInfoMock::take(60)->get();
+        $ral = RalShortInfoMock::take(10)->get();
         return new JsonResponse($ral);
     }
 }

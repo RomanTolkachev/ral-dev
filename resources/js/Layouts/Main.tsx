@@ -26,8 +26,8 @@ export default function Main() {
     },[theme])
     return (
         <>
-            <div className={"h-svh overflow-hidden bg-background flex"}>
-                <section className={'bg-background flex h-full flex-col w-72'}>
+            <div className={"h-svh mah-h-svh overflow-hidden bg-background flex"}>
+                <section className={'bg-background flex h-full flex-col shrink-0 w-72'}>
                     <Header>заголовок</Header>
                     <div className={"p-2 flex shrink grow"}>
                         <div className={'flex my-block shrink grow flex-col'}>
