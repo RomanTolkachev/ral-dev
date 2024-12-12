@@ -69,8 +69,9 @@ const ralSlice = createSlice(
                 }
             },
             updateRalData: (state, payload):IRalReducer => {
+
                 return {
-                    ...state,
+                    ...state, // @ts-ignore
                     ralFetchError: false,
                 }
             }

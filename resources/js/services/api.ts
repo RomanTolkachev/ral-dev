@@ -7,5 +7,8 @@ export const checkResponse = <T>(res: Response):Promise<T> => {
 export const fetchRal = <T>(): Promise<T> => {
     return fetch(`${LOCAL_URL}/ral`).then((res: Response) => checkResponse(res));
 }
+export const fetchRalFilters = <T>(): Promise<T> => {
+    return fetch(`${LOCAL_URL}/ral/filters`).then((res: Response) => checkResponse(res));
+}
 
 

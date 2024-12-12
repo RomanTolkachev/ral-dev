@@ -2,13 +2,13 @@ import React, {FunctionComponent} from 'react';
 
 interface IProps {
     className?: string
-    width: string
+    widthStyles: string
 }
 
-export const Preloader: FunctionComponent<IProps> = ({className, width}) => {
+export const Preloader: FunctionComponent<IProps> = ({className, widthStyles}) => {
     return (
         <div className={`${className} w-full h-full flex justify-center items-center`}>
-            <div className={`w-${width}`}>
+            <div className={`${widthStyles}`}>
                 <div className={`preloader`}></div>
             </div>
         </div>

@@ -92,7 +92,7 @@ export const Table: FunctionComponent<IProps> = () => {
                             </tr>
                         })}
                         </tbody>
-                    </table> : <Preloader width="16"/> }
+                    </table> : <Preloader widthStyles="w-16"/> }
                 </div>
             </div>
             <div className={"text-end"}>нижняя пагинация</div>

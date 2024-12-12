@@ -31,7 +31,8 @@
     --white-button: 255, 255, 255;
     --white-button-text: 32, 32, 32;
 
-    --filter-dropdown-button: 209, 205, 217;
+    --filter-dropdown-button: 243, 243, 243;
+    --filter-dropdown-button-active: 209, 205, 217;
 
     --main-select: 209, 205, 217;
     --primary-row: 255, 255, 255;
@@ -42,6 +43,8 @@
     --scrollbar-thumb: rgba(119, 93, 166);
     --scrollbar-thumb-hover: rgba(119, 93, 166);
 
+    --thumb-secondary: rgba(148, 184, 217);
+
     /* Table */
     --row-ewen: 255, 255, 255;
     --row-odd: 240, 240, 243;
@@ -49,6 +52,9 @@
     /* Text */
     --header-text: 137, 137, 137;
     --cell-text: 71, 71, 71;
+
+    /* Checkbox */
+    --checkbox-custom: 85, 151, 120
 }
 
 .dark {
@@ -65,6 +71,9 @@
     --white-button: 119, 93, 166;
     --white-button-text: 255, 255, 255;
 
+    --filter-dropdown-button: 243, 243, 243;
+    --filter-dropdown-button-active: 209, 205, 217;
+
     --main-select: 209, 205, 217;
     --primary-row: 255, 255, 255;
     --secondary-row: 240, 240, 243;
@@ -78,9 +87,14 @@
     --scrollbar-thumb: rgb(183, 157, 228);
     --scrollbar-thumb-hover: rgb(212, 206, 223);
 
+    --thumb-secondary: rgb(65, 110, 149);
+
     /* Text */
     --header-text: 137, 137, 137;
     --cell-text: 71, 71, 71;
+
+    /* Checkbox */
+    --checkbox-custom: 32, 32, 32
 }
 
 .preloader {
@@ -133,8 +147,8 @@ thead {
 *::-webkit-scrollbar-track {
     border-radius: 20px;
     background-color: #D9D9D9;
-    border: 2px solid transparent;
-    border-left: 10px;
+    border: 1px solid transparent;
+    /*border-left: 5px;*/
     overflow: hidden;
     background-clip: content-box;
 }
@@ -158,4 +172,17 @@ thead {
 
 *::-webkit-scrollbar-thumb:active {
     background-color: var(--scrollbar-thumb);
+}
+
+.thumb-secondary::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background-color: var(--thumb-secondary);
+}
+
+.thumb-secondary::-webkit-scrollbar-thumb:hover {
+    background-color: var(--thumb-secondary);
+}
+
+.thumb-secondary::-webkit-scrollbar-thumb:active {
+    background-color: var(--thumb-secondary);
 }

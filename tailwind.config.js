@@ -9,7 +9,7 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.tsx',
     ],
-    safeList: ["rotate-180", "rotate-0"],
+    safeList: ["rotate-180", "rotate-0", "checkbox-custom, thumb-secondary, filter-dropdown-button-active"],
     theme: {
         extend: {
             fontFamily: {
@@ -30,6 +30,7 @@ export default {
                 "button-red-text": "rgba(var(--red-button-text))",
 
                 "filter-dropdown-button": "rgba(var(--filter-dropdown-button))",
+                "filter-dropdown-button-active": "rgba(var(--filter-dropdown-button-active))",
 
                 "main-select": "rgba(var(--main-select))",
                 "primary-row": "rgba(var(--primary-row))",
@@ -42,7 +43,11 @@ export default {
 
                 // Text
                 "header-text": "rgba(var(--header-text))",
-                "cell-text": "rgba(var(--cell-text))"
+                "cell-text": "rgba(var(--cell-text))",
+
+                // Checkbox
+                "checkbox-custom": "rgba(var(--checkbox-custom))",
+
             },
             boxShadow: {
                 "basic": "0px 1px 9px 0px rgba(0, 0, 0, 0.3);",
