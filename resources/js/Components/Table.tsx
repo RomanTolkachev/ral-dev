@@ -57,12 +57,12 @@ export const Table: FunctionComponent<IProps> = () => {
         enableColumnResizing: true
     })
 
-    return (data.length !== 0 ?
+    return (
         <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
             <div className={""}>верхняя пагинация</div>
             <div className={'p-2 h-full w-full grow flex overflow-y-hidden'}>
                 <div className={"text-base my-block w-full h-full l bg-background-block "}>
-                    <table className={"block max-h-full w-full text-sm overflow-x-scroll overflow-y-scroll table-fixed rounded-t-md"}>
+                    {data.length !== 0 ? <table className={"block max-h-full w-full text-sm overflow-x-scroll overflow-y-scroll table-fixed rounded-t-md"}>
                         <thead className={"sticky bg-background-block top-0 text-header-text font-medium"}>
                             <tr className={'flex w-fit bg-row-even text-header-text'}>
                                 {table.getHeaderGroups()[0].headers.map((header) => {
@@ -92,11 +92,11 @@ export const Table: FunctionComponent<IProps> = () => {
                             </tr>
                         })}
                         </tbody>
-                    </table>
+                    </table> : <Preloader width="16"/> }
                 </div>
             </div>
             <div className={"text-end"}>нижняя пагинация</div>
-        </div> : <Preloader className="w-16"/>
+        </div>
     )
 }
 

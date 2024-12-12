@@ -9,7 +9,7 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.tsx',
     ],
-
+    safeList: ["rotate-180", "rotate-0"],
     theme: {
         extend: {
             fontFamily: {
