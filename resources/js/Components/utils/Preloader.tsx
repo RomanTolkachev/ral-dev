@@ -2,7 +2,7 @@ import React, {FunctionComponent} from 'react';
 
 interface IProps {
     className?: string
-    widthStyles: string
+    widthStyles?: string
 }
 
 export const Preloader: FunctionComponent<IProps> = ({className, widthStyles}) => {

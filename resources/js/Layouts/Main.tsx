@@ -38,7 +38,7 @@ export default function Main() {
                     <div className={"p-2 flex flex-col shrink grow overflow-hidden"}>
                         <div className={'flex my-block shrink grow flex-col pt-6 overflow-hidden'}>
                             <div className={"shrink grow px-6 w-full overflow-y-scroll space-y-4"}>
-                                {!menuItems.length ? <Preloader widthStyles="w-16" /> : (
+                                {!menuItems.length ? <Preloader widthStyles={"w-16"} /> : (
                                     menuItems.map((filterItem, key) => {
                                         return ( <DropdownItem name={filterItem.header} className={''} inputData={filterItem} key={key} />
                                             )
