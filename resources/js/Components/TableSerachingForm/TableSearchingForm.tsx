@@ -3,19 +3,30 @@ import {Preloader} from "@/Components/utils/Preloader";
 import {DropdownItem} from "@/Components/DropdownItem";
 import {MainButton} from "@/Components/Buttons/MainButton";
 import {ISearchingFormItem} from "@/types/searchingFilters";
+import {useForm} from "react-hook-form";
+import {useSelectorTyped as useSelector} from "@/services/hooks/typedUseSelector";
 
 interface IProps {
     className?: string
-    searchingFormData: ISearchingFormItem[]
 }
 
-export const TableSearchingForm: FunctionComponent<IProps> = ({className, searchingFormData}) => {
+export const TableSearchingForm: FunctionComponent<IProps> = ({className}) => {
+
+    const menuItems = useSelector(state => state.filtersReducer.filters);
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm()
+
     return (
-        <form className={`${className} flex-col overflow-hidden flex`}>
-            <div className={"px-6 w-full overflow-y-scroll space-y-4"}>
-                {!searchingFormData.length ? <Preloader widthStyles={"w-16"}/> : (
-                    searchingFormData.map((filterItem, key) => {
-                        return (<DropdownItem name={filterItem.header} className={''}
+        <form onSubmit={handleSubmit(data => console.log(data))} className={`${className} flex-col overflow-hidden flex`}>
+            <div className={"px-6 w-full grow shrink overflow-y-auto space-y-4"}>
+                {!menuItems.length ? <Preloader widthStyles={"w-16"}/> : (
+                    menuItems.map((filterItem, key) => {
+                        return (<DropdownItem register={register} name={filterItem.header} className={''}
                                               inputData={filterItem} key={key}/>
                         )
                     })

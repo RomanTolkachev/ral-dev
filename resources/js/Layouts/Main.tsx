@@ -7,10 +7,10 @@ import {Table} from "@/Components/Table";
 import {Preloader} from "@/Components/utils/Preloader";
 import {DropdownItem} from "@/Components/DropdownItem";
 import {requestFilters} from "@/services/slices/filters-slice";
+import {TableSearchingForm} from "@/Components/TableSerachingForm/TableSearchingForm";
 
 export default function Main() {
     const dispatch = useDispatchTyped();
-    const menuItems = useSelector(state => state.filtersReducer.filters);
     const [theme, setTheme] = useState("light");
     useEffect(() => {
         dispatch(requestRal());
@@ -35,23 +35,9 @@ export default function Main() {
             <div className={"h-svh mah-h-svh overflow-hidden bg-background flex w-screen font-Inter"}>
                 <section className={'bg-background shrink-0 grid grid-rows-[auto_1fr_auto] !grid-cols-[300px] h-full overflow-hidden'}>
                     <Header>заголовок</Header>
-                    <div className={"p-2 flex flex-col grow overflow-hidden"}>
-                        <div className={"my-block pt-6 flex overflow-hidden"}>
-                            <form className={'flex-col overflow-hidden flex'}>
-                                <div className={"px-6 w-full overflow-y-scroll space-y-4"}>
-                                    {!menuItems.length ? <Preloader widthStyles={"w-16"}/> : (
-                                        menuItems.map((filterItem, key) => {
-                                            return (<DropdownItem name={filterItem.header} className={''}
-                                                                  inputData={filterItem} key={key}/>
-                                            )
-                                        })
-                                    )}
-                                </div>
-                                <div className={"sticky bottom-0 flex flex-col bg-background py-6 space-y-4 gap-2"}>
-                                    <MainButton color={"violet"} className={"mx-auto"}>Применить</MainButton>
-                                    <button>сбросить</button>
-                                </div>
-                            </form>
+                    <div className={"p-2 flex flex-col grow shrink overflow-hidden"}>
+                        <div className={"my-block pt-6 flex grow overflow-hidden"}>
+                            <TableSearchingForm className={"w-full"} />
                         </div>
                     </div>
                 </section>

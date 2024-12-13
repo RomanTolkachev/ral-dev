@@ -1,13 +1,23 @@
-import {FunctionComponent, useState} from 'react';
+import React, {FunctionComponent, memo, useState} from 'react';
 import {DropdownFilterButton} from "@/Components/Buttons/DropdownFilterButton";
 import {motion, Variants} from "framer-motion"
 import {ISearchingFormItem} from "@/types/searchingFilters";
+import {randomUUID} from "node:crypto";
+import {v4} from "uuid";
 
 interface IProps {
     className?: string
     name?: string
     inputData: ISearchingFormItem
+    register: any
 }
+// () => {
+//     onChange: (e: React.ChangeEvent) => void,
+//         onBlur: (e: React.FocusEvent) => void,
+//         name: string,
+//         ref: React.Ref<HTMLInputElement>
+// }
+
 
 const listVariants: Variants = {
     open: {
@@ -31,7 +41,7 @@ const itemVariants: Variants = {
     open: {},
 };
 
-export const DropdownItem: FunctionComponent<IProps> = ({name, inputData, className}) => {
+export const DropdownItem: FunctionComponent<IProps> = memo(({name, inputData, className, register}) => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     return (
         <motion.div initial={"closed"} animate={isOpen ? "open" : "closed"} variants={itemVariants} className={`${className} h-fit`}>
@@ -40,6 +50,7 @@ export const DropdownItem: FunctionComponent<IProps> = ({name, inputData, classN
                 {inputData.sortValues.type === "huge" && (
                     <div className={'p-1 relative'}>
                         <input type="text" id={inputData.header}
+                               {...register(inputData.header)}
                                placeholder={"ololo"}
                                 className={
                                    `ring-transparent
@@ -60,7 +71,7 @@ export const DropdownItem: FunctionComponent<IProps> = ({name, inputData, classN
                                  className=" absolute translate-x-full mt-1 left-0 w-4 h-4"
                                  fill="none" stroke="currentColor"
                                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                             <span className={""}>поиск</span>
                         </label>
@@ -70,14 +81,15 @@ export const DropdownItem: FunctionComponent<IProps> = ({name, inputData, classN
                 {inputData.sortValues.type === "checkBox" && (
                     <div className={"flex flex-col pl-3 pr-3 pt-3 max-h-32 overflow-y-auto thumb-secondary space-y-1"}>
                         {inputData.sortValues.checkboxValues!.map((item, key) => {
+                            const id= v4();
                             return (
                                     <div key={key} className={'flex items-center border-b last:border-b-0 py-2 border-gray-200'}>
                                         <label className={'pr-2'}
-                                               htmlFor={item?.toString()}
+                                               htmlFor={item ? item : id}
                                         >
-                                                {item ? item?.toString() : "пустые"}
+                                                {item ? item : "пустые"}
                                         </label>
-                                        <input className={'ml-auto checked:text-checkbox-custom border-[2px] rounded focus:ring-transparent'} type="checkbox" name={item?.toString()}/>
+                                        <input {...register(item ? item : id)} value={item ? item : id} className={'ml-auto checked:text-checkbox-custom border-[2px] rounded focus:ring-transparent'} type='checkbox' name={item ? item : id}/>
                                     </div>
                             )
                         })}
@@ -86,4 +98,4 @@ export const DropdownItem: FunctionComponent<IProps> = ({name, inputData, classN
             </motion.div>
         </motion.div>
     );
-};
+});
