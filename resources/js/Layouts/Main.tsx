@@ -35,20 +35,23 @@ export default function Main() {
             <div className={"h-svh mah-h-svh overflow-hidden bg-background flex w-screen font-Inter"}>
                 <section className={'bg-background shrink-0 grid grid-rows-[auto_1fr_auto] !grid-cols-[300px] h-full overflow-hidden'}>
                     <Header>заголовок</Header>
-                    <div className={"p-2 flex flex-col shrink grow overflow-hidden"}>
-                        <div className={'flex my-block shrink grow flex-col pt-6 overflow-hidden'}>
-                            <div className={"shrink grow px-6 w-full overflow-y-scroll space-y-4"}>
-                                {!menuItems.length ? <Preloader widthStyles={"w-16"} /> : (
-                                    menuItems.map((filterItem, key) => {
-                                        return ( <DropdownItem name={filterItem.header} className={''} inputData={filterItem} key={key} />
+                    <div className={"p-2 flex flex-col grow overflow-hidden"}>
+                        <div className={"my-block pt-6 flex overflow-hidden"}>
+                            <form className={'flex-col overflow-hidden flex'}>
+                                <div className={"px-6 w-full overflow-y-scroll space-y-4"}>
+                                    {!menuItems.length ? <Preloader widthStyles={"w-16"}/> : (
+                                        menuItems.map((filterItem, key) => {
+                                            return (<DropdownItem name={filterItem.header} className={''}
+                                                                  inputData={filterItem} key={key}/>
                                             )
-                                    })
-                                )}
-                            </div>
-                            <div className={"sticky bottom-0 flex flex-col bg-background py-6 space-y-4 gap-2"}>
-                                <MainButton color={"violet"} className={"mx-auto"}>Применить</MainButton>
-                                <button>сбросить</button>
-                            </div>
+                                        })
+                                    )}
+                                </div>
+                                <div className={"sticky bottom-0 flex flex-col bg-background py-6 space-y-4 gap-2"}>
+                                    <MainButton color={"violet"} className={"mx-auto"}>Применить</MainButton>
+                                    <button>сбросить</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </section>
@@ -67,7 +70,8 @@ export default function Main() {
                         <MainButton color={"red"}>Скрыть истекшие</MainButton>
                         <MainButton color={"white"}>Выгрузить</MainButton>
                         <MainButton color={"violet"}
-                                    onClick={() => {setTheme(theme === "light" ? "dark" : "light"); localStorage.setItem('theme', theme === "light" ? "dark" : "light")}}
+                                    onClick={() => {
+                                        setTheme(theme === "light" ? "dark" : "light"); localStorage.setItem('theme', theme === "light" ? "dark" : "light")}}
                         >изменить тему</MainButton>
                     </div>
                     <Table />
