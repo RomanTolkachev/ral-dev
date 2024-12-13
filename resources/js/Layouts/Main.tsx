@@ -32,7 +32,7 @@ export default function Main() {
     },[theme])
     return (
         <>
-            <div className={"h-svh mah-h-svh overflow-hidden bg-background flex w-screen"}>
+            <div className={"h-svh mah-h-svh overflow-hidden bg-background flex w-screen font-Inter"}>
                 <section className={'bg-background shrink-0 grid grid-rows-[auto_1fr_auto] !grid-cols-[300px] h-full overflow-hidden'}>
                     <Header>заголовок</Header>
                     <div className={"p-2 flex flex-col shrink grow overflow-hidden"}>

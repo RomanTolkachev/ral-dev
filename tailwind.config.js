@@ -13,7 +13,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                // sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                Inter: ['Inter', 'sans-serif']
             },
             colors: {
                 "background": "rgba(var(--background))",
@@ -51,7 +52,8 @@ export default {
             },
             boxShadow: {
                 "basic": "0px 1px 9px 0px rgba(0, 0, 0, 0.3);",
-                "button-main": "0px 5px 4px 0px rgba(0, 0, 0, 0.3)"
+                "button-main": "0px 5px 4px 0px rgba(0, 0, 0, 0.3)",
+                'input-search': "22px 16px 22px 0px rgba(224, 224, 230, 1) inset;"
             }
         },
     },
