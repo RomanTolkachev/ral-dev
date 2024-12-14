@@ -21,7 +21,7 @@ const filtersSlice = createSlice({
     name: 'filtersSlice',
     initialState,
     reducers: {
-
+        default: () => {},
     },
     extraReducers: builder => {
         builder.addCase(requestFilters.pending, state => {

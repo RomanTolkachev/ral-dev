@@ -89,7 +89,7 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({name, inputData, c
                                         >
                                                 {item ? item : "пустые"}
                                         </label>
-                                        <input {...register(item ? item : id)} value={item ? item : id} className={'ml-auto checked:text-checkbox-custom border-[2px] rounded focus:ring-transparent'} type='checkbox' name={inputData.header}/>
+                                        <input {...register(inputData.header)} value={item ? item : false} className={'ml-auto checked:text-checkbox-custom border-[2px] rounded focus:ring-transparent'} type='checkbox' name={inputData.header}/>
                                     </div>
                             )
                         })}
