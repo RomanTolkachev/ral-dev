@@ -7,12 +7,12 @@ import {
     SerializedError
 } from "@reduxjs/toolkit";
 import {fetchRal} from "@/services/api";
-import {ralItem} from "@/types/ral";
+import {IRalItem} from "@/types/ral";
 
 export interface IRalReducer {
     ralFetchStart: boolean
     ralFetchError?: SerializedError | null
-    ralData: [] | Array<ralItem>
+    ralData: [] | Array<IRalItem>
     headers: string[]
     filters: any
 }
@@ -24,11 +24,11 @@ const initialState: IRalReducer = {
     filters: null
 };
 
-export const requestRal = createAsyncThunk<Array<ralItem>, void>(
+export const requestRal = createAsyncThunk<Array<IRalItem>, Object>(
     'ralSlice/requestRal', fetchRal
 )
 
-const getHeaders = (data: Array<ralItem>): Array<string> => {
+const getHeaders = (data: Array<IRalItem>): Array<string> => {
     return data.length !== 0 ? Object.keys(data[0]) : [] // вытаскиваем ключи в массив - это будут заголовки
 }
 
@@ -79,10 +79,12 @@ const ralSlice = createSlice(
         extraReducers: builder => {
             builder.addCase(requestRal.pending, state => {
                 return {
-                    ...state, ralFetchStart: true,
+                    ...state,
+                    ralData: [],
+                    ralFetchStart: true,
                 }
             })
-            builder.addCase(requestRal.fulfilled, (state, action:PayloadAction<Array<ralItem>>) => {
+            builder.addCase(requestRal.fulfilled, (state, action:PayloadAction<Array<IRalItem>>) => {
                 return {
                     ...state,
                     ralFetchStart: false,

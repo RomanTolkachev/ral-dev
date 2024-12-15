@@ -1,4 +1,4 @@
-export interface ralItem {
+export interface IRalItem {
     link: string | null
     RegNumber: string | null
     old_status_AL: string | null

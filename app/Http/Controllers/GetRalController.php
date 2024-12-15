@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\RalFilter;
 use App\Models\RalShortInfoMock;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class GetRalController extends Controller
 {
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(RalFilter $filter): JsonResponse
     {
-        $ral = RalShortInfoMock::take(10)->get();
+
+        $ral = RalShortInfoMock::filter($filter)->get();
         return new JsonResponse($ral);
     }
 }

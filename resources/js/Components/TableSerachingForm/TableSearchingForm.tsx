@@ -2,9 +2,10 @@ import React, {FunctionComponent} from 'react';
 import {Preloader} from "@/Components/utils/Preloader";
 import {DropdownItem} from "@/Components/DropdownItem";
 import {MainButton} from "@/Components/Buttons/MainButton";
-import {ISearchingFormItem} from "@/types/searchingFilters";
 import {useForm} from "react-hook-form";
-import {useSelectorTyped as useSelector} from "@/services/hooks/typedUseSelector";
+import {useDispatchTyped as useDispatch, useSelectorTyped as useSelector} from "@/services/hooks/typedUseSelector";
+import {fetchRal} from "@/services/api";
+import {requestRal} from "@/services/slices/ral-slice";
 
 interface IProps {
     className?: string
@@ -13,6 +14,7 @@ interface IProps {
 export const TableSearchingForm: FunctionComponent<IProps> = ({className}) => {
 
     const menuItems = useSelector(state => state.filtersReducer.filters);
+    const dispatch = useDispatch()
 
     const {
         register,
@@ -21,8 +23,14 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({className}) => {
         formState: { errors },
     } = useForm()
 
+    const submitHandler = (data) => {
+        console.log(data);
+        dispatch(requestRal(data))
+
+    }
+
     return (
-        <form onSubmit={handleSubmit(data => console.log(data))} className={`${className} flex-col overflow-hidden flex`}>
+        <form onSubmit={handleSubmit(submitHandler)} className={`${className} flex-col overflow-hidden flex`}>
             <div className={"px-6 w-full grow shrink overflow-y-auto space-y-4"}>
                 {!menuItems.length ? <Preloader widthStyles={"w-16"}/> : (
                     menuItems.map((filterItem, key) => {

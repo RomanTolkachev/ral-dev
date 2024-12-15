@@ -13,7 +13,7 @@ export default function Main() {
     const dispatch = useDispatchTyped();
     const [theme, setTheme] = useState("light");
     useEffect(() => {
-        dispatch(requestRal());
+        dispatch(requestRal(null));
         dispatch(requestFilters())
         if (localStorage.getItem("theme")) {
             setTheme(localStorage.getItem("theme")!);
