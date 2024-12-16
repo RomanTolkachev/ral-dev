@@ -5,6 +5,7 @@ import {ISearchingFormItem} from "@/types/searchingFilters";
 import {v4} from "uuid";
 import {InputCustom} from "@/Components/Inputs/InputCustom";
 import {Control, FieldValues, UseFormRegister} from "react-hook-form";
+import {CalendarInput} from "@/Components/Inputs/CalendarInput";
 
 interface IProps {
     className?: string
@@ -45,7 +46,9 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({name, inputData, c
                 {inputData.sortValues.type === "huge" && (
                     <InputCustom inputData={inputData} control={control} register={register}/>
                 )}
-                {inputData.sortValues.type === "date" && <span>сделать компонент для дат</span>}
+                {inputData.sortValues.type === "date" &&
+                    <CalendarInput />
+                }
                 {inputData.sortValues.type === "checkBox" && (
                     <div className={"flex flex-col pl-3 pr-3 pt-3 max-h-32 overflow-y-auto thumb-secondary space-y-1"}>
                         {inputData.sortValues.checkboxValues!.map((item, key) => {

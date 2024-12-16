@@ -24,7 +24,8 @@ const initialState: IRalReducer = {
     filters: null
 };
 
-export const requestRal = createAsyncThunk<Array<IRalItem>, Object>(
+
+export const requestRal = createAsyncThunk<Array<IRalItem>, Object>( // @ts-ignore
     'ralSlice/requestRal', fetchRal
 )
 
