@@ -82,16 +82,16 @@ export const Table: FunctionComponent<IProps> = () => {
                                     })}
                                 </tr>
                             </thead>
-                            <tbody className={'w-full min-h-max font-medium'}>
-                            {table.getRowModel().rows.map(row => {
-                                return <tr className={'flex w-fit even:bg-row-even odd:bg-row-odd h-20'} key={row.id}>
-                                    {row.getVisibleCells().map(cell => {
-                                        return <td key={cell.id} style={{width: cell.column.getSize()}} className={`overflow-hidden flex justify-center items-center`}>
-                                            <span className={"text-cell-text"}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</span>
-                                        </td>
-                                    })}
-                                </tr>
-                            })}
+                            <tbody className={'w-full font-medium'}>
+                                {table.getRowModel().rows.map(row => {
+                                    return <tr className={'flex w-fit even:bg-row-even odd:bg-row-odd h-20'} key={row.id}>
+                                        {row.getVisibleCells().map(cell => {
+                                            return <td key={cell.id} style={{width: cell.column.getSize()}} className={`overflow-hidden flex justify-center items-center`}>
+                                                <span className={"text-cell-text"}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</span>
+                                            </td>
+                                        })}
+                                    </tr>
+                                })}
                             </tbody>
                         </table> : <Preloader widthStyles={"w-16"}/>
                     }
