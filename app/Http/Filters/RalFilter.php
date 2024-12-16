@@ -23,9 +23,14 @@ class RalFilter extends AbstractFilter
         return $query;
     }
 
-    protected function RegNumber(string $value): Builder
+    protected function RegNumber(array $value): Builder
     {
-        return $this->builder->whereIn('RegNumber', $value);
+        $query = $this->builder;
+
+        foreach ($value as $item) {
+            $query = $query->orWhere('RegNumber', 'like', "%$item%");
+        }
+        return $query;
     }
 
     protected function oldStatusAL(array $value): Builder

@@ -14,7 +14,7 @@ interface IProps {
 const handleChange= (onChange: (...args: any[]) => void) => {
     return (e:ChangeEvent<HTMLInputElement>) => {
         let value = e.target.value.trim();
-        !value ? onChange(null) : onChange(value.split(/[\s,]+/))
+        !value ? onChange(null) : onChange(value.split(/[\s,;]+/))
     }
 }
 export const InputCustom: FunctionComponent<IProps> = ({className, inputData, register, control}) => {
