@@ -62,37 +62,39 @@ export const Table: FunctionComponent<IProps> = () => {
             <div className={""}>верхняя пагинация</div>
             <div className={'p-2 h-full w-full grow flex overflow-y-hidden'}>
                 <div className={"text-base my-block w-full h-full l bg-background-block "}>
-                    {data.length !== 0 ? <table className={"block max-h-full w-full text-sm overflow-x-scroll overflow-y-scroll table-fixed rounded-t-md"}>
-                        <thead className={"sticky bg-background-block top-0 text-header-text font-medium"}>
-                            <tr className={'flex w-fit bg-row-even text-header-text'}>
-                                {table.getHeaderGroups()[0].headers.map((header) => {
-                                    return (
-                                        <th style={{width: header.column.getSize()}}
-                                            className={`relative p-2 flex justify-center items-center`}
-                                            key={header.id}>
-                                            <span className={''}>{header.column.columnDef.header as ReactNode}</span>
-                                            <div
-                                                className={`bg-resizer cursor-col-resize opacity-0 hover:opacity-100 z-10 w-1.5 bg-button-violet absolute h-full top-0 right-0 translate-x-1/2`}
-                                                onMouseDown={header.getResizeHandler()}
-                                                onTouchStart={header.getResizeHandler()}
-                                            ></div>
-                                        </th>
-                                    )
-                                })}
-                            </tr>
-                        </thead>
-                        <tbody className={'w-full min-h-max font-medium'}>
-                        {table.getRowModel().rows.map(row => {
-                            return <tr className={'flex w-fit even:bg-row-even odd:bg-row-odd h-20'} key={row.id}>
-                                {row.getVisibleCells().map(cell => {
-                                    return <td key={cell.id} style={{width: cell.column.getSize()}} className={`overflow-hidden flex justify-center items-center`}>
-                                        <span className={"text-cell-text"}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</span>
-                                    </td>
-                                })}
-                            </tr>
-                        })}
-                        </tbody>
-                    </table> : <Preloader widthStyles={"w-16"}/> }
+                    {data.length !== 0 ?
+                        <table className={"block min-h-full max-h-full min-w-full w-full text-sm overflow-x-scroll overflow-y-scroll table-fixed rounded-t-md"}>
+                            <thead className={"sticky bg-background-block top-0 text-header-text font-medium"}>
+                                <tr className={'flex w-fit bg-row-even text-header-text'}>
+                                    {table.getHeaderGroups()[0].headers.map((header) => {
+                                        return (
+                                            <th style={{width: header.column.getSize()}}
+                                                className={`relative p-2 flex justify-center items-center`}
+                                                key={header.id}>
+                                                <span className={''}>{header.column.columnDef.header as ReactNode}</span>
+                                                <div
+                                                    className={`bg-resizer cursor-col-resize opacity-0 hover:opacity-100 z-10 w-1.5 bg-button-violet absolute h-full top-0 right-0 translate-x-1/2`}
+                                                    onMouseDown={header.getResizeHandler()}
+                                                    onTouchStart={header.getResizeHandler()}
+                                                ></div>
+                                            </th>
+                                        )
+                                    })}
+                                </tr>
+                            </thead>
+                            <tbody className={'w-full min-h-max font-medium'}>
+                            {table.getRowModel().rows.map(row => {
+                                return <tr className={'flex w-fit even:bg-row-even odd:bg-row-odd h-20'} key={row.id}>
+                                    {row.getVisibleCells().map(cell => {
+                                        return <td key={cell.id} style={{width: cell.column.getSize()}} className={`overflow-hidden flex justify-center items-center`}>
+                                            <span className={"text-cell-text"}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</span>
+                                        </td>
+                                    })}
+                                </tr>
+                            })}
+                            </tbody>
+                        </table> : <Preloader widthStyles={"w-16"}/>
+                    }
                 </div>
             </div>
             <div className={"text-end"}>нижняя пагинация</div>

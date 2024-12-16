@@ -10,12 +10,17 @@ class RalFilter extends AbstractFilter
     /**
      * Фильтрация по Ссылке
      *
-     * @param string $value
+     * @param array $value
      * @return Builder
      */
-    protected function link(string $value): Builder //TODO: сделать на фронте, чтобы всегда был массив
+    protected function link(array $value): Builder
     {
-        return $this->builder->whereIn('link', $value);
+        $query = $this->builder;
+
+        foreach ($value as $item) {
+            $query = $query->orWhere('link', 'like', "%$item%");
+        }
+        return $query;
     }
 
     protected function RegNumber(string $value): Builder
