@@ -4,7 +4,6 @@ import {DropdownItem} from "@/Components/DropdownItem";
 import {MainButton} from "@/Components/Buttons/MainButton";
 import {useForm} from "react-hook-form";
 import {useDispatchTyped as useDispatch, useSelectorTyped as useSelector} from "@/services/hooks/typedUseSelector";
-import {fetchRal} from "@/services/api";
 import {requestRal} from "@/services/slices/ral-slice";
 
 interface IProps {
@@ -21,9 +20,10 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({className}) => {
         handleSubmit,
         watch,
         formState: { errors },
+        control
     } = useForm()
 
-    const submitHandler = (data) => {
+    const submitHandler = (data: any) => {
         console.log(data);
         dispatch(requestRal(data))
 
@@ -34,7 +34,7 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({className}) => {
             <div className={"px-6 w-full grow shrink overflow-y-auto space-y-4"}>
                 {!menuItems.length ? <Preloader widthStyles={"w-16"}/> : (
                     menuItems.map((filterItem, key) => {
-                        return (<DropdownItem register={register} name={filterItem.header} className={''}
+                        return (<DropdownItem control={control} register={register} name={filterItem.header} className={''}
                                               inputData={filterItem} key={key}/>
                         )
                     })
