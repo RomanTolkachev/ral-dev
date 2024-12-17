@@ -1,19 +1,17 @@
 import {useEffect, useState} from "react";
 import {Header} from "@/Components/Header";
 import {MainButton} from "@/Components/Buttons/MainButton";
-import {useDispatchTyped, useSelectorTyped as useSelector} from "@/services/hooks/typedUseSelector";
+import {useDispatchTyped} from "@/services/hooks/typedUseSelector";
 import {requestRal} from "@/services/slices/ral-slice";
-import {Table} from "@/Components/Table";
-import {Preloader} from "@/Components/utils/Preloader";
-import {DropdownItem} from "@/Components/DropdownItem";
 import {requestFilters} from "@/services/slices/filters-slice";
 import {TableSearchingForm} from "@/Components/TableSerachingForm/TableSearchingForm";
+import {Table} from "@/Components/Table";
 
 export default function Main() {
     const dispatch = useDispatchTyped();
     const [theme, setTheme] = useState("light");
     useEffect(() => {
-        dispatch(requestRal(null));
+        dispatch(requestRal({}));
         dispatch(requestFilters())
         if (localStorage.getItem("theme")) {
             setTheme(localStorage.getItem("theme")!);
@@ -30,6 +28,8 @@ export default function Main() {
         }
 
     },[theme])
+
+
     return (
         <>
             <div className={"h-svh mah-h-svh overflow-hidden bg-background flex w-screen font-Inter"}>
@@ -58,7 +58,8 @@ export default function Main() {
                         <MainButton color={"violet"}
                                     onClick={() => {
                                         setTheme(theme === "light" ? "dark" : "light"); localStorage.setItem('theme', theme === "light" ? "dark" : "light")}}
-                        >изменить тему</MainButton>
+                        >изменить тему
+                        </MainButton>
                     </div>
                     <Table />
                 </section>

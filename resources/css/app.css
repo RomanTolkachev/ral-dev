@@ -168,6 +168,9 @@ thead {
     background-color: var(--thumb-secondary);
 }
 
+.no-calendar::-webkit-calendar-picker-indicator {
+    display: none;
+}
 
 @font-face {
     font-family: 'Inter';

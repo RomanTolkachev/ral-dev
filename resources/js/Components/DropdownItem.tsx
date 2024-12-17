@@ -47,7 +47,7 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({name, inputData, c
                     <InputCustom inputData={inputData} control={control} register={register}/>
                 )}
                 {inputData.sortValues.type === "date" &&
-                    <CalendarInput />
+                    <CalendarInput register={register} control={control} inputData={inputData}/>
                 }
                 {inputData.sortValues.type === "checkBox" && (
                     <div className={"flex flex-col pl-3 pr-3 pt-3 max-h-32 overflow-y-auto thumb-secondary space-y-1"}>

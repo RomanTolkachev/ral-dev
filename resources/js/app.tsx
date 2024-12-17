@@ -28,11 +28,11 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
         root.render(
-            <StrictMode>
+            // <StrictMode>
                 <Provider store={store}>
                     <App {...props} />
                 </Provider>
-            </StrictMode>
+            // </StrictMode>
         );
     },
     progress: {
