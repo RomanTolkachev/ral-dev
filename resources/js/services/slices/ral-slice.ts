@@ -7,30 +7,31 @@ import {
     SerializedError
 } from "@reduxjs/toolkit";
 import {fetchRal} from "@/services/api";
-import {IRalItem} from "@/types/ral";
+import {IRalItem, TPaginatedRal} from "@/types/ral";
 
 export interface IRalReducer {
     ralFetchStart: boolean
     ralFetchError?: SerializedError | null
-    ralData: [] | Array<IRalItem>
+    ralData: TPaginatedRal | {data: []}
     headers: string[]
     filters: any
 }
 const initialState: IRalReducer = {
     ralFetchStart: false,
     ralFetchError: null,
-    ralData: [],
+    ralData: {data: []},
     headers: [],
     filters: null
 };
 
 
-export const requestRal = createAsyncThunk<Array<IRalItem>, Object>( // @ts-ignore
-    'ralSlice/requestRal', fetchRal
+export const requestRal  = createAsyncThunk<any>( // @ts-ignore
+    'ralSlice/requestRal', queries => fetchRal(queries).then(res => res)
+        .catch(err => console.log(err))
 )
 
-const getHeaders = (data: Array<IRalItem>): Array<string> => {
-    return data.length !== 0 ? Object.keys(data[0]) : [] // вытаскиваем ключи в массив - это будут заголовки
+const getHeaders = (rals: IRalItem[]): string[] => {
+    return rals.length !== 0 ? Object.keys(rals[0]) : []// вытаскиваем ключи в массив - это будут заголовки
 }
 
 // const ralSliceAsync = createReducer(
@@ -81,18 +82,14 @@ const ralSlice = createSlice(
             builder.addCase(requestRal.pending, state => {
                 return {
                     ...state,
-                    ralData: [],
+                    ralData: {data: []},
                     ralFetchStart: true,
                 }
             })
-            builder.addCase(requestRal.fulfilled, (state, action:PayloadAction<Array<IRalItem>>) => {
-                return {
-                    ...state,
-                    ralFetchStart: false,
-                    ralData: action.payload,
-                    headers: getHeaders(action.payload),
-
-                }
+            builder.addCase(requestRal.fulfilled, (state, action:PayloadAction<TPaginatedRal>) => {
+                state.ralFetchStart = false;
+                state.ralData = action.payload;
+                state.headers = getHeaders(action.payload.data);
             })
             builder.addCase(requestRal.rejected, (state, action: PayloadAction<unknown>) => {
                 return {

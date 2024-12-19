@@ -9,9 +9,13 @@ interface IProps {
 }
 
 export const Table: FunctionComponent<IProps> = () => {
-    const data = useSelector(state => state.ralSliceToolkit.ralData);
+    const paginatedData = useSelector(state => state.ralSliceToolkit.ralData);
     const tableHeaders = useSelector(state => state.ralSliceToolkit.headers)
     const isLoading = useSelector(state => state.ralSliceToolkit.ralFetchStart)
+
+    useEffect(() => {
+        console.log(paginatedData, tableHeaders, isLoading)
+    }, [paginatedData, tableHeaders, isLoading]);
 
     let getHeaderName = (accessorKey: string) => {
         switch (accessorKey) {
@@ -49,10 +53,10 @@ export const Table: FunctionComponent<IProps> = () => {
             })
         }
         return colData;
-    },[data, tableHeaders])
+    },[paginatedData, tableHeaders])
 
     const table = useReactTable({
-        data,
+        data: paginatedData.data,
         columns,
         getCoreRowModel: getCoreRowModel(),
         columnResizeMode: "onChange",
@@ -65,7 +69,7 @@ export const Table: FunctionComponent<IProps> = () => {
             <div className={'p-2 h-full w-full grow flex overflow-y-hidden'}>
                 <div className={"text-base my-block w-full h-full flex items-center justify-center bg-background-block "}>
                     {isLoading ? <Preloader widthStyles={"w-16"}/> : (
-                        data.length !== 0 ? (
+                        Object.keys(paginatedData.data).length !== 0 ? (
                             <table
                                 className={"block min-h-full max-h-full min-w-full w-full text-sm overflow-x-scroll overflow-y-auto table-fixed rounded-t-md"}>
                                 <thead className={"sticky bg-background-block top-0 text-header-text font-medium"}>

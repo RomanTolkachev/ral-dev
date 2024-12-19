@@ -8,11 +8,19 @@ const axiosApi = axios.create({
     timeout: 3000,
 })
 
-const filterQueries = (dirty) => {
+type TInput = {
+    [key:string]: any
+} | null
+
+type TOutput = {
+    [key:string]: any
+}
+
+const filterQueries = (dirty: TInput) => {
     if (!dirty) {
         return {}
     }
-    return Object.keys(dirty).reduce((acc, item) => {
+    return Object.keys(dirty).reduce((acc: TOutput, item) => {
         if (dirty[item]) {
             acc[item] = dirty[item]
         }
@@ -21,9 +29,9 @@ const filterQueries = (dirty) => {
 }
 
 
-export const fetchRalFilters = (): Axios.IPromise<IRalItem[] | []> => axiosApi.get("/ral/filters")
+export const fetchRalFilters =  axiosApi.get<IRalItem[]>("/ral/filters")
     .then((res)=> res.data)
-    .catch(err => Promise.reject(err))
+
 
 export const fetchRal = (queries = null) => axiosApi.get("/ral", {
     params: filterQueries(queries),

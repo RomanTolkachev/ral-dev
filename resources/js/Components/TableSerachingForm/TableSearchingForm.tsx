@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React, { FunctionComponent, useCallback } from 'react';
 import {Preloader} from "@/Components/utils/Preloader";
 import {DropdownItem} from "@/Components/DropdownItem";
 import {MainButton} from "@/Components/Buttons/MainButton";
@@ -13,6 +13,7 @@ interface IProps {
 export const TableSearchingForm: FunctionComponent<IProps> = ({className}) => {
 
     const menuItems = useSelector(state => state.filtersReducer.filters);
+    const statePagination = useSelector(state => state.filtersReducer.paginationQueries);
     const dispatch = useDispatch()
 
     const {
@@ -23,18 +24,27 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({className}) => {
         control
     } = useForm()
 
-    const submitHandler = (data: any) => {
-        console.log(data);
-        dispatch(requestRal(data))
 
+    let perpages = {
+        page: 1,
+        perPage: 15
     }
+
+    const form = watch();
+    const submitHandler = useCallback((data: any) => {
+        const queriesAndPagination = Object.assign({}, data, perpages);
+        console.log(queriesAndPagination);
+        // @ts-ignore
+        dispatch(requestRal(queriesAndPagination))
+    }, [form, statePagination, dispatch])
+
 
     return (
         <form onSubmit={handleSubmit(submitHandler)} className={`${className} flex-col overflow-hidden flex`}>
             <div className={"px-6 w-full grow shrink overflow-y-auto space-y-4"}>
                 {!menuItems.length ? <Preloader widthStyles={"w-16"}/> : (
                     menuItems.map((filterItem, key) => {
-                        return (<DropdownItem control={control} register={register} name={filterItem.header} className={''}
+                        return (<DropdownItem control={control} register={register} name={filterItem.header} className={''}// @ts-ignore
                                               inputData={filterItem} key={key}/>
                         )
                     })

@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {Header} from "@/Components/Header";
 import {MainButton} from "@/Components/Buttons/MainButton";
-import {useDispatchTyped} from "@/services/hooks/typedUseSelector";
+import {useDispatchTyped, useSelectorTyped} from "@/services/hooks/typedUseSelector";
 import {requestRal} from "@/services/slices/ral-slice";
 import {requestFilters} from "@/services/slices/filters-slice";
 import {TableSearchingForm} from "@/Components/TableSerachingForm/TableSearchingForm";
@@ -10,8 +10,10 @@ import {Table} from "@/Components/Table";
 export default function Main() {
     const dispatch = useDispatchTyped();
     const [theme, setTheme] = useState("light");
+    const defaultPagination = useSelectorTyped(state => state.filtersReducer.paginationQueries)
     useEffect(() => {
-        dispatch(requestRal({}));
+        // @ts-ignore
+        dispatch(requestRal(defaultPagination));
         dispatch(requestFilters())
         if (localStorage.getItem("theme")) {
             setTheme(localStorage.getItem("theme")!);

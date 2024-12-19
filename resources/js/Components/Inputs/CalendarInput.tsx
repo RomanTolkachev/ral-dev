@@ -59,32 +59,32 @@ export const CalendarInput: FunctionComponent<IProps> = ({className, register, c
     }
 
     const [show, setShow] = useState<boolean>(false);
-    const [selectedDate, setSelectedDate] = useState('1992-01-01');
-    const handleChange = (date) => {
+    const [selectedDate, setSelectedDate] = useState('');
+    const handleChange = (date: any) => {
         setSelectedDate(date)
         console.log(selectedDate)
     }
     const handleClose = (state: boolean) => {
         setShow(state)
     }
-    return (
+    return ( null
         // <Controller
         //     name={inputData.header}
         //     defaultValue={selectedDate}
         //     control={control}
         //     render={
         //         ({field: {onChange, value}}) => (
-                    <Datepicker options={options} show={show} setShow={handleClose} onChange={(e) => setSelectedDate(e.target!.value)}>
-                        <input {...register(inputData.header)}
-                               onChange={(e) => setSelectedDate(new Date(e.target.value))}
-                               className={'no-calendar'}
-                               value={selectedDate}
-                               type={"date"}
-                               placeholder="Select Date"
-                               onBlur={() => setShow(false)}
-                               onFocus={() => setShow(true)}/>
-                        <div>{selectedDate as ReactNode}</div>
-                    </Datepicker>
+        //             <Datepicker options={options} show={show} setShow={handleClose} onChange={(e) => setSelectedDate(e.target!.value)}>
+        //                 <input {...register(inputData.header)}
+        //                        onChange={(e) => setSelectedDate(new Date(e.target.value))}
+        //                        className={'no-calendar'}
+        //                        value={selectedDate}
+        //                        type={"date"}
+        //                        placeholder="Select Date"
+        //                        onBlur={() => setShow(false)}
+        //                        onFocus={() => setShow(true)}/>
+        //                 <div>{selectedDate as ReactNode}</div>
+        //             </Datepicker>
                 // )
             // }/>
     );
