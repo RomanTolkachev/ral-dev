@@ -13,7 +13,10 @@ export interface IFiltersSlice {
     filtersFetchStart: boolean
     filtersFetchError: SerializedError | boolean
     filters: IRalItem[] | []
-    paginationQueries: {[key: string]: string | number}
+    paginationQueries: {
+        page: number,
+        perPage: number
+    }
 }
 
 const initialState: IFiltersSlice = {
@@ -22,7 +25,7 @@ const initialState: IFiltersSlice = {
     filters: [],
     paginationQueries: {
         page: 1,
-        perPage: 10
+        perPage: 5
     }
 }
 
@@ -30,11 +33,11 @@ const filtersSlice = createSlice({
     name: 'filtersSlice',
     initialState,
     reducers: {
-        updatePaginationQueries: (state, action: PayloadAction<any>) => {
-            return {
-                ...state,
-                queries: action.payload
-            }
+        updatePage: (state, action: PayloadAction<number>) => {
+            state.paginationQueries.page = action.payload;
+        },
+        updatePerPage: (state, action: PayloadAction<number>) => {
+            state.paginationQueries.perPage = action.payload
         },
     },
     extraReducers: builder => {
@@ -56,5 +59,5 @@ const filtersSlice = createSlice({
     }
 })
 
-export const { updatePaginationQueries } = filtersSlice.actions;
+export const { updatePage } = filtersSlice.actions;
 export default filtersSlice.reducer;

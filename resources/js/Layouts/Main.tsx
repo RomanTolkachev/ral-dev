@@ -10,10 +10,12 @@ import {Table} from "@/Components/Table";
 export default function Main() {
     const dispatch = useDispatchTyped();
     const [theme, setTheme] = useState("light");
-    const defaultPagination = useSelectorTyped(state => state.filtersReducer.paginationQueries)
+    const paginationQueries = useSelectorTyped(state => state.filtersReducer.paginationQueries)
+    const page = useSelectorTyped(state => state.filtersReducer.paginationQueries.page)
+    const perPage = useSelectorTyped(state => state.filtersReducer.paginationQueries.perPage)
     useEffect(() => {
         // @ts-ignore
-        dispatch(requestRal(defaultPagination));
+        dispatch(requestRal(paginationQueries));
         dispatch(requestFilters())
         if (localStorage.getItem("theme")) {
             setTheme(localStorage.getItem("theme")!);
@@ -28,7 +30,6 @@ export default function Main() {
             document.body.classList.remove("light")
             document.body.classList.add("dark")
         }
-
     },[theme])
 
 

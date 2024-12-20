@@ -1,21 +1,25 @@
-import React, {FunctionComponent, ReactNode, useEffect, useMemo} from 'react';
+import React, {FormEvent, FunctionComponent, ReactNode, useEffect, useMemo} from 'react';
 import {ColumnDef, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
-import {useSelectorTyped as useSelector} from "@/services/hooks/typedUseSelector";
+import {useDispatchTyped, useSelectorTyped as useSelector} from "@/services/hooks/typedUseSelector";
 import {Preloader} from "@/Components/utils/Preloader";
 import {SVG} from "@/Components/utils/SVG";
+import {updatePage} from "@/services/slices/filters-slice";
+import {useForm} from "react-hook-form";
 
 interface IProps {
     className?: string
 }
 
 export const Table: FunctionComponent<IProps> = () => {
+    const dispatch = useDispatchTyped()
     const paginatedData = useSelector(state => state.ralSliceToolkit.ralData);
     const tableHeaders = useSelector(state => state.ralSliceToolkit.headers)
     const isLoading = useSelector(state => state.ralSliceToolkit.ralFetchStart)
+    const page = useSelector(state => state.filtersReducer.paginationQueries.page)
 
-    useEffect(() => {
-        console.log(paginatedData, tableHeaders, isLoading)
-    }, [paginatedData, tableHeaders, isLoading]);
+    // useEffect(() => {
+    //     console.log(paginatedData, tableHeaders, isLoading)
+    // }, [paginatedData, tableHeaders, isLoading]);
 
     let getHeaderName = (accessorKey: string) => {
         switch (accessorKey) {
@@ -63,9 +67,38 @@ export const Table: FunctionComponent<IProps> = () => {
         enableColumnResizing: true
     })
 
+    const {register, formState: {errors}, trigger, setValue} = useForm()
+    const handleInputPageChange = async (e:FormEvent<HTMLInputElement>) => {
+        let target = e.target as HTMLInputElement
+        await trigger("page")
+            console.log(errors)
+        if (1 > Number(target.value) || target.value > paginatedData.last_page) {
+            dispatch(updatePage(+paginatedData.current_page))
+        } else {
+            dispatch(updatePage(+target.value))
+        }
+    }
+
     return (
         <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
-            <div className={""}>верхняя пагинация</div>
+            <div className={"text-header-text text-sm p-2 ml-6 flex gap-4"}>
+                <div className={"flex items-center"}>
+                    <span>
+                        Страница {Object.keys(paginatedData.data).length !== 0 ? paginatedData.current_page : "загрузка"} из {" "}
+                        {Object.keys(paginatedData.data).length !== 0 ? paginatedData.last_page : "загрузка"}
+                    </span>
+                </div>
+                <input
+                    className={'w-20'}
+                    defaultValue={1}
+                    {...register("page",
+                        {
+                            min: {value: 1, message: "меньше 1"},
+                            max: {value: paginatedData.last_page, message: "превысили"},
+                            valueAsNumber: true,
+                        })}
+                    type={"number"} onInput={handleInputPageChange}/>
+            </div>
             <div className={'p-2 h-full w-full grow flex overflow-y-hidden'}>
                 <div className={"text-base my-block w-full h-full flex items-center justify-center bg-background-block "}>
                     {isLoading ? <Preloader widthStyles={"w-16"}/> : (
@@ -114,7 +147,12 @@ export const Table: FunctionComponent<IProps> = () => {
                     }
                 </div>
             </div>
-            <div className={"text-end"}>нижняя пагинация</div>
+            <div className={"text-end"}>
+                <div className={"text-header-text text-sm p-2 mr-6"}>
+                    Страница {Object.keys(paginatedData.data).length !== 0 ? paginatedData.current_page : "загрузка"} из {" "}
+                    {Object.keys(paginatedData.data).length !== 0 ? paginatedData.last_page : "загрузка"}
+                </div>
+            </div>
         </div>
     )
 }
