@@ -35,6 +35,7 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({className}) => {
         dispatch(requestRal(queriesAndPagination))
     }, [form, statePagination, dispatch])
 
+
     return (
         <form onSubmit={handleSubmit(submitHandler)} className={`${className} flex-col overflow-hidden flex`}>
             <div className={"px-6 w-full grow shrink overflow-y-auto space-y-4"}>
