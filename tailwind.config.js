@@ -18,6 +18,10 @@ export default {
                 Inter: ['Inter', 'sans-serif']
             },
             colors: {
+
+                // Common
+                "gray-common": "rgba(var(--gray-common))",
+
                 "background": "rgba(var(--background))",
                 "background-block": "rgba(var(--background-block))",
 
@@ -39,9 +43,14 @@ export default {
                 "secondary-row": "rgba(var(--secondary-row))",
                 "text-primary": "rgba(var(--text-primary))",
 
+                // Input
+                "input-primary": "rgba(var(--input-primary-bg))",
+                "input-text": "rgba(var(--input-primary-text))",
+
                 // Table
                 "row-even": "rgba(var(--row-even))",
                 "row-odd": "rgba(var(--row-odd))",
+                "table-base": "rgba(var(--text-table-base))",
 
                 // Text
                 "header-text": "rgba(var(--header-text))",
@@ -54,7 +63,7 @@ export default {
             boxShadow: {
                 "basic": "0px 1px 9px 0px rgba(0, 0, 0, 0.3);",
                 "button-main": "0px 5px 4px 0px rgba(0, 0, 0, 0.3)",
-                'input-search': "22px 16px 22px 0px rgba(224, 224, 230, 1) inset;"
+                'input-search': "22px 16px 22px 0px rgba(var(--shadow-input-primary), 1) inset;"
             }
         },
     },

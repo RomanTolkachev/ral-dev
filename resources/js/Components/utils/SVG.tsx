@@ -1,17 +1,21 @@
-import {FunctionComponent} from 'react';
+import React, {FunctionComponent} from 'react';
 
 interface IProps {
     className?: string
     arrow?: boolean
     notFound?: boolean
+    sun?: boolean
+    moon?: boolean
 }
 
 export const SVG: FunctionComponent<IProps> = ({
     className,
     arrow = false,
     notFound = false,
+    sun = false,
+    moon = false,
 }) => {
-    if (!arrow && !notFound) {
+    if (!arrow && !notFound && !sun && !moon) {
         return null
     }
     return (
@@ -85,6 +89,34 @@ export const SVG: FunctionComponent<IProps> = ({
                     <path fillRule="evenodd" clipRule="evenodd"
                           d="M341.336 85.449C347.926 85.449 353.275 88.992 353.275 93.358C353.275 97.724 347.926 101.265 341.336 101.265C334.746 101.265 329.4 97.722 329.4 93.358C329.4 88.994 334.749 85.449 341.337 85.449H341.336Z"
                           fill="#E1B100"/>
+                </svg>
+            )}
+            {sun && (
+                <svg className={`${className}`} viewBox="0 0 12 12" width="100%" height="100%"
+                     aria-hidden="true">
+                    <g fill="currentcolor" stroke="#f5e55b" strokeWidth="1" strokeLinecap="round">
+                        <circle cx="6" cy="6" r="2"/>
+                        <g strokeDasharray="1.5 1.5">
+                            <polyline points="6 10,6 11.5" transform="rotate(0,6,6)"/>
+                            <polyline points="6 10,6 11.5" transform="rotate(45,6,6)"/>
+                            <polyline points="6 10,6 11.5" transform="rotate(90,6,6)"/>
+                            <polyline points="6 10,6 11.5" transform="rotate(135,6,6)"/>
+                            <polyline points="6 10,6 11.5" transform="rotate(180,6,6)"/>
+                            <polyline points="6 10,6 11.5" transform="rotate(225,6,6)"/>
+                            <polyline points="6 10,6 11.5" transform="rotate(270,6,6)"/>
+                            <polyline points="6 10,6 11.5" transform="rotate(315,6,6)"/>
+                        </g>
+                    </g>
+                </svg>
+            )}
+
+            {moon && (
+                <svg className={`${className}`} viewBox="0 0 12 12" width="100%" height="100%"
+                     aria-hidden="true">
+                    <g fill="currentcolor" stroke="#77aefc" strokeWidth="1" strokeLinejoin="round" transform="rotate(-45,6,6)">
+                        <path
+                            d="m9,10c-2.209,0-4-1.791-4-4s1.791-4,4-4c.304,0,.598.041.883.105-.995-.992-2.367-1.605-3.883-1.605C2.962.5.5,2.962.5,6s2.462,5.5,5.5,5.5c1.516,0,2.888-.613,3.883-1.605-.285.064-.578.105-.883.105Z"/>
+                    </g>
                 </svg>
             )}
         </>

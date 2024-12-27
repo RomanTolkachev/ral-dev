@@ -12,6 +12,6 @@ class RalShortInfoMock extends Model
     use HasFactory, HasColumnsHelp, HasQueryFilters;
 
     protected $table = 'ral_short_info_mock';
-    protected $hidden = ['nameTypeActivity'];
+    protected $hidden = ['nameTypeActivity', 'link', 'nameType', 'nameTypeActivity', 'fullName', 'address', 'oaDescription', 'NPstatus', 'id', 'regDate', 'NP_status_change_date', 'applicantFullName'];
 
 }

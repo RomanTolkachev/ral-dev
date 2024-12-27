@@ -13,8 +13,6 @@ interface IProps {
 
 export const TableSearchingForm: FunctionComponent<IProps> = ({className}) => {
 
-    console.log("рендер формы")
-
     const menuItems = useSelector(state => state.filtersReducer.filters);
     const statePagination = useSelector(state => state.filtersReducer.paginationQueries);
     const dispatch = useDispatch()
@@ -30,10 +28,11 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({className}) => {
     const form = watch();
     const submitHandler = useCallback((data: any) => {
         const queriesAndPagination = Object.assign({}, data, statePagination);
-        console.log(queriesAndPagination);
+        // dispatch(updatePage(1))
         // @ts-ignore
         dispatch(requestRal(queriesAndPagination))
-    }, [form, statePagination, dispatch])
+        console.log(data)
+    }, [statePagination, dispatch])
 
 
     return (

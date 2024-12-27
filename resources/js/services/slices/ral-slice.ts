@@ -12,14 +12,14 @@ import {IRalItem, TPaginatedRal} from "@/types/ral";
 export interface IRalReducer {
     ralFetchStart: boolean
     ralFetchError?: SerializedError | null
-    ralData: TPaginatedRal | {data: []}
+    ralData: TPaginatedRal | {data: [], current_page: number, last_page: number}
     headers: string[]
     filters: any
 }
 const initialState: IRalReducer = {
     ralFetchStart: false,
     ralFetchError: null,
-    ralData: {data: []},
+    ralData: {data: [], current_page: 1, last_page: 0},
     headers: [],
     filters: null
 };
@@ -79,6 +79,7 @@ const ralSlice = createSlice(
             }
         },
         extraReducers: builder => {
+            // @ts-ignore
             builder.addCase(requestRal.pending, state => {
                 return {
                     ...state,

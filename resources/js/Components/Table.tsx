@@ -1,4 +1,4 @@
-import React, {FormEvent, FunctionComponent, ReactNode, useEffect, useMemo} from 'react';
+import React, {FormEvent, FunctionComponent, ReactNode, useEffect, useMemo, useRef} from 'react';
 import {ColumnDef, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
 import {useDispatchTyped, useSelectorTyped as useSelector} from "@/services/hooks/typedUseSelector";
 import {Preloader} from "@/Components/utils/Preloader";
@@ -15,7 +15,7 @@ export const Table: FunctionComponent<IProps> = () => {
     const paginatedData = useSelector(state => state.ralSliceToolkit.ralData);
     const tableHeaders = useSelector(state => state.ralSliceToolkit.headers)
     const isLoading = useSelector(state => state.ralSliceToolkit.ralFetchStart)
-    const page = useSelector(state => state.filtersReducer.paginationQueries.page)
+    const storePage = useSelector(state => state.filtersReducer.paginationQueries.page)
 
     // useEffect(() => {
     //     console.log(paginatedData, tableHeaders, isLoading)
@@ -46,13 +46,14 @@ export const Table: FunctionComponent<IProps> = () => {
     const columns: ColumnDef<any>[] = useMemo(() => {
         let colData: ColumnDef<any>[] = [];
         if (tableHeaders.length !== 0) {
-            colData = tableHeaders.map((header, key) => {
+            colData = tableHeaders.map((header) => {
                 return {
                     accessorKey: header,
                     header: getHeaderName(header),
                     cell: (props: any) => <p>{props.getValue()}</p>,
                     enableResizing: true,
-                    size: 200
+                    // minWidth: 200,
+                    // maxWidth: 600
                 }
             })
         }
@@ -64,43 +65,59 @@ export const Table: FunctionComponent<IProps> = () => {
         columns,
         getCoreRowModel: getCoreRowModel(),
         columnResizeMode: "onChange",
-        enableColumnResizing: true
+        enableColumnResizing: true,
+        // defaultColumn: {
+        //     size: 400,
+        //     minSize: 100,
+        //     maxSize: 600
+        // }
     })
 
-    const {register, formState: {errors}, trigger, setValue} = useForm()
+
+    const {register, trigger } = useForm()
     const handleInputPageChange = async (e:FormEvent<HTMLInputElement>) => {
         let target = e.target as HTMLInputElement
         await trigger("page")
-            console.log(errors)
-        if (1 > Number(target.value) || target.value > paginatedData.last_page) {
-            dispatch(updatePage(+paginatedData.current_page))
-        } else {
-            dispatch(updatePage(+target.value))
+        if (paginatedData.last_page) {
+            if (1 > Number(target.value) || Number(target.value) > paginatedData.last_page) {
+                dispatch(updatePage(+paginatedData.current_page))
+            } else {
+                dispatch(updatePage(+target.value))
+            }
         }
     }
+
+    const {name, ref} = register("page")
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.value! = String(storePage)
+        }
+    }, [storePage]);
 
     return (
         <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
             <div className={"text-header-text text-sm p-2 ml-6 flex gap-4"}>
                 <div className={"flex items-center"}>
                     <span>
-                        Страница {Object.keys(paginatedData.data).length !== 0 ? paginatedData.current_page : "загрузка"} из {" "}
-                        {Object.keys(paginatedData.data).length !== 0 ? paginatedData.last_page : "загрузка"}
+                        Страница {Object.keys(paginatedData.data).length !== 0 ? paginatedData.current_page : " " } из {" "}
+                        {Object.keys(paginatedData.data).length !== 0 ? paginatedData.last_page : " "}
                     </span>
                 </div>
                 <input
-                    className={'w-20'}
+                    className={'w-20 bg-background-block rounded-md'}
                     defaultValue={1}
-                    {...register("page",
-                        {
-                            min: {value: 1, message: "меньше 1"},
-                            max: {value: paginatedData.last_page, message: "превысили"},
-                            valueAsNumber: true,
-                        })}
+                    name={name}
+                    ref={(e) => {
+                        ref(e)
+                        //@ts-ignore
+                        inputRef.current = e
+                    }}
                     type={"number"} onInput={handleInputPageChange}/>
             </div>
             <div className={'p-2 h-full w-full grow flex overflow-y-hidden'}>
-                <div className={"text-base my-block w-full h-full flex items-center justify-center bg-background-block "}>
+                <div className={"text-base my-block grow max-w-full h-full overflow-x-hidden bg-background-block"}>
                     {isLoading ? <Preloader widthStyles={"w-16"}/> : (
                         Object.keys(paginatedData.data).length !== 0 ? (
                             <table
@@ -124,21 +141,54 @@ export const Table: FunctionComponent<IProps> = () => {
                                         })}
                                     </tr>
                                 </thead>
-                                <tbody className={'w-full font-medium'}>
+                                <tbody className={'w-full font-medium '}>
                                 {table.getRowModel().rows.map(row => {
                                     return <tr className={'flex w-fit even:bg-row-even odd:bg-row-odd h-20'}
                                                key={row.id}>
                                         {row.getVisibleCells().map(cell => {
-                                            return <td key={cell.id} style={{width: cell.column.getSize()}}
-                                                       className={`overflow-hidden flex justify-center items-center`}>
+                                            return <td key={cell.id} style={{minWidth: cell.column.getSize()}}
+                                                       className={`overflow-hidden flex justify-center items-center w-fit`}>
                                                 <span
-                                                    className={"text-cell-text"}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</span>
+                                                    className={"text-table-base"}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</span>
                                             </td>
                                         })}
                                     </tr>
                                 })}
                                 </tbody>
-                            </table> ) :
+                            </table>
+                            // <table className={"w-full"}>
+                            //     <thead>
+                            //         {table.getHeaderGroups().map(headerGroup => {
+                            //             return (
+                            //                 <tr key={headerGroup.id}>
+                            //                     {headerGroup.headers.map(header => {
+                            //                         return (
+                            //                             <th key={header.id} >
+                            //                                 {flexRender(header.column.columnDef.header, header.getContext())}
+                            //                             </th>
+                            //                         )
+                            //                     })}
+                            //                 </tr>
+                            //             )
+                            //         })}
+                            //     </thead>
+                            //     <tbody>
+                            //         {table.getRowModel().rows.map(row => {
+                            //             return (
+                            //                 <tr key={row.id}>
+                            //                     {row.getAllCells().map(cell => {
+                            //                         return (
+                            //                             <td key={cell.id} className={""}>
+                            //                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            //                             </td>
+                            //                         )
+                            //                     })}
+                            //                 </tr>
+                            //             )
+                            //         })}
+                            //     </tbody>
+                            // </table>
+                            ) :
                             <div className={'mx-auto my-auto h-[300px] w-[300px]'}>
                                 <SVG className={'mb-2'} notFound />
                                 <p className={" text-3xl text-nowrap tracking-tight font-black  text-[#29263b] first-letter:capitalize text-center"}>данные не найдены</p>
