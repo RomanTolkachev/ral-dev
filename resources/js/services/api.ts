@@ -31,7 +31,7 @@ const filterQueries = (dirty: TInput) => {
 }
 
 
-export const fetchRalFilters =  axiosApi.get<IRalItem[]>("/ral/filters")
+export const fetchRalFilters = axiosApi.get<IRalItem[]>("/ral/filters")
     .then((res)=> res.data)
 
 

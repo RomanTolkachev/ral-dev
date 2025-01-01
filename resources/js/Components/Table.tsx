@@ -50,7 +50,7 @@ export const Table: FunctionComponent<IProps> = () => {
                 return {
                     accessorKey: header,
                     header: getHeaderName(header),
-                    cell: (props: any) => <p>{props.getValue()}</p>,
+                    cell: (props: any) => <>{props.getValue()}</>,
                     enableResizing: true,
                     // minWidth: 200,
                     // maxWidth: 600
@@ -66,11 +66,10 @@ export const Table: FunctionComponent<IProps> = () => {
         getCoreRowModel: getCoreRowModel(),
         columnResizeMode: "onChange",
         enableColumnResizing: true,
-        // defaultColumn: {
-        //     size: 400,
-        //     minSize: 100,
-        //     maxSize: 600
-        // }
+        defaultColumn: {
+            minSize: 200,
+            maxSize: 400
+        }
     })
 
 
@@ -88,13 +87,15 @@ export const Table: FunctionComponent<IProps> = () => {
     }
 
     const {name, ref} = register("page")
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
         if (inputRef.current) {
-            inputRef.current.value! = String(storePage)
+            inputRef.current!.value = String(storePage)
         }
     }, [storePage]);
+
+    console.log(table.getTotalSize())
 
     return (
         <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
@@ -117,17 +118,17 @@ export const Table: FunctionComponent<IProps> = () => {
                     type={"number"} onInput={handleInputPageChange}/>
             </div>
             <div className={'p-2 h-full w-full grow flex overflow-y-hidden'}>
-                <div className={"text-base my-block grow max-w-full h-full overflow-x-hidden bg-background-block"}>
+                <div className={"text-base my-block grow max-w-full h-full overflow-x-scroll overflow-y-scroll bg-background-block"}>
                     {isLoading ? <Preloader widthStyles={"w-16"}/> : (
                         Object.keys(paginatedData.data).length !== 0 ? (
-                            <table
-                                className={"block min-h-full max-h-full min-w-full w-full text-sm overflow-x-scroll overflow-y-auto table-fixed rounded-t-md"}>
-                                <thead className={"sticky bg-background-block top-0 text-header-text font-medium"}>
-                                    <tr className={'flex w-fit bg-row-even text-header-text'}>
+                            <table style={{width: table.getTotalSize(), minWidth: '100%'}}
+                                className={`min-h-full max-h-full text-sm table-auto rounded-t-md`}>
+                                <thead className={"sticky bg-background-block select-none top-0 text-header-text font-medium"}>
+                                    <tr className={'bg-row-even text-header-text'}>
                                         {table.getHeaderGroups()[0].headers.map((header) => {
                                             return (
-                                                <th style={{width: header.column.getSize()}}
-                                                    className={`relative p-2 flex justify-center items-center`}
+                                                <th style={{width: header.getSize()}}
+                                                    className={`relative p-2`}
                                                     key={header.id}>
                                                     <span
                                                         className={''}>{header.column.columnDef.header as ReactNode}</span>
@@ -141,53 +142,26 @@ export const Table: FunctionComponent<IProps> = () => {
                                         })}
                                     </tr>
                                 </thead>
-                                <tbody className={'w-full font-medium '}>
+                                <tbody className={'font-medium '}>
                                 {table.getRowModel().rows.map(row => {
-                                    return <tr className={'flex w-fit even:bg-row-even odd:bg-row-odd h-20'}
+                                    return <tr className={'even:bg-row-even odd:bg-row-odd h-20'}
                                                key={row.id}>
                                         {row.getVisibleCells().map(cell => {
-                                            return <td key={cell.id} style={{minWidth: cell.column.getSize()}}
-                                                       className={`overflow-hidden flex justify-center items-center w-fit`}>
-                                                <span
-                                                    className={"text-table-base"}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</span>
-                                            </td>
+                                            return (
+                                                <td
+                                                    key={cell.id}
+                                                    className={`overflow-hidden p-2 w-[${cell.column.getSize()}px] text-center border-x`}>
+                                                    <span
+                                                        className={"text-table-base "}>
+                                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                                    </span>
+                                                </td>
+                                            )
                                         })}
                                     </tr>
                                 })}
                                 </tbody>
                             </table>
-                            // <table className={"w-full"}>
-                            //     <thead>
-                            //         {table.getHeaderGroups().map(headerGroup => {
-                            //             return (
-                            //                 <tr key={headerGroup.id}>
-                            //                     {headerGroup.headers.map(header => {
-                            //                         return (
-                            //                             <th key={header.id} >
-                            //                                 {flexRender(header.column.columnDef.header, header.getContext())}
-                            //                             </th>
-                            //                         )
-                            //                     })}
-                            //                 </tr>
-                            //             )
-                            //         })}
-                            //     </thead>
-                            //     <tbody>
-                            //         {table.getRowModel().rows.map(row => {
-                            //             return (
-                            //                 <tr key={row.id}>
-                            //                     {row.getAllCells().map(cell => {
-                            //                         return (
-                            //                             <td key={cell.id} className={""}>
-                            //                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                            //                             </td>
-                            //                         )
-                            //                     })}
-                            //                 </tr>
-                            //             )
-                            //         })}
-                            //     </tbody>
-                            // </table>
                             ) :
                             <div className={'mx-auto my-auto h-[300px] w-[300px]'}>
                                 <SVG className={'mb-2'} notFound />
