@@ -30,7 +30,8 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({className}) => {
         const queriesAndPagination = Object.assign({}, data, statePagination);
         // dispatch(updatePage(1))
         // @ts-ignore
-        dispatch(requestRal(queriesAndPagination))
+
+        // dispatch(requestRal(queriesAndPagination))
         console.log(data)
     }, [statePagination, dispatch])
 

@@ -5,6 +5,10 @@ import {Preloader} from "@/Components/utils/Preloader";
 import {SVG} from "@/Components/utils/SVG";
 import {updatePage} from "@/services/slices/filters-slice";
 import {useForm} from "react-hook-form";
+import {useQuery} from "@tanstack/react-query";
+import {fetchRal, fetchRalQuery} from "@/services/api";
+import {IRalItem, TPaginatedRal} from "@/types/ral";
+import {useRalQuery} from "@/services/hooks/useRalQuery";
 
 interface IProps {
     className?: string
@@ -12,14 +16,17 @@ interface IProps {
 
 export const Table: FunctionComponent<IProps> = () => {
     const dispatch = useDispatchTyped()
-    const paginatedData = useSelector(state => state.ralSliceToolkit.ralData);
     const tableHeaders = useSelector(state => state.ralSliceToolkit.headers)
-    const isLoading = useSelector(state => state.ralSliceToolkit.ralFetchStart)
     const storePage = useSelector(state => state.filtersReducer.paginationQueries.page)
+    const storePerPage = useSelector(state => state.filtersReducer.paginationQueries.perPage)
 
-    // useEffect(() => {
-    //     console.log(paginatedData, tableHeaders, isLoading)
-    // }, [paginatedData, tableHeaders, isLoading]);
+    const {isPending: loadStat, data} = useQuery({
+        queryKey: ['ral'],
+        queryFn: () => fetchRalQuery({page: 1, perPage: 10})
+    })
+
+    const {data:ralData , isPending } = useRalQuery(storePage, storePerPage)
+
 
     let getHeaderName = (accessorKey: string) => {
         switch (accessorKey) {
@@ -52,16 +59,18 @@ export const Table: FunctionComponent<IProps> = () => {
                     header: getHeaderName(header),
                     cell: (props: any) => <>{props.getValue()}</>,
                     enableResizing: true,
-                    // minWidth: 200,
-                    // maxWidth: 600
                 }
             })
         }
         return colData;
-    },[paginatedData, tableHeaders])
+    },[ralData, tableHeaders])
+
+    const tableData = useMemo(() => {
+        return ralData?.data || []
+    }, [ralData])
 
     const table = useReactTable({
-        data: paginatedData.data,
+        data: tableData,
         columns,
         getCoreRowModel: getCoreRowModel(),
         columnResizeMode: "onChange",
@@ -72,13 +81,12 @@ export const Table: FunctionComponent<IProps> = () => {
         }
     })
 
-
     const {register, trigger } = useForm()
     const handleInputPageChange = async (e:FormEvent<HTMLInputElement>) => {
         let target = e.target as HTMLInputElement
         await trigger("page")
-        if (paginatedData.last_page) {
-            if (1 > Number(target.value) || Number(target.value) > paginatedData.last_page) {
+        if (ralData.last_page) {
+            if (1 > Number(target.value) || Number(target.value) > ralData.last_page) {
                 dispatch(updatePage(+paginatedData.current_page))
             } else {
                 dispatch(updatePage(+target.value))
@@ -95,15 +103,13 @@ export const Table: FunctionComponent<IProps> = () => {
         }
     }, [storePage]);
 
-    console.log(table.getTotalSize())
-
     return (
         <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
             <div className={"text-header-text text-sm p-2 ml-6 flex gap-4"}>
                 <div className={"flex items-center"}>
                     <span>
-                        Страница {Object.keys(paginatedData.data).length !== 0 ? paginatedData.current_page : " " } из {" "}
-                        {Object.keys(paginatedData.data).length !== 0 ? paginatedData.last_page : " "}
+                        Страница {ralData?.data.length !== 0 ? ralData?.current_page : " " } из {" "}
+                        {ralData?.data.length !== 0 ? ralData?.last_page : " "}
                     </span>
                 </div>
                 <input
@@ -112,15 +118,14 @@ export const Table: FunctionComponent<IProps> = () => {
                     name={name}
                     ref={(e) => {
                         ref(e)
-                        //@ts-ignore
                         inputRef.current = e
                     }}
                     type={"number"} onInput={handleInputPageChange}/>
             </div>
             <div className={'p-2 h-full w-full grow flex overflow-y-hidden'}>
                 <div className={"text-base my-block grow max-w-full h-full overflow-x-scroll overflow-y-scroll bg-background-block"}>
-                    {isLoading ? <Preloader widthStyles={"w-16"}/> : (
-                        Object.keys(paginatedData.data).length !== 0 ? (
+                    {isPending ? <Preloader widthStyles={"w-16"}/> : (
+                        Object.keys(tableData).length !== 0 ? (
                             <table style={{width: table.getTotalSize(), minWidth: '100%'}}
                                 className={`min-h-full max-h-full text-sm table-auto rounded-t-md`}>
                                 <thead className={"sticky bg-background-block select-none top-0 text-header-text font-medium"}>
@@ -173,13 +178,12 @@ export const Table: FunctionComponent<IProps> = () => {
             </div>
             <div className={"text-end"}>
                 <div className={"text-header-text text-sm p-2 mr-6"}>
-                    Страница {Object.keys(paginatedData.data).length !== 0 ? paginatedData.current_page : "загрузка"} из {" "}
-                    {Object.keys(paginatedData.data).length !== 0 ? paginatedData.last_page : "загрузка"}
+                    Страница {ralData?.data.length !== 0 ? ralData?.current_page : "загрузка"} из {" "}
+                    {ralData?.data.length !== 0 ? ralData?.last_page : "загрузка"}
                 </div>
             </div>
         </div>
     )
 }
 
-// <Preloader widthStyles={"w-16"}/>
 
