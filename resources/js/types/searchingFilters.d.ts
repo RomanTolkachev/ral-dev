@@ -1,12 +1,10 @@
-
 export interface ISearchingFormItem {
-    header: string
-    headerType: string
+    header: string | any;
+    headerType: string;
     sortValues: {
-        type: "checkBox" | "date" | "huge",
-        checkboxValues?: any[],
-        min?: string,
-        max?:string,
-    }
+        type: 'checkBox' | 'date' | 'huge';
+        checkboxValues?: any[];
+        min?: string;
+        max?: string;
+    };
 }
-

@@ -2,8 +2,8 @@ import { PageProps as InertiaPageProps } from '@inertiajs/core';
 import { AxiosInstance } from 'axios';
 import { route as ziggyRoute } from 'ziggy-js';
 import { PageProps as AppPageProps } from './';
-import {Action, ThunkAction} from "@reduxjs/toolkit";
-import {IRootState} from "@/services/slices/root-reducer";
+import { Action, ThunkAction } from '@reduxjs/toolkit';
+import { IRootState } from '@/services/slices/root-reducer';
 
 declare global {
     interface Window {
@@ -18,4 +18,9 @@ declare module '@inertiajs/core' {
     interface PageProps extends InertiaPageProps, AppPageProps {}
 }
 
-export type AppThunk = ThunkAction<ReturnType<any>, IRootState, unknown, Action>
+export type AppThunk = ThunkAction<
+    ReturnType<any>,
+    IRootState,
+    unknown,
+    Action
+>;

@@ -50,7 +50,7 @@ const options: IOptions = {
     }
 }
 
-export const CalendarInput: FunctionComponent<IProps> = ({className, register, control, inputData}) => {
+export const CalendarInput: FunctionComponent<IProps> = ({className, inputData}) => {
 // console.log('render календарь инпут')
     interface IContainerProps {
         inputData: ISearchingFormItem
