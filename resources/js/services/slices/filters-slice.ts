@@ -11,7 +11,7 @@ export interface IFiltersSlice {
     filtersFetchStart: boolean
     filtersFetchError: SerializedError | boolean
     filters: IRalItem[] | []
-    queries: object
+    queries: {page: number, perPage: number}
     paginationQueries: {
         page: number
         perPage: number
@@ -43,10 +43,10 @@ const filtersSlice = createSlice({
             state.paginationQueries.perPage = action.payload
         },
         updateForm: (state, action: PayloadAction<any>) => {
-            state.queries = Object.assign({}, { page: 1, perPage: 10 }, action.payload)
+            state.queries = Object.assign({}, action.payload, { page: 1, perPage: 10 })
         },
-        setPage: (state, action: PayloadAction) => {
-            state.queries.page = action.payload
+        setPage: (state, action: PayloadAction<number>) => {
+            state.queries.page = +action.payload
         },
     },
     extraReducers: (builder) => {

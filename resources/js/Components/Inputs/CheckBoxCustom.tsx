@@ -12,14 +12,14 @@ interface IProps {
 
 export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData, setFirstPage }) => {
     //функция, сбрасывающая пагинацию при изменении input
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value
-        if (!value) {
-            return
-        } else {
-            setFirstPage()
-        }
-    }
+    // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    //     let value = e.target.value
+    //     if (!value) {
+    //         return
+    //     } else {
+    //         setFirstPage()
+    //     }
+    // }
 
     const { register } = useFormContext()
 
@@ -45,7 +45,7 @@ export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData
                                 'bg-background-block'
                             }
                             type="checkbox"
-                            {...register(inputData.header, { onChange: handleChange })}
+                            {...register(inputData.header, { onChange: () => {} })}
                             name={inputData.header}
                         />
                     </div>

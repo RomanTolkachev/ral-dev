@@ -10,7 +10,6 @@ import { rootReducer } from '@/services/slices/root-reducer'
 import { Provider } from 'react-redux'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { FormProvider, useForm } from 'react-hook-form'
 import { CustomFormProvider } from '@/app/providers/CustomFormProvider'
 
 // @ts-ignore

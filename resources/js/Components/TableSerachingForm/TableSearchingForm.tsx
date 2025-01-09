@@ -1,32 +1,31 @@
-import React, { FunctionComponent, useCallback } from 'react'
+import React, { FunctionComponent, useCallback, useEffect, useMemo } from 'react'
 import { Preloader } from '@/Components/utils/Preloader'
 import { DropdownItem } from '@/Components/DropdownItem'
 import { MainButton } from '@/Components/Buttons/MainButton'
 import { useFormContext } from 'react-hook-form'
 import { useDispatchTyped as useDispatch, useSelectorTyped as useSelector } from '@/services/hooks/typedUseSelector'
-import { updateForm } from '@/services/slices/filters-slice'
+import { updateForm, updatePage } from '@/services/slices/filters-slice'
 import { useRalFilters } from '@/services/hooks/useRalFilters.ts'
+import { json } from 'stream/consumers'
 
 interface IProps {
     className?: string
 }
 
 export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => {
-    const { data, isPending } = useRalFilters()
+    const { data: filters, isPending } = useRalFilters()
     const dispatch = useDispatch()
+    const { data } = useRalFilters()
 
-    const { handleSubmit, control, reset } = useFormContext()
+    const { handleSubmit, reset, formState } = useFormContext();
 
-    const submitHandler = useCallback(
-        (data: any) => {
+    const submitHandler = (data: any) => {
+        if (Object.keys(formState.dirtyFields).length === 1 && Object.keys(formState.dirtyFields)[0] === 'page') {
+            dispatch(updatePage(data.page))
+        } else {
             dispatch(updateForm(data))
-            console.log(data)
-        },
-        [dispatch],
-    )
-
-    function resetHandler() {
-        reset()
+        }
+        console.log(formState)
     }
 
     return (
@@ -35,7 +34,7 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => 
                 {isPending ? (
                     <Preloader widthStyles={'w-16'} />
                 ) : (
-                    data.map((filterItem, key) => {
+                    filters?.map((filterItem, key) => {
                         return <DropdownItem className={''} inputData={filterItem} key={key} />
                     })
                 )}
@@ -44,7 +43,7 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => 
                 <MainButton color={'violet'} className={'mx-auto'}>
                     Применить
                 </MainButton>
-                <button onClick={resetHandler}>сбросить</button>
+                <button onClick={() => reset()}>сбросить</button>
             </div>
         </form>
     )
