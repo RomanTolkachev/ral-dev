@@ -58,7 +58,7 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
                 {inputData.sortValues.type === 'huge' && (
                     <InputCustom setFirstPage={setCurrentPageToOne} inputData={inputData} />
                 )}
-                {inputData.sortValues.type === 'date' && <CalendarInput inputData={inputData} />}
+                {inputData.sortValues.type === 'date' && <CalendarInput inputData={inputData} />} //FIXME: TS
                 {inputData.sortValues.type === 'checkBox' && (
                     <CheckBoxCustom inputData={inputData} setFirstPage={setCurrentPageToOne} />
                 )}

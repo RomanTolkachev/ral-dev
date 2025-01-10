@@ -2,7 +2,7 @@ type TInput = {
     [key: string]: any;
 } | null;
 
-type TOutput = { S; [key: string]: any };
+type TOutput = { [key: string]: any };
 
 export const filterQueries = (dirty: TInput) => {
     if (!dirty) {

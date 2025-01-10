@@ -25,7 +25,7 @@ export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData
 
     return (
         <div className={`${className} flex flex-col pl-3 pr-3 pt-3 max-h-32 overflow-y-auto thumb-secondary space-y-1`}>
-            {inputData.sortValues.checkboxValues!.map((item, key) => {
+            {inputData.sortValues!.checkboxValues!.map((item, key) => {
                 const id = v4()
                 return (
                     <div

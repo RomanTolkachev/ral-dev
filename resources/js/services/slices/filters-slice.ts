@@ -2,31 +2,24 @@ import { createAsyncThunk, createSlice, PayloadAction, SerializedError } from '@
 import { fetchRalFilters } from '@/services/api'
 import { IRalItem } from '@/types/ral'
 import { filterQueries } from '@/shared/filterQueries.ts'
+import { WritableDraft } from 'immer'
+import { FieldValues } from 'react-hook-form'
 
 export const requestFilters = createAsyncThunk<any>('filtersSlice/requestFilters', () =>
     fetchRalFilters.then((res) => res).catch((err) => Promise.reject(err)),
 )
 
 export interface IFiltersSlice {
-    filtersFetchStart: boolean
-    filtersFetchError: SerializedError | boolean
-    filters: IRalItem[] | []
     queries: {page: number, perPage: number}
-    paginationQueries: {
-        page: number
-        perPage: number
-    }
+    currentHookFormQueries: FieldValues
 }
 
 const initialState: IFiltersSlice = {
-    filtersFetchStart: false,
-    filtersFetchError: false,
-    filters: [],
     queries: {
         page: 1,
         perPage: 10,
     },
-    paginationQueries: {
+    currentHookFormQueries: {
         page: 1,
         perPage: 10,
     },
@@ -40,33 +33,19 @@ const filtersSlice = createSlice({
             state.queries.page = action.payload
         },
         updatePerPage: (state, action: PayloadAction<number>) => {
-            state.paginationQueries.perPage = action.payload
+            state.currentHookFormQueries.perPage = action.payload
         },
         updateForm: (state, action: PayloadAction<any>) => {
-            state.queries = Object.assign({}, action.payload, { page: 1, perPage: 10 })
+            state.queries = action.payload
         },
         setPage: (state, action: PayloadAction<number>) => {
             state.queries.page = +action.payload
         },
-    },
-    extraReducers: (builder) => {
-        builder.addCase(requestFilters.pending, (state) => {
-            state.filtersFetchStart = true
-            state.filtersFetchError = false
-        })
-        builder.addCase(requestFilters.fulfilled, (state, action) => {
-            state.filtersFetchStart = false
-            state.filters = action.payload
-        })
-        builder.addCase(requestFilters.rejected, (state, action: PayloadAction<unknown>) => {
-            return {
-                ...state,
-                filtersFetchStart: false,
-                filtersFetchError: action.payload as SerializedError,
-            }
-        })
+        updateHookFormQueries: (state, action: PayloadAction<WritableDraft<FieldValues>>) => {
+            state.currentHookFormQueries = {...action.payload, perPage: 10}
+        }
     },
 })
 
-export const { updatePage, updateForm, setPage } = filtersSlice.actions
+export const { updatePage, updateForm, setPage, updateHookFormQueries } = filtersSlice.actions
 export default filtersSlice.reducer

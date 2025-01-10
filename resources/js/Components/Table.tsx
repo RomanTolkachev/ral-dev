@@ -19,7 +19,7 @@ export const Table: FunctionComponent<IProps> = () => {
     const dispatch = useDispatchTyped()
     const queries = useSelector((state) => state.filtersReducer.queries)
 
-    const { data: ralData, isPending } = useRalQuery<TPaginatedRal>(queries)
+    const { data: ralData, isPending } = useRalQuery(queries)
 
     const headers = useMemo(() => {
         return ralData ? getHeaders(ralData.data) : []
@@ -69,15 +69,7 @@ export const Table: FunctionComponent<IProps> = () => {
     }
 
     const inputRef = useRef<HTMLInputElement | null>(null)
-    const {
-        register,
-        formState: { touchedFields },
-        trigger,
-    } = useFormContext()
-
-    useEffect(() => {
-        console.log(touchedFields)
-    }, [JSON.stringify(touchedFields)])
+    const {trigger} = useFormContext()
 
     useEffect(() => {
         if (inputRef.current) {
