@@ -1,16 +1,9 @@
-import { createAsyncThunk, createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit'
-import { fetchRalFilters } from '@/services/api'
-import { IRalItem } from '@/types/ral'
-import { filterQueries } from '@/shared/filterQueries.ts'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { WritableDraft } from 'immer'
 import { FieldValues } from 'react-hook-form'
 
-export const requestFilters = createAsyncThunk<any>('filtersSlice/requestFilters', () =>
-    fetchRalFilters.then((res) => res).catch((err) => Promise.reject(err)),
-)
-
 export interface IFiltersSlice {
-    queries: {page: number, perPage: number}
+    queries: { page: number; perPage: number }
     currentHookFormQueries: FieldValues
 }
 
@@ -38,14 +31,11 @@ const filtersSlice = createSlice({
         updateForm: (state, action: PayloadAction<any>) => {
             state.queries = action.payload
         },
-        setPage: (state, action: PayloadAction<number>) => {
-            state.queries.page = +action.payload
-        },
         updateHookFormQueries: (state, action: PayloadAction<WritableDraft<FieldValues>>) => {
-            state.currentHookFormQueries = {...action.payload, perPage: 10}
-        }
+            state.currentHookFormQueries = { ...action.payload, perPage: 10 }
+        },
     },
 })
 
-export const { updatePage, updateForm, setPage, updateHookFormQueries } = filtersSlice.actions
+export const { updatePage, updateForm, updateHookFormQueries } = filtersSlice.actions
 export default filtersSlice.reducer

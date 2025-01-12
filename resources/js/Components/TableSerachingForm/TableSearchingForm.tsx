@@ -1,15 +1,12 @@
-import { FunctionComponent, useEffect } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
 import { Preloader } from '@/Components/utils/Preloader'
 import { DropdownItem } from '@/Components/DropdownItem'
 import { MainButton } from '@/Components/Buttons/MainButton'
 import { useFormContext } from 'react-hook-form'
-import { useDispatchTyped as useDispatch, useSelectorTyped as useSelector } from '@/services/hooks/typedUseSelector'
-import { updateForm, updateHookFormQueries } from '@/services/slices/filters-slice'
 import { useRalFilters } from '@/services/hooks/useRalFilters.ts'
-import { filterQueries } from '@/shared/filterQueries'
-import sortObject from '@/shared/sortObject'
 import excludePaginationQueries from '@/shared/excludePaginationQueries'
-
+import { isEqual } from 'lodash'
+import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
 
 interface IProps {
     className?: string
@@ -17,47 +14,43 @@ interface IProps {
 
 export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => {
     const { data: filters, isPending } = useRalFilters()
-    const dispatch = useDispatch()
-    const formQueries = useSelector(state => state.filtersReducer.currentHookFormQueries)
-    const submittedQueries = useSelector(state => state.filtersReducer.queries)
-    const { handleSubmit, reset, setValue, watch } = useFormContext();
-    const values = watch();
+    const { handleSubmit, reset, control, setValue: setFormValue } = useFormContext()
+    const [prevQueries, setPrevQueries] = useState({})
+    const [setQuery] = useParamsCustom()
 
-    // в этой функции логока, нужно ли сбрасывать текущую страницу, если мы что-то поменяли в форме
-    function submitHandler(formQueries: any, submittedQueries: any) {
-        const submittedQueriesSorted = JSON.stringify(sortObject(excludePaginationQueries(filterQueries(submittedQueries))))
-        const formQueriesSorted = JSON.stringify(sortObject(excludePaginationQueries(filterQueries(formQueries))))
+    // после получения фильтров записываем их для последующего сравнения
+    useEffect(() => {
+        setPrevQueries(control._defaultValues)
+    }, [control._defaultValues])
 
-        if (submittedQueriesSorted === formQueriesSorted) {
-            return { ...submittedQueries, page: +formQueries.page, perPage: +formQueries.perPage }
+    // Тут проверяем должна ли сброситься страничка, затем обновляем query
+    const submitHandler = (currentForm, submittedForm) => {
+        if (isEqual(submittedForm, currentForm)) {
+            return
+        }
+        if (isEqual(excludePaginationQueries(submittedForm), excludePaginationQueries(currentForm))) {
+            setQuery({ ...currentForm, page: currentForm.page })
         } else {
-            setValue("page", 1)
-            return { ...formQueries, page: 1, perPage: +formQueries.perPage }
+            setFormValue('page', 1)
+            setQuery({ ...currentForm, page: 1 })
+            setPrevQueries({ ...currentForm, page: 1 })
         }
     }
 
-    // отправляем в редакс форму целиком, если она изменилась в сравнении с редаксом
-    useEffect(() => {
-        const sortedValues = JSON.stringify(sortObject(filterQueries((values))))
-        const sortedQueries = JSON.stringify(sortObject(filterQueries((formQueries))))
-
-        if (sortedValues !== sortedQueries || values.page !== formQueries.page) {
-            dispatch(updateHookFormQueries(filterQueries(values)))
-        }
-    }, [values, formQueries, dispatch])
-
     return (
-        <form onSubmit={handleSubmit(() => dispatch(updateForm(submitHandler(formQueries, submittedQueries))))} className={`${className} flex-col overflow-hidden flex`}>
+        <form
+            onSubmit={handleSubmit((data) => submitHandler(data, prevQueries))}
+            className={`${className} flex-col overflow-hidden flex`}>
             <div className={'px-6 w-full grow shrink overflow-y-scroll space-y-4'}>
                 {isPending ? (
                     <Preloader widthStyles={'w-16'} />
                 ) : (
                     filters?.map((filterItem, key) => {
-                        return <DropdownItem inputData={filterItem} key={key} /> //FIXME: TS
+                        return <DropdownItem inputData={filterItem} key={key} />
                     })
                 )}
             </div>
-            <div className={'sticky bottom-0 bg-background-block flex flex-col bg-background py-6 space-y-4 gap-2'}>
+            <div className={'sticky bottom-0 bg-background-block flex flex-col py-6 space-y-4 gap-2'}>
                 <MainButton color={'violet'} className={'mx-auto'}>
                     Применить
                 </MainButton>
