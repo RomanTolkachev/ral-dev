@@ -11,6 +11,7 @@ import { Provider } from 'react-redux'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { CustomFormProvider } from '@/app/providers/CustomFormProvider'
+import { BrowserRouter, Router } from 'react-router'
 
 // @ts-ignore
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
@@ -34,12 +35,14 @@ createInertiaApp({
         root.render(
             // <StrictMode>
             <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    <CustomFormProvider>
-                        <ReactQueryDevtools initialIsOpen={true} />
-                        <App {...props} />
-                    </CustomFormProvider>
-                </QueryClientProvider>
+                <BrowserRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <CustomFormProvider>
+                            <ReactQueryDevtools initialIsOpen={true} />
+                            <App {...props} />
+                        </CustomFormProvider>
+                    </QueryClientProvider>
+                </BrowserRouter>
             </Provider>,
             // </StrictMode>
         )

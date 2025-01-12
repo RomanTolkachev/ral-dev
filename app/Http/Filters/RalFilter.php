@@ -33,20 +33,23 @@ class RalFilter extends AbstractFilter
         return $query;
     }
 
-    protected function oldStatusAL(array $value): Builder
+    protected function oldStatusAL($value): Builder
     {
         $query = $this->builder->whereIn('old_status_AL', $value);
 
-        if (in_array("false", $value, true)) {
+        if (in_array('false', $value, true)) {
             $query->orWhereNull('old_status_AL');
         }
-
         return $query;
     }
 
-    protected function newStatusAL(array $value): Builder
+    protected function newStatusAL($value): Builder
     {
-        return $this->builder->whereIn('new_status_AL', $value);
+        $query =  $this->builder->whereIn('new_status_AL', $value);
+        if (in_array('false', $value, true)) {
+            $query->orWhereNull('new_status_AL');
+        }
+        return $query;
     }
 
     protected function statusChangeDate(string $value): Builder

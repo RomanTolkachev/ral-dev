@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FunctionComponent, useEffect } from 'react'
+import React, { ChangeEvent, FunctionComponent } from 'react'
 import { ISearchingFormItem } from '@/types/searchingFilters'
 import { Control, Controller, useFormContext } from 'react-hook-form'
 import { SVG } from '@/Components/utils/SVG.tsx'
@@ -10,16 +10,11 @@ interface IProps {
     setFirstPage?: any
 }
 
-export const InputCustom: FunctionComponent<IProps> = ({ className, inputData, setFirstPage }) => {
+export const InputCustom: FunctionComponent<IProps> = ({ className, inputData }) => {
     const handleChange = (onChange: (...args: any[]) => void) => {
         return (e: ChangeEvent<HTMLInputElement>) => {
-            let value = e.target.value.trim()
-            if (!value) {
-                return
-            } else {
-                setFirstPage()
-            }
-            !value ? onChange(null) : onChange(value.split(/[\s,;]+/))
+            const value = e.target.value
+            onChange(value.split(/[\s,;]+/))
         }
     }
 
@@ -28,14 +23,13 @@ export const InputCustom: FunctionComponent<IProps> = ({ className, inputData, s
     return (
         <Controller
             name={inputData.header}
-            defaultValue=""
             control={control}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
                 <div className={`${className} p-1 relative`}>
                     <input
                         type="text"
                         id={inputData.header}
-                        defaultValue={''}
+                        value={Array.isArray(value) ? value.join(' ') : value}
                         placeholder={''}
                         onChange={handleChange(onChange)}
                         className={`ring-transparent

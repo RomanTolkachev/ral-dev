@@ -1,7 +1,7 @@
-import React, { ChangeEvent, FunctionComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 import { v4 } from 'uuid'
 import { ISearchingFormItem } from '@/types/searchingFilters'
-import { FieldValues, useFormContext, UseFormRegister } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { PayloadAction } from '@reduxjs/toolkit'
 
 interface IProps {
@@ -11,16 +11,6 @@ interface IProps {
 }
 
 export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData, setFirstPage }) => {
-    //функция, сбрасывающая пагинацию при изменении input
-    // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    //     let value = e.target.value
-    //     if (!value) {
-    //         return
-    //     } else {
-    //         setFirstPage()
-    //     }
-    // }
-
     const { register } = useFormContext()
 
     return (

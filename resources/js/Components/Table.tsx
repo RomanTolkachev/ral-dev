@@ -1,23 +1,22 @@
-import React, { FormEvent, FunctionComponent, ReactNode, useEffect, useMemo, useRef } from 'react'
+import React, { FunctionComponent, ReactNode, useEffect, useMemo, useRef } from 'react'
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { useDispatchTyped, useSelectorTyped as useSelector } from '@/services/hooks/typedUseSelector'
 import { Preloader } from '@/Components/utils/Preloader'
 import { SVG } from '@/Components/utils/SVG'
-import { setPage } from '@/services/slices/filters-slice'
-import { useFormContext } from 'react-hook-form'
 import { useRalQuery } from '@/services/hooks/useRalQuery'
 import { getHeaders } from '@/shared/getHeaders'
-import { IRalItem, TPaginatedRal } from '@/types/ral'
+import { IRalItem } from '@/types/ral'
 import { getHeaderName } from '@/shared/getHeaderName.ts'
 import { PageInput } from '@/Components/Inputs/PageInput.tsx'
+import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
+import { isEmpty } from 'lodash'
 
 interface IProps {
     className?: string
 }
 
 export const Table: FunctionComponent<IProps> = () => {
-    const dispatch = useDispatchTyped()
-    const queries = useSelector((state) => state.filtersReducer.queries)
+    const [, getQuery] = useParamsCustom()
+    const queries = isEmpty(getQuery()) ? { page: 1, perPage: 10 } : getQuery()
 
     const { data: ralData, isPending } = useRalQuery(queries)
 
@@ -56,20 +55,7 @@ export const Table: FunctionComponent<IProps> = () => {
         },
     })
 
-    const handleInputPageChange = async (e: FormEvent<HTMLInputElement>) => {
-        let target = e.target as HTMLInputElement
-        await trigger('page')
-        if (ralData) {
-            if (1 > Number(target.value) || Number(target.value) > ralData?.last_page) {
-                dispatch(setPage(+queries.page))
-            } else {
-                dispatch(setPage(+target.value))
-            }
-        }
-    }
-
     const inputRef = useRef<HTMLInputElement | null>(null)
-    const {trigger} = useFormContext()
 
     useEffect(() => {
         if (inputRef.current) {
