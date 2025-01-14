@@ -18,7 +18,7 @@ class RalFilter extends AbstractFilter
         $query = $this->builder;
 
         foreach ($value as $item) {
-            $query = $query->orWhere('link', 'like', "%$item%");
+            $query = $query->Where('link', 'like', "%$item%");
         }
         return $query;
     }
@@ -28,7 +28,7 @@ class RalFilter extends AbstractFilter
         $query = $this->builder;
 
         foreach ($value as $item) {
-            $query = $query->orWhere('RegNumber', 'like', "%$item%");
+            $query = $query->Where('RegNumber', 'like', "%$item%");
         }
         return $query;
     }
@@ -38,7 +38,7 @@ class RalFilter extends AbstractFilter
         $query = $this->builder->whereIn('old_status_AL', $value);
 
         if (in_array('false', $value, true)) {
-            $query->orWhereNull('old_status_AL');
+            $query->WhereNull('old_status_AL');
         }
         return $query;
     }

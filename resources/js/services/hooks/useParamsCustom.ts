@@ -1,7 +1,10 @@
 import { useSearchParams } from 'react-router'
-import * as qs from 'qs'
+import qs from 'qs'
 
-function useParamsCustom() {
+type QueryParams = Record<string, any>
+type TParamsCustom = [(query: QueryParams) => void, () => QueryParams]
+
+function useParamsCustom(): TParamsCustom {
     const [searchParams, setSearchParams] = useSearchParams()
 
     function setQuery(query: Record<string, any>) {

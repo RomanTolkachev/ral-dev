@@ -29,6 +29,14 @@ class TableFilterService
             }
             $filters[] = $headerItemObject;
         }
+        $actualFilters = ['new_status_AL', 'nameType', 'NP_status_change_date', 'regDate'];
+
+        $filters = array_filter($filters, function($item) use ($actualFilters) {
+            return in_array($item->header, $actualFilters);
+        });
+
+        $filters = array_values($filters);
+
         return $filters ?? [];
     }
 }

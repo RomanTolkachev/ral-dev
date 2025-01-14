@@ -12,7 +12,7 @@ const axiosApi = axios.create({
 
 export const fetchRalFilters = axiosApi.get<IRalItem[]>('/ral/filters')
 
-export const fetchRalQuery = (queries) =>
+export const fetchRalQuery = (queries: Record<string, any>) =>
     axiosApi.get<TPaginatedRal>(`/ral`, {
         params: queries,
         paramsSerializer: function (params) {
