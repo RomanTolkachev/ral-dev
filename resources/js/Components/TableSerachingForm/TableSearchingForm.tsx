@@ -12,6 +12,8 @@ interface IProps {
     className?: string
 }
 
+type IForm = Record<string, any>
+
 export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => {
     const { data: filters, isPending } = useRalFilters()
     const { handleSubmit, reset, control, setValue: setFormValue } = useFormContext()
@@ -24,7 +26,7 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => 
     }, [control._defaultValues])
 
     // Тут проверяем должна ли сброситься страничка, затем обновляем query
-    const submitHandler = (currentForm, submittedForm) => {
+    const submitHandler = (currentForm: IForm, submittedForm: IForm) => {
         if (isEqual(submittedForm, currentForm)) {
             return
         }

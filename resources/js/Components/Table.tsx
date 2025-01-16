@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode, useEffect, useMemo, useRef } from 'react'
+import React, { createElement, FunctionComponent, isValidElement, ReactElement, ReactNode, useEffect, useMemo, useRef } from 'react'
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { Preloader } from '@/Components/utils/Preloader'
 import { SVG } from '@/Components/utils/SVG'
@@ -14,11 +14,24 @@ interface IProps {
     className?: string
 }
 
+function highlight(text: string | null, pattern: string): ReactElement {
+    if (!text || !pattern[0]) return createElement("span", {}, text)
+    const reg = new RegExp(`(${pattern})`, 'gi'); 
+    let parts = text.toString().split(reg); // тут split оставляет разделитель в массиве
+    const highLightedParts = parts.map((item: string, index: number) => {
+        return reg.test(item) ? createElement('mark', { key: index }, item) : item
+    })
+
+    console.log(createElement('span', {}, ...highLightedParts)) // значение на скриншоте
+    return createElement('span', {}, ...highLightedParts)
+}
+
+
 export const Table: FunctionComponent<IProps> = () => {
     const [, getQuery] = useParamsCustom()
     const queries = isEmpty(getQuery()) ? { page: 1, perPage: 10 } : getQuery()
 
-    const { data: ralData, isPending } = useRalQuery(queries)
+    const { data: ralData, isPending } = useRalQuery(queries);
 
     const headers = useMemo(() => {
         return ralData ? getHeaders(ralData.data) : []
@@ -31,13 +44,14 @@ export const Table: FunctionComponent<IProps> = () => {
                 return {
                     accessorKey: header,
                     header: getHeaderName(header),
-                    cell: (props: any) => <>{props.getValue()}</>,
+                    cell: (props: any) => { highlight(props.getValue(), getQuery().fullText) },
                     enableResizing: true,
                 }
             })
         }
         return colData
     }, [ralData, headers])
+
 
     const tableData = useMemo<IRalItem[] | []>(() => {
         return ralData?.data || []
@@ -62,6 +76,7 @@ export const Table: FunctionComponent<IProps> = () => {
             inputRef.current!.value = String(queries.page)
         }
     }, [queries.page])
+
 
     return (
         <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
@@ -118,10 +133,7 @@ export const Table: FunctionComponent<IProps> = () => {
                                                             key={cell.id}
                                                             className={`overflow-hidden p-2 w-[${cell.column.getSize()}px] text-center`}>
                                                             <span className={'text-table-base'}>
-                                                                {flexRender(
-                                                                    cell.column.columnDef.cell,
-                                                                    cell.getContext(),
-                                                                )}
+                                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                                             </span>
                                                         </td>
                                                     )

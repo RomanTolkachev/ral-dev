@@ -2,10 +2,21 @@
 
 namespace App\Http\Filters;
 
+use App\Models\RalShortInfoMock;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Http\FormRequest;
 
 class RalFilter extends AbstractFilter
 {
+
+    protected $model;
+    // protected $request;
+    public function __construct(RalShortInfoMock $model, FormRequest $request)
+    {
+        $this->model = $model;
+        parent::__construct($request);
+        // $this->request = $request;
+    }
 
     /**
      * Фильтрация по Ссылке
@@ -16,7 +27,6 @@ class RalFilter extends AbstractFilter
     protected function link(array $value): Builder
     {
         $query = $this->builder;
-
         foreach ($value as $item) {
             $query = $query->Where('link', 'like', "%$item%");
         }
@@ -110,5 +120,14 @@ class RalFilter extends AbstractFilter
     protected function NPStatusChangeDate(int $value): Builder
     {
         return $this->builder->whereIn('NP_status_change_date', $value);
+    }
+
+    protected function fullText(array $value): Builder
+    {
+        // $query = $this->builder;
+        // dd($query);
+        $searchRes = $this->model::search($value[0])->get();
+        $ids = $searchRes->pluck('id')->toArray();
+        return $this->builder->whereIn('id', $ids);
     }
 }
