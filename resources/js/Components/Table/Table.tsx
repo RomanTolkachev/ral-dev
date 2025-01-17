@@ -1,4 +1,4 @@
-import React, { createElement, FunctionComponent, isValidElement, ReactElement, ReactNode, useEffect, useMemo, useRef } from 'react'
+import { FunctionComponent, ReactNode, useEffect, useMemo, useRef } from 'react'
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { Preloader } from '@/Components/utils/Preloader'
 import { SVG } from '@/Components/utils/SVG'
@@ -9,20 +9,10 @@ import { getHeaderName } from '@/shared/getHeaderName.ts'
 import { PageInput } from '@/Components/Inputs/PageInput.tsx'
 import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
 import { isEmpty } from 'lodash'
+import highlight from './features/highlightText'
 
 interface IProps {
     className?: string
-}
-
-function highlight(text: string | null, pattern: string): string | Array<ReactElement | string> {
-    if (!text || !pattern) return text
-    if (pattern[0] === "") return text;
-    const reg = new RegExp(`(${pattern})`, 'gi'); 
-    let parts = text.toString().split(reg); // тут split оставляет разделитель в массиве
-    const highLightedParts = parts.map((item: string, index: number) => {
-        return reg.test(item) ? createElement('mark', { key: index }, item) : item
-    })
-    return highLightedParts;
 }
 
 

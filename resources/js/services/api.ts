@@ -1,6 +1,7 @@
 import axios from 'axios'
-import { IRalItem, TPaginatedRal } from '@/types/ral'
-import * as qs from 'qs'
+import { TPaginatedRal } from '@/types/ral'
+import qs from 'qs'
+import { ISearchingFormItem } from '@/types/searchingFilters'
 
 export const LOCAL_URL: 'http://127.0.0.1:8000/api' = 'http://127.0.0.1:8000/api'
 // export const LOCAL_URL: "/api" = "/api"
@@ -10,7 +11,7 @@ const axiosApi = axios.create({
     timeout: 10000,
 })
 
-export const fetchRalFilters = axiosApi.get<IRalItem[]>('/ral/filters')
+export const fetchRalFilters = axiosApi.get<ISearchingFormItem[]>('/ral/filters')
 
 export const fetchRalQuery = (queries: Record<string, any>) =>
     axiosApi.get<TPaginatedRal>(`/ral`, {

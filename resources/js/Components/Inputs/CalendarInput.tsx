@@ -6,8 +6,8 @@ import {ISearchingFormItem} from "@/types/searchingFilters";
 
 interface IProps {
     className?: string
-    register: UseFormRegister<FieldValues>
-    control: Control
+    register?: UseFormRegister<FieldValues>
+    control?: Control
     inputData: ISearchingFormItem
 }
 

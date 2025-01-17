@@ -1,7 +1,9 @@
-import React, { ChangeEvent, FunctionComponent } from 'react'
+import { ChangeEvent, FunctionComponent } from 'react'
 import { ISearchingFormItem } from '@/types/searchingFilters'
 import { Control, Controller, useFormContext } from 'react-hook-form'
 import { SVG } from '@/Components/utils/SVG.tsx'
+import split from './features/split'
+import handleValue from './features/handleValue'
 
 interface IProps {
     className?: string
@@ -14,7 +16,7 @@ export const InputCustom: FunctionComponent<IProps> = ({ className, inputData })
     const handleChange = (onChange: (...args: any[]) => void) => {
         return (e: ChangeEvent<HTMLInputElement>) => {
             const value = e.target.value
-            onChange(value.split(/[\s,;]+/))
+            onChange(split(value))
         }
     }
 
@@ -29,7 +31,7 @@ export const InputCustom: FunctionComponent<IProps> = ({ className, inputData })
                     <input
                         type="text"
                         id={inputData.header}
-                        value={Array.isArray(value) ? value.join(' ') : value}
+                        value={handleValue(value)}
                         placeholder={''}
                         onChange={handleChange(onChange)}
                         className={`ring-transparent
