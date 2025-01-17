@@ -2,7 +2,7 @@ import React, { FunctionComponent, memo, useState } from 'react'
 import { DropdownFilterButton } from '@/Components/Buttons/DropdownFilterButton'
 import { motion, Variants } from 'framer-motion'
 import { ISearchingFormItem } from '@/types/searchingFilters'
-import { InputCustom } from '@/Components/Inputs/InputCustom'
+import { InputCustom } from '@/Components/Inputs/InputCustom/InputCustom'
 import { CalendarInput } from '@/Components/Inputs/CalendarInput'
 import { useDispatchTyped } from '@/services/hooks/typedUseSelector'
 import { updatePage } from '@/services/slices/filters-slice'
@@ -37,10 +37,10 @@ const itemVariants: Variants = {
 }
 
 export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, className }) => {
-    const [isOpen, setIsOpen] = useState<boolean>(false)
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    const dispatch = useDispatchTyped()
-    const setCurrentPageToOne = () => dispatch(updatePage(1))
+    const dispatch = useDispatchTyped();
+    const setCurrentPageToOne = () => dispatch(updatePage(1));
 
     return (
         <motion.div
@@ -58,7 +58,7 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
                 {inputData.sortValues.type === 'huge' && (
                     <InputCustom setFirstPage={setCurrentPageToOne} inputData={inputData} />
                 )}
-                {inputData.sortValues.type === 'date' && <CalendarInput inputData={inputData} />} //FIXME: TS
+                {inputData.sortValues.type === 'date' && <CalendarInput inputData={inputData} />}
                 {inputData.sortValues.type === 'checkBox' && (
                     <CheckBoxCustom inputData={inputData} setFirstPage={setCurrentPageToOne} />
                 )}

@@ -1,10 +1,10 @@
 import { Header } from '@/Components/Header'
 import { MainButton } from '@/Components/Buttons/MainButton'
 import { TableSearchingForm } from '@/Components/TableSerachingForm/TableSearchingForm'
-import { Table } from '@/Components/Table'
+import { Table } from '@/Components/Table/Table'
 import { Toggle } from '@/Components/Buttons/Toggle'
-import { DevTool } from "@hookform/devtools"
-import { useForm, useFormContext } from "react-hook-form"
+import { DevTool } from '@hookform/devtools'
+import { useFormContext } from 'react-hook-form'
 
 function Main() {
     const { control } = useFormContext()

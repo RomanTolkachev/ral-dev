@@ -2,10 +2,21 @@
 
 namespace App\Http\Filters;
 
+use App\Models\RalShortInfoMock;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Http\FormRequest;
 
 class RalFilter extends AbstractFilter
 {
+
+    protected $model;
+    // protected $request;
+    public function __construct(RalShortInfoMock $model, FormRequest $request)
+    {
+        $this->model = $model;
+        parent::__construct($request);
+        // $this->request = $request;
+    }
 
     /**
      * Фильтрация по Ссылке
@@ -16,9 +27,8 @@ class RalFilter extends AbstractFilter
     protected function link(array $value): Builder
     {
         $query = $this->builder;
-
         foreach ($value as $item) {
-            $query = $query->orWhere('link', 'like', "%$item%");
+            $query = $query->Where('link', 'like', "%$item%");
         }
         return $query;
     }
@@ -28,25 +38,28 @@ class RalFilter extends AbstractFilter
         $query = $this->builder;
 
         foreach ($value as $item) {
-            $query = $query->orWhere('RegNumber', 'like', "%$item%");
+            $query = $query->Where('RegNumber', 'like', "%$item%");
         }
         return $query;
     }
 
-    protected function oldStatusAL(array $value): Builder
+    protected function oldStatusAL($value): Builder
     {
         $query = $this->builder->whereIn('old_status_AL', $value);
 
-        if (in_array("false", $value, true)) {
-            $query->orWhereNull('old_status_AL');
+        if (in_array('false', $value, true)) {
+            $query->WhereNull('old_status_AL');
         }
-
         return $query;
     }
 
-    protected function newStatusAL(array $value): Builder
+    protected function newStatusAL($value): Builder
     {
-        return $this->builder->whereIn('new_status_AL', $value);
+        $query =  $this->builder->whereIn('new_status_AL', $value);
+        if (in_array('false', $value, true)) {
+            $query->orWhereNull('new_status_AL');
+        }
+        return $query;
     }
 
     protected function statusChangeDate(string $value): Builder
@@ -107,5 +120,14 @@ class RalFilter extends AbstractFilter
     protected function NPStatusChangeDate(int $value): Builder
     {
         return $this->builder->whereIn('NP_status_change_date', $value);
+    }
+
+    protected function fullText(array $value): Builder
+    {
+        // $query = $this->builder;
+        // dd($query);
+        $searchRes = $this->model::search($value[0])->get();
+        $ids = $searchRes->pluck('id')->toArray();
+        return $this->builder->whereIn('id', $ids);
     }
 }

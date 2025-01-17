@@ -1,25 +1,26 @@
-import React, { FormEvent, FunctionComponent, ReactNode, useEffect, useMemo, useRef } from 'react'
+import { FunctionComponent, ReactNode, useEffect, useMemo, useRef } from 'react'
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { useDispatchTyped, useSelectorTyped as useSelector } from '@/services/hooks/typedUseSelector'
 import { Preloader } from '@/Components/utils/Preloader'
 import { SVG } from '@/Components/utils/SVG'
-import { setPage } from '@/services/slices/filters-slice'
-import { useFormContext } from 'react-hook-form'
 import { useRalQuery } from '@/services/hooks/useRalQuery'
 import { getHeaders } from '@/shared/getHeaders'
-import { IRalItem, TPaginatedRal } from '@/types/ral'
+import { IRalItem } from '@/types/ral'
 import { getHeaderName } from '@/shared/getHeaderName.ts'
 import { PageInput } from '@/Components/Inputs/PageInput.tsx'
+import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
+import { isEmpty } from 'lodash'
+import highlight from './features/highlightText'
 
 interface IProps {
     className?: string
 }
 
-export const Table: FunctionComponent<IProps> = () => {
-    const dispatch = useDispatchTyped()
-    const queries = useSelector((state) => state.filtersReducer.queries)
 
-    const { data: ralData, isPending } = useRalQuery(queries)
+export const Table: FunctionComponent<IProps> = () => {
+    const [, getQuery] = useParamsCustom()
+    const queries = isEmpty(getQuery()) ? { page: 1, perPage: 10 } : getQuery()
+
+    const { data: ralData, isPending } = useRalQuery(queries);
 
     const headers = useMemo(() => {
         return ralData ? getHeaders(ralData.data) : []
@@ -32,13 +33,14 @@ export const Table: FunctionComponent<IProps> = () => {
                 return {
                     accessorKey: header,
                     header: getHeaderName(header),
-                    cell: (props: any) => <>{props.getValue()}</>,
+                    cell: (props: any) => <>{highlight(props.getValue(), getQuery().fullText)}</>,
                     enableResizing: true,
                 }
             })
         }
         return colData
     }, [ralData, headers])
+
 
     const tableData = useMemo<IRalItem[] | []>(() => {
         return ralData?.data || []
@@ -56,26 +58,14 @@ export const Table: FunctionComponent<IProps> = () => {
         },
     })
 
-    const handleInputPageChange = async (e: FormEvent<HTMLInputElement>) => {
-        let target = e.target as HTMLInputElement
-        await trigger('page')
-        if (ralData) {
-            if (1 > Number(target.value) || Number(target.value) > ralData?.last_page) {
-                dispatch(setPage(+queries.page))
-            } else {
-                dispatch(setPage(+target.value))
-            }
-        }
-    }
-
     const inputRef = useRef<HTMLInputElement | null>(null)
-    const {trigger} = useFormContext()
 
     useEffect(() => {
         if (inputRef.current) {
             inputRef.current!.value = String(queries.page)
         }
     }, [queries.page])
+
 
     return (
         <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
@@ -132,10 +122,7 @@ export const Table: FunctionComponent<IProps> = () => {
                                                             key={cell.id}
                                                             className={`overflow-hidden p-2 w-[${cell.column.getSize()}px] text-center`}>
                                                             <span className={'text-table-base'}>
-                                                                {flexRender(
-                                                                    cell.column.columnDef.cell,
-                                                                    cell.getContext(),
-                                                                )}
+                                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                                             </span>
                                                         </td>
                                                     )

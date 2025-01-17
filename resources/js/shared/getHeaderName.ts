@@ -32,6 +32,8 @@ export const getHeaderName = (accessorKey: string): string => {
             return 'айди'
         case 'NP_status_change_date':
             return 'дата изменения статуса'
+        case 'fullText':
+            return 'поиск'
         default:
             return 'дефолт'
     }

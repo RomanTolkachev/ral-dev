@@ -29,6 +29,21 @@ class TableFilterService
             }
             $filters[] = $headerItemObject;
         }
+        $actualFilters = ['new_status_AL', 'nameType', 'NP_status_change_date', 'regDate', 'fullText']; // тут актуальные фильтры
+
+        $filters = array_filter($filters, function($item) use ($actualFilters) {
+            return in_array($item->header, $actualFilters);
+        });
+
+        $filters = array_values($filters);
+
+        $fullText = new \stdClass();
+        $fullText->header = "fullText";
+        $fullText->sortValues = new \stdClass();
+        $fullText->sortValues->type = "huge";
+
+        $filters[] = $fullText;
+
         return $filters ?? [];
     }
 }
