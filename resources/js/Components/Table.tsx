@@ -14,16 +14,15 @@ interface IProps {
     className?: string
 }
 
-function highlight(text: string | null, pattern: string): ReactElement {
-    if (!text || !pattern[0]) return createElement("span", {}, text)
+function highlight(text: string | null, pattern: string): string | Array<ReactElement | string> {
+    if (!text || !pattern) return text
+    if (pattern[0] === "") return text;
     const reg = new RegExp(`(${pattern})`, 'gi'); 
     let parts = text.toString().split(reg); // тут split оставляет разделитель в массиве
     const highLightedParts = parts.map((item: string, index: number) => {
         return reg.test(item) ? createElement('mark', { key: index }, item) : item
     })
-
-    console.log(createElement('span', {}, ...highLightedParts)) // значение на скриншоте
-    return createElement('span', {}, ...highLightedParts)
+    return highLightedParts;
 }
 
 
@@ -44,7 +43,7 @@ export const Table: FunctionComponent<IProps> = () => {
                 return {
                     accessorKey: header,
                     header: getHeaderName(header),
-                    cell: (props: any) => { highlight(props.getValue(), getQuery().fullText) },
+                    cell: (props: any) => <>{highlight(props.getValue(), getQuery().fullText)}</>,
                     enableResizing: true,
                 }
             })
