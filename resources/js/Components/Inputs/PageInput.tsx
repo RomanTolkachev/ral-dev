@@ -1,8 +1,6 @@
 import React, { FunctionComponent, useEffect, useMemo } from 'react'
 import { FieldError, useFormContext, FieldErrorsImpl, Merge } from 'react-hook-form'
 import { useSelectorTyped } from '@/services/hooks/typedUseSelector.ts'
-import { useRalFilters } from '@/services/hooks/useRalFilters'
-import { json } from 'stream/consumers'
 
 interface IProps {
     className?: string
@@ -16,9 +14,12 @@ export const PageInput: FunctionComponent<IProps> = ({ className, formName = 'pa
 
     function getErrorMessage(error: FieldError | Merge<FieldError, FieldErrorsImpl<any>>): string | undefined {
         switch (error.type) {
-            case "required": return "поле не может быть пустым"
-            case "min": return "некорректное значение"
-            case "max": return "некорректное значение"
+            case 'required':
+                return 'поле не может быть пустым'
+            case 'min':
+                return 'некорректное значение'
+            case 'max':
+                return 'некорректное значение'
         }
     }
 
@@ -29,7 +30,7 @@ export const PageInput: FunctionComponent<IProps> = ({ className, formName = 'pa
                     min: 1,
                     max: lastPage,
                     onChange: () => trigger(),
-                    required: "поле не может быть пустым",
+                    required: 'поле не может быть пустым',
                 })}
                 className={
                     `${formState.errors[formName] && 'ring-2 !ring-error border-transparent '}` +
@@ -39,9 +40,11 @@ export const PageInput: FunctionComponent<IProps> = ({ className, formName = 'pa
                 defaultValue={1}
                 min={1}
                 max={lastPage}
-                type='number'
+                type="number"
             />
-            {formState.errors[formName] && <div className={'text-error'}>{getErrorMessage(formState.errors[formName])}</div>}
+            {formState.errors[formName] && (
+                <div className={'text-error'}>{getErrorMessage(formState.errors[formName])}</div>
+            )}
         </>
     )
 }
