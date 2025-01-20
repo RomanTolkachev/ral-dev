@@ -10,15 +10,25 @@ import { PageInput } from '@/Components/Inputs/PageInput.tsx'
 import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
 import { isEmpty } from 'lodash'
 import highlight from './features/highlightText'
+import moment from 'moment'
 
 interface IProps {
     className?: string
 }
 
+const defaultRequest = {
+    page: 1,
+    perPage: 10,
+    // ["NP_status_change_date[]"]: [
+    //     moment().utc().subtract(2, "weeks").format("YYYY-MM-DD"),
+    //     moment().utc().format("YYYY-MM-DD"), 
+    // ],
+}
+
 
 export const Table: FunctionComponent<IProps> = () => {
     const [, getQuery] = useParamsCustom()
-    const queries = isEmpty(getQuery()) ? { page: 1, perPage: 10 } : getQuery()
+    const queries = isEmpty(getQuery()) ? defaultRequest : getQuery()
 
     const { data: ralData, isPending } = useRalQuery(queries);
 
@@ -59,7 +69,7 @@ export const Table: FunctionComponent<IProps> = () => {
     })
 
     const inputRef = useRef<HTMLInputElement | null>(null)
-
+    
     useEffect(() => {
         if (inputRef.current) {
             inputRef.current!.value = String(queries.page)

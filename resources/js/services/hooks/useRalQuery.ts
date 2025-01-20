@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchRalQuery } from '@/services/api'
 import { objectToString } from '@/shared/objectToString'
 
-export function useRalQuery(queries) {
+export function useRalQuery(queries: Record<string, any>) {
     const filteredQueries = queries
 
     const { data, isPending } = useQuery({

@@ -62,9 +62,9 @@ class RalFilter extends AbstractFilter
         return $query;
     }
 
-    protected function statusChangeDate(string $value): Builder
+    protected function statusChangeDate(array $value): Builder
     {
-        return $this->builder->whereIn('status_change_date', $value);
+        return $this->builder->whereBetween('status_change_date', $value);
     }
 
     protected function nameType(array $value): Builder
@@ -117,9 +117,9 @@ class RalFilter extends AbstractFilter
         return $this->builder->whereIn('id', $value);
     }
 
-    protected function NPStatusChangeDate(int $value): Builder
+    protected function NPStatusChangeDate(array $value): Builder
     {
-        return $this->builder->whereIn('NP_status_change_date', $value);
+        return $this->builder->whereBetween('NP_status_change_date', $value);
     }
 
     protected function fullText(array $value): Builder

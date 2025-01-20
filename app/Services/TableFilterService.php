@@ -29,7 +29,7 @@ class TableFilterService
             }
             $filters[] = $headerItemObject;
         }
-        $actualFilters = ['new_status_AL', 'nameType', 'NP_status_change_date', 'regDate', 'fullText']; // тут актуальные фильтры
+        $actualFilters = ['new_status_AL', 'nameType', 'status_change_date', 'regDate', 'fullText']; // тут актуальные фильтры
 
         $filters = array_filter($filters, function($item) use ($actualFilters) {
             return in_array($item->header, $actualFilters);
