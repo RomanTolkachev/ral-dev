@@ -16,6 +16,7 @@ interface IProps {
     className?: string
 }
 
+// тут будет управление запросом начальных данный
 const defaultRequest = {
     page: 1,
     perPage: 10,

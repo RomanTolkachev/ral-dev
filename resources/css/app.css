@@ -153,10 +153,6 @@
     0% {transform: rotate(-360deg)}
 }
 
-:root {
-
-}
-
 /** {*/
 /*    box-shadow: 0 0 0 1px red;*/
 /*}*/
@@ -232,6 +228,30 @@ select:-webkit-autofill:focus {
     -webkit-text-fill-color: var(--input-primary-text);
     transition: background-color 5000s ease-in-out 0s;
     color: var(--input-primary-bg);
+}
+
+
+/* DatePicker*/
+.custom-date {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-date input[type="date"] {
+    position: relative;
+    padding: 10px;
+    width: 100%;
+}
+
+.custom-date .calendar-icon {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(-50%, -50%);
+}
+
+input[type=date]::-webkit-calendar-picker-indicator{
+	display:none;
 }
 
 

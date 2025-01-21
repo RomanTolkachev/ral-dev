@@ -13,12 +13,12 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren> = ({ child
     const URLQueries = getQuery()
 
     /* Устанавливаем default для полей формы. Везде массив. Т.к поля фильтров запрашиваются асинхронно,
-    lj,fdktys несколько проверок, чтобы default всегда были валидны  */
+    установлено несколько проверок, чтобы default всегда были валидны  */
     const startValues = !queries //TODO: выдергивать perPage из localStorage
         ? { page: 1, perPage: 10 }
         : !queries.length
           ? {}
-          : { ...queries.reduce((acc, key) => ({ ...acc, [key.header]: [] }), { page: 1, perPage: 10 }) }
+          : { ...queries.reduce((acc, key) => ({ ...acc, [key.header]: [] }), { page: 1, perPage: 10,}) }
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
         defaultValues: startValues,
     })
