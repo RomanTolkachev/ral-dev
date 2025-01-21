@@ -16,7 +16,7 @@ interface IProps {
 }
 
 export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData }) => {
-    const [startDate, setStartDate] = useState(moment().subtract(2, 'weeks').format("YYYY-MM-DD"));
+    const [startDate, setStartDate] = useState(moment().subtract(2, 'years').format("YYYY-MM-DD"));
     const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
     const [, getQuery] = useParamsCustom()
     const query = getQuery();
@@ -69,7 +69,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
         }
     }
 
-    
+
     return (
         <Controller
             name={inputData.header}
@@ -83,7 +83,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                             value={startDate}
                             onChange={(e) => field.onChange(handleMinChange(e))}
                             className={
-                                `${formState.errors[inputData.header] && 'ring-2 ring-error border-transparent '}` +
+                                `${formState.errors[inputData.header] && 'ring-2 !ring-error border-transparent '}` +
                                 ' bg-input-primary text-input-text w-full appearance-none rounded-full shadow-input-search border-0' +
                                 ' ring-transparent' +
                                 ' focus:ring-2 focus:ring-button-violet'
@@ -97,7 +97,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                             value={endDate}
                             onChange={(e) => field.onChange(handleMaxChange(e))}
                             className={
-                                `${formState.errors[inputData.header] && 'ring-2 ring-error border-transparent '}` +
+                                `${formState.errors[inputData.header] && 'ring-2 !ring-error border-transparent '}` +
                                 ' bg-input-primary  text-input-text w-full appearance-none rounded-full shadow-input-search border-0 pl-5' +
                                 ' ring-transparent' +
                                 ' focus:ring-2 focus:ring-button-violet'

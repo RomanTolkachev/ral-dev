@@ -8,9 +8,9 @@ interface IFormValues {
 }
 
 export const CustomFormProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
-    const [, getQuery] = useParamsCustom()
-    const { data: queries } = useRalFilters()
-    const URLQueries = getQuery()
+    const [, getQuery] = useParamsCustom();
+    const { data: queries } = useRalFilters();
+    const URLQueries = getQuery();
 
     /* Устанавливаем default для полей формы. Везде массив. Т.к поля фильтров запрашиваются асинхронно,
     установлено несколько проверок, чтобы default всегда были валидны  */
@@ -18,7 +18,7 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren> = ({ child
         ? { page: 1, perPage: 10 }
         : !queries.length
           ? {}
-          : { ...queries.reduce((acc, key) => ({ ...acc, [key.header]: [] }), { page: 1, perPage: 10,}) }
+          : { ...queries.reduce((acc, key) => ({ ...acc, [key.header]: [] }), { page: 1, perPage: 10, }) }
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
         defaultValues: startValues,
     })
