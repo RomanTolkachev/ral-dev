@@ -16,7 +16,7 @@ interface IProps {
 }
 
 export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData }) => {
-    const [startDate, setStartDate] = useState(moment().subtract(2, 'weeks').format("YYYY-MM-DD"));
+    const [startDate, setStartDate] = useState(moment().subtract(2, 'years').format("YYYY-MM-DD"));
     const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
     const [, getQuery] = useParamsCustom()
     const query = getQuery();
@@ -69,7 +69,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
         }
     }
 
-    
+
     return (
         <Controller
             name={inputData.header}
