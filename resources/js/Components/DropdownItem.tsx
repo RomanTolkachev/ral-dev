@@ -60,7 +60,7 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
                 )}
                 {inputData.sortValues.type === 'date' && <CalendarInput inputData={inputData} />}
                 {inputData.sortValues.type === 'checkBox' && (
-                    <CheckBoxCustom inputData={inputData} setFirstPage={setCurrentPageToOne} />
+                    <CheckBoxCustom inputData={inputData} />
                 )}
             </motion.div>
         </motion.div>

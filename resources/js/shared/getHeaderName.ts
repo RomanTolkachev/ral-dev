@@ -1,4 +1,6 @@
-export const getHeaderName = (accessorKey: string): string => {
+import { ReactNode } from "react"
+
+export const getHeaderName = (accessorKey: ReactNode | undefined): string => {
     switch (accessorKey) {
         case 'link':
             return 'ссылка'

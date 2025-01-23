@@ -35,7 +35,7 @@ export const InputCustom: FunctionComponent<IProps> = ({ className, inputData })
                     <input
                         type="text"
                         id={inputData.header}
-                        value={joinValue(value)}
+                        value={joinValue(value) || ''}
                         placeholder={''}
                         onChange={handleChange(onChange)}
                         className={`ring-transparent

@@ -153,9 +153,9 @@
     0% {transform: rotate(-360deg)}
 }
 
-/** {*/
-/*    box-shadow: 0 0 0 1px red;*/
-/*}*/
+/* * {
+   box-shadow: 0 0 0 1px red;
+} */
 
 
 /* Скролбар Chrome, Edge and Safari */

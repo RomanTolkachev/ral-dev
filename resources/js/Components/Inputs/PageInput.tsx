@@ -10,7 +10,7 @@ interface IProps {
 
 export const PageInput: FunctionComponent<IProps> = ({ className, formName = 'page', lastPage = 1 }) => {
     const { register, formState, trigger, setValue, watch } = useFormContext()
-    const page = useSelectorTyped((state) => state.filtersReducer.queries.page)
+    // const page = useSelectorTyped((state) => state.filtersReducer.queries.page)
 
     function getErrorMessage(error: FieldError | Merge<FieldError, FieldErrorsImpl<any>>): string | undefined {
         switch (error.type) {

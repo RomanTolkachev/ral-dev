@@ -1,24 +1,34 @@
 import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
-import { FunctionComponent, PropsWithChildren, useEffect } from 'react'
+import { FunctionComponent, PropsWithChildren, useEffect, useMemo } from 'react'
 import { useRalFilters } from '@/services/hooks/useRalFilters.ts'
 import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
+import DEFAULT_REQUEST from '../config'
 
 interface IFormValues {
     [key: string]: any
 }
 
 export const CustomFormProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
+
+    console.log(DEFAULT_REQUEST)
     const [, getQuery] = useParamsCustom();
-    const { data: queries } = useRalFilters();
-    const URLQueries = getQuery();
+    const { data: filters } = useRalFilters();
+
 
     /* Устанавливаем default для полей формы. Везде массив. Т.к поля фильтров запрашиваются асинхронно,
     установлено несколько проверок, чтобы default всегда были валидны  */
-    const startValues = !queries //TODO: выдергивать perPage из localStorage
-        ? { page: 1, perPage: 10 }
-        : !queries.length
-          ? {}
-          : { ...queries.reduce((acc, key) => ({ ...acc, [key.header]: [] }), { page: 1, perPage: 10, }) }
+    //TODO: выдергивать perPage из localStorage
+
+        const startValues = filters 
+        ? filters.reduce((acc: Record<string, any>, key) => {
+            // Проверка, существует ли ключ в acc перед добавлением, т.к значения некоторых ключей установлены на фронте и их нельзя перезаписывать
+            if (!(key.header in acc)) {
+                acc[key.header] = [];
+            }
+            return acc;
+        }, { ...DEFAULT_REQUEST })
+        : {};
+
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
         defaultValues: startValues,
     })
@@ -26,7 +36,7 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren> = ({ child
     /* В этом месте через reset задается значение всем полям, передав в параметрах объекты, где ключ-имя инпута,
     плюс, в этом месте форме задаются значения из URL*/
     useEffect(() => {
-        methods.reset({ ...startValues, ...URLQueries })
+        methods.reset({ ...startValues })
     }, [JSON.stringify(startValues)])
 
     return <FormProvider {...methods}>{children}</FormProvider>

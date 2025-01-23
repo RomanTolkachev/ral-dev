@@ -1,16 +1,15 @@
-import React, { FunctionComponent } from 'react'
+import { FunctionComponent } from 'react'
 import { v4 } from 'uuid'
 import { ISearchingFormItem } from '@/types/searchingFilters'
 import { useFormContext } from 'react-hook-form'
-import { PayloadAction } from '@reduxjs/toolkit'
+
 
 interface IProps {
     className?: string
     inputData: ISearchingFormItem
-    setFirstPage: () => PayloadAction<number>
 }
 
-export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData, setFirstPage }) => {
+export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData }) => {
     const { register } = useFormContext()
 
     return (

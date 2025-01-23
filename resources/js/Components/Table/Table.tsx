@@ -10,26 +10,15 @@ import { PageInput } from '@/Components/Inputs/PageInput.tsx'
 import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
 import { isEmpty } from 'lodash'
 import highlight from './features/highlightText'
-import moment from 'moment'
+import DEFAULT_REQUEST from '@/features/RalTable/config'
 
 interface IProps {
     className?: string
 }
 
-// тут будет управление запросом начальных данный
-const defaultRequest = {
-    page: 1,
-    perPage: 10,
-    // ["NP_status_change_date[]"]: [
-    //     moment().utc().subtract(2, "weeks").format("YYYY-MM-DD"),
-    //     moment().utc().format("YYYY-MM-DD"), 
-    // ],
-}
-
-
 export const Table: FunctionComponent<IProps> = () => {
     const [, getQuery] = useParamsCustom()
-    const queries = isEmpty(getQuery()) ? defaultRequest : getQuery()
+    const queries = isEmpty(getQuery()) ? DEFAULT_REQUEST : getQuery()
 
     const { data: ralData, isPending } = useRalQuery(queries);
 
@@ -152,15 +141,18 @@ export const Table: FunctionComponent<IProps> = () => {
                                 </tbody>
                             </table>
                         ) : (
-                            <div className={'mx-auto my-auto h-[300px] w-[300px]'}>
-                                <SVG className={'mb-2'} notFound />
-                                <p
-                                    className={
-                                        'text-3xl text-nowrap tracking-tight font-black  text-[#29263b]' +
-                                        'first-letter:capitalize text-center'
-                                    }>
-                                    данные не найдены
-                                </p>
+                            <div className={' w-full h-full grid place-items-center'}>
+                                <div className='w-[300px]'>
+                                    <SVG className={' mb-2'} notFound />
+                                    <p
+                                        className={
+                                            'text-3xl text-nowrap tracking-tight font-black text-text-primary ' +
+                                            'first-letter:capitalize text-center'
+                                        }>
+                                        данные не найдены
+                                    </p>
+                                </div>
+
                             </div>
                         )}
                     </div>

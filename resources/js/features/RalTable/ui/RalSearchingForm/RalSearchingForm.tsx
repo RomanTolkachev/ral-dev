@@ -7,6 +7,9 @@ import { useRalFilters } from '@/services/hooks/useRalFilters.ts'
 import excludePaginationQueries from '@/shared/excludePaginationQueries'
 import { isEqual } from 'lodash'
 import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
+import DEFAULT_REQUEST from '../../config'
+
+DEFAULT_REQUEST
 
 interface IProps {
     className?: string

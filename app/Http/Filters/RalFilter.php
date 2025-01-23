@@ -65,6 +65,7 @@ class RalFilter extends AbstractFilter
     protected function statusChangeDate(array $value): Builder
     {
         return $this->builder->whereBetween('status_change_date', $value);
+        // return $this->builder->whereRaw('status_change_date BETWEEN CONVERT(datetime, ?) AND CONVERT(datetime, ?)', $value);
     }
 
     protected function nameType(array $value): Builder

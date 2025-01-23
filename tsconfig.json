@@ -16,6 +16,7 @@
             "@/*": ["./resources/js/*"],
             "ziggy-js": ["./vendor/tightenco/ziggy"]
         },
+        "types": ["vite/client"]
     },
     "include": ["resources/js"]
 }
