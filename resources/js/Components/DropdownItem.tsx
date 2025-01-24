@@ -1,4 +1,4 @@
-import React, { FunctionComponent, memo, useState } from 'react'
+import React, { FunctionComponent, memo, useEffect, useState } from 'react'
 import { DropdownFilterButton } from '@/Components/Buttons/DropdownFilterButton'
 import { motion, Variants } from 'framer-motion'
 import { ISearchingFormItem } from '@/types/searchingFilters'
@@ -7,6 +7,9 @@ import { CalendarInput } from '@/Components/Inputs/CalendarInput/CalendarInput'
 import { useDispatchTyped } from '@/services/hooks/typedUseSelector'
 import { updatePage } from '@/services/slices/filters-slice'
 import { CheckBoxCustom } from '@/Components/Inputs/CheckBoxCustom'
+import { isEqual } from 'lodash'
+import { useFormContext } from 'react-hook-form'
+import { SVG } from './utils/SVG'
 
 interface IProps {
     className?: string
@@ -38,9 +41,22 @@ const itemVariants: Variants = {
 
 export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, className }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const {watch, formState, control} = useFormContext();
+    const inputName = inputData.header;
 
-    const dispatch = useDispatchTyped();
-    const setCurrentPageToOne = () => dispatch(updatePage(1));
+    // проверка изменилось ли поле в отличие от дефолтного значения
+    const [isDitry, setIsDirty] = useState<boolean>(false);
+    useEffect(() => {
+        const { unsubscribe } = watch((value) => {
+            if (control._defaultValues && control._defaultValues[inputName]) {
+                let defaultValue = control._defaultValues[inputName];
+                let currentValue = value[inputName]
+                isEqual(defaultValue, currentValue) ? setIsDirty(false) : setIsDirty(true)
+            }
+        });
+        return () => unsubscribe();
+    }, [watch, control._defaultValues])
+    
 
     return (
         <motion.div
@@ -50,13 +66,15 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
             className={`${className} h-fit`}>
             <DropdownFilterButton
                 clickHandler={() => setIsOpen(!isOpen)}
-                className={'mb-2'}
+                className={'mb-2 relative'}
                 isOpen={isOpen}
-                children={inputData.header}
+                hasAlert={isDitry}
+                children={inputName}
             />
+
             <motion.div className={'overflow-hidden'} variants={listVariants}>
                 {inputData.sortValues.type === 'huge' && (
-                    <InputCustom setFirstPage={setCurrentPageToOne} inputData={inputData} />
+                    <InputCustom inputData={inputData} />
                 )}
                 {inputData.sortValues.type === 'date' && <CalendarInput inputData={inputData} />}
                 {inputData.sortValues.type === 'checkBox' && (

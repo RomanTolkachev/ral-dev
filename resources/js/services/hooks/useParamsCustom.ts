@@ -2,13 +2,13 @@ import { useSearchParams } from 'react-router'
 import qs from 'qs'
 
 type QueryParams = Record<string, any>
-type TParamsCustom = [(query: QueryParams) => void, () => QueryParams]
+type TParamsCustom = [(query: QueryParams, replace?: boolean) => void, () => QueryParams]
 
 function useParamsCustom(): TParamsCustom {
     const [searchParams, setSearchParams] = useSearchParams()
 
-    function setQuery(query: Record<string, any>) {
-        setSearchParams(qs.stringify(query, { arrayFormat: 'brackets' }))
+    function setQuery(query: Record<string, any>, replace: boolean = false) {
+        setSearchParams(qs.stringify(query, { arrayFormat: 'brackets' }), {replace})
     }
 
     function getQuery() {

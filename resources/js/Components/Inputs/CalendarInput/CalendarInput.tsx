@@ -1,11 +1,11 @@
-import { ChangeEvent, FunctionComponent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, FunctionComponent, useEffect, useMemo, useRef, useState } from 'react'
 import { Control, Controller, FieldValues, useFormContext, UseFormRegister } from 'react-hook-form'
 import { ISearchingFormItem } from '@/types/searchingFilters'
-import moment from 'moment'
 import useParamsCustom from '@/services/hooks/useParamsCustom'
 import { isEqual } from 'lodash'
 import isStartLessEnd from './features/isStartLessEnd'
 import { SVG } from '@/Components/utils/SVG'
+import DEFAULT_REQUEST from '@/features/RalTable/config'
 
 
 interface IProps {
@@ -16,20 +16,21 @@ interface IProps {
 }
 
 export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData }) => {
-    const [startDate, setStartDate] = useState(moment().subtract(2, 'years').format("YYYY-MM-DD"));
-    const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
+    const [startDate, setStartDate] = useState(DEFAULT_REQUEST.status_change_date[0]);
+    const [endDate, setEndDate] = useState(DEFAULT_REQUEST.status_change_date[1]);
     const [, getQuery] = useParamsCustom()
     const query = getQuery();
     const { control, setValue, formState, trigger } = useFormContext();
-    
 
+    const inputName = inputData.header;
+    
     // логика проверки изменения query параметров при изменении popstate
     const prevValueRef = useRef<any>();
     useEffect(() => {
         if (!isEqual(query, prevValueRef.current)) {
-            if (query[inputData.header]) {
-                setStartDate(query[inputData.header][0]);
-                setEndDate(query[inputData.header][1]);
+            if (query[inputName]) {
+                setStartDate(query[inputName][0]);
+                setEndDate(query[inputName][1]);
             }
         }
         prevValueRef.current = query;
@@ -50,13 +51,13 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
 
     // Устанавливаем значение по имолчанию, когда фильтры получены 
     useEffect(() => { //TODO: вынести это куда-то выше ?
-        if (query[inputData.header]) {
-            setStartDate(query[inputData.header][0]);
-            setEndDate(query[inputData.header][1]);
+        if (query[inputName]) {
+            setStartDate(query[inputName][0]);
+            setEndDate(query[inputName][1]);
             return;
         };
-        if (control._defaultValues[inputData.header]) {
-            setValue(inputData.header, [startDate, endDate]);
+        if (control._defaultValues[inputName]) {
+            setValue(inputName, [startDate, endDate]);
         }
     }, [control._defaultValues]);
 
@@ -69,12 +70,26 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
         }
     }
 
+    function validationFn(value: Array<string> | undefined):boolean {
+        if (!value) {
+            return true;
+        }
+        if (!value[0] && !value[1]) {
+            return true;
+        } else if (value[0] && !value[1]) {
+            return true;
+        } else if (!value[0] && value[1]) {
+            return true;
+        } else {
+            return isStartLessEnd(value)
+        }
+    }
 
     return (
         <Controller
-            name={inputData.header}
+            name={inputName}
             control={control}
-            rules={{validate: value => isStartLessEnd(value) || "Начальная дата должна быть больше конечной"}}
+            rules={{validate: value => validationFn(value) || "Начальная дата должна быть больше конечной"}}
             render={({ field }) => (
                 <div className={`${className} p-1 space-y-2 text-input-text`}>
                     <div className='custom-date w-full '>
@@ -83,7 +98,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                             value={startDate}
                             onChange={(e) => field.onChange(handleMinChange(e))}
                             className={
-                                `${formState.errors[inputData.header] && 'ring-2 !ring-error border-transparent '}` +
+                                `${formState.errors[inputName] && 'ring-2 !ring-error border-transparent '}` +
                                 ' bg-input-primary text-input-text w-full appearance-none rounded-full shadow-input-search border-0' +
                                 ' ring-transparent' +
                                 ' focus:ring-2 focus:ring-button-violet'
@@ -97,7 +112,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                             value={endDate}
                             onChange={(e) => field.onChange(handleMaxChange(e))}
                             className={
-                                `${formState.errors[inputData.header] && 'ring-2 !ring-error border-transparent '}` +
+                                `${formState.errors[inputName] && 'ring-2 !ring-error border-transparent '}` +
                                 ' bg-input-primary  text-input-text w-full appearance-none rounded-full shadow-input-search border-0 pl-5' +
                                 ' ring-transparent' +
                                 ' focus:ring-2 focus:ring-button-violet'
@@ -105,7 +120,6 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                         />
                         <SVG clickHandler={(e: any)  => handleIconClick(e)} schedule className='calendar-icon w-6'/> 
                     </div>
-
                 </div>
             )}>
         </Controller>

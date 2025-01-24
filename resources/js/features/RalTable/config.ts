@@ -10,15 +10,13 @@ const dateFormatter = new Intl.DateTimeFormat("en-CA", {
     day: "2-digit",
 })
 
-console.log(        dateFormatter.format(startdate),
-dateFormatter.format(currentDate),)
-
 const DEFAULT_REQUEST = {
     page: 1,
     perPage: 10,
     status_change_date: [
-        dateFormatter.format(startdate),
-        dateFormatter.format(currentDate),
+        // dateFormatter.format(startdate),
+        // dateFormatter.format(currentDate),
+        "",""
     ],
 }
 

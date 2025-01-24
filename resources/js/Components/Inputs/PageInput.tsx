@@ -1,6 +1,5 @@
-import React, { FunctionComponent, useEffect, useMemo } from 'react'
+import { FunctionComponent, useMemo } from 'react'
 import { FieldError, useFormContext, FieldErrorsImpl, Merge } from 'react-hook-form'
-import { useSelectorTyped } from '@/services/hooks/typedUseSelector.ts'
 
 interface IProps {
     className?: string
@@ -9,8 +8,7 @@ interface IProps {
 }
 
 export const PageInput: FunctionComponent<IProps> = ({ className, formName = 'page', lastPage = 1 }) => {
-    const { register, formState, trigger, setValue, watch } = useFormContext()
-    // const page = useSelectorTyped((state) => state.filtersReducer.queries.page)
+    const { register, formState, trigger } = useFormContext()
 
     function getErrorMessage(error: FieldError | Merge<FieldError, FieldErrorsImpl<any>>): string | undefined {
         switch (error.type) {
@@ -34,7 +32,7 @@ export const PageInput: FunctionComponent<IProps> = ({ className, formName = 'pa
                 })}
                 className={
                     `${formState.errors[formName] && 'ring-2 !ring-error border-transparent '}` +
-                    ' w-20 bg-background-block rounded-md focus:border-transparent ' +
+                    ` ${className} w-20 bg-background-block rounded-md focus:border-transparent ` +
                     'focus:ring-2 focus:ring-input-border-active'
                 }
                 defaultValue={1}

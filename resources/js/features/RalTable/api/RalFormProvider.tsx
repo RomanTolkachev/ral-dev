@@ -10,7 +10,6 @@ interface IFormValues {
 
 export const CustomFormProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
-    console.log(DEFAULT_REQUEST)
     const [, getQuery] = useParamsCustom();
     const { data: filters } = useRalFilters();
 

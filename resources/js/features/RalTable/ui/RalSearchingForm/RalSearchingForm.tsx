@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from 'react'
+import { FunctionComponent, useEffect, useMemo, useState } from 'react'
 import { Preloader } from '@/Components/utils/Preloader'
 import { DropdownItem } from '@/Components/DropdownItem'
 import { MainButton } from '@/Components/Buttons/MainButton'
@@ -18,27 +18,33 @@ interface IProps {
 type IForm = Record<string, any>
 
 export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => {
-    const { data: filters, isPending } = useRalFilters()
-    const { handleSubmit, reset, control, setValue: setFormValue } = useFormContext()
-    const [prevQueries, setPrevQueries] = useState({})
-    const [setQuery] = useParamsCustom()
+    const { data: filters, isPending } = useRalFilters();
+    const { handleSubmit, reset, control, setValue: setFormValue } = useFormContext();
+    const [prevQueries, setPrevQueries] = useState({});
+    const [setQuery, getQuery] = useParamsCustom();
 
     // после получения фильтров записываем их для последующего сравнения
     useEffect(() => {
         setPrevQueries(control._defaultValues)
-    }, [control._defaultValues])
+    }, [control._defaultValues]);
+
+
+    // от данной переменной зависит, нужно ли перезаписывать состояния URL. Если query пустые на момент вызова onSubmit, то в историю добавится шаг.
+    const shouldReplace = useMemo<boolean>(() => {
+        return Object.keys(getQuery()).length ? true: false
+    }, [JSON.stringify(getQuery())]);
 
     // Тут проверяем должна ли сброситься страничка, затем обновляем query
     const submitHandler = (currentForm: IForm, submittedForm: IForm) => {
         if (isEqual(submittedForm, currentForm)) {
-            return
+            return;
         }
         if (isEqual(excludePaginationQueries(submittedForm), excludePaginationQueries(currentForm))) {
-            setQuery({ ...currentForm, page: currentForm.page })
+            setQuery({ ...currentForm, page: currentForm.page }, shouldReplace); // второй параметр true делает replace истории
         } else {
-            setFormValue('page', 1)
-            setQuery({ ...currentForm, page: 1 })
-            setPrevQueries({ ...currentForm, page: 1 })
+            setFormValue('page', 1);
+            setQuery({ ...currentForm, page: 1 }, shouldReplace); // второй параметр true делает replace истории
+            setPrevQueries({ ...currentForm, page: 1 });
         }
     }
 
@@ -59,8 +65,8 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => 
                 <MainButton color={'violet'} className={'mx-auto'}>
                     Применить
                 </MainButton>
-                <button onClick={() => reset()}>сбросить</button>
+                <button onClick={() =>reset()}>сбросить</button>
             </div>
         </form>
-    )
+    );
 }
