@@ -14,10 +14,6 @@ export const Toggle: FunctionComponent<IProps> = ({className}) => {
     );
 
     const controls = useAnimation()
-    const containerVariants = {
-        left: {justifyContent: "flex-start"},
-        right: {justifyContent: "flex-end"}
-    }
 
     useEffect(() => {
         if (localStorage.getItem("theme")) {

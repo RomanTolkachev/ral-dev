@@ -3,8 +3,8 @@ import { TPaginatedRal } from '@/types/ral'
 import qs from 'qs'
 import { ISearchingFormItem } from '@/types/searchingFilters'
 
-export const LOCAL_URL: 'http://127.0.0.1:8000/api' = 'http://127.0.0.1:8000/api'
-// export const LOCAL_URL: "/api" = "/api"
+// export const LOCAL_URL: 'http://127.0.0.1:8000/api' = 'http://127.0.0.1:8000/api'
+export const LOCAL_URL: "/api" = "/api"
 
 const axiosApi = axios.create({
     baseURL: LOCAL_URL,

@@ -1,15 +1,23 @@
-import React, {FunctionComponent, PropsWithChildren} from 'react';
+import { FunctionComponent, PropsWithChildren } from 'react';
+import { Toggle } from './Buttons/Toggle';
 
 interface IProps {
     className?: string
 }
 
-export const Header: FunctionComponent<PropsWithChildren<IProps>> = ({className, children}) => {
+export const Header: FunctionComponent<PropsWithChildren<IProps>> = ({ className, children }) => {
     return (
-        <div className={'p-2'}>
-            <header className={`${className} my-block p-2 bg-background-block text-text-primary`}>
-                {children}
-            </header>
-        </div>
+        <header className=' w-full grid grid-cols-[300px_1fr] grid-rows-[auto] text-text-primary'>
+            <div className='p-2'>
+                <div className='my-block bg-background-block'>первый блок</div>
+            </div>
+            <div className='p-2'>
+                <div className='my-block bg-background-block flex justify-between'>
+                    <span>справочники</span>
+                    <span>кабинет менеджера</span>
+                    <Toggle />
+                </div>
+            </div>
+        </header>
     );
 };

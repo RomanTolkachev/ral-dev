@@ -1,23 +1,29 @@
-import React, { FunctionComponent } from 'react'
+import { FunctionComponent } from 'react'
 
 interface IProps {
     className?: string
+    clickHandler?: (e: any) => void //TODO: тут нормально any?
     arrow?: boolean
     notFound?: boolean
     sun?: boolean
     moon?: boolean
     magnifyingGlass?: boolean
+    schedule?: boolean
+    alert?: boolean
 }
 
 export const SVG: FunctionComponent<IProps> = ({
     className,
+    clickHandler,
     arrow = false,
     notFound = false,
     sun = false,
     moon = false,
     magnifyingGlass = false,
+    schedule = false,
+    alert = false
 }) => {
-    if (!arrow && !notFound && !sun && !moon && !magnifyingGlass) {
+    if (!arrow && !notFound && !sun && !moon && !magnifyingGlass && !schedule && !alert) {
         return null
     }
     return (
@@ -188,6 +194,30 @@ export const SVG: FunctionComponent<IProps> = ({
                         strokeWidth="2"
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
+            )}
+            {
+                schedule && (
+                    <svg
+                        onClick={clickHandler}
+                        className={`${className}`}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M3 9H21M7 3V5M17 3V5M6 13H8M6 17H8M11 13H13M11 17H13M16 13H18M16 17H18M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z"
+                            stroke="currentColor"
+                            strokeWidth="1"
+                            strokeLinecap="round"
+                            strokeLinejoin="round" />
+                    </svg>
+                )
+            }
+            {alert && (
+
+                <svg className={`${className}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="1.92 1.92 20.208 20.16" width="100%" height="100%">
+                    <path strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" stroke="currentColor" d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" />
+                </svg>
+
             )}
         </>
     )

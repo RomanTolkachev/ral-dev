@@ -1,12 +1,16 @@
-import React, { FunctionComponent, memo, useState } from 'react'
+
+import { FunctionComponent, memo, useEffect, useState } from 'react'
 import { DropdownFilterButton } from '@/Components/Buttons/DropdownFilterButton'
 import { motion, Variants } from 'framer-motion'
 import { ISearchingFormItem } from '@/types/searchingFilters'
 import { InputCustom } from '@/Components/Inputs/InputCustom/InputCustom'
-import { CalendarInput } from '@/Components/Inputs/CalendarInput'
-import { useDispatchTyped } from '@/services/hooks/typedUseSelector'
-import { updatePage } from '@/services/slices/filters-slice'
+import { CalendarInput } from '@/Components/Inputs/CalendarInput/CalendarInput'
 import { CheckBoxCustom } from '@/Components/Inputs/CheckBoxCustom'
+import { isEqual, keys, values } from 'lodash'
+import { useFormContext } from 'react-hook-form'
+import useParamsCustom from '@/services/hooks/useParamsCustom'
+
+
 
 interface IProps {
     className?: string
@@ -38,9 +42,24 @@ const itemVariants: Variants = {
 
 export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, className }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const { watch, control } = useFormContext();
+    const inputName = inputData.header;
+    const [, getQuery] = useParamsCustom();
+    const queries = getQuery()
 
-    const dispatch = useDispatchTyped();
-    const setCurrentPageToOne = () => dispatch(updatePage(1));
+    // проверка изменилось ли поле в отличие от дефолтного значения
+    const [isDitry, setIsDirty] = useState<boolean>(keys(queries).includes(inputName));
+    useEffect(() => {
+        const { unsubscribe } = watch((value) => { /*почему-то value от сюда не цепляется, нужно его брать через control*/
+            if (control._defaultValues && control._defaultValues[inputName]) {
+                let defaultValue = control._defaultValues[inputName];
+                let currentValue = control._formValues[inputName]
+                isEqual(defaultValue, currentValue) ? setIsDirty(false) : setIsDirty(true)
+            }
+        });
+        return () => unsubscribe();
+    }, [watch, control._defaultValues, control._formValues])
+
 
     return (
         <motion.div
@@ -50,18 +69,15 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
             className={`${className} h-fit`}>
             <DropdownFilterButton
                 clickHandler={() => setIsOpen(!isOpen)}
-                className={'mb-2'}
+                className={'mb-2 relative'}
                 isOpen={isOpen}
-                children={inputData.header}
+                hasAlert={isDitry}
+                children={inputName}
             />
             <motion.div className={'overflow-hidden'} variants={listVariants}>
-                {inputData.sortValues.type === 'huge' && (
-                    <InputCustom setFirstPage={setCurrentPageToOne} inputData={inputData} />
-                )}
+                {inputData.sortValues.type === 'huge' && <InputCustom inputData={inputData} />}
                 {inputData.sortValues.type === 'date' && <CalendarInput inputData={inputData} />}
-                {inputData.sortValues.type === 'checkBox' && (
-                    <CheckBoxCustom inputData={inputData} setFirstPage={setCurrentPageToOne} />
-                )}
+                {inputData.sortValues.type === 'checkBox' && <CheckBoxCustom inputData={inputData} />}
             </motion.div>
         </motion.div>
     )

@@ -11,10 +11,9 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         @viteReactRefresh
-        @vite(['resources/js/app.tsx', "resources/js/Layouts/{$page['component']}.tsx"])
-        @inertiaHead
+        @vite('resources/js/app.tsx')
     </head>
     <body class="antialiased">
-        @inertia
+        <div id=app></div>
     </body>
 </html>

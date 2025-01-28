@@ -1,53 +1,37 @@
 import { Header } from '@/Components/Header'
-import { MainButton } from '@/Components/Buttons/MainButton'
-import { TableSearchingForm } from '@/Components/TableSerachingForm/TableSearchingForm'
-import { Table } from '@/Components/Table/Table'
-import { Toggle } from '@/Components/Buttons/Toggle'
-import { DevTool } from '@hookform/devtools'
-import { useFormContext } from 'react-hook-form'
+import { Navigate, Route, Routes } from 'react-router'
+import { TableLayout } from './TableLayout'
+import { Raltable } from '@/features/RalTable/ui/RalTable'
+import { CustomFormProvider } from '@/features/RalTable/api/RalFormProvider'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { NotFound } from '@/Components/utils/404'
+
+const queryClient = new QueryClient();
 
 function Main() {
-    const { control } = useFormContext()
+
     return (
-        <>
-            <div
-                className={
-                    'h-svh mah-h-svh overflow-hidden bg-background flex w-screen font-Inter transition-colors duration-200'
-                }>
-                <section
-                    className={
-                        'bg-background shrink-0 grid grid-rows-[auto_1fr_auto] !grid-cols-[300px] h-full overflow-hidden'
-                    }>
-                    <Header>заголовок</Header>
-                    <div className={'p-2 flex flex-col grow shrink overflow-hidden'}>
-                        <div className={'my-block bg-background-block pt-6 flex grow overflow-hidden'}>
-                            <TableSearchingForm className={'w-full'} />
-                        </div>
-                    </div>
-                </section>
-                <section className={'shrink grow flex flex-col'}>
-                    <Header className={'mb-6'}>
-                        <nav className={'flex shrink grow'}>
-                            <h2>тут будет заголовок раздела</h2>
-                            <ul className={'flex shrink grow justify-around'}>
-                                <li>справочники</li>
-                                <li>кабинет менеджера</li>
-                            </ul>
-                            <div className={'pr-24'}>
-                                <Toggle />
-                            </div>
-                        </nav>
-                    </Header>
-                    <div className={'flex justify-end gap-3 pr-10 mb-2'}>
-                        <MainButton color={'red'}>Скрыть истекшие</MainButton>
-                        <MainButton color={'white'}>Выгрузить</MainButton>
-                        <MainButton color={'violet'}>изменить тему</MainButton>
-                    </div>
-                    <Table />
-                </section>
-                <DevTool control={control} />
-            </div>
-        </>
+        <div
+            className={
+                'max-h-svh h-svh flex flex-col overflow-hidden bg-background w-screen font-Inter transition-colors duration-200'
+            }>
+            <Header />
+            <Routes>
+                <Route path="/" element={<Navigate to="/directory/ral" replace/>}/>
+                <Route path="/directory"element={<TableLayout />}>
+                    <Route path="ral" element={ 
+                        <QueryClientProvider client={queryClient}>
+                            <ReactQueryDevtools initialIsOpen={true} />
+                            <CustomFormProvider>
+                                <Raltable />
+                            </CustomFormProvider>
+                        </QueryClientProvider>
+                    }/> 
+                </Route>
+                <Route path="*" element={<NotFound />} />
+            </Routes>
+        </div>
     )
 }
 

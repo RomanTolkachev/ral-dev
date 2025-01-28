@@ -2,8 +2,9 @@ import { ChangeEvent, FunctionComponent } from 'react'
 import { ISearchingFormItem } from '@/types/searchingFilters'
 import { Control, Controller, useFormContext } from 'react-hook-form'
 import { SVG } from '@/Components/utils/SVG.tsx'
-import split from './features/split'
-import handleValue from './features/handleValue'
+import splitValue from './features/splitValue.ts'
+import joinValue from './features/joinValue.ts'
+import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
 
 interface IProps {
     className?: string
@@ -12,15 +13,24 @@ interface IProps {
     setFirstPage?: any
 }
 
+/* Значения передаваемые из данного input разбиваются в массив для отправки на БЭК, поэтому в handler значение обернуто в
+функцию splitValue. Функция joinValue нужна для того, чтобы при обновлении страницы, корректно собрать значение из
+query параметров обратно в input*/
+
 export const InputCustom: FunctionComponent<IProps> = ({ className, inputData }) => {
+
+    const [, getQuery] = useParamsCustom()
+    
     const handleChange = (onChange: (...args: any[]) => void) => {
         return (e: ChangeEvent<HTMLInputElement>) => {
             const value = e.target.value
-            onChange(split(value))
+            onChange(splitValue(value))
         }
     }
 
-    const { control } = useFormContext()
+    const { control } = useFormContext();
+
+    const queries = getQuery();
 
     return (
         <Controller
@@ -31,7 +41,7 @@ export const InputCustom: FunctionComponent<IProps> = ({ className, inputData })
                     <input
                         type="text"
                         id={inputData.header}
-                        value={handleValue(value)}
+                        value={joinValue(value) || ''}
                         placeholder={''}
                         onChange={handleChange(onChange)}
                         className={`ring-transparent
