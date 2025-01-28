@@ -4,10 +4,7 @@ import { Control, Controller, useFormContext } from 'react-hook-form'
 import { SVG } from '@/Components/utils/SVG.tsx'
 import splitValue from './features/splitValue.ts'
 import joinValue from './features/joinValue.ts'
-<<<<<<< HEAD
 import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
-=======
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9
 
 interface IProps {
     className?: string
@@ -21,12 +18,9 @@ interface IProps {
 query параметров обратно в input*/
 
 export const InputCustom: FunctionComponent<IProps> = ({ className, inputData }) => {
-<<<<<<< HEAD
 
     const [, getQuery] = useParamsCustom()
     
-=======
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9
     const handleChange = (onChange: (...args: any[]) => void) => {
         return (e: ChangeEvent<HTMLInputElement>) => {
             const value = e.target.value
@@ -34,13 +28,9 @@ export const InputCustom: FunctionComponent<IProps> = ({ className, inputData })
         }
     }
 
-<<<<<<< HEAD
     const { control } = useFormContext();
 
     const queries = getQuery();
-=======
-    const { control } = useFormContext()
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9
 
     return (
         <Controller
@@ -73,8 +63,4 @@ export const InputCustom: FunctionComponent<IProps> = ({ className, inputData })
                 </div>
             )}></Controller>
     )
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9

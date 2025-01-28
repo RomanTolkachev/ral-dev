@@ -31,11 +31,7 @@ class TableFilterService
         }
         $actualFilters = ['new_status_AL', 'nameType', 'status_change_date', 'regDate', 'fullText']; // тут актуальные фильтры
 
-<<<<<<< HEAD
         $filters = array_filter($filters, function ($item) use ($actualFilters) {
-=======
-        $filters = array_filter($filters, function($item) use ($actualFilters) {
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9
             return in_array($item->header, $actualFilters);
         });
 

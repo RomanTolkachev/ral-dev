@@ -1,10 +1,6 @@
 import { FunctionComponent, useEffect, useMemo, useState } from 'react'
 import { Preloader } from '@/Components/utils/Preloader'
-<<<<<<< HEAD
-
-=======
 import { DropdownItem } from '@/Components/DropdownItem'
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9
 import { MainButton } from '@/Components/Buttons/MainButton'
 import { useFormContext } from 'react-hook-form'
 import { useRalFilters } from '@/services/hooks/useRalFilters.ts'
@@ -12,10 +8,6 @@ import excludePaginationQueries from '@/shared/excludePaginationQueries'
 import { isEqual } from 'lodash'
 import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
 import DEFAULT_REQUEST from '../../config'
-<<<<<<< HEAD
-import { DropdownItem } from '@/Components/DropdownItem'
-=======
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9
 
 DEFAULT_REQUEST
 
@@ -39,11 +31,7 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => 
 
     // от данной переменной зависит, нужно ли перезаписывать состояния URL. Если query пустые на момент вызова onSubmit, то в историю добавится шаг.
     const shouldReplace = useMemo<boolean>(() => {
-<<<<<<< HEAD
         return Object.keys(getQuery()).length ? true : false
-=======
-        return Object.keys(getQuery()).length ? true: false
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9
     }, [JSON.stringify(getQuery())]);
 
     // Тут проверяем должна ли сброситься страничка, затем обновляем query
@@ -77,12 +65,9 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => 
                 <MainButton color={'violet'} className={'mx-auto'}>
                     Применить
                 </MainButton>
-<<<<<<< HEAD
                 <button type='reset' onClick={() => reset()}>сбросить</button>
-=======
-                <button onClick={() =>reset()}>сбросить</button>
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9
-            </div>
-        </form>
+
+            </div >
+        </form >
     );
 }

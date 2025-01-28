@@ -19,13 +19,6 @@ export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> 
     isOpen,
     hasAlert
 }) => {
-<<<<<<< HEAD
-=======
-const getRandom = () => {
-    Math.floor(Math.random() * (30 - 10 + 1)) + 10
-    console.log(Math.floor(Math.random() * (30 - 10 + 1)) + 10)
-}
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9
 
     return (
         <div

@@ -1,26 +1,16 @@
-<<<<<<< HEAD
+
 import { FunctionComponent, memo, useEffect, useState } from 'react'
-=======
-import React, { FunctionComponent, memo, useEffect, useState } from 'react'
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9
 import { DropdownFilterButton } from '@/Components/Buttons/DropdownFilterButton'
 import { motion, Variants } from 'framer-motion'
 import { ISearchingFormItem } from '@/types/searchingFilters'
 import { InputCustom } from '@/Components/Inputs/InputCustom/InputCustom'
 import { CalendarInput } from '@/Components/Inputs/CalendarInput/CalendarInput'
-<<<<<<< HEAD
 import { CheckBoxCustom } from '@/Components/Inputs/CheckBoxCustom'
 import { isEqual, keys, values } from 'lodash'
 import { useFormContext } from 'react-hook-form'
 import useParamsCustom from '@/services/hooks/useParamsCustom'
-=======
-import { useDispatchTyped } from '@/services/hooks/typedUseSelector'
-import { updatePage } from '@/services/slices/filters-slice'
-import { CheckBoxCustom } from '@/Components/Inputs/CheckBoxCustom'
-import { isEqual } from 'lodash'
-import { useFormContext } from 'react-hook-form'
-import { SVG } from './utils/SVG'
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9
+
+
 
 interface IProps {
     className?: string
@@ -52,7 +42,6 @@ const itemVariants: Variants = {
 
 export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, className }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-<<<<<<< HEAD
     const { watch, control } = useFormContext();
     const inputName = inputData.header;
     const [, getQuery] = useParamsCustom();
@@ -65,29 +54,12 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
             if (control._defaultValues && control._defaultValues[inputName]) {
                 let defaultValue = control._defaultValues[inputName];
                 let currentValue = control._formValues[inputName]
-=======
-    const {watch, formState, control} = useFormContext();
-    const inputName = inputData.header;
-
-    // проверка изменилось ли поле в отличие от дефолтного значения
-    const [isDitry, setIsDirty] = useState<boolean>(false);
-    useEffect(() => {
-        const { unsubscribe } = watch((value) => {
-            if (control._defaultValues && control._defaultValues[inputName]) {
-                let defaultValue = control._defaultValues[inputName];
-                let currentValue = value[inputName]
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9
                 isEqual(defaultValue, currentValue) ? setIsDirty(false) : setIsDirty(true)
             }
         });
         return () => unsubscribe();
-<<<<<<< HEAD
     }, [watch, control._defaultValues, control._formValues])
 
-=======
-    }, [watch, control._defaultValues])
-    
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9
 
     return (
         <motion.div
@@ -102,7 +74,6 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
                 hasAlert={isDitry}
                 children={inputName}
             />
-<<<<<<< HEAD
             <motion.div className={'overflow-hidden'} variants={listVariants}>
                 {inputData.sortValues.type === 'huge' && <InputCustom inputData={inputData} />}
                 {inputData.sortValues.type === 'date' && <CalendarInput inputData={inputData} />}
@@ -111,18 +82,3 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
         </motion.div>
     )
 })
-=======
-
-            <motion.div className={'overflow-hidden'} variants={listVariants}>
-                {inputData.sortValues.type === 'huge' && (
-                    <InputCustom inputData={inputData} />
-                )}
-                {inputData.sortValues.type === 'date' && <CalendarInput inputData={inputData} />}
-                {inputData.sortValues.type === 'checkBox' && (
-                    <CheckBoxCustom inputData={inputData} />
-                )}
-            </motion.div>
-        </motion.div>
-    )
-})
->>>>>>> 5cd68ef02ab17dbac86ecbef952d4fff31cc9af9
