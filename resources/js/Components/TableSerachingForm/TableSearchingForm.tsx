@@ -27,6 +27,7 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => 
 
     // Тут проверяем должна ли сброситься страничка, затем обновляем query
     const submitHandler = (currentForm: IForm, submittedForm: IForm) => {
+        console.log("хэндлер сработал")
         if (isEqual(submittedForm, currentForm)) {
             return
         }
@@ -53,8 +54,8 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => 
                 )}
             </div>
             <div className={'sticky bottom-0 bg-background-block flex flex-col py-6 space-y-4 gap-2'}>
-                <MainButton color={'violet'} className={'mx-auto'}>
-                    Применить
+                <MainButton isDisabled={true} color='violet' className={'mx-auto'}>
+                    Применить dfg
                 </MainButton>
                 <button onClick={() => reset()}>сбросить</button>
             </div>
