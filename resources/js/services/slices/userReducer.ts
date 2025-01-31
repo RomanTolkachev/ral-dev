@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit";
+
 type TRalTableColumns =
     'link' |
     'nameType' |
@@ -47,3 +49,13 @@ export const userReducer = (
         }
     }
 };
+
+const userState = createSlice({
+    name: 'user',
+    initialState,
+    reducers: {
+
+    }
+})
+
+export default userState.reducer
