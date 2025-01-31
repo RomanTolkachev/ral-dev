@@ -1,7 +1,7 @@
 import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
 import { FunctionComponent, PropsWithChildren, useEffect } from 'react'
-import { useRalFilters } from '@/services/hooks/useRalFilters.ts'
-import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
+import { useRalFilters } from '@/features/ralTable/api/useRalFilters'
+import useParamsCustom from '@/shared/query/useParamsCustom'
 
 interface IFormValues {
     [key: string]: any

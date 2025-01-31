@@ -1,10 +1,10 @@
 import { ChangeEvent, FunctionComponent } from 'react'
-import { ISearchingFormItem } from '@/types/searchingFilters'
+import { ISearchingFormItem } from '@/shared/types/searchingFilters.js'
 import { Control, Controller, useFormContext } from 'react-hook-form'
 import { SVG } from '@/Components/utils/SVG.tsx'
 import splitValue from './features/splitValue.ts'
 import joinValue from './features/joinValue.ts'
-import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
+import useParamsCustom from '@/shared/query/useParamsCustom.ts'
 
 interface IProps {
     className?: string

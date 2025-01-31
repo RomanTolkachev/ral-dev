@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 
-export const getHeaderName = (accessorKey: ReactNode | undefined): string => {
+export const translateHeaderName = (accessorKey: ReactNode | undefined): string => {
     switch (accessorKey) {
         case 'link':
             return 'ссылка'
@@ -31,11 +31,13 @@ export const getHeaderName = (accessorKey: ReactNode | undefined): string => {
         case 'NPstatus':
             return 'статус НП'
         case 'id':
-            return 'айди'
+            return 'id'
         case 'NP_status_change_date':
             return 'дата изменения статуса'
         case 'fullText':
             return 'поиск'
+        case 'подробнее':
+            return ''
         default:
             return 'дефолт'
     }

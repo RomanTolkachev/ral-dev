@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchRalFilters } from '@/services/api.ts'
+import { fetchRalFilters } from '@/shared/api/api'
 
 export function useRalFilters() {
     const { data, isPending } = useQuery({

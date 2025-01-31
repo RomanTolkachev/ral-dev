@@ -2,7 +2,7 @@ import '../css/app.css'
 import './bootstrap'
 
 import { configureStore } from '@reduxjs/toolkit'
-import { rootReducer } from '@/services/slices/root-reducer'
+import { rootReducer } from '@/features/store/root-reducer'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router'
 import ReactDOM from "react-dom/client"

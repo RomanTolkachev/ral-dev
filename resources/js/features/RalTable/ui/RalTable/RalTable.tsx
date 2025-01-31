@@ -1,6 +1,6 @@
 import { MainButton } from "@/Components/Buttons/MainButton"
 import { Table } from "@/Components/Table/Table"
-import { RalSearchingForm } from "@/features/RalTable/ui/RalSearchingForm/RalSearchingForm"
+import { RalSearchingForm } from "@/features/ralTable/ui/RalSearchingForm/RalSearchingForm"
 import { DevTool } from "@hookform/devtools"
 import { useFormContext } from "react-hook-form"
 

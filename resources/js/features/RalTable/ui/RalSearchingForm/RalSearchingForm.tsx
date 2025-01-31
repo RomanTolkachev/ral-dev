@@ -3,13 +3,9 @@ import { Preloader } from '@/Components/utils/Preloader'
 import { DropdownItem } from '@/Components/DropdownItem'
 import { MainButton } from '@/Components/Buttons/MainButton'
 import { useFormContext } from 'react-hook-form'
-import { useRalFilters } from '@/services/hooks/useRalFilters.ts'
-import excludePaginationQueries from '@/shared/excludePaginationQueries'
+import { useRalFilters } from '@/features/ralTable/api/useRalFilters'
 import { isEqual } from 'lodash'
-import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
-import DEFAULT_REQUEST from '../../config'
-
-DEFAULT_REQUEST
+import useParamsCustom from '@/shared/query/useParamsCustom'
 
 interface IProps {
     className?: string

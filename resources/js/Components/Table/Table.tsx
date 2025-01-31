@@ -2,25 +2,36 @@ import { FunctionComponent, ReactNode, useEffect, useMemo, useRef } from 'react'
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { Preloader } from '@/Components/utils/Preloader'
 import { SVG } from '@/Components/utils/SVG'
-import { useRalQuery } from '@/services/hooks/useRalQuery'
-import { getHeaders } from '@/shared/getHeaders'
-import { IRalItem } from '@/types/ral'
-import { getHeaderName } from '@/shared/getHeaderName.ts'
+import { useRalQuery } from '@/features/ralTable/api/useRalQuery'
+import { getHeaders } from '@/Components/Table/features/getHeaders'
+import { IRalItem } from '@/shared/types/ral'
+import { translateHeaderName } from '@/Components/Table/features/translateHeaderName'
 import { PageInput } from '@/Components/Inputs/PageInput.tsx'
-import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
+import useParamsCustom from '@/shared/query/useParamsCustom'
 import { isEmpty } from 'lodash'
-import DEFAULT_REQUEST from '@/features/RalTable/config'
-import RalCell from '@/features/RalTable/ui/RalTable/Cell/RalCell'
+import DEFAULT_REQUEST from '@/features/ralTable/config'
+import RalCell from '@/features/ralTable/ui/RalTable/Cell/RalCell'
+import { useSelectorTyped } from '@/features/store/typedUseSelector'
 
 interface IProps {
     className?: string
 }
 
-export const Table: FunctionComponent<IProps> = () => {
-    const [, getQuery] = useParamsCustom()
-    const queries = isEmpty(getQuery()) ? DEFAULT_REQUEST : getQuery()
+interface TQueries extends Record<string, any> {
+    page: number,
+    perPage: number,
+    status_change_date: string[]
+    user_columns?: string[]
+}
 
-    const { data: ralData, isPending } = useRalQuery(queries);
+export const Table: FunctionComponent<IProps> = () => {
+    const [, getQuery] = useParamsCustom();
+    const userColumns = useSelectorTyped(state => state.userState.settings.ralTableColumns); // тут дальше в стейте будем хранить настройки для столбца юзера
+    
+    const queries = isEmpty(getQuery()) ? DEFAULT_REQUEST : getQuery();
+    queries.user_columns = userColumns; // к дефолтному запросу добавляем колонки пользователя
+
+    const { data: ralData, isPending } = useRalQuery(queries); //TODO: тут нужно вынести выше и через пропсы давать query
 
     const headers = useMemo(() => {
         return ralData ? ["подробнее", ...getHeaders(ralData.data)] : []
@@ -32,7 +43,7 @@ export const Table: FunctionComponent<IProps> = () => {
             colData = headers.map((header) => {
                 return {
                     accessorKey: header,
-                    header: getHeaderName(header),
+                    header: translateHeaderName(header),
                     cell: (props: any) => {return <>{props.getValue()}</>;},
                     enableResizing: true,
                 }
@@ -88,7 +99,7 @@ export const Table: FunctionComponent<IProps> = () => {
                         ) : Object.keys(tableData).length !== 0 ? (
                             <table
                                 style={{ width: table.getTotalSize() }}
-                                className={`min-h-full min-w-full max-h-full text-sm table-fixed rounded-t-md [&_td]:border-r [&_td]:border-r-filter-dropdown-button`}>
+                                className={`min-h-full min-w-full max-h-full text-sm table-auto rounded-t-md [&_td]:border-r [&_td]:border-r-filter-dropdown-button`}>
                                 <thead className={'select-none relative text-header-text font-medium'}>
                                     <tr className={'text-header-text text-nowrap'}>
                                         {table.getHeaderGroups()[0].headers.map((header) => {
@@ -97,7 +108,7 @@ export const Table: FunctionComponent<IProps> = () => {
                                                     style={{
                                                         width: header.getSize(),
                                                     }}
-                                                    className={`sticky bg-row-even top-0 p-2 overflow-hidden`}
+                                                    className={`sticky z-[1] bg-row-even top-0 p-2 overflow-hidden`}
                                                     key={header.id}>
                                                     <span className={''}>
                                                         {header.column.columnDef.header as ReactNode}

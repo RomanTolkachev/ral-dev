@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { TPaginatedRal } from '@/types/ral'
+import { TPaginatedRal } from '@/shared/types/ral'
 import qs from 'qs'
-import { ISearchingFormItem } from '@/types/searchingFilters'
+import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 
 // export const LOCAL_URL: 'http://127.0.0.1:8000/api' = 'http://127.0.0.1:8000/api'
 export const LOCAL_URL: "/api" = "/api"

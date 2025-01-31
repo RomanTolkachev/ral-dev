@@ -69,12 +69,12 @@ const Modal: React.FunctionComponent<IModalProps> = ({
         >
             <div
                 className={
-                    "relative z-[12] my-auto flex h-full max-h-full w-full items-center overflow-hidden rounded-xl bg-background py-10 sm:pb-10 lg:h-fit lg:w-[700px] lg:py-20"
+                    "relative z-[12] my-auto flex h-[80%] items-center overflow-hidden rounded-xl bg-background py-10 sm:pb-10 w-[700px] lg:py-20"
                 }
                 ref={innerRef}
             >
                 <div
-                    className={`max-h-[calc(100dvh-5rem)] w-full overflow-y-auto lg:max-h-[calc(100svh-7.5rem)]`}
+                    className={` w-full overflow-y-auto h-full`}
                 >
                     {children}
                 </div>
@@ -82,7 +82,7 @@ const Modal: React.FunctionComponent<IModalProps> = ({
                     initial={{ scale: 1.01 }}
                     whileHover={{ scale: 1.07 }}
                     className={
-                        "absolute right-[-10px] top-[-12px] h-[45px] w-[45px] p-3 text-table-base hover:cursor-pointer lg:right-[7px] lg:top-[7px]"
+                        "absolute h-[45px] w-[45px] p-3 text-table-base hover:cursor-pointer right-[7px] top-[7px]"
                     }
                     onClick={closeModal}
                 >

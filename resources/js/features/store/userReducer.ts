@@ -17,7 +17,8 @@ type TRalTableColumns =
     'regDate' |
     'applicantINN' |
     'RegNumber' |
-    'status_change_date'
+    'status_change_date' |
+    'id'
 
 export interface IUserReducer {
     user: any;
@@ -35,6 +36,10 @@ const initialState = {
             'link',
             'status_change_date',
             'new_status_AL',
+            'id',
+            'RegNumber',
+            'applicantINN',
+            'fullName',
         ] as Array<TRalTableColumns>
     }
 };

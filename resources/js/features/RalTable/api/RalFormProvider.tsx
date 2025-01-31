@@ -1,10 +1,10 @@
 import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
 import { FunctionComponent, PropsWithChildren, useEffect, useMemo } from 'react'
-import { useRalFilters } from '@/services/hooks/useRalFilters.ts'
-import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
+import { useRalFilters } from '@/features/ralTable/api/useRalFilters'
+import useParamsCustom from '@/shared/query/useParamsCustom'
 import DEFAULT_REQUEST from '../config'
 import { isEmpty, keys, values } from 'lodash'
-import { ISearchingFormItem } from '@/types/searchingFilters'
+import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 
 interface IFormValues {
     [key: string]: any

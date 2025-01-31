@@ -12,7 +12,9 @@ class GetRalController extends Controller
 {
     public function __invoke(RalFilter $filter, GetRalRequest $request): JsonResponse
     {
-        $ral = RalShortInfoMock::filter($filter)->paginate(
+
+        $userColumns = $request->query('user_columns');
+        $ral = RalShortInfoMock::filter($filter)->select($userColumns)->paginate(
             page: $request->page,
             perPage: $request->perPage,
         );

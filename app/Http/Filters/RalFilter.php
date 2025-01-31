@@ -6,7 +6,6 @@ use App\Models\RalShortInfoMock;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 
-use function PHPUnit\Framework\isEmpty;
 
 class RalFilter extends AbstractFilter
 {
@@ -66,15 +65,17 @@ class RalFilter extends AbstractFilter
 
     protected function statusChangeDate(array $value): Builder
     {
-        if (empty($value[0]) && empty($value[1])) {
-            return $this->builder;
-        } elseif (empty($value[0]) && !empty($value[1])) {
-            return $this->builder->where('status_change_date', '<', $value[1]);
-        } elseif (!empty($value[0]) && empty($value[1])) {
-            return $this->builder->where('status_change_date', '>', $value[0]);
-        } else {
-            return $this->builder->whereBetween('status_change_date', $value);
+        switch (true) {
+            case empty($value[0]) && empty($value[1]): 
+                return $this->builder;
+            case (empty($value[0]) && !empty($value[1])):
+                return $this->builder->where('status_change_date', '<', $value[1]);
+            case (!empty($value[0]) && empty($value[1])):
+                return $this->builder->where('status_change_date', '>', $value[0]);
+            default: 
+                return $this->builder->whereBetween('status_change_date', $value);
         }
+
         // return $this->builder->whereRaw('status_change_date BETWEEN CONVERT(datetime, ?) AND CONVERT(datetime, ?)', $value);
         
         // для msSql

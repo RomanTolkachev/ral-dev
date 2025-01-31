@@ -1,5 +1,5 @@
 import highlight from "@/Components/Table/features/highlightText"
-import useParamsCustom from "@/services/hooks/useParamsCustom"
+import useParamsCustom from "@/shared/query/useParamsCustom"
 import { Cell, flexRender } from "@tanstack/react-table"
 import { motion } from "motion/react"
 import { FunctionComponent } from "react"
@@ -26,7 +26,7 @@ const RalCell: FunctionComponent<IProps> = ({ cellData }) => {
                     cellData.column.id === "подробнее"
                         ? <motion.span
                             className="inline-block"
-                            style={{scale: 1.01}}
+                            style={{scale: 1.01, zIndex: -10}}
                             initial={{ scale: 1.01 }} 
                             whileHover={{ scale: 1.05 }}
                         >

@@ -1,4 +1,4 @@
-import { axiosApi } from "@/services/api";
+import { axiosApi } from "@/shared/api/api";
 
 function fetchCertificationBody(certificationBodyId: string | number) {
     return axiosApi.get<Record<string, any>>('/ral/certification_body', {

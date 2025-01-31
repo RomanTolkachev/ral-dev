@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchRalQuery } from '@/services/api'
+import { fetchRalQuery } from '@/shared/api/api'
 import { objectToString } from '@/shared/objectToString'
 
 export function useRalQuery(queries: Record<string, any>) {

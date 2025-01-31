@@ -2,7 +2,7 @@ import React, {FunctionComponent, ReactNode, useState} from 'react';
 import Datepicker from "tailwind-datepicker-react";
 import {IOptions} from "tailwind-datepicker-react/types/Options";
 import {Control, Controller, FieldValues, UseFormRegister} from "react-hook-form";
-import {ISearchingFormItem} from "@/types/searchingFilters";
+import {ISearchingFormItem} from "@/shared/types/searchingFilters";
 
 interface IProps {
     className?: string

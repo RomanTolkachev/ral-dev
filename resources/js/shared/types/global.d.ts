@@ -1,9 +1,9 @@
 import { PageProps as InertiaPageProps } from '@inertiajs/core';
 import { AxiosInstance } from 'axios';
 import { route as ziggyRoute } from 'ziggy-js';
-import { PageProps as AppPageProps } from './';
+import { PageProps as AppPageProps } from '.';
 import { Action, ThunkAction } from '@reduxjs/toolkit';
-import { IRootState } from '@/services/slices/root-reducer';
+import { IRootState } from '@/features/store/root-reducer';
 
 declare global {
     interface Window {

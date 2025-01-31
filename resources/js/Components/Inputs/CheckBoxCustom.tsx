@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react'
 import { v4 } from 'uuid'
-import { ISearchingFormItem } from '@/types/searchingFilters'
+import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import { Controller, useFormContext } from 'react-hook-form'
 
 

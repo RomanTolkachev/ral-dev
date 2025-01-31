@@ -1,11 +1,11 @@
 import { ChangeEvent, FunctionComponent, useEffect, useMemo, useRef, useState } from 'react'
 import { Control, Controller, FieldValues, useFormContext, UseFormRegister } from 'react-hook-form'
-import { ISearchingFormItem } from '@/types/searchingFilters'
-import useParamsCustom from '@/services/hooks/useParamsCustom'
+import { ISearchingFormItem } from '@/shared/types/searchingFilters'
+import useParamsCustom from '@/shared/query/useParamsCustom'
 import { isEqual } from 'lodash'
 import isStartLessEnd from './features/isStartLessEnd'
 import { SVG } from '@/Components/utils/SVG'
-import DEFAULT_REQUEST from '@/features/RalTable/config'
+import DEFAULT_REQUEST from '@/features/ralTable/config'
 
 
 interface IProps {

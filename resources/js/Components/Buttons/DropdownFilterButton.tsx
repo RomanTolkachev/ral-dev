@@ -1,6 +1,6 @@
 import { FunctionComponent, PropsWithChildren } from 'react'
 import { SVG } from '@/Components/utils/SVG'
-import { getHeaderName } from '@/shared/getHeaderName.ts'
+import { translateHeaderName } from '@/Components/Table/features/translateHeaderName'
 import { AnimatePresence, motion } from 'motion/react'
 
 interface IProps {
@@ -29,7 +29,7 @@ export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> 
                 shadow-md select-none justify-center items-center
                 flex rounded-2xl pl-5 py-3 relative pr-[3.5rem]
                 text-center border border-filter-dropdown-button-border`}>
-            <span>{getHeaderName(children)}</span>
+            <span>{translateHeaderName(children)}</span>
             <span
                 className={`${isOpen ? '-rotate-180' : '-rotate-90'} transition-all duration-200 w-6
                     absolute right-0 top-1/2 -translate-y-1/2 -translate-x-1/2 p-1`}>

@@ -1,15 +1,15 @@
 import { Header } from '@/Components/Header'
 import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router'
 import { TableLayout } from './TableLayout'
-import { Raltable } from '@/features/RalTable/ui/RalTable/RalTable'
-import { CustomFormProvider } from '@/features/RalTable/api/RalFormProvider'
+import { Raltable } from '@/features/ralTable/ui/RalTable/RalTable'
+import { CustomFormProvider } from '@/features/ralTable/api/RalFormProvider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { NotFound } from '@/Components/utils/404'
 import Modal from '@/Components/modal/Modal'
 import { AnimatePresence } from 'motion/react'
 import { memo, useEffect } from 'react'
-import { RalModal } from '@/features/RalModal/ui/RalModal'
+import { RalModal } from '@/features/ralModal/ui/RalModal'
 
 const queryClient = new QueryClient();
 
