@@ -1,6 +1,6 @@
 import { MainButton } from "@/Components/Buttons/MainButton"
 import { Table } from "@/Components/Table/Table"
-import { TableSearchingForm } from "@/features/RalTable/ui/RalSearchingForm/RalSearchingForm"
+import { RalSearchingForm } from "@/features/RalTable/ui/RalSearchingForm/RalSearchingForm"
 import { DevTool } from "@hookform/devtools"
 import { useFormContext } from "react-hook-form"
 
@@ -16,7 +16,7 @@ export const Raltable = () => {
                 }>
                 <div className={'p-2 flex flex-col grow shrink overflow-hidden'}>
                     <div className={'my-block bg-background-block pt-6 flex grow overflow-hidden'}>
-                        <TableSearchingForm className={'w-full'} />
+                        <RalSearchingForm className={'w-full'} />
                     </div>
                 </div>
             </section>

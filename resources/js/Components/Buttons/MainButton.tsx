@@ -37,7 +37,7 @@ export const MainButton: FunctionComponent<PropsWithChildren<IProps>> = ({ class
                 scale: 1.03,
                 boxShadow: "0px 5px 4px 0px rgba(0, 0, 0, 0.2)",
                 cursor: "pointer"
-            } :{
+            } : {
                 scale: 1.01,
                 cursor: "not-allowed"
             }}

@@ -17,7 +17,7 @@ interface IProps {
 
 type IForm = Record<string, any>
 
-export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => {
+export const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
     const { data: filters, isPending } = useRalFilters();
     const { handleSubmit, reset, control, setValue: setFormValue, formState} = useFormContext();
     const [prevQueries, setPrevQueries] = useState({});
@@ -25,14 +25,12 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => 
 
     // после получения фильтров записываем их для последующего сравнения
     useEffect(() => {
-        console.log("зашли в эффект", control._defaultValues)
         setPrevQueries(control._defaultValues)
         return () => {setPrevQueries(getQuery())}
     }, [control._defaultValues]);
 
     // изменяем prevForm для сравнения после каждой отправки
     useEffect(() => {
-        console.log(getQuery())
         setPrevQueries(getQuery())
     }, [formState.submitCount, JSON.stringify(getQuery())])
 
@@ -70,7 +68,7 @@ export const TableSearchingForm: FunctionComponent<IProps> = ({ className }) => 
                     <Preloader widthStyles={'w-16'} />
                 ) : (
                     filters?.map((filterItem, key) => {
-                        return <DropdownItem inputData={filterItem} key={key} />
+                        return <DropdownItem inputData={filterItem} key={`ddi-${key}`} />
                     })
                 )}
             </div>

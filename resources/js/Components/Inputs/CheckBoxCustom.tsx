@@ -30,7 +30,7 @@ export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData
                 const id = v4()
                 return (
                     <Controller
-                        key={key}
+                        key={`cb-${key}`}
                         name={inputName}
                         control={control}
                         render={({ field: {onChange, value} }) => (

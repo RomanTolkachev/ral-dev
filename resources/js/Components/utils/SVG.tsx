@@ -10,6 +10,7 @@ interface IProps {
     magnifyingGlass?: boolean
     schedule?: boolean
     alert?: boolean
+    escape?: boolean
 }
 
 export const SVG: FunctionComponent<IProps> = ({
@@ -21,9 +22,10 @@ export const SVG: FunctionComponent<IProps> = ({
     moon = false,
     magnifyingGlass = false,
     schedule = false,
-    alert = false
+    alert = false,
+    escape = false
 }) => {
-    if (!arrow && !notFound && !sun && !moon && !magnifyingGlass && !schedule && !alert) {
+    if (!arrow && !notFound && !sun && !moon && !magnifyingGlass && !schedule && !alert && !escape) {
         return null
     }
     return (
@@ -213,11 +215,18 @@ export const SVG: FunctionComponent<IProps> = ({
                 )
             }
             {alert && (
-
                 <svg className={`${className}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="1.92 1.92 20.208 20.16" width="100%" height="100%">
                     <path strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" stroke="currentColor" d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" />
                 </svg>
-
+            )}
+            {escape && (
+                <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="100%" 
+                    height="100%" 
+                    viewBox="0 0 32 32">
+                    <path fill="currentColor" d="M7.223 2.893a3.072 3.072 0 0 0-4.33 0a3.084 3.084 0 0 0 0 4.34l8.747 8.744l-8.737 8.746a3.072 3.072 0 0 0 0 4.33a3.072 3.072 0 0 0 4.33 0l8.74-8.745l8.74 8.735a3.072 3.072 0 0 0 4.33 0a3.072 3.072 0 0 0 0-4.33l-8.738-8.738l8.747-8.752a3.072 3.072 0 0 0 0-4.33c-1.2-1.19-3.15-1.19-4.34 0l-8.74 8.749z"/>
+                </svg>
             )}
         </>
     )

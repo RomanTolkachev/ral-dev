@@ -4,8 +4,6 @@ import { useRalFilters } from '@/services/hooks/useRalFilters.ts'
 import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
 import DEFAULT_REQUEST from '../config'
 import { isEmpty, keys, values } from 'lodash'
-import splitValue from '@/Components/Inputs/InputCustom/features/splitValue'
-import joinValue from '@/Components/Inputs/InputCustom/features/joinValue'
 import { ISearchingFormItem } from '@/types/searchingFilters'
 
 interface IFormValues {

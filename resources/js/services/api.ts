@@ -6,7 +6,7 @@ import { ISearchingFormItem } from '@/types/searchingFilters'
 // export const LOCAL_URL: 'http://127.0.0.1:8000/api' = 'http://127.0.0.1:8000/api'
 export const LOCAL_URL: "/api" = "/api"
 
-const axiosApi = axios.create({
+export const axiosApi = axios.create({
     baseURL: LOCAL_URL,
     timeout: 10000,
 })

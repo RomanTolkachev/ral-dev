@@ -35,7 +35,6 @@ export const PageInput: FunctionComponent<IProps> = ({ className, formName = 'pa
                     ` ${className} w-20 bg-background-block rounded-md focus:border-transparent ` +
                     'focus:ring-2 focus:ring-input-border-active'
                 }
-                // defaultValue={1}
                 min={1}
                 max={lastPage}
                 type="number"

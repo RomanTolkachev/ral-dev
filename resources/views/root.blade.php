@@ -15,5 +15,6 @@
     </head>
     <body class="antialiased">
         <div id=app></div>
+        <div id=portal></div>
     </body>
 </html>

@@ -18,18 +18,15 @@ class RalShortInfoMock extends Model
     // #[SearchUsingFullText(['RegNumber', 'oaDescription', 'fullName'])]
     public function toSearchableArray()
     {
-        // $array = $this->toArray();
-        // return $array;
         return [
             'RegNumber' => $this->RegNumber,
             'applicantINN' => $this->applicantINN,
-            // 'oaDescription' => $this->oaDescription,
             'fullName' => $this->fullName,
         ];
     }
 
     protected $table = 'ral_short_info_mock';
-    protected $hidden = ['oaDescription', 'address'];
+    // protected $hidden = ['oaDescription', 'address'];
     // protected $hidden = ['nameTypeActivity', 'link', 'nameType', 'nameTypeActivity', 'fullName', 'address', 'oaDescription', 'NPstatus', 'id', 'regDate', 'NP_status_change_date', 'applicantFullName'];
     // protected $visible = ['new_status_AL', 'nameType', 'NP_status_change_date', 'regDate'];
 }

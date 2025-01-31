@@ -1,5 +1,5 @@
 import { FunctionComponent, ReactNode, useEffect, useMemo, useRef } from 'react'
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { Preloader } from '@/Components/utils/Preloader'
 import { SVG } from '@/Components/utils/SVG'
 import { useRalQuery } from '@/services/hooks/useRalQuery'
@@ -9,8 +9,8 @@ import { getHeaderName } from '@/shared/getHeaderName.ts'
 import { PageInput } from '@/Components/Inputs/PageInput.tsx'
 import useParamsCustom from '@/services/hooks/useParamsCustom.ts'
 import { isEmpty } from 'lodash'
-import highlight from './features/highlightText'
 import DEFAULT_REQUEST from '@/features/RalTable/config'
+import RalCell from '@/features/RalTable/ui/RalTable/Cell/RalCell'
 
 interface IProps {
     className?: string
@@ -23,22 +23,22 @@ export const Table: FunctionComponent<IProps> = () => {
     const { data: ralData, isPending } = useRalQuery(queries);
 
     const headers = useMemo(() => {
-        return ralData ? getHeaders(ralData.data) : []
+        return ralData ? ["подробнее", ...getHeaders(ralData.data)] : []
     }, [ralData])
 
     const columns: ColumnDef<any>[] = useMemo(() => {
-        let colData: ColumnDef<any>[] = []
+        let colData: ColumnDef<any>[] = [];
         if (headers.length !== 0) {
             colData = headers.map((header) => {
                 return {
                     accessorKey: header,
                     header: getHeaderName(header),
-                    cell: (props: any) => <>{highlight(props.getValue(), getQuery().fullText)}</>,
+                    cell: (props: any) => {return <>{props.getValue()}</>;},
                     enableResizing: true,
                 }
             })
         }
-        return colData
+        return colData;
     }, [ralData, headers])
 
 
@@ -65,7 +65,6 @@ export const Table: FunctionComponent<IProps> = () => {
             inputRef.current!.value = String(queries.page)
         }
     }, [queries.page])
-
 
     return (
         <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
@@ -118,13 +117,7 @@ export const Table: FunctionComponent<IProps> = () => {
                                             <tr className={'even:bg-row-even odd:bg-row-odd h-20'} key={row.id}>
                                                 {row.getVisibleCells().map((cell) => {
                                                     return (
-                                                        <td
-                                                            key={cell.id}
-                                                            className={`overflow-hidden p-2 w-[${cell.column.getSize()}px] text-center`}>
-                                                            <span className={'text-table-base'}>
-                                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                                            </span>
-                                                        </td>
+                                                        <RalCell key={cell.id} cellData={cell} />
                                                     )
                                                 })}
                                             </tr>
@@ -152,7 +145,6 @@ export const Table: FunctionComponent<IProps> = () => {
                                         данные не найдены
                                     </p>
                                 </div>
-
                             </div>
                         )}
                     </div>
