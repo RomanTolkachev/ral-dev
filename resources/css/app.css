@@ -63,6 +63,12 @@
     --row-odd: 240, 240, 243;
     --text-table-base: 137, 137, 137;
 
+    /*Cell*/
+    --cell-suspended: rgb(255 126 72);
+    --cell-suspended-shadow: 0 0 10px rgb(247, 255, 9);
+    --cell-terminated: rgb(255, 68, 109);
+    --cell-terminated-shadow: 0 0 10px rgb(255, 68, 109);
+
     /* Text */
     --header-text: 137, 137, 137;
     --cell-text: 71, 71, 71;
@@ -116,6 +122,12 @@
     --row-even: 30, 41, 59;
     --row-odd: 19, 27, 46;
     --text-table-base: 143, 157, 221;
+
+    /*Cell*/
+    --cell-suspended: rgb(255 126 72);
+    --cell-suspended-shadow: 0 0 10px rgb(254, 255, 228);
+    --cell-terminated: rgb(255, 68, 109);
+    --cell-terminated-shadow: 0 0 10px rgb(255, 68, 109);
 
     /* Scroll */
     --scrollbar-track: rgb(66, 66, 66);

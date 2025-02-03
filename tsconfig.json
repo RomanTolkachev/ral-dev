@@ -8,7 +8,7 @@
         "isolatedModules": true,
         "target": "ES2020",
         "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
+        "forceConsistentCasingInFileNames": false,
         "allowImportingTsExtensions": true,
         "skipLibCheck": true,
         "noEmit": true,

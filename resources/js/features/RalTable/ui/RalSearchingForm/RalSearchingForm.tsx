@@ -3,9 +3,10 @@ import { Preloader } from '@/Components/utils/Preloader'
 import { DropdownItem } from '@/Components/DropdownItem'
 import { MainButton } from '@/Components/Buttons/MainButton'
 import { useFormContext } from 'react-hook-form'
-import { useRalFilters } from '@/features/ralTable/api/useRalFilters'
 import { isEqual } from 'lodash'
 import useParamsCustom from '@/shared/query/useParamsCustom'
+import { useRalFilters } from '../../api/useRalFilters'
+
 
 interface IProps {
     className?: string
@@ -13,7 +14,7 @@ interface IProps {
 
 type IForm = Record<string, any>
 
-export const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
+const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
     const { data: filters, isPending } = useRalFilters();
     const { handleSubmit, reset, control, setValue: setFormValue, formState} = useFormContext();
     const [prevQueries, setPrevQueries] = useState({});
@@ -77,3 +78,5 @@ export const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
         </form >
     );
 }
+
+export default RalSearchingForm;

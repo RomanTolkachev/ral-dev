@@ -10,7 +10,7 @@ import { PageInput } from '@/Components/Inputs/PageInput.tsx'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import { isEmpty } from 'lodash'
 import DEFAULT_REQUEST from '@/features/ralTable/config'
-import RalCell from '@/features/ralTable/ui/RalTable/Cell/RalCell'
+import RalCell from '@/features/RalTable/ui/RalTable/Cell/ui/RalCell'
 import { useSelectorTyped } from '@/features/store/typedUseSelector'
 
 interface IProps {
