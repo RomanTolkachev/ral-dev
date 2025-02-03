@@ -19,7 +19,7 @@ class TableFilterService
                 $headerItemObject->sortValues->max = $modelClass::max($columnName);
             } else {
                 $uniqValues = $modelClass::distinct()->pluck($columnName);
-                $isUniqValuesHuge = count($uniqValues) > 10;
+                $isUniqValuesHuge = count($uniqValues) > 20;
                 if ($isUniqValuesHuge) {
                     $headerItemObject->sortValues->type = "huge";
                 } else {
