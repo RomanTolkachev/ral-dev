@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type TRalTableColumns =
+type TRalTableModel =
     'link' |
     'nameType' |
     'nameTypeActivity' |
@@ -14,7 +14,6 @@ type TRalTableColumns =
     'applicantFullName' |
     'new_status_AL' |
     'nameType' |
-    'regDate' |
     'applicantINN' |
     'RegNumber' |
     'status_change_date' |
@@ -23,7 +22,8 @@ type TRalTableColumns =
 export interface IUserReducer {
     user: any;
     settings: {
-        ralTableColumns: Array<TRalTableColumns>
+        ralTableColumns: Array<TRalTableModel>
+        userFilters: Array<TRalTableModel>
     }
 }
 
@@ -40,7 +40,14 @@ const initialState = {
             'RegNumber',
             'applicantINN',
             'fullName',
-        ] as Array<TRalTableColumns>
+        ] as Array<TRalTableModel>,
+        userFilters: [
+            'new_status_AL',
+            'regDate',
+            'status_change_date',
+            'NPstatus'
+        ] as Array<TRalTableModel>,
+
     }
 };
 

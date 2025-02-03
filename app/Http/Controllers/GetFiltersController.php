@@ -12,9 +12,7 @@ class GetFiltersController
 
     public function __invoke(TableFilterService $tableFilterService, Request $request): JsonResponse
     {
-        dd($request);
-        $filters = $tableFilterService->getFiltersFor(RalShortInfoMock::class);
-
+        $filters = $tableFilterService->getFiltersFor(RalShortInfoMock::class, $request->userFilters);
         return new JsonResponse($filters);
     }
 }

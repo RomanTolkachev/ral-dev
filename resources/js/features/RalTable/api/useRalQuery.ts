@@ -3,11 +3,10 @@ import { fetchRalQuery } from '@/shared/api/api'
 import { objectToString } from '@/shared/objectToString'
 
 export function useRalQuery(queries: Record<string, any>) {
-    const filteredQueries = queries
-
+    console.log(queries)
     const { data, isPending } = useQuery({
-        queryKey: ['ral', objectToString(filteredQueries)],
-        queryFn: () => fetchRalQuery(filteredQueries).then((res) => res.data),
+        queryKey: ['ral', objectToString(queries)],
+        queryFn: () => fetchRalQuery(queries).then((res) => res.data),
     })
 
     return { data, isPending }

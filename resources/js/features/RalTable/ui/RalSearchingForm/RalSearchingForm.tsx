@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form'
 import { isEqual } from 'lodash'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import { useRalFilters } from '../../api/useRalFilters'
+import { useSelectorTyped } from '@/features/store/typedUseSelector'
 
 
 interface IProps {
@@ -15,7 +16,8 @@ interface IProps {
 type IForm = Record<string, any>
 
 const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
-    const { data: filters, isPending } = useRalFilters();
+    const userFilters = useSelectorTyped(state => state.userState.settings)
+    const { data: filters, isPending } = useRalFilters(userFilters);
     const { handleSubmit, reset, control, setValue: setFormValue, formState} = useFormContext();
     const [prevQueries, setPrevQueries] = useState({});
     const [setQuery, getQuery] = useParamsCustom();

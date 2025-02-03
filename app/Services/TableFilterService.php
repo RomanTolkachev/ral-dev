@@ -4,9 +4,13 @@ namespace App\Services;
 
 class TableFilterService
 {
-    public function getFiltersFor(string $modelClass): array
+    public function getFiltersFor(string $modelClass, array $userFilters): array
     {
-        foreach ($modelClass::getPublicHeaders() as $columnName) {
+        $publicHeaders = $modelClass::getPublicHeaders();
+        $headers = array_filter($publicHeaders, function($item) use ($userFilters) {
+            return in_array($item, $userFilters);
+        });
+        foreach ($headers as $columnName) {
             $columnType = $modelClass::getAttributeType($columnName);
             $headerItemObject = new \stdClass();
             $headerItemObject->header = $columnName;
@@ -29,11 +33,7 @@ class TableFilterService
             }
             $filters[] = $headerItemObject;
         }
-        $actualFilters = ['new_status_AL', 'nameType', 'status_change_date', 'regDate', 'fullText']; // тут актуальные фильтры
 
-        $filters = array_filter($filters, function ($item) use ($actualFilters) {
-            return in_array($item->header, $actualFilters);
-        });
 
         $filters = array_values($filters);
 
@@ -43,6 +43,8 @@ class TableFilterService
         $fullText->sortValues = new \stdClass();
         $fullText->sortValues->type = "huge";
         $filters = [$fullText, ...$filters];
+
+        // dd($filters);
 
         return $filters ?? [];
     }

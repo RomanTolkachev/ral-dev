@@ -1,10 +1,18 @@
 import { useQuery } from '@tanstack/react-query'
 import { fetchRalFilters } from '@/shared/api/api'
+import { objectToString } from '@/shared/objectToString'
 
-export function useRalFilters() {
+
+/**
+ * Фетч фильтров для таблицы. 
+ * @param actualFilters - фильтры, которые нужны данному пользователю. Должны браться из user store
+ * @returns Возвращает массив с фильтрами
+ */
+export function useRalFilters(actualFilters: Record<string, any>) {
+    console.log(actualFilters)
     const { data, isPending } = useQuery({
-        queryKey: ['filters'],
-        queryFn: () => fetchRalFilters.then((res) => res.data),
+        queryKey: ['filters', objectToString(actualFilters)],
+        queryFn: () => fetchRalFilters(actualFilters).then((res) => res.data),
     })
 
     return { data, isPending }

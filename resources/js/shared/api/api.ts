@@ -11,7 +11,15 @@ export const axiosApi = axios.create({
     timeout: 10000,
 })
 
-export const fetchRalFilters = axiosApi.get<ISearchingFormItem[]>('/ral/filters')
+export const fetchRalFilters = (queries: Record<string, any>) =>  
+    axiosApi.get<ISearchingFormItem[]>('/ral/filters',{
+        params: queries,
+        paramsSerializer: function (params) {
+            return decodeURIComponent(qs.stringify(params, { arrayFormat: 'brackets' }))
+        },
+})
+
+
 
 export const fetchRalQuery = (queries: Record<string, any>) =>
     axiosApi.get<TPaginatedRal>(`/ral`, {

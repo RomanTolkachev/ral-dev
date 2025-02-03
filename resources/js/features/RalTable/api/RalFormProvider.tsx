@@ -5,6 +5,7 @@ import useParamsCustom from '@/shared/query/useParamsCustom'
 import DEFAULT_REQUEST from '../config'
 import { isEmpty, keys, values } from 'lodash'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
+import { useSelectorTyped } from '@/features/store/typedUseSelector'
 
 interface IFormValues {
     [key: string]: any
@@ -13,7 +14,8 @@ interface IFormValues {
 export const CustomFormProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
     const [, getQuery] = useParamsCustom();
-    const { data: filters, isPending } = useRalFilters();
+    const userFilters = useSelectorTyped(state => state.userState.settings)
+    const { data: filters, isPending } = useRalFilters(userFilters);
 
     const queries = getQuery();
 
