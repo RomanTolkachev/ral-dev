@@ -37,7 +37,12 @@ const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
         return Object.keys(getQuery()).length ? true : false
     }, [JSON.stringify(getQuery())]);
 
-    // Тут проверяем должна ли сброситься страничка, затем обновляем query
+    /**
+     * Обработчик формы с проверкой сброса страницы на первую, если параметры поиска изменились
+     * @param currentForm Текущее состояние формы
+     * @param submittedForm Предыдущая отправленная форма (берется из query)
+     * @returns 
+     */
     const submitHandler = (currentForm: IForm, submittedForm: IForm) => {
         /*форма не изменилась*/
         if (isEqual(submittedForm, currentForm)) {
@@ -60,7 +65,7 @@ const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
         <form
             onSubmit={handleSubmit((data) => submitHandler(data, prevQueries))}
             className={`${className} flex-col overflow-hidden flex`}>
-            <div className={'px-6 w-full grow shrink overflow-y-scroll space-y-4'}>
+            <div className={'px-6 pt-6 w-full grow shrink overflow-y-scroll space-y-4'}>
                 {isPending ? (
                     <Preloader widthStyles={'w-16'} />
                 ) : (
@@ -69,11 +74,11 @@ const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
                     })
                 )}
             </div>
-            <div className={`sticky bottom-0 bg-background-block flex flex-col py-6 space-y-4 gap-2`}>
-                <MainButton isDisabled={!formState.isValid} color={'violet'} className={`${formState.isValid ? "" : "bg-gray-400"} mx-auto`}>
+            <div className={`sticky w-fit bottom-0 bg-background-block flex flex-col py-6 space-y-4 gap-2 mx-auto`}>
+                <MainButton isDisabled={!formState.isValid} color={'violet'} className={`w-full ${formState.isValid ? "" : "bg-gray-400"} mx-auto`}>
                     Применить
                 </MainButton>
-                <button type='reset' onClick={() => reset()}>сбросить</button>
+                <MainButton className={`w-full`} onClick={()=>reset()} color={'white'} type='reset'>Сбросить фильтры</MainButton>
             </div >
         </form >
     );

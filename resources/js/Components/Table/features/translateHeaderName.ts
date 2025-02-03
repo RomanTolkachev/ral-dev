@@ -13,7 +13,7 @@ export const translateHeaderName = (accessorKey: ReactNode | undefined): string 
         case 'status_change_date':
             return 'дата смены статуса'
         case 'nameType':
-            return 'тип акредитованного лица'
+            return 'тип АЛ'
         case 'nameTypeActivity':
             return 'тип направления деятельности'
         case 'regDate':

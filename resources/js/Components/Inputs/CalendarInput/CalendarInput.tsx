@@ -36,7 +36,6 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
         prevValueRef.current = query;
     }, [query]);
 
-
     function handleMinChange(e: ChangeEvent<HTMLInputElement>) {
         setStartDate(e.target.value);
         trigger(); // для того, чтобы валидация срабатывала на onchange
@@ -71,21 +70,23 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
             rules={{ validate: value => validationFn(value) || "Начальная дата должна быть больше конечной" }}
             render={({ field: { value, onChange } }) => (
                 <div className={`${className} p-1 space-y-2 text-input-text`}>
-                    <div className='custom-date w-full '>
+                    <div className='custom-date w-full !flex items-center gap-4'>
+                        <span className='select-none'>от</span>
                         <input
                             type="date"
                             value={value ? value[0] : DEFAULT_REQUEST.status_change_date[0]}
                             onChange={(e) => onChange(handleMinChange(e))}
                             className={
                                 `${formState.errors[inputName] && 'ring-2 !ring-error border-transparent '}` +
-                                ' bg-input-primary text-input-text w-full appearance-none rounded-full shadow-input-search border-0' +
+                                ' bg-input-primary text-input-text appearance-none rounded-full shadow-input-search border-0' +
                                 ' ring-transparent' +
                                 ' focus:ring-2 focus:ring-button-violet'
                             }
                         />
                         <SVG clickHandler={(e: any) => handleIconClick(e)} schedule className='calendar-icon w-6' />
                     </div>
-                    <div className='custom-date w-full'>
+                    <div className='custom-date w-full !flex items-center gap-4'>
+                        <span className='select-none'>до</span>
                         <input
                             type="date"
                             value={value ? value[1] : DEFAULT_REQUEST.status_change_date[1]}

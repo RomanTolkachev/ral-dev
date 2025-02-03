@@ -9,9 +9,10 @@ interface IProps {
     onClick?: any
     color: ButtonColor
     isDisabled?: boolean
+    type?: "button" | "submit" | "reset" | undefined
 }
 
-export const MainButton: FunctionComponent<PropsWithChildren<IProps>> = ({ className, children, onClick, color, isDisabled }) => {
+export const MainButton: FunctionComponent<PropsWithChildren<IProps>> = ({ className, children, onClick, color, isDisabled, type }) => {
     const currentColor = useMemo(() => {
         switch (color) {
             case "red": {
@@ -28,6 +29,7 @@ export const MainButton: FunctionComponent<PropsWithChildren<IProps>> = ({ class
     }, [])
     return (
         <motion.button
+            type={type}
             disabled={isDisabled}
             onClick={onClick}
             className={`${className} ${currentColor} transition-colors text-sm rounded-xl shadow-button-main font-bold py-3 px-7 w-fit select-none`}

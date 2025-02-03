@@ -100,9 +100,29 @@ class RalFilter extends AbstractFilter
         return $this->builder->whereIn('nameTypeActivity', $value);
     }
 
-    protected function regDate(string $value): Builder
+    protected function regDate(array $value): Builder
     {
-        return $this->builder->whereIn('regDate', $value);
+        switch (true) {
+            case empty($value[0]) && empty($value[1]): 
+                return $this->builder;
+            case (empty($value[0]) && !empty($value[1])):
+                return $this->builder->where('regDate', '<', $value[1]);
+            case (!empty($value[0]) && empty($value[1])):
+                return $this->builder->where('regDate', '>', $value[0]);
+            default: 
+                return $this->builder->whereBetween('regDate', $value);
+        }
+
+                // для msSql
+        // if (empty($value[0]) && empty($value[1])) {
+        //     return $this->builder;
+        // } elseif (empty($value[0]) && !empty($value[1])) {
+        //     return $this->builder->whereRaw('status_change_date < CONVERT(datetime, ?)', [$value[1]]);
+        // } elseif (!empty($value[0]) && empty($value[1])) {
+        //     return $this->builder->whereRaw('status_change_date > CONVERT(datetime, ?)', [$value[0]]);
+        // } else {
+        //     return $this->builder->whereRaw('status_change_date BETWEEN CONVERT(datetime, ?) AND CONVERT(datetime, ?)', $value);
+        // }
     }
 
     protected function fullName(string $value): Builder

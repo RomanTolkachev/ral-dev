@@ -5,6 +5,7 @@ type TDefaultRalRequest = {
     perPage: number,
     status_change_date: string[]
     user_columns?: string[]
+    regDate?: string[]
 }
 
 const currentDate = new Date();
@@ -25,6 +26,7 @@ const DEFAULT_REQUEST:TDefaultRalRequest  = {
         // dateFormatter.format(currentDate),
         "",""
     ],
+    regDate: ["",""]
 }
 
 export default DEFAULT_REQUEST;

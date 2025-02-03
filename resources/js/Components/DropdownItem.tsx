@@ -42,6 +42,7 @@ const itemVariants: Variants = {
 
 export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, className }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [checkedCount, setCheckedCount] = useState<number>(0);
     const { watch, control } = useFormContext();
     const inputName = inputData.header;
     const [, getQuery] = useParamsCustom();
@@ -55,11 +56,13 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
                 let defaultValue = control._defaultValues[inputName];
                 let currentValue = control._formValues[inputName]
                 isEqual(defaultValue, currentValue) ? setIsDirty(false) : setIsDirty(true)
+                if (inputData.sortValues.type === 'checkBox') {
+                    setCheckedCount(control._formValues[inputName].length)
+                }
             }
         });
         return () => unsubscribe();
-    }, [watch, control._defaultValues, control._formValues])
-
+    }, [watch, control._defaultValues, control._formValues], )
 
     return (
         <motion.div
@@ -73,6 +76,7 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
                 isOpen={isOpen}
                 hasAlert={isDitry}
                 children={inputName}
+                checkedCount={inputData.sortValues.type === 'checkBox' ? checkedCount : Number(0)}
             />
             <motion.div className={'overflow-hidden'} variants={listVariants}>
                 {inputData.sortValues.type === 'huge' && <InputCustom inputData={inputData} />}

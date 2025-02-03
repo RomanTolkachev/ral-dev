@@ -9,6 +9,13 @@ interface IProps {
     clickHandler: () => void
     isOpen: boolean
     hasAlert?: boolean
+    checkedCount?: number
+}
+
+const motionVariants = {
+    initial: {opacity: 0, left: "50%", top: "100%", transform: 'translateY(0)', scale: 0},
+    animate: {opacity: 1, left: 0, top: 0, transform: 'translateY(-50%) translateX(-40%)', scale: 1},
+    exit: {opacity: 0}
 }
 
 export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> = ({
@@ -17,7 +24,8 @@ export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> 
     className,
     key,
     isOpen,
-    hasAlert
+    hasAlert,
+    checkedCount
 }) => {
 
     return (
@@ -25,10 +33,11 @@ export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> 
             key={key}
             onMouseDown={clickHandler}
             className={`${className} ${isOpen ? 'bg-filter-dropdown-button-active' : 'bg-filter-dropdown-button'}
-                font-medium text-header-text transition-all 
+                font-medium text-header-text transition-all h-fit
                 shadow-md select-none justify-center items-center
-                flex rounded-2xl pl-5 py-3 relative pr-[3.5rem]
-                text-center border border-filter-dropdown-button-border`}>
+                flex rounded-2xl py-3 relative pl-4 pr-[3.5rem]
+                text-center border border-filter-dropdown-button-border `}>
+                
             <span>{translateHeaderName(children)}</span>
             <span
                 className={`${isOpen ? '-rotate-180' : '-rotate-90'} transition-all duration-200 w-6
@@ -37,16 +46,14 @@ export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> 
             </span>
             {
                 <AnimatePresence>
-                    {hasAlert && 
-                        <motion.span 
-                            className={"absolute text-[#775da6] w-8 top-0 -translate-y-1/2 left-0 -translate-x-1/2"}
-                            key={key}
-                            initial={{opacity: 0, x: 15, y: 15, scale: 0}}
-                            animate={{opacity: 1, x: "-50%", y: "-50%", scale: 1}}
-                            exit={{opacity: 0}}
-                        >
-                            <SVG alert />
-                        </motion.span>}
+                    {hasAlert && checkedCount === 0 && (
+                        <motion.span className='absolute w-6 bg-[#775da6] text-white rounded-full' key={`counter`} {...motionVariants}>
+                            !
+                        </motion.span>)}
+                    {checkedCount === 0 ? null : (
+                        <motion.span className='absolute w-6 bg-[#775da6] text-white rounded-full pr-[1px]' key={`counter`} {...motionVariants}>
+                            {checkedCount}
+                        </motion.span>)}
                 </AnimatePresence>
             }
         </div>

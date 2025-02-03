@@ -13,13 +13,13 @@ class TableFilterService
             $headerItemObject->headerType = $columnType;
             $headerItemObject->sortValues = new \stdClass();
 
-            if (in_array($columnType, ['date', 'datetime'])) {
+            if (in_array($columnType, ['date', 'datetime']) || $columnName === 'regDate') {
                 $headerItemObject->sortValues->type = 'date';
                 $headerItemObject->sortValues->min = $modelClass::min($columnName);
                 $headerItemObject->sortValues->max = $modelClass::max($columnName);
             } else {
                 $uniqValues = $modelClass::distinct()->pluck($columnName);
-                $isUniqValuesHuge = count($uniqValues) > 7;
+                $isUniqValuesHuge = count($uniqValues) > 10;
                 if ($isUniqValuesHuge) {
                     $headerItemObject->sortValues->type = "huge";
                 } else {
@@ -37,12 +37,12 @@ class TableFilterService
 
         $filters = array_values($filters);
 
+        // добавление полнотекстового поиска
         $fullText = new \stdClass();
         $fullText->header = "fullText";
         $fullText->sortValues = new \stdClass();
         $fullText->sortValues->type = "huge";
-
-        $filters[] = $fullText;
+        $filters = [$fullText, ...$filters];
 
         return $filters ?? [];
     }
