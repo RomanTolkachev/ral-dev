@@ -48,6 +48,13 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
     const [, getQuery] = useParamsCustom();
     const queries = getQuery()
 
+    // проверка должен ли быть открыт item, при первом рендере. Если есть активный фильтр, то будет открыт
+    useEffect(() => {
+        let defaultValue = control._defaultValues[inputName];
+        let currentValue = control._formValues[inputName]
+        isEqual(defaultValue, currentValue) ? setIsOpen(false) : setIsOpen(true)
+    }, [])
+
     // проверка изменилось ли поле в отличие от дефолтного значения
     const [isDitry, setIsDirty] = useState<boolean>(keys(queries).includes(inputName));
     useEffect(() => {

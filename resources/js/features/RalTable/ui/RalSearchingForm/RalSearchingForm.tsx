@@ -7,6 +7,8 @@ import { isEqual } from 'lodash'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import { useRalFilters } from '../../api/useRalFilters'
 import { useSelectorTyped } from '@/features/store/typedUseSelector'
+import excludePaginationQueries from '@/shared/query/excludePaginationQueries'
+import { filterQueries } from '@/shared/query/filterQueries'
 
 
 interface IProps {
@@ -18,19 +20,18 @@ type IForm = Record<string, any>
 const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
     const userFilters = useSelectorTyped(state => state.userState.settings)
     const { data: filters, isPending } = useRalFilters(userFilters);
-    const { handleSubmit, reset, control, setValue: setFormValue, formState} = useFormContext();
+    const { handleSubmit, reset, control, setValue: setFormValue, formState, watch} = useFormContext();
     const [prevQueries, setPrevQueries] = useState({});
     const [setQuery, getQuery] = useParamsCustom();
 
     // после получения фильтров записываем их для последующего сравнения
     useEffect(() => {
-        setPrevQueries(control._defaultValues)
-        return () => {setPrevQueries(getQuery())}
+        setPrevQueries({...control._defaultValues,...getQuery()})
     }, [control._defaultValues]);
 
     // изменяем prevForm для сравнения после каждой отправки
     useEffect(() => {
-        setPrevQueries(getQuery())
+        setPrevQueries({...control._defaultValues,...getQuery()})
     }, [formState.submitCount, JSON.stringify(getQuery())])
 
 
@@ -46,26 +47,26 @@ const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
      * @returns 
      */
     const submitHandler = (currentForm: IForm, submittedForm: IForm) => {
-        /*форма не изменилась*/
         if (isEqual(submittedForm, currentForm)) {
             return;
-        }
-        /*форма не изменилась, страница изменилась*/
-        if (submittedForm.page !== currentForm.page) {
-            setFormValue('page', currentForm.page);
-            setQuery({ ...currentForm, page: currentForm.page }, shouldReplace); // второй параметр true делает replace истории
-        }
-        /*форма изменилась, сброс страницы*/
-        else {
+        } else if (!isEqual(excludePaginationQueries(submittedForm), excludePaginationQueries(currentForm))) {
             setFormValue('page', 1);
             setQuery({ ...currentForm, page: 1 }, shouldReplace); // второй параметр true делает replace истории
             setPrevQueries({ ...currentForm, page: 1 });
+        } else {
+            setFormValue('page', currentForm.page);
+            setQuery({ ...currentForm, page: currentForm.page }, shouldReplace)
         }
     }
 
+    function resetHandler():void {
+        reset(); 
+        handleSubmit((data) => submitHandler(data, prevQueries))()
+    }
+
     return (
-        <form
-            onSubmit={handleSubmit((data) => submitHandler(data, prevQueries))}
+        <form onChange={handleSubmit((data) => submitHandler(data, prevQueries))}
+            // onSubmit={handleSubmit((data) => submitHandler(data, prevQueries))}
             className={`${className} flex-col overflow-hidden flex`}>
             <div className={'px-6 pt-6 w-full grow shrink overflow-y-scroll space-y-4'}>
                 {isPending ? (
@@ -80,7 +81,12 @@ const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
                 <MainButton isDisabled={!formState.isValid} color={'violet'} className={`w-full ${formState.isValid ? "" : "bg-gray-400"} mx-auto`}>
                     Применить
                 </MainButton>
-                <MainButton className={`w-full`} onClick={()=>reset()} color={'white'} type='reset'>Сбросить фильтры</MainButton>
+                <MainButton 
+                    className={`w-full`} 
+                    onClick={resetHandler} 
+                    color={'white'} 
+                    type='reset'>Сбросить фильтры
+                </MainButton>
             </div >
         </form >
     );

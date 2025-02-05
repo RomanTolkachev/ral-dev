@@ -13,7 +13,6 @@ type TRalTableModel =
     'NP_status_change_date' |
     'applicantFullName' |
     'new_status_AL' |
-    'nameType' |
     'applicantINN' |
     'RegNumber' |
     'status_change_date' |
@@ -45,7 +44,7 @@ const initialState = {
             'new_status_AL',
             'regDate',
             'status_change_date',
-            'NPstatus'
+            'nameType'
         ] as Array<TRalTableModel>,
 
     }

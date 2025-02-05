@@ -14,14 +14,12 @@ export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData
     const { control, getValues } = useFormContext();
     const inputName = inputData.header;
 
-    const handleChange = (checked: boolean, name: string) => {
-            if (checked) {
-                return [...getValues(inputName), name]
-            } else {
-                return [...getValues(inputName).filter((item: string) => {
-                    return item !== name
-                })]
-            }
+const handleChange = (checked: boolean, name: string) => {
+        if (checked) {
+            return [...getValues(inputName), name];
+        } else {
+            return getValues(inputName).filter((item: string) => item !== name);
+        }
     }
 
     return (
@@ -43,8 +41,7 @@ export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData
                                     {item ? item : 'пустые'}
                                 </label>
                                 <input
-                                    checked={getValues(inputName) ? getValues(inputName).includes(item) : false}
-                                    value={value}
+                                    checked={getValues(inputName) ? control._formValues[inputName].includes(item) : false}
                                     className={
                                         'ml-auto checked:text-checkbox-custom' +
                                         ' outline-none border focus:ring-checkbox-ring focus:ring-offset-0 rounded active:border-transparent ' +

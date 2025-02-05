@@ -6,10 +6,11 @@ class TableFilterService
 {
     public function getFiltersFor(string $modelClass, array $userFilters): array
     {
-        $publicHeaders = $modelClass::getPublicHeaders();
-        $headers = array_filter($publicHeaders, function($item) use ($userFilters) {
-            return in_array($item, $userFilters);
-        });
+        $headers = array_filter(
+            $modelClass::getPublicHeaders(), 
+            fn($item) => in_array($item, $userFilters)
+        );
+
         foreach ($headers as $columnName) {
             $columnType = $modelClass::getAttributeType($columnName);
             $headerItemObject = new \stdClass();
@@ -19,8 +20,9 @@ class TableFilterService
 
             if (in_array($columnType, ['date', 'datetime']) || $columnName === 'regDate') {
                 $headerItemObject->sortValues->type = 'date';
-                $headerItemObject->sortValues->min = $modelClass::min($columnName);
-                $headerItemObject->sortValues->max = $modelClass::max($columnName);
+                $min_max = $modelClass::selectRaw("min($columnName) as min")->selectRaw("max($columnName) as max")->get()->toArray();
+                $headerItemObject->sortValues->min = $min_max[0]["min"];
+                $headerItemObject->sortValues->max = $min_max[0]["max"];
             } else {
                 $uniqValues = $modelClass::distinct()->pluck($columnName);
                 $isUniqValuesHuge = count($uniqValues) > 20;
@@ -28,12 +30,16 @@ class TableFilterService
                     $headerItemObject->sortValues->type = "huge";
                 } else {
                     $headerItemObject->sortValues->type = "checkBox";
-                    $headerItemObject->sortValues->checkboxValues = $modelClass::distinct()->pluck($columnName);
+                    $headerItemObject->sortValues->checkboxValues = $uniqValues;
                 }
             }
             $filters[] = $headerItemObject;
         }
+        // $actualFilters = ['new_status_AL', 'nameType', 'status_change_date', 'regDate', 'fullText']; // тут актуальные фильтры
 
+        // $filters = array_filter($filters, function ($item) use ($actualFilters) {
+        //     return in_array($item->header, $actualFilters);
+        // });
 
         $filters = array_values($filters);
 

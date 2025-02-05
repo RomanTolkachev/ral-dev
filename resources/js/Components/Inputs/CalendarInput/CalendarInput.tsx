@@ -76,6 +76,8 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                             type="date"
                             value={value ? value[0] : DEFAULT_REQUEST.status_change_date[0]}
                             onChange={(e) => onChange(handleMinChange(e))}
+                            min={'1900-01-01'}
+                            max={'3000-01-01'}
                             className={
                                 `${formState.errors[inputName] && 'ring-2 !ring-error border-transparent '}` +
                                 ' bg-input-primary text-input-text appearance-none rounded-full shadow-input-search border-0' +
@@ -91,6 +93,8 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                             type="date"
                             value={value ? value[1] : DEFAULT_REQUEST.status_change_date[1]}
                             onChange={(e) => onChange(handleMaxChange(e))}
+                            min={'1900-01-01'}
+                            max={'3000-01-01'}
                             className={
                                 `${formState.errors[inputName] && 'ring-2 !ring-error border-transparent '}` +
                                 ' bg-input-primary  text-input-text w-full appearance-none rounded-full shadow-input-search border-0 pl-5' +

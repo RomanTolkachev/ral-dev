@@ -9,11 +9,9 @@ import { objectToString } from '@/shared/objectToString'
  * @returns Возвращает массив с фильтрами
  */
 export function useRalFilters(actualFilters: Record<string, any>) {
-    console.log(actualFilters)
     const { data, isPending } = useQuery({
         queryKey: ['filters', objectToString(actualFilters)],
         queryFn: () => fetchRalFilters(actualFilters).then((res) => res.data),
     })
-
     return { data, isPending }
 }

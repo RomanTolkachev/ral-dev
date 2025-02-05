@@ -3,21 +3,46 @@ import { FunctionComponent, PropsWithChildren, useEffect, useMemo } from 'react'
 import { useRalFilters } from '@/features/ralTable/api/useRalFilters'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import DEFAULT_REQUEST from '../config'
-import { isEmpty, keys, values } from 'lodash'
+import { isEmpty, isEqual, keys, values } from 'lodash'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import { useSelectorTyped } from '@/features/store/typedUseSelector'
+import excludePaginationQueries from '@/shared/query/excludePaginationQueries'
 
 interface IFormValues {
     [key: string]: any
 }
 
-export const CustomFormProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
+    /**
+     * Обработчик формы с проверкой сброса страницы на первую, если параметры поиска изменились
+     * @param currentForm Текущее состояние формы
+     * @param submittedForm Предыдущая отправленная форма (берется из query)
+     * @param shouldRaplace Должен ли добавляться шаг в истории
+     * @returns 
+     */
+    const submitHandler = (currentForm: IFormValues, submittedForm: IFormValues, shouldRaplace: boolean) => {
+        if (isEqual(submittedForm, currentForm)) {
+            return;
+        } else if (!isEqual(excludePaginationQueries(submittedForm), excludePaginationQueries(currentForm))) {
+            setFormValue('page', 1);
+            setQuery({ ...currentForm, page: 1 }, shouldReplace); // второй параметр true делает replace истории
+            setPrevQueries({ ...currentForm, page: 1 });
+        } else {
+            setFormValue('page', currentForm.page);
+            setQuery({ ...currentForm, page: currentForm.page }, shouldReplace)
+        }
+    }
+
+export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
     const [, getQuery] = useParamsCustom();
     const userFilters = useSelectorTyped(state => state.userState.settings)
     const { data: filters, isPending } = useRalFilters(userFilters);
-
     const queries = getQuery();
+
+    // от данной переменной зависит, нужно ли перезаписывать состояния URL. Если query пустые на момент вызова onSubmit, то в историю добавится шаг.
+    const shouldReplace = useMemo<boolean>(() => {
+        return Object.keys(getQuery()).length ? true : false
+    }, [JSON.stringify(getQuery())]);
 
     /* Устанавливаем default для полей формы. Везде массив. Т.к поля фильтров запрашиваются асинхронно,
     установлено несколько проверок, чтобы default всегда были валидны  */
@@ -34,8 +59,12 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren> = ({ child
         : DEFAULT_REQUEST;
 
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
+        mode: "onSubmit",
+        reValidateMode: "onChange",
         defaultValues: startValues,
     })
+
+    console.log(methods)
 
 
 

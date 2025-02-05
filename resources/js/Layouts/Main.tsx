@@ -2,7 +2,7 @@ import { Header } from '@/Components/Header'
 import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router'
 import { TableLayout } from './TableLayout'
 import { Raltable } from '@/features/ralTable/ui/RalTable/RalTable'
-import { CustomFormProvider } from '@/features/ralTable/api/RalFormProvider'
+import { RalFormProvider } from '@/features/ralTable/api/RalFormProvider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { NotFound } from '@/Components/utils/404'
@@ -35,7 +35,7 @@ function Main() {
                     <Route path="ral/*" element={
                         <QueryClientProvider client={queryClient}>
                             <ReactQueryDevtools initialIsOpen={true} />
-                            <CustomFormProvider>
+                            <RalFormProvider>
                                 <Raltable />
                                 {/* <AnimatePresence> //TODO: не работает exit animation. blocker */}
                                     {/* {background && ( */}
@@ -49,7 +49,7 @@ function Main() {
                                         </Routes>
                                     {/* )} */}
                                 {/* </AnimatePresence> */}
-                            </CustomFormProvider>
+                            </RalFormProvider>
                         </QueryClientProvider>
                     } />
                 </Route>
