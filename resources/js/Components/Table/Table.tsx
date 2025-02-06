@@ -61,8 +61,8 @@ export const Table: FunctionComponent<IProps> = () => {
         data: tableData,
         columns,
         getCoreRowModel: getCoreRowModel(),
-        columnResizeMode: 'onChange',
-        enableColumnResizing: true,
+        // columnResizeMode: 'onChange',
+        // enableColumnResizing: true,
         defaultColumn: {
             minSize: 50,
             maxSize: 500,
@@ -113,10 +113,10 @@ export const Table: FunctionComponent<IProps> = () => {
                                                     <span className={''}>
                                                         {header.column.columnDef.header as ReactNode}
                                                     </span>
-                                                    <span
+                                                    {/* <span
                                                         className={`bg-resizer absolute translate-x-1/2 cursor-col-resize opacity-0 hover:opacity-100 z-10 w-1.5 bg-button-violet  h-full top-0 right-0 `}
                                                         onMouseDown={header.getResizeHandler()}
-                                                        onTouchStart={header.getResizeHandler()}></span>
+                                                        onTouchStart={header.getResizeHandler()}></span> */}
                                                 </th>
                                             )
                                         })}

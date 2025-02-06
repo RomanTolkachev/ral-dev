@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router'
 import qs from 'qs'
 
 type QueryParams = Record<string, any>
-type TParamsCustom = [(query: QueryParams, replace?: boolean) => void, () => QueryParams]
+export type TParamsCustom = [(query: QueryParams, replace?: boolean) => void, () => QueryParams]
 
 function useParamsCustom(): TParamsCustom {
     const [searchParams, setSearchParams] = useSearchParams()
