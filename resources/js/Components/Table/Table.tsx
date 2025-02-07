@@ -6,35 +6,31 @@ import { useRalQuery } from '@/features/ralTable/api/useRalQuery'
 import { getHeaders } from '@/Components/Table/lib/getHeaders'
 import { IRalItem } from '@/shared/types/ral'
 import { translateHeaderName } from '@/Components/Table/lib/translateHeaderName'
-import { PageInput } from '@/Components/Inputs/PageInput.tsx'
+import { PageInput } from '@/Components/Inputs/PageInput/PageInput'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import { isEmpty } from 'lodash'
 import DEFAULT_REQUEST from '@/features/ralTable/config'
 import RalCell from '@/features/RalTable/ui/RalTable/Cell/ui/RalCell'
 import { useSelectorTyped } from '@/features/store/typedUseSelector'
+import IPagination from '@/shared/types/pagination'
+import Pagination from '../Inputs/PageInput/Pagination'
 
 interface IProps {
     className?: string
 }
 
-interface TQueries extends Record<string, any> {
-    page: number,
-    perPage: number,
-    status_change_date: string[]
-    user_columns?: string[]
-}
-
 export const Table: FunctionComponent<IProps> = () => {
     const [, getQuery] = useParamsCustom();
     const userColumns = useSelectorTyped(state => state.userState.settings.ralTableColumns); // тут дальше в стейте будем хранить настройки для столбца юзера
-    
+
     const queries = isEmpty(getQuery()) ? DEFAULT_REQUEST : getQuery();
     queries.user_columns = userColumns; // к дефолтному запросу добавляем колонки пользователя
 
-    const { data: ralData, isPending } = useRalQuery(queries); //TODO: тут нужно вынести выше и через пропсы давать query
+    const { data: ralData, isPending } = useRalQuery<IPagination>(queries); //TODO: тут нужно вынести выше и через пропсы давать query
 
     const headers = useMemo(() => {
-        return ralData ? ["подробнее", ...getHeaders(ralData.data)] : []
+        const data = ralData?.data as IRalItem[]
+        return ralData ? ["подробнее", ...getHeaders(data)] : []
     }, [ralData])
 
     const columns: ColumnDef<any>[] = useMemo(() => {
@@ -44,7 +40,7 @@ export const Table: FunctionComponent<IProps> = () => {
                 return {
                     accessorKey: header,
                     header: translateHeaderName(header),
-                    cell: (props: any) => {return <>{props.getValue()}</>;},
+                    cell: (props: any) => { return <>{props.getValue()}</>; },
                     enableResizing: true,
                 }
             })
@@ -53,12 +49,12 @@ export const Table: FunctionComponent<IProps> = () => {
     }, [ralData, headers])
 
 
-    const tableData = useMemo<IRalItem[] | []>(() => {
-        return ralData?.data || []
+    const tableData = useMemo(() => {
+        return ralData?.data as IRalItem[] || []
     }, [ralData])
 
     const table = useReactTable({
-        data: tableData,
+        data: tableData as IRalItem[],
         columns,
         getCoreRowModel: getCoreRowModel(),
         // columnResizeMode: 'onChange',
@@ -70,7 +66,7 @@ export const Table: FunctionComponent<IProps> = () => {
     })
 
     const inputRef = useRef<HTMLInputElement | null>(null)
-    
+
     useEffect(() => {
         if (inputRef.current) {
             inputRef.current!.value = String(queries.page)
@@ -80,13 +76,11 @@ export const Table: FunctionComponent<IProps> = () => {
     return (
         <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
             <div className={'text-header-text text-sm p-2 ml-6 flex gap-4 items-center'}>
-                <div className={'flex items-center'}>
-                    <span>
-                        Страница {ralData?.data.length !== 0 ? ralData?.current_page : ' '} из{' '}
-                        {ralData?.data.length !== 0 ? ralData?.last_page : ' '}
-                    </span>
-                </div>
-                <PageInput lastPage={ralData?.last_page} />
+                <PageInput
+                    total={ralData?.total}
+                    currentPage={ralData?.current_page}
+                    lastPage={ralData?.last_page}
+                    dataLenght={tableData?.length} />
             </div>
             <div className={'p-2 w-full h-full grow flex overflow-hidden'}>
                 <div className={'my-block min-w-full h-full bg-background-block'}>
@@ -161,12 +155,15 @@ export const Table: FunctionComponent<IProps> = () => {
                     </div>
                 </div>
             </div>
-            <div className={'text-end'}>
-                <div className={'text-header-text text-sm p-2 mr-6'}>
-                    Страница {ralData?.data.length !== 0 ? ralData?.current_page : 'загрузка'} из{' '}
-                    {ralData?.data.length !== 0 ? ralData?.last_page : 'загрузка'}
-                </div>
+            <div className={'flex justify-end'}>
+                <Pagination
+                    className={"text-header-text text-sm p-2 mr-6"}
+                    dataLenght={tableData?.length}
+                    currentPage={ralData?.current_page}
+                    lastPage={ralData?.last_page}>
+                </Pagination>
             </div>
         </div>
     )
 }
+

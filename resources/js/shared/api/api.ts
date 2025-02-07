@@ -2,6 +2,7 @@ import axios from 'axios'
 import { TPaginatedRal } from '@/shared/types/ral'
 import qs from 'qs'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
+import IPagination from '../types/pagination'
 
 // export const LOCAL_URL: 'http://127.0.0.1:8000/api' = 'http://127.0.0.1:8000/api'
 export const LOCAL_URL: "/api" = "/api"
@@ -22,7 +23,7 @@ export const fetchRalFilters = (queries: Record<string, any>) =>
 
 
 export const fetchRalQuery = (queries: Record<string, any>) =>
-    axiosApi.get<TPaginatedRal>(`/ral`, {
+    axiosApi.get<IPagination>(`/ral`, {
         params: queries,
         paramsSerializer: function (params) {
             return decodeURIComponent(qs.stringify(params, { arrayFormat: 'brackets' }))

@@ -50,14 +50,7 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
     })
 
     // после получения фильтров записываем их для последующего сравнения
-    useEffect(() => {
-        prevQueries.current = { ...startValues, ...getQuery() }
-    }, [startValues]);
-
-    // изменение prevForm для сравнения после каждой отправки
-    useEffect(() => {
-        prevQueries.current = { ...startValues, ...getQuery() }
-    }, [methods.formState.submitCount, JSON.stringify(getQuery())])
+    prevQueries.current = { ...startValues, ...getQuery() }
 
     /**
      * Обработчик формы с проверкой сброса страницы на первую, если параметры поиска изменились. В замыкании предыдущее и текущее значение формы,
@@ -69,12 +62,15 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
         formData: IFormValues,
     ): void => {
         if (isEqual(prevQueries.current, formData)) {
+            console.log("формы равны")
             return;
         } else if (!isEqual(excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData))) {
+            console.log("сработал else if, текущая форма: ", excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData) )
             methods.setValue('page', 1);
             methods.formState.isValid && setQuery({ ...formData, page: 1 }, shouldReplace); // второй параметр true делает replace истории
             prevQueries.current = { ...formData, page: 1 };
         } else {
+            console.log("сработал else", excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData))
             methods.setValue('page', formData.page);
             methods.formState.isValid && setQuery({ ...formData, page: formData.page }, shouldReplace)
         }
