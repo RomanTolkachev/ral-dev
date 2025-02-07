@@ -9,7 +9,7 @@ interface IProps {
 const PageNavButton: FunctionComponent<PropsWithChildren<IProps>> = ({ children, clickHandler, isDisabled = false }) => {
     return (
         <motion.button
-            className={`${isDisabled ? "bg-gray-400" : ""} bg-background-block rounded-md h-full p-2 border border-[#6b7280] transition-all` }
+            className={`${isDisabled ? "bg-gray-400/30" : ""} bg-background-block rounded-md h-full p-2 border border-[#6b7280] transition-all` }
             disabled={isDisabled}
             onClick={clickHandler}
             style={{ boxShadow: '0px 5px 4px 0px rgba(0, 0, 0, 0.3)', scale: 1.01 }}

@@ -16,7 +16,7 @@ interface IProps {
     total?: number
 }
 
-export const PageInput: FunctionComponent<IProps> = ({ className, dataLenght, formName = 'page', lastPage = 1, currentPage, total}) => {
+export const PageInput: FunctionComponent<IProps> = ({ className, dataLenght, formName = 'page', lastPage = 1, currentPage, total }) => {
     const { control, trigger, getValues, setValue } = useFormContext();
     const { customSubmitHandler } = useContext(CustomSubmitHandlerContext)
 
@@ -41,7 +41,7 @@ export const PageInput: FunctionComponent<IProps> = ({ className, dataLenght, fo
             render={({ field: { onChange: updateForm, value = 1 }, fieldState: { error } }) => (
                 <>
                     <Pagination
-                        className='w-44'
+                        className='w-32 min-w-fit'
                         dataLenght={dataLenght}
                         currentPage={currentPage}
                         lastPage={lastPage}>
@@ -68,16 +68,10 @@ export const PageInput: FunctionComponent<IProps> = ({ className, dataLenght, fo
                             {error.message}
                         </div>
                     )}
-                    {
-                        lastPage && lastPage > 1 && (
-                            <>
-                                <PageNavButton isDisabled={currentPage === lastPage} clickHandler={() => handlePageChange((currentPage || 1) + 1)}>вперед</PageNavButton>
-                                <PageNavButton isDisabled={currentPage === 1} clickHandler={() => handlePageChange((currentPage || 1) - 1)}>назад</PageNavButton>
-                                <PageNavButton isDisabled={true} clickHandler={() => handlePageChange(1)}>в начало</PageNavButton>
-                                <PageNavButton isDisabled={true} clickHandler={() => handlePageChange(lastPage)}> в конец</PageNavButton>
-                            </>
-                        )
-                    }
+                    <PageNavButton isDisabled={currentPage === 1} clickHandler={() => handlePageChange((currentPage || 1) - 1)}>назад</PageNavButton>
+                    <PageNavButton isDisabled={currentPage === lastPage} clickHandler={() => handlePageChange((currentPage || 1) + 1)}>вперед</PageNavButton>
+                    <PageNavButton isDisabled={currentPage === 1} clickHandler={() => handlePageChange(1)}>в начало</PageNavButton>
+                    <PageNavButton isDisabled={currentPage === lastPage} clickHandler={() => handlePageChange(lastPage)}> в конец</PageNavButton>
                 </>
             )
             }
