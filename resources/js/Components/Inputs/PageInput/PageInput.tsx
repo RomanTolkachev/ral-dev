@@ -21,9 +21,6 @@ export const PageInput: FunctionComponent<IProps> = ({ className, dataLenght, fo
     const { customSubmitHandler } = useContext(CustomSubmitHandlerContext)
 
     const handlePageChange = async (newPage: number) => {
-        console.log(
-            "новая страница", newPage,
-        )
         setValue(formName, newPage);
         const isValid = await trigger()
         isValid && customSubmitHandler(getValues())

@@ -62,15 +62,15 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
         formData: IFormValues,
     ): void => {
         if (isEqual(prevQueries.current, formData)) {
-            console.log("формы равны")
+            // console.log("формы равны")
             return;
         } else if (!isEqual(excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData))) {
-            console.log("сработал else if, текущая форма: ", excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData) )
+            // console.log("сработал else if, текущая форма: ", excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData) )
             methods.setValue('page', 1);
             methods.formState.isValid && setQuery({ ...formData, page: 1 }, shouldReplace); // второй параметр true делает replace истории
             prevQueries.current = { ...formData, page: 1 };
         } else {
-            console.log("сработал else", excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData))
+            // console.log("сработал else", excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData))
             methods.setValue('page', formData.page);
             methods.formState.isValid && setQuery({ ...formData, page: formData.page }, shouldReplace)
         }
