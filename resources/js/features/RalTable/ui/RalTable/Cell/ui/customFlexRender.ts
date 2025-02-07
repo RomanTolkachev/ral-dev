@@ -1,4 +1,4 @@
-import highlight from "@/Components/Table/features/highlightText";
+import highlight from "@/Components/Table/lib/highlightText";
 import { IModel } from "@/features/RalTable/model/types";
 import { Renderable, CellContext, flexRender } from "@tanstack/react-table";
 import { motion } from "motion/react";

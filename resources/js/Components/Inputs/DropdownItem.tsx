@@ -1,4 +1,3 @@
-
 import { FunctionComponent, memo, useEffect, useState } from 'react'
 import { DropdownFilterButton } from '@/Components/Buttons/DropdownFilterButton'
 import { motion, Variants } from 'framer-motion'
@@ -9,8 +8,6 @@ import { CheckBoxCustom } from '@/Components/Inputs/CheckBoxCustom'
 import { isEqual, keys, values } from 'lodash'
 import { useFormContext } from 'react-hook-form'
 import useParamsCustom from '@/shared/query/useParamsCustom'
-
-
 
 interface IProps {
     className?: string
@@ -78,8 +75,9 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
             variants={itemVariants}
             className={`${className} h-fit`}>
             <DropdownFilterButton
-                clickHandler={() => setIsOpen(!isOpen)}
+                clickHandler={(e) => setIsOpen(!isOpen)}
                 className={'mb-2 relative'}
+                inputName={inputName}
                 isOpen={isOpen}
                 hasAlert={isDitry}
                 children={inputName}

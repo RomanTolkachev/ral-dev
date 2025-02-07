@@ -5,7 +5,7 @@ import { axiosApi } from "@/shared/api/api";
 import { Preloader } from "@/Components/utils/Preloader";
 import useCachedData from "../api/useCachedData";
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { translateHeaderName } from "@/Components/Table/features/translateHeaderName";
+import { translateHeaderName } from "@/Components/Table/lib/translateHeaderName";
 import { div } from "motion/react-client";
 
 

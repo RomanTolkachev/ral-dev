@@ -21,15 +21,14 @@ export const PageInput: FunctionComponent<IProps> = ({ className, formName = 'pa
                 min: {value: 1, message: "значение не может быть меньше 1"}, 
                 max: {value: lastPage, message: "такая страница отсутстует"}
             }}
-            render={({ field: { onChange: formChange, value } }) => (
+            render={({ field: { onChange: updateForm, value } }) => (
                 <>
                     <input
                         min={1}
                         max={lastPage}
                         value={value}
                         onChange={async (e) => {
-                            console.log(formChange)
-                            formChange(e)
+                            updateForm(e)
                             const isValid = await trigger();
                             isValid && customSubmitHandler(getValues())   
                         }}

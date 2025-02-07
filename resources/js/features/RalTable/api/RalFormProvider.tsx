@@ -1,5 +1,5 @@
 import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
-import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useMemo, useRef } from 'react'
+import { createContext, FunctionComponent, PropsWithChildren, useEffect, useMemo, useRef } from 'react'
 import { useRalFilters } from '@/features/ralTable/api/useRalFilters'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import DEFAULT_REQUEST from '../config'
@@ -72,19 +72,28 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
             return;
         } else if (!isEqual(excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData))) {
             methods.setValue('page', 1);
-            setQuery({ ...formData, page: 1 }, shouldReplace); // второй параметр true делает replace истории
+            methods.formState.isValid && setQuery({ ...formData, page: 1 }, shouldReplace); // второй параметр true делает replace истории
             prevQueries.current = { ...formData, page: 1 };
         } else {
             methods.setValue('page', formData.page);
-            setQuery({ ...formData, page: formData.page }, shouldReplace)
+            methods.formState.isValid && setQuery({ ...formData, page: formData.page }, shouldReplace)
         }
     }
 
     /**
-     * Логика сброса формы и последующего обновления таблицы до дефолтного состояния
+     * Сброс формы до дефолтного состояние и сабмит дефолтных значений
      */
     function customResetHandler(): void {
         methods.reset();
+        methods.handleSubmit(data => customSubmitHandler(data))()
+    }
+
+    /**
+     * Сброс формы до дефолтного состояние и сабмит дефолтных значений
+     */
+    function customResetField(fieldName: keyof IFormValues): void {
+        console.log({[fieldName]: methods.formState.defaultValues![fieldName]})
+        methods.reset({...methods.getValues(), [fieldName]: methods.formState.defaultValues![fieldName]}, {keepDefaultValues: true});
         methods.handleSubmit(data => customSubmitHandler(data))()
     }
 
@@ -118,7 +127,7 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
     }, [isPending, JSON.stringify(filters)]);
 
     return (
-        <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler }}>
+        <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField }}>
             <FormProvider {...methods}>
                 {children}
             </FormProvider>

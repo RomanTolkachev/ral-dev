@@ -1,10 +1,13 @@
-import { ChangeEvent, FunctionComponent } from 'react'
+import { ChangeEvent, FunctionComponent, useContext } from 'react'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters.js'
 import { Control, Controller, useFormContext } from 'react-hook-form'
 import { SVG } from '@/Components/utils/SVG.tsx'
-import splitValue from './features/splitValue.ts'
-import joinValue from './features/joinValue.ts'
-import useParamsCustom from '@/shared/query/useParamsCustom.ts'
+import splitValue from './lib/splitValue.ts'
+import joinValue from './lib/joinValue.ts'
+import { CustomSubmitHandlerContext } from '@/features/ralTable/api/RalFormProvider.tsx'
+import { AnimatePresence, motion } from 'motion/react'
+import { enterExitAnimation as animationParams } from '@/shared/framer-motion/enter-exit-animation.ts'
+import customValidation from './lib/customValidation.ts'
 
 interface IProps {
     className?: string
@@ -13,45 +16,52 @@ interface IProps {
     setFirstPage?: any
 }
 
-/* Значения передаваемые из данного input разбиваются в массив для отправки на БЭК, поэтому в handler значение обернуто в
-функцию splitValue. Функция joinValue нужна для того, чтобы при обновлении страницы, корректно собрать значение из
-query параметров обратно в input*/
-
+/**
+ * Значения передаваемые из данного input разбиваются в массив для отправки на БЭК, поэтому в handler значение обернуто в
+ * функцию splitValue. Функция joinValue нужна для того, чтобы при обновлении страницы, корректно собрать значение из
+ * query параметров обратно в input
+ */
 export const InputCustom: FunctionComponent<IProps> = ({ className, inputData }) => {
+    const { customSubmitHandler } = useContext(CustomSubmitHandlerContext);
+    const inputName = inputData.header
+    const { control, trigger, getValues } = useFormContext();
 
-    const [, getQuery] = useParamsCustom()
-    
-    const handleChange = (onChange: (...args: any[]) => void) => {
-        return (e: ChangeEvent<HTMLInputElement>) => {
-            const value = e.target.value
-            onChange(splitValue(value))
-        }
+    /**
+     * Функция обновляет состояние react-hook-form, 
+     * затем проверяет обновленное поле на валидность
+     * и если оно валидно, то происходит submit
+     * @param e событие onChange
+     * @param updater функция, которая записывает значение в состояние react-hook-form
+     */
+    const handleChange = async (e: ChangeEvent<HTMLInputElement>, updater: (...args: any[]) => void,) => {
+        updater(splitValue(e.target.value));
+        let isValid = await trigger();
+        isValid && customSubmitHandler(getValues())
     }
-
-    const { control } = useFormContext();
-
-    const queries = getQuery();
 
     return (
         <Controller
-            name={inputData.header}
+            name={inputName}
             control={control}
-            render={({ field: { onChange, value } }) => (
+            rules={{ validate: customValidation }}
+            render={({ field: { onChange: updateForm, value }, fieldState: { error } }) => (
                 <div className={`${className} p-1 relative`}>
                     <input
                         type="text"
-                        id={inputData.header}
+                        id={inputName}
                         value={joinValue(value) || ''}
                         placeholder={''}
-                        onChange={handleChange(onChange)}
-                        className={`ring-transparent
+                        onChange={e => handleChange(e, updateForm)}
+                        className={`
+                            ${error && 'ring-2 !ring-error border-transparent '}
+                            ring-transparent
                             appearance-none placeholder-transparent
                             focus:ring-2 focus:ring-button-violet
                             rounded-full w-full shadow-input-search border-0
                             peer bg-input-primary text-input-text
                             autofill:bg-red-200 focus:autofill:bg-red-200`}></input>
                     <label
-                        htmlFor={inputData.header}
+                        htmlFor={inputName}
                         className={`
                             flex justify-center items-center w-full
                             cursor-text select-none transition-all -z-[1]
@@ -60,6 +70,14 @@ export const InputCustom: FunctionComponent<IProps> = ({ className, inputData })
                         <SVG magnifyingGlass className={'absolute translate-x-full left-0 w-4 h-4'} />
                         <span className={'first-letter:capitalize'}>поиск</span>
                     </label>
+                    <AnimatePresence>
+                        {error && error.message &&
+                            <motion.div
+                                {...animationParams}
+                                className='text-error text-center'>
+                                {error.message}
+                            </motion.div>}
+                    </AnimatePresence>
                 </div>
             )}></Controller>
     )

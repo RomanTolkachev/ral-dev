@@ -1,7 +1,8 @@
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useContext } from 'react'
 import { v4 } from 'uuid'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import { Controller, useFormContext } from 'react-hook-form'
+import { CustomSubmitHandlerContext } from '@/features/ralTable/api/RalFormProvider'
 
 
 interface IProps {
@@ -12,6 +13,7 @@ interface IProps {
 export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData }) => {
 
     const { control, getValues } = useFormContext();
+    const { customSubmitHandler } = useContext(CustomSubmitHandlerContext)
     const inputName = inputData.header;
 
 const handleChange = (checked: boolean, name: string) => {
@@ -31,7 +33,7 @@ const handleChange = (checked: boolean, name: string) => {
                         key={`cb-${key}`}
                         name={inputName}
                         control={control}
-                        render={({ field: {onChange, value} }) => (
+                        render={({ field: {onChange, value = []} }) => (
                             <div
                                 className={
                                     'flex items-center border-b last:border-b-0 py-2 border-checkbox-custom-border text-gray-light-gray'
@@ -41,7 +43,7 @@ const handleChange = (checked: boolean, name: string) => {
                                     {item ? item : 'пустые'}
                                 </label>
                                 <input
-                                    checked={getValues(inputName) ? control._formValues[inputName].includes(item) : false}
+                                    checked={value.includes(item)}
                                     className={
                                         'ml-auto checked:text-checkbox-custom' +
                                         ' outline-none border focus:ring-checkbox-ring focus:ring-offset-0 rounded active:border-transparent ' +
@@ -49,7 +51,10 @@ const handleChange = (checked: boolean, name: string) => {
                                         'bg-background-block'
                                     }
                                     type="checkbox"
-                                    onChange={e => onChange(handleChange(e.target.checked, item))}
+                                    onChange={e => {
+                                        onChange(handleChange(e.target.checked, item)); // onchange записывает значение в react-hook-form
+                                        customSubmitHandler(getValues()) // сабмитим обновленное состояние формы
+                                    } }
                                 />
                             </div>
                         )}

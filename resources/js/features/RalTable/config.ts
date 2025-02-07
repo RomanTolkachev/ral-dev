@@ -12,7 +12,7 @@ const currentDate = new Date();
 const startdate = new Date(currentDate);
 startdate.setFullYear(currentDate.getFullYear()-PERIOD)
 
-const dateFormatter = new Intl.DateTimeFormat("en-CA", {
+export const dateFormatter = new Intl.DateTimeFormat("en-CA", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
