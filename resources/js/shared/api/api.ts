@@ -29,3 +29,12 @@ export const fetchRalQuery = (queries: Record<string, any>) =>
             return decodeURIComponent(qs.stringify(params, { arrayFormat: 'brackets' }))
         },
     })
+
+
+export const fetchAccreditationAreaQuery = (queries: Record<string, any>) =>
+    axiosApi.get<IPagination>(`/accreditation_area`, {
+        params: queries,
+        paramsSerializer: function (params) {
+            return decodeURIComponent(qs.stringify(params, { arrayFormat: 'brackets' }))
+        },
+    })

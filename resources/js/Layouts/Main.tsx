@@ -8,7 +8,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { NotFound } from '@/Components/utils/404'
 import Modal from '@/Components/modal/Modal'
 import { RalModal } from '@/features/ralModal/ui/RalModal'
-import { AccreditationAreaTable } from '@/features/accreditationArea/ui/AccreditetionAteaTable'
+import { AccreditationAreaTable } from '@/features/accreditationArea/ui/AccreditetionAreaTable'
 
 const queryClient = new QueryClient();
 
@@ -52,7 +52,7 @@ function Main() {
                         </QueryClientProvider>
                     } />
                     <Route 
-                        path='accreditation-area' 
+                        path='accreditation_area' 
                         element={<AccreditationAreaTable />}>
                     </Route>
                 </Route>

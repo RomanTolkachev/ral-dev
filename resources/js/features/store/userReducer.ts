@@ -18,6 +18,12 @@ type TRalTableModel =
     'status_change_date' |
     'id'
 
+type TAccreditationAreaModel =
+    'nov_GOTS' |
+    'nov_TNVED' |
+    'comparable_GOTS' |
+    'comparable_TNVED' 
+
 export interface IUserReducer {
     user: any;
     settings: {
@@ -40,6 +46,12 @@ const initialState = {
             'id',
             'applicantINN',
         ] as Array<TRalTableModel>,
+        AccreditationAreaColumns: [
+            'nov_GOTS',
+            'nov_TNVED',
+            'comparable_GOTS',
+            'comparable_TNVED'
+        ] as Array<TAccreditationAreaModel>,
         userFilters: [
             'new_status_AL',
             'regDate',

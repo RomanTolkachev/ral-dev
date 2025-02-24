@@ -4,7 +4,7 @@ import { Preloader } from '@/Components/utils/Preloader'
 import { SVG } from '@/Components/utils/SVG'
 import { useRalQuery } from '@/features/ralTable/api/useRalQuery'
 import { getHeaders } from '@/Components/Table/lib/getHeaders'
-import { IRalItem } from '@/shared/types/ral'
+import { IRalItem, TPaginatedRal } from '@/shared/types/ral'
 import { translateHeaderName } from '@/Components/Table/lib/translateHeaderName'
 import { PageInput } from '@/Components/Inputs/PageInput/PageInput'
 import useParamsCustom from '@/shared/query/useParamsCustom'
@@ -20,6 +20,8 @@ import { useNavigate } from 'react-router'
 
 interface IProps {
     className?: string
+    paginatedData: IPagination | null
+    columns: String[]  
 }
 
 /**
@@ -38,21 +40,14 @@ const childrenVariants = {
     end: { opacity: 1 }
 }
 
-export const Table: FunctionComponent<IProps> = () => {
-    const [, getQuery] = useParamsCustom();
-    const userColumns = useSelectorTyped(state => state.userState.settings.ralTableColumns); // тут дальше в стейте будем хранить настройки для столбца юзера
-
-    const queries = isEmpty(getQuery()) ? DEFAULT_REQUEST : getQuery();
-    queries.user_columns = userColumns; // к дефолтному запросу добавляем колонки пользователя
-
-    const { data: ralData, isPending } = useRalQuery<IPagination>(queries); //TODO: тут нужно вынести выше и через пропсы давать query
+export const Table: FunctionComponent<IProps> = ({className, paginatedData }) => {
 
     const navigate = useNavigate();
 
     const headers = useMemo(() => {
-        const data = ralData?.data as IRalItem[]
-        return ralData ? getHeaders(data) : []
-    }, [ralData])
+        const data = paginatedData?.data as IRalItem[]
+        return paginatedData ? getHeaders(data) : []
+    }, [paginatedData])
 
     const columns: ColumnDef<any>[] = useMemo(() => {
         let colData: ColumnDef<any>[] = [];
@@ -67,12 +62,12 @@ export const Table: FunctionComponent<IProps> = () => {
             })
         }
         return colData;
-    }, [ralData, headers])
+    }, [paginatedData, headers])
 
 
     const tableData = useMemo(() => {
-        return ralData?.data as IRalItem[] || []
-    }, [ralData])
+        return paginatedData?.data as IRalItem[] || []
+    }, [paginatedData])
 
     const table = useReactTable({
         data: tableData as IRalItem[],
@@ -99,17 +94,17 @@ export const Table: FunctionComponent<IProps> = () => {
      */
     const [animationKey, setAnimationKey] = useState<number>(0);
     useLayoutEffect(() => {
-        ralData && setAnimationKey(prev => prev + 1)
-    }, [ralData])
+        paginatedData && setAnimationKey(prev => prev + 1)
+    }, [paginatedData])
 
     return (
-        <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
+        <div className={`${className} h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden`}>
             <div className={'text-header-text text-sm p-2 ml-6 flex gap-4 items-center'}>
                 <PageInput
-                    total={ralData?.total}
+                    total={paginatedData?.total}
                     isPending={isPending}
-                    currentPage={ralData?.current_page}
-                    lastPage={ralData?.last_page}
+                    currentPage={paginatedData?.current_page}
+                    lastPage={paginatedData?.last_page}
                     dataLenght={tableData?.length} />
             </div>
             <div className={'p-2 w-full h-full grow flex overflow-hidden'}>
@@ -207,4 +202,3 @@ export const Table: FunctionComponent<IProps> = () => {
         </div>
     )
 }
-
