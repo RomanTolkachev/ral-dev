@@ -7,9 +7,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { NotFound } from '@/Components/utils/404'
 import Modal from '@/Components/modal/Modal'
-import { AnimatePresence } from 'motion/react'
-import { memo, useEffect } from 'react'
 import { RalModal } from '@/features/ralModal/ui/RalModal'
+import { AccreditationAreaTable } from '@/features/accreditationArea/ui/AccreditetionAteaTable'
 
 const queryClient = new QueryClient();
 
@@ -52,7 +51,12 @@ function Main() {
                             </RalFormProvider>
                         </QueryClientProvider>
                     } />
+                    <Route 
+                        path='accreditation-area' 
+                        element={<AccreditationAreaTable />}>
+                    </Route>
                 </Route>
+ 
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </div>

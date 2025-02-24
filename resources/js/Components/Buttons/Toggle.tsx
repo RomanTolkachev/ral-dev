@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useEffect, useState} from 'react';
+import React, {FunctionComponent, useEffect, useLayoutEffect, useState} from 'react';
 import {SVG} from "@/Components/utils/SVG";
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 
@@ -15,7 +15,7 @@ export const Toggle: FunctionComponent<IProps> = ({className}) => {
 
     const controls = useAnimation()
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (localStorage.getItem("theme")) {
             setTheme(localStorage.getItem("theme")!);
         } else {

@@ -67,7 +67,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                             onChange={(e) => { onChange(handleMinChange(e)) }}
                             className={
                                 `${formState.errors[inputName] && 'ring-2 !ring-error border-transparent '}` +
-                                ' bg-input-primary text-input-text appearance-none rounded-full shadow-input-search border-0' +
+                                ' bg-input-primary text-input-text appearance-none rounded-full shadow-input-search border-black/10' +
                                 ' ring-transparent' +
                                 ' focus:ring-2 focus:ring-button-violet'
                             }
@@ -82,7 +82,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                             onChange={(e) => onChange(handleMaxChange(e))}
                             className={
                                 `${formState.errors[inputName] && 'ring-2 !ring-error border-transparent '}` +
-                                ' bg-input-primary  text-input-text w-full appearance-none rounded-full shadow-input-search border-0 pl-5' +
+                                ' bg-input-primary  text-input-text w-full  border-black/10 appearance-none rounded-full shadow-input-search pl-5' +
                                 ' ring-transparent' +
                                 ' focus:ring-2 focus:ring-button-violet'
                             }
@@ -99,7 +99,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                         onClick={(e: MouseEvent) => { e.preventDefault(); customSubmitHandler(getValues()) }}
                         isDisabled={isEqual(value, defaultValue || !isValid )}
                         color='violet'
-                        className={`w-full mx-auto ${isEqual(value, defaultValue) || !isValid ? "bg-gray-400" : ""}`}>
+                        className={`w-full mx-auto ${isEqual(value, defaultValue) || !isValid ? "bg-gray-300" : ""}`}>
                         Применить
                     </MainButton>
                 </div>

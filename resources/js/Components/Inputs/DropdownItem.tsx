@@ -75,7 +75,7 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
             variants={itemVariants}
             className={`${className} h-fit`}>
             <DropdownFilterButton
-                clickHandler={(e) => setIsOpen(!isOpen)}
+                clickHandler={() => setIsOpen(!isOpen)}
                 className={'mb-2 relative'}
                 inputName={inputName}
                 isOpen={isOpen}

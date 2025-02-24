@@ -10,7 +10,7 @@ export default {
         './resources/js/**/*.tsx',
         './node_modules/tailwind-datepicker-react/dist/**/*.js',
     ],
-    safeList: ['rotate-180', 'rotate-0', 'checkbox-custom, thumb-secondary, filter-dropdown-button-active', "pl-8"],
+    safeList: ['rotate-180', 'rotate-0', 'checkbox-custom, thumb-secondary, filter-dropdown-button-active', "pl-8", "text-gray-400"],
     theme: {
         extend: {
             fontFamily: {
@@ -48,6 +48,8 @@ export default {
                 'input-primary': 'rgba(var(--input-primary-bg))',
                 'input-text': 'rgba(var(--input-primary-text))',
                 'input-border-active': 'rgba(var(--input-border-active))',
+                'input-nav-bg-active': 'rgba(var(--page-nav-bg-active))',
+                'input-nav-bg-inactive': 'rgba(var(--page-nav-bg-inactive))',
 
                 // Table
                 'row-even': 'rgba(var(--row-even))',
@@ -69,7 +71,9 @@ export default {
             boxShadow: {
                 basic: '0px 1px 9px 0px rgba(var(--shadow-basic));',
                 'button-main': '0px 5px 4px 0px rgba(0, 0, 0, 0.3)',
-                'input-search': '22px 16px 22px 0px rgba(var(--shadow-input-primary), 1) inset;',
+                'input-search': '10px 6px 9px 9px rgba(var(--input-primary-shadow), 0.5) inset;',
+                'nav-page': '7px 2px 7px 0px rgba(var(--input-primary-shadow), 0.8) inset;',
+                'input-page': '10px 2px 9px 5px rgba(var(--input-primary-shadow), 0.5) inset;',
             },
         },
     },

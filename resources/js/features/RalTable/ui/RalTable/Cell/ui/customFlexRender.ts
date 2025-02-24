@@ -24,7 +24,7 @@ const motionProperties = {
 }
 
 /**
- * Функция-middlaware, которая модифицирует компонент, отрисовываемый в ячейке.
+ * Middlaware, который модифицирует компонент, отрисовываемый в ячейке.
  * На данный момент реализованы следующие модификации:
  * 
  * - все ячейки в колонке id возвращают Link из react-router
@@ -57,8 +57,7 @@ function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, co
                     },
                     to: `${context.row.original.id}${location.search}`
                 },
-                'подробнее'
-                ,
+                'подробнее',   
             )
         )
     }
@@ -77,13 +76,19 @@ function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, co
         // ниже проверки на строковое значение
         if (typeof value === "string") {
             if (value.includes('http')) {
-                return createElement(motion.a, { href: value, ...linkMotionProps }, value)
+                return createElement(motion.a, { href: value, ...linkMotionProps, target: "_blank", rel: "noopener noreferrer", onClick: e => e.stopPropagation()  }, value)
+            }
+            if (value === "Действует") {
+                return createElement('span', {
+                    style: {
+                        color: `var(--cell-active)`,
+                    }
+                }, value)
             }
             if (value === "Прекращен") {
                 return createElement('span', {
                     style: {
                         color: `var(--cell-terminated)`,
-                        textShadow: `var(--cell-terminated-shadow)`,
                     }
                 }, value)
             }
@@ -91,7 +96,13 @@ function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, co
                 return createElement('span', {
                     style: {
                         color: `var(--cell-suspended)`,
-                        textShadow: `var(--cell-suspended-shadow)`,
+                    }
+                }, value)
+            }
+            if (value === "Частично приостановлен") {
+                return createElement('span', {
+                    style: {
+                        color: `var(--cell-part-suspended)`,
                     }
                 }, value)
             }

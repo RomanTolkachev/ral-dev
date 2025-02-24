@@ -13,7 +13,7 @@ export interface IProps {
 const RalCell: FunctionComponent<IProps> = ({ cellData }) => {
     const [, getQuery] = useParamsCustom();
     const location: any = useLocation();
-    const { getContext, column } = cellData;
+    const { getContext, column, row } = cellData;
 
     /**
      * Функция достает из таблицы ячейку и возвращает JSX
@@ -25,7 +25,7 @@ const RalCell: FunctionComponent<IProps> = ({ cellData }) => {
             key={cellData.id}
             className={`overflow-hidden p-2 w-[${cellData.column.getSize()}px] text-center`}>
             <span className={'text-table-base'}>
-                {customFlexRender(renderFn, getContext(), getQuery(), location)}            
+                {customFlexRender(renderFn, getContext(), getQuery(), location)}
             </span>
         </td>
     );

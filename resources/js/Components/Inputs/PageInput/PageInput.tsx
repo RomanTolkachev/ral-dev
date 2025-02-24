@@ -1,10 +1,9 @@
 import { CustomSubmitHandlerContext } from '@/features/ralTable/api/RalFormProvider'
-import IPagination from '@/shared/types/pagination'
-import { IRalItem } from '@/shared/types/ral'
 import { FunctionComponent, useContext } from 'react'
 import { useFormContext, Controller } from 'react-hook-form'
 import Pagination from './Pagination'
 import PageNavButton from '@/Components/Buttons/PageNaVButton'
+import { SVG } from '@/Components/utils/SVG'
 
 
 interface IProps {
@@ -14,9 +13,10 @@ interface IProps {
     lastPage?: number
     dataLenght?: number
     total?: number
+    isPending?: boolean
 }
 
-export const PageInput: FunctionComponent<IProps> = ({ className, dataLenght, formName = 'page', lastPage = 1, currentPage, total }) => {
+export const PageInput: FunctionComponent<IProps> = ({ className, dataLenght, formName = 'page', lastPage = 1, currentPage, isPending = false }) => {
     const { control, trigger, getValues, setValue } = useFormContext();
     const { customSubmitHandler } = useContext(CustomSubmitHandlerContext)
 
@@ -38,11 +38,25 @@ export const PageInput: FunctionComponent<IProps> = ({ className, dataLenght, fo
             render={({ field: { onChange: updateForm, value = 1 }, fieldState: { error } }) => (
                 <>
                     <Pagination
-                        className='w-32 min-w-fit'
+                        className='w-52 min-w-fit'
                         dataLenght={dataLenght}
                         currentPage={currentPage}
                         lastPage={lastPage}>
                     </Pagination>
+                    <PageNavButton
+                        isDisabled={isPending || currentPage === 1}
+                        clickHandler={() => handlePageChange(1)}>
+                        <SVG
+                            className={` ${currentPage === 1 ? "text-[rgb(var(--page-nav-icon-inactive))]" : "text-[rgb(var(--page-nav-icon-active))]"}`}
+                            navDoubleArrow />
+                    </PageNavButton>
+                    <PageNavButton
+                        isDisabled={isPending || currentPage === 1}
+                        clickHandler={() => handlePageChange((currentPage || 1) - 1)}>
+                        <SVG
+                            className={` ${currentPage === 1 ? "text-[rgb(var(--page-nav-icon-inactive))]" : "text-[rgb(var(--page-nav-icon-active))]"}`}
+                            navArrow />
+                    </PageNavButton>
                     <input
                         min={1}
                         max={lastPage}
@@ -54,7 +68,7 @@ export const PageInput: FunctionComponent<IProps> = ({ className, dataLenght, fo
                         }}
                         className={
                             `${error && 'ring-2 !ring-error border-transparent '}` +
-                            ` ${className} w-20 bg-background-block rounded-md focus:border-transparent ` +
+                            ` ${className} bg-input-primary w-20 text-input-text shadow-input-page border-black/10 rounded-md focus:border-transparent ` +
                             'focus:ring-2 focus:ring-input-border-active'
                         }
 
@@ -65,10 +79,20 @@ export const PageInput: FunctionComponent<IProps> = ({ className, dataLenght, fo
                             {error.message}
                         </div>
                     )}
-                    <PageNavButton isDisabled={currentPage === 1} clickHandler={() => handlePageChange((currentPage || 1) - 1)}>назад</PageNavButton>
-                    <PageNavButton isDisabled={currentPage === lastPage} clickHandler={() => handlePageChange((currentPage || 1) + 1)}>вперед</PageNavButton>
-                    <PageNavButton isDisabled={currentPage === 1} clickHandler={() => handlePageChange(1)}>в начало</PageNavButton>
-                    <PageNavButton isDisabled={currentPage === lastPage} clickHandler={() => handlePageChange(lastPage)}> в конец</PageNavButton>
+                    <PageNavButton
+                        isDisabled={isPending || currentPage === lastPage}
+                        clickHandler={() => handlePageChange((currentPage || 1) + 1)}>
+                        <SVG
+                            className={`rotate-180 ${currentPage === lastPage ? "text-[rgb(var(--page-nav-icon-inactive))]" : "text-[rgb(var(--page-nav-icon-active))]"}`}
+                            navArrow />
+                    </PageNavButton>
+                    <PageNavButton
+                        isDisabled={isPending ||currentPage === lastPage}
+                        clickHandler={() => handlePageChange(lastPage)}>
+                        <SVG
+                            className={`rotate-180 ${currentPage === lastPage ? "text-[rgb(var(--page-nav-icon-inactive))]" : "text-[rgb(var(--page-nav-icon-active))]"}`}
+                            navDoubleArrow />
+                    </PageNavButton>
                 </>
             )
             }

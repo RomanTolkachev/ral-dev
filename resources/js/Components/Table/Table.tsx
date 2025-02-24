@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { FunctionComponent, ReactNode, useLayoutEffect, useMemo, useState } from 'react'
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { Preloader } from '@/Components/utils/Preloader'
 import { SVG } from '@/Components/utils/SVG'
@@ -15,15 +15,24 @@ import { useSelectorTyped } from '@/features/store/typedUseSelector'
 import IPagination from '@/shared/types/pagination'
 import Pagination from '../Inputs/PageInput/Pagination'
 import { motion } from 'motion/react'
+import { useNavigate } from 'react-router'
+
 
 interface IProps {
     className?: string
 }
 
+/**
+ * параметры анимации
+ */
 const parentVariants = {
     start: {},
     end: { transition: { staggerChildren: 0.04, delayChildren: 0.1 } }
 }
+
+/**
+ * параметры анимации
+ */
 const childrenVariants = {
     start: { opacity: 0 },
     end: { opacity: 1 }
@@ -38,9 +47,11 @@ export const Table: FunctionComponent<IProps> = () => {
 
     const { data: ralData, isPending } = useRalQuery<IPagination>(queries); //TODO: тут нужно вынести выше и через пропсы давать query
 
+    const navigate = useNavigate();
+
     const headers = useMemo(() => {
         const data = ralData?.data as IRalItem[]
-        return ralData ? ["подробнее", ...getHeaders(data)] : []
+        return ralData ? getHeaders(data) : []
     }, [ralData])
 
     const columns: ColumnDef<any>[] = useMemo(() => {
@@ -75,6 +86,13 @@ export const Table: FunctionComponent<IProps> = () => {
         },
     })
 
+    /**
+     * функция для перехода по ссылке при клике на row
+     */
+    function handleRowClick(to: string):void {
+        navigate(to)
+    }
+
 
     /**
      * принудительно вызываем рендер tbody каждое изменение ralData, чтобы менять ключ анимации.
@@ -82,14 +100,15 @@ export const Table: FunctionComponent<IProps> = () => {
      */
     const [animationKey, setAnimationKey] = useState<number>(0);
     useLayoutEffect(() => {
-        ralData && setAnimationKey(prev => prev +1)
-    },[ralData])
+        ralData && setAnimationKey(prev => prev + 1)
+    }, [ralData])
 
     return (
         <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
             <div className={'text-header-text text-sm p-2 ml-6 flex gap-4 items-center'}>
                 <PageInput
                     total={ralData?.total}
+                    isPending={isPending}
                     currentPage={ralData?.current_page}
                     lastPage={ralData?.last_page}
                     dataLenght={tableData?.length} />
@@ -131,7 +150,18 @@ export const Table: FunctionComponent<IProps> = () => {
                                 <motion.tbody key={animationKey} variants={parentVariants} initial="start" animate="end" className={'font-medium'}>
                                     {table.getRowModel().rows.map((row) => {
                                         return (
-                                            <motion.tr variants={childrenVariants} className={'even:bg-row-even odd:bg-row-odd h-20'} key={row.id}>
+                                            <motion.tr
+                                                variants={childrenVariants} 
+                                                whileHover={{
+                                                    y: -1,
+                                                    cursor: "pointer", 
+                                                    transition: {duration: 0.2}, 
+                                                    boxShadow: "var(--row-hover)"
+                                                }}
+                                                className={'even:bg-row-even odd:bg-row-odd h-20 z-10'} 
+                                                key={row.id}
+                                                onClick={() => handleRowClick(`${row.original.id}${location.search}`)}
+                                            >
                                                 {row.getVisibleCells().map((cell) => {
                                                     return (
                                                         <RalCell key={cell.id} cellData={cell} />

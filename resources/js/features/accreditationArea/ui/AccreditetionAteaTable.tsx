@@ -2,11 +2,10 @@ import { MainButton } from "@/Components/Buttons/MainButton"
 import { Table } from "@/Components/Table/Table"
 import { DevTool } from "@hookform/devtools"
 import { useFormContext } from "react-hook-form"
-import RalSearchingForm from "../RalSearchingForm/RalSearchingForm"
 
-export const Raltable = () => {
+export const AccreditationAreaTable = () => {
     
-    const { control } = useFormContext();
+    // const { control } = useFormContext();
 
     return (
         <div className='flex grow shrink min-h-0'>
@@ -16,7 +15,7 @@ export const Raltable = () => {
                 }>
                 <div className={'p-2 flex flex-col grow shrink overflow-hidden'}>
                     <div className={'my-block bg-background-block pt-6 flex grow overflow-hidden'}>
-                        <RalSearchingForm className={'w-full'} />
+                        {/* <RalSearchingForm className={'w-full'} /> */}
                     </div>
                 </div>
             </section>
@@ -26,8 +25,8 @@ export const Raltable = () => {
                     <MainButton color={'white'}>кнопка 2</MainButton>
                     <MainButton color={'violet'}>кнопка 3</MainButton>
                 </div>
-                <Table />
-            <DevTool control={control} />
+                {/* <Table /> */}
+            {/* <DevTool control={control} /> */}
             </section>
         </div>
     )

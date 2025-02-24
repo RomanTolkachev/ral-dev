@@ -31,14 +31,14 @@ const initialState = {
     settings: {
         ralTableColumns: [
             'fullName',
+            'RegNumber',
             'regDate',
             'link',
             'status_change_date',
+            'nameType',
             'new_status_AL',
             'id',
-            'RegNumber',
             'applicantINN',
-            'fullName',
         ] as Array<TRalTableModel>,
         userFilters: [
             'new_status_AL',

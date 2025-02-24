@@ -11,6 +11,8 @@ interface IProps {
     schedule?: boolean
     alert?: boolean
     escape?: boolean
+    navArrow?: boolean
+    navDoubleArrow?: boolean
 }
 
 export const SVG: FunctionComponent<IProps> = ({
@@ -23,9 +25,11 @@ export const SVG: FunctionComponent<IProps> = ({
     magnifyingGlass = false,
     schedule = false,
     alert = false,
-    escape = false
+    escape = false,
+    navArrow = false,
+    navDoubleArrow = false,
 }) => {
-    if (!arrow && !notFound && !sun && !moon && !magnifyingGlass && !schedule && !alert && !escape) {
+    if (!arrow && !notFound && !sun && !moon && !magnifyingGlass && !schedule && !alert && !escape && !navArrow && !navDoubleArrow) {
         return null
     }
     return (
@@ -220,12 +224,23 @@ export const SVG: FunctionComponent<IProps> = ({
                 </svg>
             )}
             {escape && (
-                <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    width="100%" 
-                    height="100%" 
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="100%"
+                    height="100%"
                     viewBox="0 0 32 32">
-                    <path fill="currentColor" d="M7.223 2.893a3.072 3.072 0 0 0-4.33 0a3.084 3.084 0 0 0 0 4.34l8.747 8.744l-8.737 8.746a3.072 3.072 0 0 0 0 4.33a3.072 3.072 0 0 0 4.33 0l8.74-8.745l8.74 8.735a3.072 3.072 0 0 0 4.33 0a3.072 3.072 0 0 0 0-4.33l-8.738-8.738l8.747-8.752a3.072 3.072 0 0 0 0-4.33c-1.2-1.19-3.15-1.19-4.34 0l-8.74 8.749z"/>
+                    <path fill="currentColor" d="M7.223 2.893a3.072 3.072 0 0 0-4.33 0a3.084 3.084 0 0 0 0 4.34l8.747 8.744l-8.737 8.746a3.072 3.072 0 0 0 0 4.33a3.072 3.072 0 0 0 4.33 0l8.74-8.745l8.74 8.735a3.072 3.072 0 0 0 4.33 0a3.072 3.072 0 0 0 0-4.33l-8.738-8.738l8.747-8.752a3.072 3.072 0 0 0 0-4.33c-1.2-1.19-3.15-1.19-4.34 0l-8.74 8.749z" />
+                </svg>
+            )}
+            {navArrow && (
+                <svg className={`${className}`} width="100%" height="100%" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.3333 4.16671L13.3333 15.8334L4.16668 10L13.3333 4.16671ZM11.6667 7.20837L7.29168 10L11.6667 12.7917L11.6667 7.20837Z" fill="currentColor" />
+                </svg>
+            )}
+            {navDoubleArrow && (
+                <svg className={`${className}`} width="100%" height="100%" viewBox="0 0 23 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 3.125L10 11.875L3.125 7.5L10 3.125ZM8.75 5.40625L5.46875 7.5L8.75 9.59375V5.40625Z" fill="currentColor" />
+                    <path d="M18 3.125V11.875L11.125 7.5L18 3.125ZM16.75 5.40625L13.4688 7.5L16.75 9.59375V5.40625Z" fill="currentColor" />
                 </svg>
             )}
         </>

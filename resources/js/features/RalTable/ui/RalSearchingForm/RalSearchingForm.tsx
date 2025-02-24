@@ -1,4 +1,4 @@
-import { FunctionComponent, useContext, useEffect, useMemo, useState } from 'react'
+import { FunctionComponent, memo, useContext, useEffect, useMemo, useState } from 'react'
 import { Preloader } from '@/Components/utils/Preloader'
 import { DropdownItem } from '@/Components/Inputs/DropdownItem'
 import { MainButton } from '@/Components/Buttons/MainButton'
@@ -14,7 +14,7 @@ interface IProps {
 
 type IForm = Record<string, any>
 
-const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
+const RalSearchingForm: FunctionComponent<IProps> = memo(({ className }) => {
     const userFilters = useSelectorTyped(state => state.userState.settings)
     const { data: filters, isPending } = useRalFilters(userFilters);
     const { customResetHandler } = useContext(CustomSubmitHandlerContext)
@@ -41,6 +41,6 @@ const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
             </div >
         </form >
     );
-}
+})
 
 export default RalSearchingForm;

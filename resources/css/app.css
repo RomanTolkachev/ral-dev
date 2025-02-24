@@ -48,9 +48,15 @@
 
     /* Inputs */
     --input-primary-bg: 250, 250, 250;
-    --shadow-input-primary: 224, 224, 230;
+    --input-primary-shadow: 224, 224, 230;
     --input-primary-text: 137, 137, 137;
     --input-border-active: 119, 93, 166;
+
+    /* Page navigation*/
+    --page-nav-bg-active: 250, 250, 250;
+    --page-nav-bg-inactive: 212, 212, 212;
+    --page-nav-icon-active: 112, 182, 193;
+    --page-nav-icon-inactive: 157, 157, 157;
 
     /* Scroll */
     --scrollbar-track: rgba(217, 217, 217);
@@ -63,11 +69,14 @@
     --row-odd: 240, 240, 243;
     --text-table-base: 137, 137, 137;
 
+    /* Row */
+    --row-hover: 4px 1px 3px rgba(119, 93, 166, 0.4), inset 0px 1px 15px rgba(119, 93, 166, 0.5);
+
     /*Cell*/
-    --cell-suspended: rgb(255 126 72);
-    --cell-suspended-shadow: 0 0 10px rgb(247, 255, 9);
-    --cell-terminated: rgb(255, 68, 109);
-    --cell-terminated-shadow: 0 0 10px rgb(255, 68, 109);
+    --cell-active: rgb(85, 151, 120);
+    --cell-suspended: rgb(241, 98, 63);
+    --cell-part-suspended: rgb(119, 93, 166);
+    --cell-terminated: rgb(212, 81, 81);
 
     /* Text */
     --header-text: 137, 137, 137;
@@ -113,21 +122,31 @@
     --text-primary: 100, 113, 133;
 
     /* Inputs */
-    --input-primary-bg: 60, 65, 92;
-    --shadow-input-primary: 40, 55, 79;
-    --input-primary-text: 226, 232, 240;
+    --input-primary-bg: 250, 250, 250;
+    --input-primary-shadow: 139, 139, 139;
+    --input-primary-text: 40,55,79;
     --input-border-active: 119, 93, 166;
+
+    /* Page navigation*/
+    --page-nav-bg-active: 250, 250, 250;
+    --page-nav-bg-inactive: 156, 163, 175;
+    --page-nav-icon-active: 112, 182, 193;
+    --page-nav-icon-inactive: 75 85 99;
 
     /* Table */
     --row-even: 30, 41, 59;
     --row-odd: 19, 27, 46;
     --text-table-base: 143, 157, 221;
 
+    /* Row */
+    --row-hover: 4px 1px 3px rgba(0, 0, 0, 0.4), inset 0px 1px 28px rgba(255, 255, 255, 0.2);
+
     /*Cell*/
-    --cell-suspended: rgb(255 126 72);
-    --cell-suspended-shadow: 0 0 10px rgb(254, 255, 228);
-    --cell-terminated: rgb(255, 68, 109);
-    --cell-terminated-shadow: 0 0 10px rgb(255, 68, 109);
+    --cell-active: rgb(85, 151, 120);
+    --cell-suspended: rgb(241, 98, 63);
+    --cell-part-suspended: rgb(119, 93, 166);
+    --cell-terminated: rgb(212, 81, 81);
+
 
     /* Scroll */
     --scrollbar-track: rgb(66, 66, 66);
