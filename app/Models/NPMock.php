@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class NPMock extends Model
 {
     use HasFactory;
-    public $timestamps = false;
+
     protected $table = 'np_mock';
+    public $timestamps = false;
 }

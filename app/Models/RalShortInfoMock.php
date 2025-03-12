@@ -6,6 +6,7 @@ use App\Models\Traits\HasColumnsHelp;
 use App\Models\Traits\HasQueryFilters;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Attributes\SearchUsingFullText;
 use Laravel\Scout\Searchable;
 
@@ -13,7 +14,9 @@ class RalShortInfoMock extends Model
 {
     use HasFactory, HasColumnsHelp, HasQueryFilters, Searchable;
 
+    protected $table = 'ral_short_info_mock';
     public $timestamps = false;
+
     // #[SearchUsingPrefix([])]#
     // #[SearchUsingFullText(['RegNumber', 'oaDescription', 'fullName'])]
     public function toSearchableArray()
@@ -25,8 +28,8 @@ class RalShortInfoMock extends Model
         ];
     }
 
-    protected $table = 'ral_short_info_mock';
-    // protected $hidden = ['oaDescription', 'address'];
-    // protected $hidden = ['nameTypeActivity', 'link', 'nameType', 'nameTypeActivity', 'fullName', 'address', 'oaDescription', 'NPstatus', 'id', 'regDate', 'NP_status_change_date', 'applicantFullName'];
-    // protected $visible = ['new_status_AL', 'nameType', 'NP_status_change_date', 'regDate'];
+    public function npMocks(): HasMany
+    {
+        return $this->hasMany(NPMock::class, 'link', 'link');
+    }
 }
