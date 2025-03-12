@@ -1,26 +1,18 @@
 import { FunctionComponent, ReactNode, useLayoutEffect, useMemo, useState } from 'react'
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { Preloader } from '@/Components/utils/Preloader'
 import { SVG } from '@/Components/utils/SVG'
-import { useRalQuery } from '@/features/ralTable/api/useRalQuery'
 import { getHeaders } from '@/Components/Table/lib/getHeaders'
-import { IRalItem, TPaginatedRal } from '@/shared/types/ral'
+import { IRalItem } from '@/shared/types/ral'
 import { translateHeaderName } from '@/Components/Table/lib/translateHeaderName'
-import { PageInput } from '@/Components/Inputs/PageInput/PageInput'
-import useParamsCustom from '@/shared/query/useParamsCustom'
-import { isEmpty } from 'lodash'
-import DEFAULT_REQUEST from '@/features/ralTable/config'
 import RalCell from '@/features/RalTable/ui/RalTable/Cell/ui/RalCell'
-import { useSelectorTyped } from '@/features/store/typedUseSelector'
 import IPagination from '@/shared/types/pagination'
-import Pagination from '../Inputs/PageInput/Pagination'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router'
 
 
 interface IProps {
     className?: string
-    paginatedData: IPagination | null
+    paginatedData: IPagination | undefined
     columns: String[]  
 }
 
@@ -40,7 +32,7 @@ const childrenVariants = {
     end: { opacity: 1 }
 }
 
-export const Table: FunctionComponent<IProps> = ({className, paginatedData }) => {
+export const AbstractTable: FunctionComponent<IProps> = ({className, paginatedData }) => {
 
     const navigate = useNavigate();
 
@@ -100,12 +92,12 @@ export const Table: FunctionComponent<IProps> = ({className, paginatedData }) =>
     return (
         <div className={`${className} h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden`}>
             <div className={'text-header-text text-sm p-2 ml-6 flex gap-4 items-center'}>
-                <PageInput
+                {/* <PageInput
                     total={paginatedData?.total}
                     isPending={isPending}
                     currentPage={paginatedData?.current_page}
                     lastPage={paginatedData?.last_page}
-                    dataLenght={tableData?.length} />
+                    dataLenght={tableData?.length} /> */}
             </div>
             <div className={'p-2 w-full h-full grow flex overflow-hidden'}>
                 <div className={'my-block min-w-full h-full bg-background-block'}>
@@ -113,9 +105,7 @@ export const Table: FunctionComponent<IProps> = ({className, paginatedData }) =>
                         className={
                             'text-base grow max-w-full h-full min-h-full max-h-full overflow-x-auto overflow-y-auto bg-background-block'
                         }>
-                        {isPending ? (
-                            <Preloader className={'h-full flex items-center'} widthStyles={'w-16'} />
-                        ) : Object.keys(tableData).length ? (
+                        {Object.keys(tableData).length ? (
                             <table
                                 style={{ width: table.getTotalSize() }}
                                 className={`min-h-full min-w-full max-h-full text-sm table-auto rounded-t-md [&_td]:border-r [&_td]:border-r-filter-dropdown-button`}>
@@ -192,12 +182,12 @@ export const Table: FunctionComponent<IProps> = ({className, paginatedData }) =>
                 </div>
             </div>
             <div className={'flex justify-end'}>
-                <Pagination
+                {/* <Pagination
                     className={"text-header-text text-sm p-2 mr-6"}
                     dataLenght={tableData?.length}
                     currentPage={ralData?.current_page}
                     lastPage={ralData?.last_page}>
-                </Pagination>
+                </Pagination> */}
             </div>
         </div>
     )

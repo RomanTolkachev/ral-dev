@@ -7,6 +7,8 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router'
 import ReactDOM from "react-dom/client"
 import Main from './Layouts/Main'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 export const store = configureStore({
     reducer: rootReducer, //@ts-ignore
@@ -14,13 +16,18 @@ export const store = configureStore({
 })
 
 const root: ReactDOM.Root = ReactDOM.createRoot(document.getElementById('app') as HTMLElement);
+const queryClient = new QueryClient();
+console.log("рендер апп")
 
 root.render(
-    <Provider store={store}>
-        <BrowserRouter>
-            <Main />
-        </BrowserRouter>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={true} />
+        <Provider store={store}>
+            <BrowserRouter>
+                <Main />
+            </BrowserRouter>
+        </Provider>
+    </QueryClientProvider>
 )
 
 

@@ -1,5 +1,4 @@
 import { MainButton } from "@/Components/Buttons/MainButton"
-import { Table } from "@/Components/Table/Table"
 import { useSelectorTyped } from "@/features/store/typedUseSelector"
 import { DevTool } from "@hookform/devtools"
 import { isEmpty } from "lodash"
@@ -7,13 +6,16 @@ import { useFormContext } from "react-hook-form"
 import DEFAULT_REQUEST from "../config"
 import useParamsCustom from "@/shared/query/useParamsCustom"
 import IPagination from "@/shared/types/pagination"
+import { Preloader } from "@/Components/utils/Preloader"
+import { AbstractTable } from "@/Components/Table/AbstractTable"
+import { useAccreditationAreaQuery } from "../api/useAccreditationAreaQuery"
 
 export const AccreditationAreaTable = () => {
 
     const [, getQuery] = useParamsCustom();
     const userColumns = useSelectorTyped(state => state.userState.settings.AccreditationAreaColumns); // колонки конкретного юзера
     const queries = isEmpty(getQuery()) ? DEFAULT_REQUEST : getQuery();
-    queries.user_columns = userColumns; // к дефолтному запросу добавляем колонки пользователя
+    // queries.user_columns = userColumns; // к дефолтному запросу добавляем колонки пользователя
     const { data: accreditationData, isPending } = useAccreditationAreaQuery<IPagination>(queries); //TODO: тут нужно вынести выше и через пропсы давать query
     
     // const { control } = useFormContext();
@@ -36,17 +38,14 @@ export const AccreditationAreaTable = () => {
                     <MainButton color={'white'}>кнопка 2</MainButton>
                     <MainButton color={'violet'}>кнопка 3</MainButton>
                 </div>
-                {/* <Table /> */}
+                { isPending && !isEmpty(accreditationData)
+                    ? <Preloader className={'h-full flex items-center'} widthStyles={'w-16'} /> 
+                    : <AbstractTable paginatedData={accreditationData} columns={userColumns} />
+                }
             {/* <DevTool control={control} /> */}
             </section>
         </div>
     )
 }
 
-function getQuery() {
-    throw new Error("Function not implemented.")
-}
-function useAccreditationAreaQuery<T>(queries: { [x: string]: any } | { page: number; perPage: number; user_columns?: string[] }): { data: any; isPending: any } {
-    throw new Error("Function not implemented.")
-}
 

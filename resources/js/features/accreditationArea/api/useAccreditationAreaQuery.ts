@@ -1,12 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchRalQuery } from '@/shared/api/api'
+import { fetchAccreditationAreaQuery } from '@/shared/api/api'
 import { objectToString } from '@/shared/objectToString'
 
-export function useRalQuery<T>(queries: Record<string, any>) {
+export function useAccreditationAreaQuery<T>(queries: Record<string, any>) {
     const { data, isPending } = useQuery<T>({
-        queryKey: ['ral', objectToString(queries)],
-        queryFn: () => fetchRalQuery(queries).then((res) => res.data as T),
+        queryKey: ['accredtation-area', objectToString(queries)],
+        queryFn: () => fetchAccreditationAreaQuery(queries).then((res) => res.data as T),
     })
-
     return { data, isPending }
 }

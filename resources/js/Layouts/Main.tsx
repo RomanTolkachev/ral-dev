@@ -1,16 +1,15 @@
 import { Header } from '@/Components/Header'
-import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router'
 import { TableLayout } from './TableLayout'
 import { Raltable } from '@/features/ralTable/ui/RalTable/RalTable'
 import { RalFormProvider } from '@/features/ralTable/api/RalFormProvider'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { NotFound } from '@/Components/utils/404'
 import Modal from '@/Components/modal/Modal'
 import { RalModal } from '@/features/ralModal/ui/RalModal'
 import { AccreditationAreaTable } from '@/features/accreditationArea/ui/AccreditetionAreaTable'
+import { AnimatePresence } from 'motion/react'
 
-const queryClient = new QueryClient();
+
 
 
 function Main() {
@@ -21,7 +20,6 @@ function Main() {
     function closeRalModal() {
         location.state ? navigate(-1) : navigate("/directory/ral")
     }
-
     return (
         <div
             className={
@@ -32,12 +30,10 @@ function Main() {
                 <Route path="/" element={<Navigate to="/directory/ral" replace />} />
                 <Route path="/directory" element={<TableLayout />}>
                     <Route path="ral/*" element={
-                        <QueryClientProvider client={queryClient}>
-                            <ReactQueryDevtools initialIsOpen={true} />
                             <RalFormProvider>
                                 <Raltable />
-                                {/* <AnimatePresence> //TODO: не работает exit animation. blocker */}
-                                    {/* {background && ( */}
+                                {/* <AnimatePresence> //TODO: не работает exit animation
+                                    {background && ( */}
                                         <Routes location={location} key={location.pathname}>
                                             <Route
                                                 path=":ralId"
@@ -46,17 +42,15 @@ function Main() {
                                                 }
                                             />
                                         </Routes>
-                                    {/* )} */}
-                                {/* </AnimatePresence> */}
+                                     {/* )} 
+                                </AnimatePresence> */}
                             </RalFormProvider>
-                        </QueryClientProvider>
                     } />
                     <Route 
-                        path='accreditation_area' 
+                        path='accreditation-area' 
                         element={<AccreditationAreaTable />}>
                     </Route>
                 </Route>
- 
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </div>

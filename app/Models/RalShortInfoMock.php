@@ -13,7 +13,7 @@ class RalShortInfoMock extends Model
 {
     use HasFactory, HasColumnsHelp, HasQueryFilters, Searchable;
 
-
+    public $timestamps = false;
     // #[SearchUsingPrefix([])]#
     // #[SearchUsingFullText(['RegNumber', 'oaDescription', 'fullName'])]
     public function toSearchableArray()

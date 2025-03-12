@@ -12,12 +12,15 @@ class GetRalController extends Controller
 {
     public function __invoke(RalFilter $filter, GetRalRequest $request): JsonResponse
     {
-
         $userColumns = $request->query('user_columns');
-        $ral = RalShortInfoMock::filter($filter)->select($userColumns)->paginate(
-            page: $request->page,
-            perPage: $request->perPage,
-        );
+        $ral = RalShortInfoMock::select($userColumns)->filter($filter)
+        ->leftJoin('np_mock', 'ral_short_info_mock.link', '=', 'np_mock.link')->tosql();
+        dd($ral);
+            
+            // ->paginate(
+            //     page: $request->page,
+            //     perPage: $request->perPage,
+            // );
         return new JsonResponse($ral);
     }
 }

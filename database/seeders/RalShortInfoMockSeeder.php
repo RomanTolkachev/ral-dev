@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\RalShortInfoMock;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,7 @@ class RalShortInfoMockSeeder extends Seeder
      */
     public function run(): void
     {
-
+        RalShortInfoMock::factory()->count(100)->create();
+        echo "done";
     }
 }

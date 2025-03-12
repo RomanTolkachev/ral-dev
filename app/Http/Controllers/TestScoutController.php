@@ -9,7 +9,7 @@ class TestScoutController
 {
     public function __invoke()
     {
-        $response = RalShortInfoMock::search("корроз")->get();
+        $response = RalShortInfoMock::select('link')->distinct()->get()->toArray();
         dd($response);
         return new JsonResponse($response);
     }

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ral_short_info_mock', function (Blueprint $table) {
-            $table->string('link', 128)->unique();
+            $table->string('link', 128);
             $table->string('RegNumber',128);
             $table->string('old_status_AL',128)->nullable();
             $table->string('new_status_AL',128)->nullable();

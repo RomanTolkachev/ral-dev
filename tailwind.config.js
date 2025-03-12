@@ -44,6 +44,9 @@ export default {
                 'secondary-row': 'rgba(var(--secondary-row))',
                 'text-primary': 'rgba(var(--text-primary))',
 
+                'header-nav-button': 'rgba(var(--header-nav-button))',
+                'header-nav-text': 'rgba(var(--header-nav-text))',
+
                 // Input
                 'input-primary': 'rgba(var(--input-primary-bg))',
                 'input-text': 'rgba(var(--input-primary-text))',
