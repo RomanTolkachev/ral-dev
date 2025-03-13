@@ -7,7 +7,8 @@ use App\Models\Traits\HasQueryFilters;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Laravel\Scout\Attributes\SearchUsingFullText;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 
 class RalShortInfoMock extends Model
@@ -28,8 +29,13 @@ class RalShortInfoMock extends Model
         ];
     }
 
-    public function npMocks(): HasMany
+    public function scopeAddIsRelevant(Builder $query): Builder
     {
-        return $this->hasMany(NPMock::class, 'link', 'link');
+        return $query->addSelect(DB::raw(
+            "CASE 
+                when NPstatus is not null then 'релевантно' 
+                when NPstatus is null and status_change_date is not null then 'релевантно' else 'не релевантно' 
+            END is_relevant"
+        ));
     }
 }

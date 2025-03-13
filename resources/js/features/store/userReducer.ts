@@ -16,7 +16,8 @@ type TRalTableModel =
     'applicantINN' |
     'RegNumber' |
     'status_change_date' |
-    'id'
+    'id' | 
+    'is_relevant'
 
 type TAccreditationAreaModel =
     'nov_GOTS' |
@@ -45,6 +46,9 @@ const initialState = {
             'new_status_AL',
             'id',
             'applicantINN',
+            'is_relevant',
+            'NPstatus',
+            'NP_status_change_date'
         ] as Array<TRalTableModel>,
         AccreditationAreaColumns: [
             'nov_GOTS',
