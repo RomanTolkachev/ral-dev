@@ -35,11 +35,6 @@ class TableFilterService
             }
             $filters[] = $headerItemObject;
         }
-        // $actualFilters = ['new_status_AL', 'nameType', 'status_change_date', 'regDate', 'fullText']; // тут актуальные фильтры
-
-        // $filters = array_filter($filters, function ($item) use ($actualFilters) {
-        //     return in_array($item->header, $actualFilters);
-        // });
 
         $filters = array_values($filters);
 
@@ -50,7 +45,13 @@ class TableFilterService
         $fullText->sortValues->type = "huge";
         $filters = [$fullText, ...$filters];
 
-        // dd($filters);
+        // добавление поиска по динамичной колонке анкуальности НЧ
+        $isNPStatusRelevant = new \stdClass();
+        $isNPStatusRelevant->header = "isRelevant";
+        $isNPStatusRelevant->sortValues = new \stdClass();
+        $isNPStatusRelevant->sortValues->type = "checkBox";
+        $isNPStatusRelevant->sortValues->checkboxValues = ["релевантно", "не релевантно"];
+        $filters = [ ...$filters, $isNPStatusRelevant,];
 
         return $filters ?? [];
     }

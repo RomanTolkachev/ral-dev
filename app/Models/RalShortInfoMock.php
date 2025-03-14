@@ -34,7 +34,7 @@ class RalShortInfoMock extends Model
             "CASE 
                 when NPstatus is not null then 'релевантно' 
                 when NPstatus is null and status_change_date is not null then 'релевантно' else 'не релевантно' 
-            END is_relevant"
+            END as is_relevant"
         ));
     }
 }

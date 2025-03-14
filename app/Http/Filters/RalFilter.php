@@ -5,6 +5,7 @@ namespace App\Http\Filters;
 use App\Models\RalShortInfoMock;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 
 
 class RalFilter extends AbstractFilter
@@ -167,17 +168,31 @@ class RalFilter extends AbstractFilter
 
     protected function NPStatusChangeDate(array $value): Builder
     {
-        return $this->builder->whereBetween('NP_status_change_date', $value);
+        switch (true) {
+            case empty($value[0]) && empty($value[1]): 
+                return $this->builder;
+            case (empty($value[0]) && !empty($value[1])):
+                return $this->builder->where('NP_status_change_date', '<', $value[1]);
+            case (!empty($value[0]) && empty($value[1])):
+                return $this->builder->where('NP_status_change_date', '>', $value[0]);
+            default: 
+                return $this->builder->whereBetween('NP_status_change_date', $value);
+        }
     }
+
     protected function isRelevant(array $value): Builder
     {
-        return $this->builder->whereBetween('is_relevant', $value);
+        return $this->builder->whereIn(DB::raw("
+        CASE 
+            WHEN NPstatus IS NOT NULL THEN 'релевантно'
+            WHEN NPstatus IS NULL AND status_change_date IS NOT NULL THEN 'релевантно'
+            ELSE 'не релевантно'
+        END
+    "), $value);
     }
 
     protected function fullText(array $value): Builder
     {
-        // $query = $this->builder;
-        // dd($query);
         $searchRes = $this->model::search($value[0])->get();
         $ids = $searchRes->pluck('id')->toArray();
         return $this->builder->whereIn('id', $ids);
