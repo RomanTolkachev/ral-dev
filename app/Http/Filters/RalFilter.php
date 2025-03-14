@@ -57,7 +57,7 @@ class RalFilter extends AbstractFilter
     protected function newStatusAL($value): Builder
     {
         $query =  $this->builder->whereIn('new_status_AL', $value);
-        if (in_array('false', $value, true)) {
+        if (in_array("Пустые", $value, true)) {
             $query->orWhereNull('new_status_AL');
         }
         return $query;
@@ -152,7 +152,12 @@ class RalFilter extends AbstractFilter
 
     protected function NPstatus(array $value): Builder
     {
-        return $this->builder->whereIn('NPstatus', $value);
+        $query = $this->builder->whereIn('NPStatus', $value);
+
+        if (in_array("Пустые", $value, true)) {
+            $query->orWhereNull('NPStatus');
+        }
+        return $query;
     }
 
     protected function id(int $value): Builder
@@ -163,6 +168,10 @@ class RalFilter extends AbstractFilter
     protected function NPStatusChangeDate(array $value): Builder
     {
         return $this->builder->whereBetween('NP_status_change_date', $value);
+    }
+    protected function isRelevant(array $value): Builder
+    {
+        return $this->builder->whereBetween('is_relevant', $value);
     }
 
     protected function fullText(array $value): Builder

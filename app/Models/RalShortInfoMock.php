@@ -6,7 +6,6 @@ use App\Models\Traits\HasColumnsHelp;
 use App\Models\Traits\HasQueryFilters;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;

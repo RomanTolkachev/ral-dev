@@ -29,13 +29,15 @@ export const translateHeaderName = (accessorKey: ReactNode | undefined): string 
         case 'oaDescription':
             return 'описание'
         case 'NPstatus':
-            return 'статус НП'
+            return 'статус НЧ'
         case 'id':
             return 'id'
         case 'NP_status_change_date':
-            return 'дата изменения статуса'
+            return 'дата изменения статуса НЧ'
         case 'fullText':
             return 'поиск'
+        case 'is_relevant':
+            return 'национальная часть'
         case 'подробнее':
             return ''
         default:

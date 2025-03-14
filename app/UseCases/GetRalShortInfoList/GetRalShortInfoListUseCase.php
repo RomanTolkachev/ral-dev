@@ -25,7 +25,10 @@ class GetRalShortInfoListUseCase
 
         $result = $query->filter(
             $this->filter
-        )->paginate(
+        )
+        // ->toSQL();
+        // dd($result);
+        ->paginate(
             page: $page,
             perPage: $itemsPerPage
         );

@@ -60,7 +60,10 @@ const initialState = {
             'new_status_AL',
             'regDate',
             'status_change_date',
-            'nameType'
+            'nameType',
+            'is_relevant',
+            'NPstatus',
+            'NP_status_change_date'
         ] as Array<TRalTableModel>,
 
     }

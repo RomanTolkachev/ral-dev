@@ -1,5 +1,4 @@
-import { FunctionComponent, useContext } from 'react'
-import { v4 } from 'uuid'
+import { FunctionComponent, useContext, useEffect, useLayoutEffect } from 'react'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import { Controller, useFormContext } from 'react-hook-form'
 import { CustomSubmitHandlerContext } from '@/features/ralTable/api/RalFormProvider'
@@ -17,17 +16,23 @@ export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData
     const inputName = inputData.header;
 
 const handleChange = (checked: boolean, name: string) => {
+        const nameNoEmptyString: string = name === null ? "пустые" : name
         if (checked) {
-            return [...getValues(inputName), name];
+            return [...getValues(inputName), nameNoEmptyString ];
         } else {
-            return getValues(inputName).filter((item: string) => item !== name);
+            return getValues(inputName).filter((item: string) => item !== nameNoEmptyString);
         }
     }
+
 
     return (
         <div className={`${className} flex flex-col pl-3 pr-3 pt-3 max-h-32 overflow-y-auto thumb-secondary space-y-1`}>
             {inputData.sortValues!.checkboxValues!.map((item, key) => {
-                const id = v4()
+
+                if (!item) {
+                    item = "Пустые"
+                }
+
                 return (
                     <Controller
                         key={`cb-${key}`}
@@ -38,10 +43,9 @@ const handleChange = (checked: boolean, name: string) => {
                                 className={
                                     'flex items-center border-b last:border-b-0 py-2 border-checkbox-custom-border text-gray-light-gray'
                                 }>
-                                <label className={'pr-2'} 
-                                    htmlFor={item ? item : id}>
-                                    {item ? item : 'пустые'}
-                                </label>
+                                <span className={'pr-2'} > 
+                                    {item}
+                                </span>
                                 <input
                                     checked={value.includes(item)}
                                     className={
