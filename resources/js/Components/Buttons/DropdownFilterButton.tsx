@@ -35,7 +35,6 @@ export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> 
     checkedCount
 }) => {
     const { customResetField } = useContext(CustomSubmitHandlerContext);
-    console.log("рендер кнопки")
     return (
         <div
             key={key}

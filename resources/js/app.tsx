@@ -17,7 +17,6 @@ export const store = configureStore({
 
 const root: ReactDOM.Root = ReactDOM.createRoot(document.getElementById('app') as HTMLElement);
 const queryClient = new QueryClient();
-console.log("рендер апп")
 
 root.render(
     <QueryClientProvider client={queryClient}>

@@ -50,9 +50,11 @@ export const Table: FunctionComponent<IProps> = () => {
     const navigate = useNavigate();
 
     const headers = useMemo(() => {
-        const data = ralData?.data as IRalItem[]
-        return ralData ? getHeaders(data) : []
+        let data = ralData?.data as IRalItem[]
+        return ralData ? getHeaders(data, ['id', 'link']) : []
     }, [ralData])
+
+    console.log(headers)
 
     const columns: ColumnDef<any>[] = useMemo(() => {
         let colData: ColumnDef<any>[] = [];

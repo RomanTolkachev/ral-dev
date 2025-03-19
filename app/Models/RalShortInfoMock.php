@@ -51,7 +51,7 @@ class RalShortInfoMock extends Model
         return $query->addSelect(DB::raw(
             "CASE 
                 when NPstatus is not null then NPstatus 
-                when NPstatus is null and status_change_date is not null then NPstatus 
+                when NPstatus is null and status_change_date is not null then 'нет' 
                 else 'не релевантно' 
             END
             as NPstatus"

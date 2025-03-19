@@ -18,7 +18,7 @@ function Main() {
     const background = location.state && location.state.background
 
     function closeRalModal() {
-        location.state ? navigate(-1) : navigate("/directory/ral")
+        location.state ? navigate(-1) : navigate(`/directory/ral/${location.search}`)
     }
     return (
         <div

@@ -2,8 +2,7 @@ import highlight from "@/Components/Table/lib/highlightText";
 import { IModel } from "@/features/RalTable/model/types";
 import { Renderable, CellContext, flexRender } from "@tanstack/react-table";
 import { motion } from "motion/react";
-import { createElement } from "react";
-import { Link } from "react-router";
+import { createElement, ReactNode } from "react";
 
 type QueryParams = Record<string, any>
 
@@ -41,7 +40,7 @@ const motionProperties = {
 function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, context: CellContext<IModel, unknown>, currentQuery: QueryParams, location: Location): React.ReactNode | JSX.Element {
     const JSX = flexRender(renderFn, context);
     const columnID: string = context.column.id;
-    if (columnID === "подробнее") {
+    if (columnID === "RegNumber") {
         return createElement(
             motion.span,
             {
@@ -49,15 +48,18 @@ function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, co
                 ...motionProperties,
             },
             createElement(
-                Link,
+                "a",
                 {
                     className: "underline",
                     state: {
                         background: location,
                     },
-                    to: `${context.row.original.id}${location.search}`
+                    href: `${context.row.original.link}`,
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                    onClick: (e: MouseEvent) => e.stopPropagation()
                 },
-                'подробнее',   
+                context.getValue() as ReactNode,   
             )
         )
     }
