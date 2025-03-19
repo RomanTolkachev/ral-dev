@@ -45,13 +45,13 @@ class TableFilterService
         $fullText->sortValues->type = "huge";
         $filters = [$fullText, ...$filters];
 
-        // добавление поиска по динамичной колонке анкуальности НЧ
-        $isNPStatusRelevant = new \stdClass();
-        $isNPStatusRelevant->header = "isRelevant";
-        $isNPStatusRelevant->sortValues = new \stdClass();
-        $isNPStatusRelevant->sortValues->type = "checkBox";
-        $isNPStatusRelevant->sortValues->checkboxValues = ["релевантно", "не релевантно"];
-        $filters = [ ...$filters, $isNPStatusRelevant,];
+        # добавляем значение "не релевантно" в фильтры для NPstatus"
+        foreach($filters as $key => $filter) {
+            if ($filter->header === "NPstatus") {
+                $filters[$key]->sortValues->checkboxValues[] = "не релевантно";
+            }
+        }
+
 
         return $filters ?? [];
     }

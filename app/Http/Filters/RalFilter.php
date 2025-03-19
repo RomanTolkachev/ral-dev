@@ -153,12 +153,18 @@ class RalFilter extends AbstractFilter
 
     protected function NPstatus(array $value): Builder
     {
-        $query = $this->builder->whereIn('NPStatus', $value);
+        $query = $this->builder;
 
         if (in_array("Пустые", $value, true)) {
             $query->orWhereNull('NPStatus');
         }
-        return $query;
+        return $query->whereIn(DB::raw(
+            "CASE
+                WHEN NPstatus IS NOT NULL THEN NPstatus
+                WHEN NPstatus IS NULL AND status_change_date IS NOT NULL THEN NPstatus
+                ELSE 'не релевантно'
+            END"
+        ), $value);
     }
 
     protected function id(int $value): Builder
@@ -166,7 +172,7 @@ class RalFilter extends AbstractFilter
         return $this->builder->whereIn('id', $value);
     }
 
-    protected function NPStatusChangeDate(array $value): Builder
+    protected function NPstatusChangeDate(array $value): Builder
     {
         switch (true) {
             case empty($value[0]) && empty($value[1]): 
@@ -178,17 +184,6 @@ class RalFilter extends AbstractFilter
             default: 
                 return $this->builder->whereBetween('NP_status_change_date', $value);
         }
-    }
-
-    protected function isRelevant(array $value): Builder
-    {
-        return $this->builder->whereIn(DB::raw("
-        CASE 
-            WHEN NPstatus IS NOT NULL THEN 'релевантно'
-            WHEN NPstatus IS NULL AND status_change_date IS NOT NULL THEN 'релевантно'
-            ELSE 'не релевантно'
-        END
-    "), $value);
     }
 
     protected function fullText(array $value): Builder

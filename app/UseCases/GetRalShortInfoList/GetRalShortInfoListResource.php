@@ -18,6 +18,7 @@ class GetRalShortInfoListResource extends JsonResource
         unset($result['last_page_url']);
         unset($result['next_page_url']);
         unset($result['prev_page_url']);
+        
 
         return $result;
     }

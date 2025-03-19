@@ -81,7 +81,7 @@ export const Table: FunctionComponent<IProps> = () => {
         // columnResizeMode: 'onChange',
         // enableColumnResizing: true,
         defaultColumn: {
-            minSize: 50,
+            minSize: 20,
             maxSize: 500,
         },
     })

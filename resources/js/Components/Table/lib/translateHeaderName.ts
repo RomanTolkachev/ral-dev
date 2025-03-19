@@ -37,9 +37,7 @@ export const translateHeaderName = (accessorKey: ReactNode | undefined): string 
         case 'fullText':
             return 'поиск'
         case 'is_relevant':
-            return 'национальная часть'
-        case 'is_relevant':
-            return 'национальная часть'
+            return 'релевантность НЧ'
         case 'подробнее':
             return ''
         default:

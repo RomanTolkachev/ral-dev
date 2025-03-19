@@ -15,8 +15,8 @@ class GetRalShortInfoListUseCase
 
         foreach ($columns as $column) {
             switch ($column) {
-                case 'is_relevant': 
-                    $query->addIsRelevant();
+                case 'NPstatus':
+                    $query->modifyNPStatus();
                     break;
                 default:
                     $query->addSelect($column);
@@ -26,8 +26,8 @@ class GetRalShortInfoListUseCase
         $result = $query->filter(
             $this->filter
         )
-        // ->toSQL();
-        // dd($result);
+        // $result->toSQL();
+        // dd($result->toSQL());
         ->paginate(
             page: $page,
             perPage: $itemsPerPage

@@ -17,6 +17,21 @@ class RalShortInfoMock extends Model
     protected $table = 'ral_short_info_mock';
     public $timestamps = false;
 
+    /**
+     * форматирование дат
+     */
+    protected function casts(): array
+    {
+        return [
+            'NP_status_change_date' => 'datetime:Y-m-d',
+            'status_change_date' => 'datetime:Y-m-d',
+            'regDate' => 'datetime:Y-m-d',
+        ];
+    }
+
+    /**
+    * реализация полнотекстового поиска по 3 колонкам 
+    */
     // #[SearchUsingPrefix([])]#
     // #[SearchUsingFullText(['RegNumber', 'oaDescription', 'fullName'])]
     public function toSearchableArray()
@@ -28,13 +43,18 @@ class RalShortInfoMock extends Model
         ];
     }
 
-    public function scopeAddIsRelevant(Builder $query): Builder
+    /**
+     * реализация добавления статуса релевантности нац. части в колонке NPstatus
+     */
+    public function scopeModifyNPStatus(Builder $query): Builder
     {
         return $query->addSelect(DB::raw(
             "CASE 
-                when NPstatus is not null then 'релевантно' 
-                when NPstatus is null and status_change_date is not null then 'релевантно' else 'не релевантно' 
-            END as is_relevant"
+                when NPstatus is not null then NPstatus 
+                when NPstatus is null and status_change_date is not null then NPstatus 
+                else 'не релевантно' 
+            END
+            as NPstatus"
         ));
     }
 }
