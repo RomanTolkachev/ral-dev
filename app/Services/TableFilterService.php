@@ -45,10 +45,11 @@ class TableFilterService
         $fullText->sortValues->type = "huge";
         $filters = [$fullText, ...$filters];
 
-        # добавляем значение "не релевантно" в фильтры для NPstatus"
-        foreach($filters as $key => $filter) {
+        # добавляем значение "не релевантно" в фильтры для NPstatus и удаляем null"
+        foreach ($filters as $key => $filter) {
             if ($filter->header === "NPstatus") {
-                $filters[$key]->sortValues->checkboxValues[] = "не релевантно";
+                $filters[$key]->sortValues->checkboxValues = collect($filter->sortValues->checkboxValues)
+                    ->push("не релевантно")->filter(fn($item) => $item !== null)->values();    
             }
         }
 

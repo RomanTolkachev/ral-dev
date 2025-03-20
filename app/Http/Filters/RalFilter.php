@@ -161,7 +161,7 @@ class RalFilter extends AbstractFilter
         return $query->whereIn(DB::raw(
             "CASE
                 WHEN NPstatus IS NOT NULL THEN NPstatus
-                WHEN NPstatus IS NULL AND status_change_date IS NOT NULL THEN 'нет'
+                WHEN NPstatus IS NULL AND NP_status_change_date IS NOT NULL THEN 'нет'
                 ELSE 'не релевантно'
             END"
         ), $value);
