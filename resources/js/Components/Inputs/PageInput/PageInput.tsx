@@ -16,7 +16,7 @@ interface IProps {
     isPending?: boolean
 }
 
-export const PageInput: FunctionComponent<IProps> = ({ className, dataLenght, formName = 'page', lastPage = 1, currentPage, isPending = false }) => {
+export const PageInput: FunctionComponent<IProps> = ({ className, dataLenght, formName = 'page', lastPage = 1, currentPage, isPending = false, total }) => {
     const { control, trigger, getValues, setValue } = useFormContext();
     const { customSubmitHandler } = useContext(CustomSubmitHandlerContext)
 
@@ -41,7 +41,8 @@ export const PageInput: FunctionComponent<IProps> = ({ className, dataLenght, fo
                         className='w-52 min-w-fit'
                         dataLenght={dataLenght}
                         currentPage={currentPage}
-                        lastPage={lastPage}>
+                        lastPage={lastPage}
+                        total={total}>
                     </Pagination>
                     <PageNavButton
                         isDisabled={isPending || currentPage === 1}

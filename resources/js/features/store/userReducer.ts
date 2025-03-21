@@ -36,7 +36,7 @@ const initialState = {
     user: 'Hi I am user',
     settings: {
         ralTableColumns: [
-            'fullName',
+            'applicantFullName',
             'RegNumber',
             'regDate',
             'link',

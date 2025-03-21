@@ -16,6 +16,7 @@ class RalShortInfoMockSeeder extends Seeder
     public function run(): void
     {
         RalShortInfoMock::factory()->count(100)->create();
-        echo "done";
+        // $res = RalShortInfoMock::factory()->make();
+        // echo $res;
     }
 }

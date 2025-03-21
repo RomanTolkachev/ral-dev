@@ -15,6 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(AccreditationAreaSeeder::class);
         $this->call(RalShortInfoMockSeeder::class);
-        $this->call(NPMockSeeder::class);
+        // $this->call(NPMockSeeder::class);
     }
 }

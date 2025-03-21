@@ -14,8 +14,9 @@ class RalShortInfoMockFactory extends Factory
         $credentials = $this->generateCredentials();
         $statusOldValueOrNull = $this->generateOldStatusOrNull();
         $statusChangeDateOrNull = is_null($statusOldValueOrNull)
-            ? null : $this->faker->dateTimeBetween('-3 years');
+            ? null : $this->faker->dateTimeBetween('-3 years')->format('Y-d-m');
 
+            // dd($this->faker->dateTimeBetween('-10 years')->format('Y-m-d'));
         return [
             'link' => $credentials['link'],
             'RegNumber' => $credentials['regNumber'],
@@ -24,14 +25,14 @@ class RalShortInfoMockFactory extends Factory
             'status_change_date' => $statusChangeDateOrNull,
             'nameType' => $this->generateNameTypeOrNull(),
             'nameTypeActivity' => $this->generateNameTypeActivityOrNull(),
-            'regDate' => $this->faker->dateTimeBetween('-10 years'),
+            'regDate' => $this->faker->dateTimeBetween('-10 years')->format('Y-d-m'),
             'fullName' => $credentials['fullName'],
             'address' => $this->faker->address(),
             'applicantINN' => $this->generateApplicantINN(),
             'applicantFullName' => $credentials['fullName'],
             'oaDescription' => $this->faker->paragraph(mt_rand(1, 15)),
             'NPstatus' => $this->generateNpStatusOrNull(),
-            'id' => $this->faker->unique()->randomNumber(9),
+            // 'id' => $this->faker->unique()->randomNumber(9),
             'NP_status_change_date' => null,
         ];
     }

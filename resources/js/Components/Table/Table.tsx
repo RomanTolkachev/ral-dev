@@ -54,8 +54,6 @@ export const Table: FunctionComponent<IProps> = () => {
         return ralData ? getHeaders(data, ['id', 'link']) : []
     }, [ralData])
 
-    console.log(headers)
-
     const columns: ColumnDef<any>[] = useMemo(() => {
         let colData: ColumnDef<any>[] = [];
         if (headers.length !== 0) {
@@ -112,7 +110,8 @@ export const Table: FunctionComponent<IProps> = () => {
                     isPending={isPending}
                     currentPage={ralData?.current_page}
                     lastPage={ralData?.last_page}
-                    dataLenght={tableData?.length} />
+                    dataLenght={tableData?.length} 
+                    />
             </div>
             <div className={'p-2 w-full h-full grow flex overflow-hidden'}>
                 <div className={'my-block min-w-full h-full bg-background-block'}>
@@ -203,7 +202,8 @@ export const Table: FunctionComponent<IProps> = () => {
                     className={"text-header-text text-sm p-2 mr-6"}
                     dataLenght={tableData?.length}
                     currentPage={ralData?.current_page}
-                    lastPage={ralData?.last_page}>
+                    lastPage={ralData?.last_page}
+                    total={ralData?.total}>
                 </Pagination>
             </div>
         </div>

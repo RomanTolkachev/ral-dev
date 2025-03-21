@@ -19,7 +19,7 @@ return new class extends Migration
             $table->dateTime('status_change_date')->nullable();
             $table->string('nameType',128);
             $table->string('nameTypeActivity',256)->nullable();
-            $table->string('regDate',128)->nullable();
+            $table->dateTime('regDate')->nullable();
             $table->string('fullName',512)->nullable();
             $table->text('address')->nullable();
             $table->string('applicantINN',32)->nullable();
