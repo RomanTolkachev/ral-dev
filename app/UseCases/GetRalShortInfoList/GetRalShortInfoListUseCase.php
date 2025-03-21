@@ -11,12 +11,15 @@ class GetRalShortInfoListUseCase
 
     public function execute(int $page, int $itemsPerPage, array $columns): GetRalShortInfoListResource
     {
-        $query = RalShortInfoMock::query();
+        $query = RalShortInfoMock::query()->leftJoin('np_mock', 'ral_short_info_mock.link', '=', 'np_mock.link');
 
         foreach ($columns as $column) {
             switch ($column) {
                 case 'NPstatus':
                     $query->modifyNPStatus();
+                    break;
+                case 'NP_status_change_date':
+                    $query->withTempNP();
                     break;
                 default:
                     $query->addSelect($column);

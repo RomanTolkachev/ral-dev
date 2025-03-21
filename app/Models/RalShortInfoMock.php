@@ -57,4 +57,34 @@ class RalShortInfoMock extends Model
             as NPstatus"
         ));
     }
+
+    public function scopeWithTempNP(Builder $query): Builder
+    {
+        // Определяем CTE как часть SQL-запроса
+        $cte = '
+            WITH temp AS 
+            (
+                SELECT 
+                    link AS temp_link,
+                    MAX(
+                        CASE 
+                            WHEN exclude_date > include_date THEN exclude_date
+                            ELSE include_date
+                        END
+                    ) AS max_value
+                FROM NP_mock
+                GROUP BY link
+            )
+        ';
+    
+        // Добавляем LEFT JOIN с использованием CTE
+        return $query->select('ral_short_info_mock.*', 'temp.max_value')
+            ->from(DB::raw($cte . ' ral_short_info_mock'))
+            ->leftJoin(DB::raw('temp'), 'ral_short_info_mock.link', '=', 'temp.temp_link');
+    }
+
+    public function np_mock()
+    {
+        return $this->hasMany(NPMock::class,"link", "link");
+    }
 }

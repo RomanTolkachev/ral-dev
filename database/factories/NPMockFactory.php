@@ -63,7 +63,7 @@ class NPMockFactory extends Factory
             "null" => 9,
         ];
         $date = $this->getRandByHisWeight($variants);
-        $excludedate = $date === "null" ? null :$faker->dateTimeBetween($includeDate, 'now');
+        $excludedate = $date === "null" ? null :$faker->dateTimeBetween($includeDate, 'now')->format('Y-d-m');
         $excludeId = $excludedate ? $faker->randomNumber(6, true) : null;
         $excludeDoc = $date === "null" ? null : $faker->randomLetter . $faker->randomNumber(2, true) . $faker->randomLetter;
         return [
@@ -80,7 +80,7 @@ class NPMockFactory extends Factory
             "null" => 0,
         ];
         $date = $this->getRandByHisWeight($variants);
-        $inCludedate = $date === "null" ? null :$faker->dateTimeBetween('-3 years');
+        $inCludedate = $date === "null" ? null :$faker->dateTimeBetween('-3 years')->format('Y-d-m');
         $inCludeId = $inCludedate ? $faker->randomNumber(6, true) : null;
         $inCludeDoc = $date === "null" ? null : $faker->randomLetter . $faker->randomNumber(2, true) . $faker->randomLetter;
         return [

@@ -9,8 +9,9 @@ class TestScoutController
 {
     public function __invoke()
     {
-        $response = RalShortInfoMock::select('link')->distinct()->get()->toArray();
-        dd($response);
-        return new JsonResponse($response);
+        $resp = RalShortInfoMock::query()
+        ->leftJoin('np_mock', 'ral_short_info_mock.link', '=', 'np_mock.link')
+        ->get()->toArray();
+        dd($resp); 
     }
 }
