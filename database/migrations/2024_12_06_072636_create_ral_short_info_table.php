@@ -6,12 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('ral_short_info_mock', function (Blueprint $table) {
+        Schema::create('ral_short_info', function (Blueprint $table) {
             $table->string('link', 128);
             $table->string('RegNumber',128);
             $table->string('old_status_AL',128)->nullable();
@@ -32,11 +29,8 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('ral_short_info_mock');
+        Schema::dropIfExists('ral_short_info');
     }
 };

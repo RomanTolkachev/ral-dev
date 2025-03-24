@@ -39,11 +39,11 @@ const initialState = {
             'applicantFullName',
             'RegNumber',
             'regDate',
-            'ral_short_info_mock.link',
+            'link',
             'status_change_date',
             'nameType',
             'new_status_AL',
-            'ral_short_info_mock.id',
+            'id',
             'applicantINN',
             'NPstatus',
             'NP_status_change_date'

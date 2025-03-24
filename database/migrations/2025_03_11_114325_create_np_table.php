@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('np_mock', function (Blueprint $table) {
+        Schema::create('np', function (Blueprint $table) {
             $table->string('link', 128)->nullable();
             $table->integer('exclude_id')->nullable();
             $table->dateTime('exclude_date')->nullable();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('np_mock');
+        Schema::dropIfExists('np');
     }
 };

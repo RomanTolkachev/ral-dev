@@ -3,7 +3,7 @@
 namespace App\UseCases\GetRalShortInfoList;
 
 use App\Http\Filters\RalFilter;
-use App\Models\RalShortInfoMock;
+use App\Models\RalShortInfo;
 
 class GetRalShortInfoListUseCase
 {
@@ -11,7 +11,7 @@ class GetRalShortInfoListUseCase
 
     public function execute(int $page, int $itemsPerPage, array $columns): GetRalShortInfoListResource
     {
-        $query = RalShortInfoMock::query()->leftJoin('np_mock', 'ral_short_info_mock.link', '=', 'np_mock.link');
+        $query = RalShortInfo::query();
 
         foreach ($columns as $column) {
             switch ($column) {
@@ -19,7 +19,7 @@ class GetRalShortInfoListUseCase
                     $query->modifyNPStatus();
                     break;
                 case 'NP_status_change_date':
-                    $query->withTempNP();
+                    $query->ModifyNPStatusChangeDate();
                     break;
                 default:
                     $query->addSelect($column);
@@ -28,10 +28,7 @@ class GetRalShortInfoListUseCase
 
         $result = $query->filter(
             $this->filter
-        )
-        // $result->toSQL();
-        // dd($result->toSQL());
-        ->paginate(
+        )->paginate(
             page: $page,
             perPage: $itemsPerPage
         );

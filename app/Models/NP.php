@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class NPMock extends Model
+class NP extends Model
 {
     use HasFactory;
 
-    protected $table = 'np_mock';
+    protected $table = 'np';
     public $timestamps = false;
 }

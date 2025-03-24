@@ -2,7 +2,7 @@
 
 namespace App\Http\Filters;
 
-use App\Models\RalShortInfoMock;
+use App\Models\RalShortInfo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +13,7 @@ class RalFilter extends AbstractFilter
 
     protected $model;
     // protected $request;
-    public function __construct(RalShortInfoMock $model, FormRequest $request)
+    public function __construct(RalShortInfo $model, FormRequest $request)
     {
         $this->model = $model;
         parent::__construct($request);

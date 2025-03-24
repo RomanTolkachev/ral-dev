@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\NPMock;
-use App\Models\RalShortInfoMock;
+use App\Models\NP;
+use App\Models\RalShortInfo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\NPMock>
  */
 
-class NPMockFactory extends Factory
+class NPFactory extends Factory
 {
-    protected $model = NPMock::class;
+    protected $model = NP::class;
 
     /**
      * Define the model's default state.
@@ -33,12 +33,12 @@ class NPMockFactory extends Factory
     }
 
     public function generatePN() {
-        $links = RalShortInfoMock::select('link')->distinct()->get()->toArray();
+        $links = RalShortInfo::select('link')->distinct()->get()->toArray();
         $links = array_map(fn($item) => $item['link'], $links);
         foreach($links as $link) {
             $include = $this->generateinClude();
             $exclude = $this->generateExclude($include['date']);
-            NPMock::factory()->create([
+            NP::factory()->create([
                 'link' => $link,
                 'exclude_id' => $exclude['id'],
                 'exclude_date' => $exclude['date'],
@@ -51,7 +51,7 @@ class NPMockFactory extends Factory
     }
 
     protected function generateLink() {
-        $links = RalShortInfoMock::select('link')->distinct()->get()->toArray()[0];
+        $links = RalShortInfo::select('link')->distinct()->get()->toArray()[0];
         $randomKey = array_rand($links);
         return $links[$randomKey];
     }
@@ -63,7 +63,7 @@ class NPMockFactory extends Factory
             "null" => 9,
         ];
         $date = $this->getRandByHisWeight($variants);
-        $excludedate = $date === "null" ? null :$faker->dateTimeBetween($includeDate, 'now')->format('Y-d-m');
+        $excludedate = $date === "null" ? null :$faker->dateTimeBetween($includeDate, 'now')->format('Y-m-d');
         $excludeId = $excludedate ? $faker->randomNumber(6, true) : null;
         $excludeDoc = $date === "null" ? null : $faker->randomLetter . $faker->randomNumber(2, true) . $faker->randomLetter;
         return [
@@ -80,7 +80,7 @@ class NPMockFactory extends Factory
             "null" => 0,
         ];
         $date = $this->getRandByHisWeight($variants);
-        $inCludedate = $date === "null" ? null :$faker->dateTimeBetween('-3 years')->format('Y-d-m');
+        $inCludedate = $date === "null" ? null :$faker->dateTimeBetween('-3 years')->format('Y-m-d');
         $inCludeId = $inCludedate ? $faker->randomNumber(6, true) : null;
         $inCludeDoc = $date === "null" ? null : $faker->randomLetter . $faker->randomNumber(2, true) . $faker->randomLetter;
         return [

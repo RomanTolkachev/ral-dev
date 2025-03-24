@@ -2,21 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\RalShortInfoMock;
+use App\Models\RalShortInfo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class RalShortInfoMockFactory extends Factory
+class RalShortInfoFactory extends Factory
 {
-    protected $model = RalShortInfoMock::class;
+    protected $model = RalShortInfo::class;
 
     public function definition(): array
     {
         $credentials = $this->generateCredentials();
         $statusOldValueOrNull = $this->generateOldStatusOrNull();
         $statusChangeDateOrNull = is_null($statusOldValueOrNull)
-            ? null : $this->faker->dateTimeBetween('-3 years')->format('Y-d-m');
-
-            // dd($this->faker->dateTimeBetween('-10 years')->format('Y-m-d'));
+            ? null : $this->faker->dateTimeBetween('-3 years')->format('Y-m-d');
         return [
             'link' => $credentials['link'],
             'RegNumber' => $credentials['regNumber'],
@@ -25,7 +23,7 @@ class RalShortInfoMockFactory extends Factory
             'status_change_date' => $statusChangeDateOrNull,
             'nameType' => $this->generateNameTypeOrNull(),
             'nameTypeActivity' => $this->generateNameTypeActivityOrNull(),
-            'regDate' => $this->faker->dateTimeBetween('-10 years')->format('Y-d-m'),
+            'regDate' => $this->faker->dateTimeBetween('-10 years')->format('Y-m-d'),
             'fullName' => $credentials['fullName'],
             'address' => $this->faker->address(),
             'applicantINN' => $this->generateApplicantINN(),

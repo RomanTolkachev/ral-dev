@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 
-class RalShortInfoMock extends Model
+class RalShortInfo extends Model
 {
     use HasFactory, HasColumnsHelp, HasQueryFilters, Searchable;
 
-    protected $table = 'ral_short_info_mock';
+    protected $table = 'ral_short_info';
     public $timestamps = false;
 
     /**
@@ -30,8 +30,8 @@ class RalShortInfoMock extends Model
     }
 
     /**
-    * реализация полнотекстового поиска по 3 колонкам 
-    */
+     * реализация полнотекстового поиска по 3 колонкам 
+     */
     // #[SearchUsingPrefix([])]#
     // #[SearchUsingFullText(['RegNumber', 'oaDescription', 'fullName'])]
     public function toSearchableArray()
@@ -52,39 +52,30 @@ class RalShortInfoMock extends Model
             "CASE 
                 when NPstatus is not null then NPstatus 
                 when NPstatus is null and NP_status_change_date is not null then 'нет' 
-                else 'не релевантно' 
+                else 'не применимо' 
             END
             as NPstatus"
         ));
     }
 
-    public function scopeWithTempNP(Builder $query): Builder
+    /**
+     * (понять и простить) Эта функция модифицирует колонку NP_status_change_date
+     * если для АЛ не релевантен статус нахождения в Национальной части реестра, то колонка возвращает NULL
+     * если релевантно, то мы смотрим в табличку NP и достаем из нее самую позднюю дату смены статуса
+     * если дата есть в исходной таблице, то возвращаем ее
+     */
+    public function scopeModifyNPStatusChangeDate(Builder $query): Builder
     {
-        // Определяем CTE как часть SQL-запроса
-        $cte = '
-            WITH temp AS 
-            (
-                SELECT 
-                    link AS temp_link,
-                    MAX(
-                        CASE 
-                            WHEN exclude_date > include_date THEN exclude_date
-                            ELSE include_date
-                        END
-                    ) AS max_value
-                FROM NP_mock
-                GROUP BY link
-            )
-        ';
-    
-        // Добавляем LEFT JOIN с использованием CTE
-        return $query->select('ral_short_info_mock.*', 'temp.max_value')
-            ->from(DB::raw($cte . ' ral_short_info_mock'))
-            ->leftJoin(DB::raw('temp'), 'ral_short_info_mock.link', '=', 'temp.temp_link');
-    }
-
-    public function np_mock()
-    {
-        return $this->hasMany(NPMock::class,"link", "link");
+        return $query->addSelect(DB::raw(
+            "COALESCE(
+                NP_status_change_date, 
+                (
+                    SELECT MAX(GREATEST(
+                        try_convert(datetime,include_date,120), 
+                        try_convert(datetime,exclude_date,120)                      
+                    )) 
+                FROM np WHERE np.link = ral_short_info.link)
+            ) AS NP_status_change_date"
+        ));
     }
 }
