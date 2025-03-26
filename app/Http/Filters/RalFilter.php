@@ -66,29 +66,15 @@ class RalFilter extends AbstractFilter
 
     protected function statusChangeDate(array $value): Builder
     {
-        switch (true) {
-            case empty($value[0]) && empty($value[1]): 
-                return $this->builder;
-            case (empty($value[0]) && !empty($value[1])):
-                return $this->builder->where('status_change_date', '<', $value[1]);
-            case (!empty($value[0]) && empty($value[1])):
-                return $this->builder->where('status_change_date', '>', $value[0]);
-            default: 
-                return $this->builder->whereBetween('status_change_date', $value);
+        if (empty($value[0]) && empty($value[1])) {
+            return $this->builder;
+        } elseif (empty($value[0]) && !empty($value[1])) {
+            return $this->builder->whereRawDateTime('status_change_date', '<', $value[1]);
+        } elseif (!empty($value[0]) && empty($value[1])) {
+            return $this->builder->whereRawDateTime('status_change_date', '>', $value[0]);
+        } else {
+            return $this->builder->whereRawDateTimeBetween('status_change_date', $value);
         }
-
-        // return $this->builder->whereRaw('status_change_date BETWEEN CONVERT(datetime, ?) AND CONVERT(datetime, ?)', $value);
-        
-        // для msSql
-        // if (empty($value[0]) && empty($value[1])) {
-        //     return $this->builder;
-        // } elseif (empty($value[0]) && !empty($value[1])) {
-        //     return $this->builder->whereRaw('status_change_date < CONVERT(datetime, ?)', [$value[1]]);
-        // } elseif (!empty($value[0]) && empty($value[1])) {
-        //     return $this->builder->whereRaw('status_change_date > CONVERT(datetime, ?)', [$value[0]]);
-        // } else {
-        //     return $this->builder->whereRaw('status_change_date BETWEEN CONVERT(datetime, ?) AND CONVERT(datetime, ?)', $value);
-        // }
     }
 
     protected function nameType(array $value): Builder
@@ -103,27 +89,15 @@ class RalFilter extends AbstractFilter
 
     protected function regDate(array $value): Builder
     {
-        switch (true) {
-            case empty($value[0]) && empty($value[1]): 
-                return $this->builder;
-            case (empty($value[0]) && !empty($value[1])):
-                return $this->builder->where('regDate', '<', $value[1]);
-            case (!empty($value[0]) && empty($value[1])):
-                return $this->builder->where('regDate', '>', $value[0]);
-            default: 
-                return $this->builder->whereBetween('regDate', $value);
+        if (empty($value[0]) && empty($value[1])) {
+            return $this->builder;
+        } elseif (empty($value[0]) && !empty($value[1])) {
+            return $this->builder->whereRaw('TRY_CONVERT(datetime, regDate, 120) < TRY_CONVERT(datetime, ?, 120)', [$value[1]]);
+        } elseif (!empty($value[0]) && empty($value[1])) {
+            return $this->builder->whereRaw('TRY_CONVERT(datetime, regDate, 120) > TRY_CONVERT(datetime, ?, 120)', [$value[0]]);
+        } else {
+            return $this->builder->whereRaw('TRY_CONVERT(datetime, regDate, 120) BETWEEN TRY_CONVERT(datetime, ?, 120) AND TRY_CONVERT(datetime, ?, 120)', $value);
         }
-
-                // для msSql
-        // if (empty($value[0]) && empty($value[1])) {
-        //     return $this->builder;
-        // } elseif (empty($value[0]) && !empty($value[1])) {
-        //     return $this->builder->whereRaw('status_change_date < CONVERT(datetime, ?)', [$value[1]]);
-        // } elseif (!empty($value[0]) && empty($value[1])) {
-        //     return $this->builder->whereRaw('status_change_date > CONVERT(datetime, ?)', [$value[0]]);
-        // } else {
-        //     return $this->builder->whereRaw('status_change_date BETWEEN CONVERT(datetime, ?) AND CONVERT(datetime, ?)', $value);
-        // }
     }
 
     protected function fullName(string $value): Builder
@@ -174,15 +148,24 @@ class RalFilter extends AbstractFilter
 
     protected function NPstatusChangeDate(array $value): Builder
     {
+        $raw = "COALESCE(
+                NP_status_change_date, 
+                (
+                    SELECT MAX(GREATEST(
+                        try_convert(datetime,include_date,120), 
+                        try_convert(datetime,exclude_date,120)                      
+                    )) 
+                FROM np WHERE np.link = ral_short_info.link)
+            )";
         switch (true) {
             case empty($value[0]) && empty($value[1]): 
                 return $this->builder;
             case (empty($value[0]) && !empty($value[1])):
-                return $this->builder->where('NP_status_change_date', '<', $value[1]);
+                return $this->builder->where($raw, '<', $value[1]);
             case (!empty($value[0]) && empty($value[1])):
-                return $this->builder->where('NP_status_change_date', '>', $value[0]);
+                return $this->builder->where($raw, '>', $value[0]);
             default: 
-                return $this->builder->whereBetween('NP_status_change_date', $value);
+                return $this->builder->whereBetween($raw, $value);
         }
     }
 

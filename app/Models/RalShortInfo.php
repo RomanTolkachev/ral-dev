@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
+use Illuminate\Support\Carbon;
 
 class RalShortInfo extends Model
 {
@@ -77,5 +78,15 @@ class RalShortInfo extends Model
                 FROM np WHERE np.link = ral_short_info.link)
             ) AS NP_status_change_date"
         ));
+    }
+
+    public function scopeWhereRawDateTime(Builder $query, string $column, string $action, string $rawValue): Builder
+    {
+        return $query->where($column, $action, Carbon::parse($rawValue)->toIso8601ZuluString());
+    }
+
+    public function scopeWhereRawDateTimeBetween(Builder $query, string $column, array $rawValues): Builder
+    {
+        return $query->whereBetween($column, collect($rawValues)->transform(fn($item) => Carbon::parse($item)->toIso8601ZuluString())->toArray());
     }
 }
