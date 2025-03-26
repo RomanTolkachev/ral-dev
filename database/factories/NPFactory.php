@@ -5,9 +5,10 @@ namespace Database\Factories;
 use App\Models\NP;
 use App\Models\RalShortInfo;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\NPMock>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\NP>
  */
 
 class NPFactory extends Factory
@@ -63,7 +64,7 @@ class NPFactory extends Factory
             "null" => 9,
         ];
         $date = $this->getRandByHisWeight($variants);
-        $excludedate = $date === "null" ? null :$faker->dateTimeBetween($includeDate, 'now')->format('Y-m-d');
+        $excludedate = $date === "null" ? null : $faker->dateTimeBetween($includeDate, 'now')->format('Y-m-d');
         $excludeId = $excludedate ? $faker->randomNumber(6, true) : null;
         $excludeDoc = $date === "null" ? null : $faker->randomLetter . $faker->randomNumber(2, true) . $faker->randomLetter;
         return [

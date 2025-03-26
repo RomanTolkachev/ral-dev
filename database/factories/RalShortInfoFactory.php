@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\RalShortInfo;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 class RalShortInfoFactory extends Factory
 {
@@ -14,7 +15,7 @@ class RalShortInfoFactory extends Factory
         $credentials = $this->generateCredentials();
         $statusOldValueOrNull = $this->generateOldStatusOrNull();
         $statusChangeDateOrNull = is_null($statusOldValueOrNull)
-            ? null : $this->faker->dateTimeBetween('-3 years')->format('Y-m-d');
+            ? null : Carbon::parse($this->faker->dateTimeBetween('-3 years'))->toIso8601ZuluString();
         return [
             'link' => $credentials['link'],
             'RegNumber' => $credentials['regNumber'],
@@ -23,7 +24,7 @@ class RalShortInfoFactory extends Factory
             'status_change_date' => $statusChangeDateOrNull,
             'nameType' => $this->generateNameTypeOrNull(),
             'nameTypeActivity' => $this->generateNameTypeActivityOrNull(),
-            'regDate' => $this->faker->dateTimeBetween('-10 years')->format('Y-m-d'),
+            'regDate' => $this->faker->dateTimeBetween('-10 years'),
             'fullName' => $credentials['fullName'],
             'address' => $this->faker->address(),
             'applicantINN' => $this->generateApplicantINN(),

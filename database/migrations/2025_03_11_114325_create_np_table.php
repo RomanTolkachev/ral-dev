@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('np', function (Blueprint $table) {
             $table->string('link', 128)->nullable();
             $table->integer('exclude_id')->nullable();
-            $table->dateTime('exclude_date')->nullable();
+            $table->string('exclude_date')->nullable();
             $table->string('exclude_doc', 128)->nullable();
             $table->integer('include_id')->nullable();
-            $table->dateTime('include_date')->nullable();
+            $table->string('include_date')->nullable();
             $table->string('include_doc', 128)->nullable();
             $table->id();
         });
