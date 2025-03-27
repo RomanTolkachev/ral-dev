@@ -24,9 +24,9 @@ class RalShortInfo extends Model
     protected function casts(): array
     {
         return [
-            'NP_status_change_date' => 'datetime:Y-m-d',
-            'status_change_date' => 'datetime:Y-m-d',
-            'regDate' => 'datetime:Y-m-d',
+            'NP_status_change_date' => 'datetime:d.m.Y',
+            'status_change_date' => 'datetime:d.m.Y',
+            'regDate' => 'datetime:d.m.Y',
         ];
     }
 
