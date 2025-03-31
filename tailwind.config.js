@@ -70,6 +70,10 @@ export default {
 
                 // Borders
                 'checkbox-custom-border': 'rgba(var(--checkbox-custom-border))',
+
+                // Modal
+                'row-modal-even': 'rgba(var(--row-modal-even))',
+                'row-modal-odd': 'rgba(var(--row-modal-odd))',
             },
             boxShadow: {
                 basic: '0px 1px 9px 0px rgba(var(--shadow-basic));',

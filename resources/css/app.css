@@ -70,7 +70,7 @@
     /* Table */
     --row-even: 255, 255, 255;
     --row-odd: 240, 240, 243;
-    --text-table-base: 137, 137, 137;
+    --text-table-base: 61, 61, 61;
 
     /* Row */
     --row-hover: 4px 1px 3px rgba(119, 93, 166, 0.4), inset 0px 1px 15px rgba(119, 93, 166, 0.5);
@@ -93,6 +93,9 @@
     /* Borders */
     --checkbox-custom-border: 30, 41, 59, 0.1;
 
+    /* Modal */
+    --row-modal-even: 147, 183, 217;
+    --row-modal-odd: 147, 183, 217;
 }
 
 .dark {
@@ -172,6 +175,9 @@
     /* Borders */
     --checkbox-custom-border: 30, 41, 59, 1;
 
+    /* Modal */
+    --row-modal-even: 30, 41, 59;
+    --row-modal-odd: 19, 27, 46;
 }
 
 .preloader {

@@ -69,12 +69,12 @@ const Modal: React.FunctionComponent<IModalProps> = ({
         >
             <div
                 className={
-                    "relative z-[12] my-auto flex h-[80%] items-center overflow-hidden rounded-xl bg-background py-10 sm:pb-10 w-[700px] lg:py-20"
+                    "relative z-[12] my-auto flex h-[80%] items-center overflow-hidden rounded-xl bg-background px-2 py-14 sm:pb-10 w-[700px]"
                 }
                 ref={innerRef}
             >
                 <div
-                    className={` w-full overflow-y-auto h-full`}
+                    className={`w-full overflow-y-auto h-full`}
                 >
                     {children}
                 </div>

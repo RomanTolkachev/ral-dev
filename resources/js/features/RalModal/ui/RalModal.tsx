@@ -7,6 +7,10 @@ import useCachedData from "../api/useCachedData";
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { translateHeaderName } from "@/Components/Table/lib/translateHeaderName";
 import { div } from "motion/react-client";
+import { translate } from "../lib/translate";
+import ModalCell from "./ModalCell";
+import customFlexRender from "./customFlexRender";
+import RalCell from "@/features/RalTable/ui/RalTable/Cell/ui/RalCell";
 
 
 interface IProps {
@@ -28,6 +32,7 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
             params: { cert_id: ralId }
         }).then(res => res ? (setCertificationbodyData(res.data)) : null); // TODO: нужно продумать тут catch и правильно ли указывать null в тернарнике
     }, [ralId])
+
     let cols: ColumnDef<any>[] = [
         {
             accessorKey: "param",
@@ -47,7 +52,7 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
     const transpondInTwoCols = (data: ITranspond, leftColumnName: string, rightColumnName: string):ITranspond[] => {
         return Object.keys(data).reduce((acc, item) => {
             let newItem: ITranspond = {
-                [leftColumnName]: item,
+                [leftColumnName]: translate(item),
                 [rightColumnName]: data[item]
             }
             acc.push(newItem);
@@ -68,48 +73,35 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
 
 
     return (
-        <div className="px-5 h-full">
+        <div className="w-full px-2">
+            <div className="h-full rounded-[20px]">
 {            tableData.length ?
                 <table
                 className={`relative min-h-full min-w-full max-h-full text-sm table-fixed rounded-t-md [&_td]:border-r [&_td]:border-r-filter-dropdown-button`}>
-                <thead className={'select-none text-header-text font-medium relative'}>
-                    <tr className={'text-header-text text-nowrap sticky top-0'}>
-                        {table.getHeaderGroups()[0].headers.map((header) => {
-                            return (
-                                <th
-                                    className={`bg-row-even p-2 overflow-hidden`}
-                                    key={header.id}>
-                                    <span className={''}>
-                                        {header.column.columnDef.header as ReactNode}
-                                    </span>
-                                </th>
-                            )
-                        })}
-                    </tr>
-                </thead>
                 <tbody className={'font-medium text-table-base'}>
                     {table.getRowModel().rows.map((row) => {
                         return (
-                            <tr className={'even:bg-row-even odd:bg-row-odd h-fit'} key={row.id}>
+                            <tr className={'even:bg-row-modal-even odd:bg-row-modal-odd [&_td:first-child]:text-nowrap [&_td:first-child]:text-start'} key={row.id}>
                                 {row.getVisibleCells().map((cell) => {
                                     return (
-                                        <td className="p-1" key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                                        <RalCell cellData={cell} />
                                     )
                                 })}
                             </tr>
                         )
                     })}
-                    <tr className={'even:bg-row-even odd:bg-row-odd'}>
+                    <tr className={'even:bg-row-modal-even odd:bg-row-modal-odd [&_td:first-child]:text-nowrap'}>
                         {table
                             .getRowModel()
                             .rows[0].getVisibleCells()
-                            .map((item, key) => {
-                                return <td key={key}></td>
+                            .map((data, key) => {
+                                return <></>
                             })}
                     </tr>
                 </tbody>
             </table> 
             : <Preloader className="h-full" widthStyles="w-10" />}
+            </div>
         </div>
 
     )
