@@ -94,8 +94,8 @@
     --checkbox-custom-border: 30, 41, 59, 0.1;
 
     /* Modal */
-    --row-modal-even: 147, 183, 217;
-    --row-modal-odd: 147, 183, 217;
+    --row-modal-even: 255, 255, 255;
+    --row-modal-odd: 240, 240, 243;
 }
 
 .dark {
@@ -301,6 +301,7 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
+
 
 
 

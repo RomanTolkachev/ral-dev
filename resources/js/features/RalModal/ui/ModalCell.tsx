@@ -24,7 +24,7 @@ const ModalCell: FunctionComponent<IProps> = ({ cellData }) => {
         <td
             key={cellData.id}
             className={`overflow-hidden p-2 w-[${cellData.column.getSize()}px] text-center`}>
-            <span className={'first-letter:capitalize px-4'}>
+            <span className={'first-letter:capitalize'}>
                 {customFlexRender(renderFn, getContext(), getQuery(), location)}
             </span>
         </td>

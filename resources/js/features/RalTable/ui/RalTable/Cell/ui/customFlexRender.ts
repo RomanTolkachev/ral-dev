@@ -1,6 +1,7 @@
 import highlight from "@/Components/Table/lib/highlightText";
 import { IModel } from "@/features/RalTable/model/types";
 import { Renderable, CellContext, flexRender } from "@tanstack/react-table";
+import { isEmpty } from "lodash";
 import { motion } from "motion/react";
 import { createElement, ReactNode } from "react";
 
@@ -61,6 +62,38 @@ function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, co
                 },
                 context.getValue() as ReactNode,   
             )
+        )
+    }
+    if (columnID === "tnved" || columnID === "regulation") {
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden line-clamp-2 mx-auto",
+                style: {maxWidth: '100px',}
+            },
+            isEmpty(context.getValue()) ? 'нет данных' as ReactNode : String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2') as ReactNode,
+        )
+        debugger
+    }
+    if (columnID === "nameType") {
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto",
+                style: {maxWidth: '100px',}
+            },
+            String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2') as ReactNode,
+        )
+    }
+    if (columnID === "applicantFullName") {
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto",
+                style: {maxWidth: '200px',},
+                title: context.getValue()
+            },
+            String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2') as ReactNode,
         )
     }
     if (

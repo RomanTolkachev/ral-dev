@@ -8,8 +8,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('ral_short_info', function (Blueprint $table) {
-            $table->string('link', 128);
+        Schema::create('ral_short_info_view', function (Blueprint $table) {
+            $table->string('link', 128)->unique();
             $table->string('RegNumber',128);
             $table->string('old_status_AL',128)->nullable();
             $table->string('new_status_AL',128)->nullable();
@@ -31,6 +31,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('ral_short_info');
+        Schema::dropIfExists('ral_short_info_view');
     }
 };

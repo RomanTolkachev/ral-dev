@@ -38,8 +38,10 @@ export const translate = (accessorKey: ReactNode | undefined): string => {
             return 'поиск'
         case 'is_relevant':
             return 'релевантность НЧ'
-        case 'подробнее':
-            return ''
+        case 'tnved':
+            return 'ТН ВЭД'
+        case 'regulation':
+            return 'Регулирования'
         default:
             return 'дефолт'
     }

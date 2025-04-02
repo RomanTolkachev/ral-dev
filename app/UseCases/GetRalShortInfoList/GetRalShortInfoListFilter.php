@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Http\Filters;
+namespace App\UseCases\GetRalShortInfoList;
 
-use App\Models\RalShortInfo;
+use App\Models\RalShortInfoView;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
+use App\Http\Filters\AbstractFilter;
 
 
-class RalFilter extends AbstractFilter
+class GetRalShortInfoListFilter extends AbstractFilter
 {
 
     protected $model;
     // protected $request;
-    public function __construct(RalShortInfo $model, FormRequest $request)
+    public function __construct(RalShortInfoView $model, FormRequest $request)
     {
         $this->model = $model;
         parent::__construct($request);

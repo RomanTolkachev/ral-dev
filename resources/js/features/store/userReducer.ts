@@ -1,14 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type TRalTableModel =
-    'link' |
+    'ral_short_info_view.link' |
     'nameType' |
     'nameTypeActivity' |
     'fullName' |
     'address' |
     'oaDescription' |
     'NPstatus' |
-    'id' |
+    'ral_short_info_view.id' |
     'regDate' |
     'NP_status_change_date' |
     'applicantFullName' |
@@ -16,7 +16,9 @@ type TRalTableModel =
     'applicantINN' |
     'RegNumber' |
     'status_change_date' |
-    'id'  
+    'np_regulations_tnveds.regulation' |
+    'np_regulations_tnveds.tnved'
+ 
 
 type TAccreditationAreaModel =
     'nov_GOTS' |
@@ -39,14 +41,16 @@ const initialState = {
             'applicantFullName',
             'RegNumber',
             'regDate',
-            'link',
+            'ral_short_info_view.link',
             'status_change_date',
             'nameType',
             'new_status_AL',
-            'id',
+            'ral_short_info_view.id',
             'applicantINN',
             'NPstatus',
-            'NP_status_change_date'
+            'NP_status_change_date',
+            'np_regulations_tnveds.tnved',
+            'np_regulations_tnveds.regulation'
         ] as Array<TRalTableModel>,
         AccreditationAreaColumns: [
             'nov_GOTS',

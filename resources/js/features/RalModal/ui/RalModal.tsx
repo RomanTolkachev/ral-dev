@@ -73,7 +73,7 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
 
 
     return (
-        <div className="w-full px-2">
+        <div className="w-full h-full px-2">
             <div className="h-full rounded-[20px]">
 {            tableData.length ?
                 <table

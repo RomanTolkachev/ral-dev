@@ -2,30 +2,23 @@
 
 namespace App\UseCases\GetRalShortInfoList;
 
-use App\Http\Filters\RalFilter;
-use App\Models\RalShortInfo;
+use App\Models\RalShortInfoView;
 
 class GetRalShortInfoListUseCase
 {
-    public function __construct(protected RalFilter $filter) {}
+    public function __construct(protected GetRalShortInfoListFilter $filter) {}
 
     public function execute(int $page, int $itemsPerPage, array $columns): GetRalShortInfoListResource
     {
-        $query = RalShortInfo::query();
+        $query = RalShortInfoView::query()->leftJoin('np_regulations_tnveds', 'np_regulations_tnveds.link', '=', 'ral_short_info_view.link');
 
         foreach ($columns as $column) {
             switch ($column) {
-                case 'NPstatus':
-                    $query->modifyNPStatus();
-                    break;
-                case 'NP_status_change_date':
-                    $query->ModifyNPStatusChangeDate();
-                    break;
                 default:
                     $query->addSelect($column);
             }
         }
-
+        // dd($query);
         $result = $query->filter(
             $this->filter
         )->paginate(

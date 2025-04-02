@@ -3,13 +3,13 @@ import { ReactNode } from "react"
 export const translateHeaderName = (accessorKey: ReactNode | undefined): string => {
     switch (accessorKey) {
         case 'link':
-            return 'ссылка'
+            return 'Ссылка'
         case 'RegNumber':
-            return 'регистрационный номер'
+            return 'Рег. номер'
         case 'old_status_AL':
-            return 'предыдущий статус'
+            return 'Предыдущий статус'
         case 'new_status_AL':
-            return 'новый статус'
+            return 'Акт. статус'
         case 'status_change_date':
             return 'дата смены статуса'
         case 'nameType':
@@ -17,29 +17,29 @@ export const translateHeaderName = (accessorKey: ReactNode | undefined): string 
         case 'nameTypeActivity':
             return 'тип направления деятельности'
         case 'regDate':
-            return 'дата регистрации'
+            return 'Дата рег.'
         case 'fullName':
             return 'полное наименование'
         case 'address':
-            return 'адрес'
+            return 'Адрес'
         case 'applicantFullName':
-            return 'наименование'
+            return 'Наименование'
         case 'applicantINN':
             return 'ИНН'
         case 'oaDescription':
-            return 'описание'
+            return 'Описание'
         case 'NPstatus':
-            return 'статус НЧ'
+            return 'Статус НЧ'
         case 'id':
             return 'id'
         case 'NP_status_change_date':
-            return 'дата изменения статуса НЧ'
+            return 'Дата изм. статуса НЧ'
         case 'fullText':
-            return 'поиск'
-        case 'is_relevant':
-            return 'релевантность НЧ'
-        case 'подробнее':
-            return ''
+            return 'Поиск'
+        case 'tnved':
+            return 'ТН ВЭД'
+        case 'regulation':
+            return 'ТР ЕАЭС'
         default:
             return 'дефолт'
     }

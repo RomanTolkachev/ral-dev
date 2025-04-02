@@ -89,7 +89,7 @@ export const Table: FunctionComponent<IProps> = () => {
     /**
      * функция для перехода по ссылке при клике на row
      */
-    function handleRowClick(to: string):void {
+    function handleRowClick(to: string): void {
         navigate(to)
     }
 
@@ -110,8 +110,8 @@ export const Table: FunctionComponent<IProps> = () => {
                     isPending={isPending}
                     currentPage={ralData?.current_page}
                     lastPage={ralData?.last_page}
-                    dataLenght={tableData?.length} 
-                    />
+                    dataLenght={tableData?.length}
+                />
             </div>
             <div className={'p-2 w-full h-full grow flex overflow-hidden'}>
                 <div className={'my-block min-w-full h-full bg-background-block'}>
@@ -131,7 +131,7 @@ export const Table: FunctionComponent<IProps> = () => {
                                             return (
                                                 <th
                                                     style={{
-                                                        width: header.getSize(),
+                                                        // width: header.getSize(),
                                                     }}
                                                     className={`sticky z-[1] bg-row-even top-0 p-2 overflow-hidden`}
                                                     key={header.id}>
@@ -151,14 +151,14 @@ export const Table: FunctionComponent<IProps> = () => {
                                     {table.getRowModel().rows.map((row) => {
                                         return (
                                             <motion.tr
-                                                variants={childrenVariants} 
+                                                variants={childrenVariants}
                                                 whileHover={{
                                                     y: -1,
-                                                    cursor: "pointer", 
-                                                    transition: {duration: 0.2}, 
+                                                    cursor: "pointer",
+                                                    transition: { duration: 0.2 },
                                                     boxShadow: "var(--row-hover)"
                                                 }}
-                                                className={'even:bg-row-even odd:bg-row-odd h-20 z-10'} 
+                                                className={'even:bg-row-even odd:bg-row-odd h-20 z-10 [&_span]:line-clamp-3'}
                                                 key={row.id}
                                                 onClick={() => handleRowClick(`${row.original.id}${location.search}`)}
                                             >

@@ -10,7 +10,7 @@ export default {
         './resources/js/**/*.tsx',
         './node_modules/tailwind-datepicker-react/dist/**/*.js',
     ],
-    safeList: ['rotate-180', 'rotate-0', 'checkbox-custom, thumb-secondary, filter-dropdown-button-active', "pl-8", "text-gray-400"],
+    safeList: ['rotate-180', 'rotate-0', 'checkbox-custom', 'thumb-secondary', 'text-wrap', 'filter-dropdown-button-active', "pl-8", "text-gray-400", 'w-12', 'line-clamp-3'],
     theme: {
         extend: {
             fontFamily: {

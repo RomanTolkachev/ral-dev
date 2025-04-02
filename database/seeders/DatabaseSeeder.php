@@ -8,8 +8,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // $this->call(AccreditationAreaSeeder::class);
-        $this->call(RalShortInfoSeeder::class);
-        $this->call(NPSeeder::class);
+        $this->call(RalShortInfoViewSeeder::class);
+        $this->call(NpRegulationsTnvedSeeder::class);
     }
 }

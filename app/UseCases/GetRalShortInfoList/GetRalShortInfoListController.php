@@ -10,7 +10,6 @@ class GetRalShortInfoListController extends Controller
 {
     public function __invoke(GetRalShortInfoListUseCase $useCase, GetRalShortInfoListRequest $request): JsonResponse
     {
-        // dd($request);
         $result = $useCase->execute($request->page, $request->perPage, $request->user_columns);
         
         return new JsonResponse($result, Response::HTTP_OK);

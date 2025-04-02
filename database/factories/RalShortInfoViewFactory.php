@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\RalShortInfo;
+use App\Models\RalShortInfoView;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class RalShortInfoFactory extends Factory
+class RalShortInfoViewFactory extends Factory
 {
-    protected $model = RalShortInfo::class;
+    protected $model = RalShortInfoView::class;
 
     public function definition(): array
     {
@@ -97,7 +97,7 @@ class RalShortInfoFactory extends Factory
 
         return
             [
-                'link' => 'https://pub.fsa.gov.ru/ral/view/' . $this->faker->randomNumber(3, true),
+                'link' => 'https://pub.fsa.gov.ru/ral/view/' . $this->faker->randomNumber(9, true),
                 'regNumber' => 'RAL.01010101' . $this->faker->randomNumber(3, true),
                 'fullName' => $this->faker->randomElement($fullNames),
                 'applicantFullName' => $this->faker->randomElement($labs),

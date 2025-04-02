@@ -23,8 +23,10 @@ const RalCell: FunctionComponent<IProps> = ({ cellData }) => {
     return (
         <td
             key={cellData.id}
-            className={`overflow-hidden p-2 w-[${cellData.column.getSize()}px] text-center`}>
-            <span className={'text-table-base'}>
+            className={`overflow-hidden text-center`}>
+            {/* w-[${cellData.column.getSize()}px]  добавить для resize*/}
+
+            <span className={'text-table-base p-1'}>
                 {customFlexRender(renderFn, getContext(), getQuery(), location)}
             </span>
         </td>
