@@ -1,16 +1,10 @@
-import { FunctionComponent, ReactNode, useEffect, useMemo, useState } from "react"
+import { FunctionComponent, useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router"
-import { keys } from 'lodash'
 import { axiosApi } from "@/shared/api/api";
 import { Preloader } from "@/Components/utils/Preloader";
-import useCachedData from "../api/useCachedData";
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { translateHeaderName } from "@/Components/Table/lib/translateHeaderName";
-import { div } from "motion/react-client";
-import { translate } from "../lib/translate";
-import ModalCell from "./ModalCell";
-import customFlexRender from "./customFlexRender";
+import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import RalCell from "@/features/RalTable/ui/RalTable/Cell/ui/RalCell";
+import transpondInTwoCols from "../lib/transpondInTwoCols";
 
 
 interface IProps {
@@ -24,10 +18,10 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
     const [certificationBodyData, setCertificationbodyData] = useState<ICertData | undefined>(undefined)
     const { ralId } = useParams();
 
-    /*
-        модалка всегда запрашивает подробную информацию
+    /** 
+    *    модалка всегда запрашивает подробную информацию
     */
-    useEffect(() => { // TODO: или тут тоже через reract query нужно?
+    useEffect(() => { // TODO: или тут тоже через react query нужно?
         axiosApi.get<Record<string, any>>('/ral/certification_body', {
             params: { cert_id: ralId }
         }).then(res => res ? (setCertificationbodyData(res.data)) : null); // TODO: нужно продумать тут catch и правильно ли указывать null в тернарнике
@@ -46,21 +40,6 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
         }
     ];
 
-    type ITranspond = {
-        [key:string]: any
-    }
-    const transpondInTwoCols = (data: ITranspond, leftColumnName: string, rightColumnName: string):ITranspond[] => {
-        return Object.keys(data).reduce((acc, item) => {
-            let newItem: ITranspond = {
-                [leftColumnName]: translate(item),
-                [rightColumnName]: data[item]
-            }
-            acc.push(newItem);
-            return acc
-        },[] as ITranspond[])
-    }
-
-
     let tableData = useMemo<Record<string, any>[] | []>(() => {
         return certificationBodyData ? transpondInTwoCols(certificationBodyData, "param", "value") : []
     }, [certificationBodyData])
@@ -75,35 +54,33 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
     return (
         <div className="w-full h-full px-2">
             <div className="h-full rounded-[20px]">
-{            tableData.length ?
-                <table
-                className={`relative min-h-full min-w-full max-h-full text-sm table-fixed rounded-t-md [&_td]:border-r [&_td]:border-r-filter-dropdown-button`}>
-                <tbody className={'font-medium text-table-base'}>
-                    {table.getRowModel().rows.map((row) => {
-                        return (
-                            <tr className={'even:bg-row-modal-even odd:bg-row-modal-odd [&_td:first-child]:text-nowrap [&_td:first-child]:text-start'} key={row.id}>
-                                {row.getVisibleCells().map((cell) => {
-                                    return (
-                                        <RalCell cellData={cell} />
-                                    )
-                                })}
-                            </tr>
-                        )
-                    })}
-                    <tr className={'even:bg-row-modal-even odd:bg-row-modal-odd [&_td:first-child]:text-nowrap'}>
-                        {table
-                            .getRowModel()
-                            .rows[0].getVisibleCells()
-                            .map((data, key) => {
-                                return <></>
+                {tableData.length ?
+                    <table
+                        className={`relative min-h-full min-w-full max-h-full text-sm table-fixed rounded-t-md [&_td]:border-r [&_td]:border-r-filter-dropdown-button`}>
+                        <tbody className={'font-medium text-table-base'}>
+                            {table.getRowModel().rows.map((row) => {
+                                return (
+                                    <tr className={'even:bg-row-modal-even odd:bg-row-modal-odd [&_td:first-child]:text-nowrap [&_td:first-child]:text-start'} key={row.id}>
+                                        {row.getVisibleCells().map((cell) => {
+                                            return (
+                                                <RalCell cellData={cell} />
+                                            )
+                                        })}
+                                    </tr>
+                                )
                             })}
-                    </tr>
-                </tbody>
-            </table> 
-            : <Preloader className="h-full" widthStyles="w-10" />}
+                            {/* этот последний ряд является заглушкой. Если в таблице всего 1 ряд с данными, то эта заглушка растянется по вертикали на все свободное место */}
+                            <tr className={'even:bg-row-modal-even odd:bg-row-modal-odd [&_td:first-child]:text-nowrap'}>
+                                { table
+                                    .getRowModel()
+                                    .rows[0].getVisibleCells()
+                                    .map(() => <></>)     
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                    : <Preloader className="h-full" widthStyles="w-10" />}
             </div>
         </div>
-
     )
-
 }
