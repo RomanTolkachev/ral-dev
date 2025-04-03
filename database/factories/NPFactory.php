@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\NP;
-use App\Models\RalShortInfo;
+use App\Models\RalShortInfoView;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
@@ -34,7 +34,7 @@ class NPFactory extends Factory
     }
 
     public function generatePN() {
-        $links = RalShortInfo::select('link')->distinct()->get()->toArray();
+        $links = RalShortInfoView::select('link')->distinct()->get()->toArray();
         $links = array_map(fn($item) => $item['link'], $links);
         foreach($links as $link) {
             $include = $this->generateinClude();
@@ -52,7 +52,7 @@ class NPFactory extends Factory
     }
 
     protected function generateLink() {
-        $links = RalShortInfo::select('link')->distinct()->get()->toArray()[0];
+        $links = RalShortInfoView::select('link')->distinct()->get()->toArray()[0];
         $randomKey = array_rand($links);
         return $links[$randomKey];
     }

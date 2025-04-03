@@ -14,7 +14,7 @@ class GetRalShortInfoListFilter extends AbstractFilter
 
     protected $model;
     // protected $request;
-    public function __construct(RalShortInfoView $model, FormRequest $request)
+    public function __construct(RalShortInfoView $model, GetRalShortInfoListRequest $request)
     {
         $this->model = $model;
         parent::__construct($request);
@@ -70,11 +70,11 @@ class GetRalShortInfoListFilter extends AbstractFilter
         if (empty($value[0]) && empty($value[1])) {
             return $this->builder;
         } elseif (empty($value[0]) && !empty($value[1])) {
-            return $this->builder->whereRawDateTime('status_change_date', '<', $value[1]);
+            return $this->builder->where('status_change_date', '<', $value[1]);
         } elseif (!empty($value[0]) && empty($value[1])) {
-            return $this->builder->whereRawDateTime('status_change_date', '>', $value[0]);
+            return $this->builder->where('status_change_date', '>', $value[0]);
         } else {
-            return $this->builder->whereRawDateTimeBetween('status_change_date', $value);
+            return $this->builder->whereBetween('status_change_date', $value);
         }
     }
 
@@ -93,11 +93,11 @@ class GetRalShortInfoListFilter extends AbstractFilter
         if (empty($value[0]) && empty($value[1])) {
             return $this->builder;
         } elseif (empty($value[0]) && !empty($value[1])) {
-            return $this->builder->whereRaw('TRY_CONVERT(datetime, regDate, 120) < TRY_CONVERT(datetime, ?, 120)', [$value[1]]);
+            return $this->builder->where('regDate', '<', $value[1]);
         } elseif (!empty($value[0]) && empty($value[1])) {
-            return $this->builder->whereRaw('TRY_CONVERT(datetime, regDate, 120) > TRY_CONVERT(datetime, ?, 120)', [$value[0]]);
+            return $this->builder->where('regDate', '>', $value[0]);
         } else {
-            return $this->builder->whereRaw('TRY_CONVERT(datetime, regDate, 120) BETWEEN TRY_CONVERT(datetime, ?, 120) AND TRY_CONVERT(datetime, ?, 120)', $value);
+            return $this->builder->whereBetween('regDate',$value);
         }
     }
 
@@ -133,13 +133,7 @@ class GetRalShortInfoListFilter extends AbstractFilter
         if (in_array("Пустые", $value, true)) {
             $query->orWhereNull('NPStatus');
         }
-        return $query->whereIn(DB::raw(
-            "CASE
-                WHEN NPstatus IS NOT NULL THEN NPstatus
-                WHEN NPstatus IS NULL AND NP_status_change_date IS NOT NULL THEN 'нет'
-                ELSE 'не релевантно'
-            END"
-        ), $value);
+        return $query->whereIn('NPstatus', $value);
     }
 
     protected function id(int $value): Builder
@@ -149,24 +143,15 @@ class GetRalShortInfoListFilter extends AbstractFilter
 
     protected function NPstatusChangeDate(array $value): Builder
     {
-        $raw = "COALESCE(
-                NP_status_change_date, 
-                (
-                    SELECT MAX(GREATEST(
-                        try_convert(datetime,include_date,120), 
-                        try_convert(datetime,exclude_date,120)                      
-                    )) 
-                FROM np WHERE np.link = ral_short_info.link)
-            )";
         switch (true) {
             case empty($value[0]) && empty($value[1]): 
                 return $this->builder;
             case (empty($value[0]) && !empty($value[1])):
-                return $this->builder->where($raw, '<', $value[1]);
+                return $this->builder->where('NP_status_change_date', '<', $value[1]);
             case (!empty($value[0]) && empty($value[1])):
-                return $this->builder->where($raw, '>', $value[0]);
+                return $this->builder->where('NP_status_change_date', '>', $value[0]);
             default: 
-                return $this->builder->whereBetween($raw, $value);
+                return $this->builder->whereBetween('NP_status_change_date', $value);
         }
     }
 
@@ -174,6 +159,6 @@ class GetRalShortInfoListFilter extends AbstractFilter
     {
         $searchRes = $this->model::search($value[0])->get();
         $ids = $searchRes->pluck('id')->toArray();
-        return $this->builder->whereIn('id', $ids);
+        return $this->builder->whereIn('ral_short_info_view.id', $ids);
     }
 }

@@ -40,6 +40,8 @@ export const translateHeaderName = (accessorKey: ReactNode | undefined): string 
             return 'ТН ВЭД'
         case 'regulation':
             return 'ТР ЕАЭС'
+        case 'regulations':
+            return 'ТР ЕАЭС'
         default:
             return 'дефолт'
     }

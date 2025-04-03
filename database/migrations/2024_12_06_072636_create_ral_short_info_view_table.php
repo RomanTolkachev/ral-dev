@@ -25,7 +25,8 @@ return new class extends Migration
             $table->string('NPstatus',128)->nullable();
             $table->id();
             $table->dateTime('NP_status_change_date')->nullable();
-            $table->index(['link', 'RegNumber', 'id'], 'idx_ral_info');
+            $table->string('regulations')->nullable();
+            $table->index(['applicantINN', 'RegNumber', 'fullName'], 'idx_ral_info');
         });
     }
 

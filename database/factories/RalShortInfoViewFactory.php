@@ -33,6 +33,7 @@ class RalShortInfoViewFactory extends Factory
             'NPstatus' => $this->generateNpStatusOrNull(),
             // 'id' => $this->faker->unique()->randomNumber(9),
             'NP_status_change_date' => null,
+            'regulations' => '222,333,444',
         ];
     }
 

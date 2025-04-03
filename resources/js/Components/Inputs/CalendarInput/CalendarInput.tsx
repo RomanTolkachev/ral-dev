@@ -11,7 +11,6 @@ import { MainButton } from '@/Components/Buttons/MainButton'
 import { CustomSubmitHandlerContext } from '@/features/ralTable/api/RalFormProvider'
 import { AnimatePresence, motion } from 'motion/react'
 import openCalendarPicker from './lib/openCalendarPicker'
-import { formatToDDMMYYYY, formatToYYYYMMDD } from './lib/dateFormatter'
 
 interface IProps {
     className?: string
@@ -37,23 +36,21 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
     useEffect(() => {
         if (!isEqual(query, prevValueRef.current)) {
             if (query[inputName]) {
-                setStartDate(formatToYYYYMMDD(query[inputName][0]));
-                setEndDate(formatToYYYYMMDD(query[inputName][1]));
+                setStartDate(query[inputName][0]);
+                setEndDate(query[inputName][1]);
             }
         }
         prevValueRef.current = query;
     }, [query]);
 
     function handleMinChange(e: ChangeEvent<HTMLInputElement>) {
-        setStartDate(formatToDDMMYYYY(e.target.value));
+        setStartDate(e.target.value);
         return [e.target.value, endDate];
     }
     function handleMaxChange(e: ChangeEvent<HTMLInputElement>) {
-        setEndDate(formatToDDMMYYYY(e.target.value));
+        setEndDate(e.target.value);
         return [startDate, e.target.value];
     }
-
-    console.log(formatToDDMMYYYY("2025-03-01"))
 
     return (
         <Controller

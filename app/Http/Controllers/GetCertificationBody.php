@@ -10,10 +10,10 @@ class GetCertificationBody
 {
     public function __invoke(Request $request)
     {
-        $response = RalShortInfoView::leftJoin('np_regulations_tnveds', 'np_regulations_tnveds.link', '=', 'ral_short_info.link')
+        $response = RalShortInfoView::leftJoin('np_regulations_tnveds', 'np_regulations_tnveds.link', '=', 'ral_short_info_view.link')
                 ->select(
                 [
-                    'ral_short_info.link', 
+                    'ral_short_info_view.link', 
                     'RegNumber',
                     'old_status_AL', 
                     'new_status_AL', 
@@ -27,8 +27,7 @@ class GetCertificationBody
                     'applicantINN',
                     'applicantFullName',
                     'oaDescription',
-                    'np_regulations_tnveds.regulation',
-                    'np_regulations_tnveds.tnved'
+                    'ral_short_info_view.regulations',
                 ])->findOrFail($request->cert_id);
         return new JsonResponse($response);
     }

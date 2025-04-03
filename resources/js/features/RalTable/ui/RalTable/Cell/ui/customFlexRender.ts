@@ -25,12 +25,6 @@ const motionProperties = {
 
 /**
  * Middlaware, который модифицирует компонент, отрисовываемый в ячейке.
- * На данный момент реализованы следующие модификации:
- * 
- * - все ячейки в колонке id возвращают Link из react-router
- * - оборачивание частьи значения в <mark> функция highLight
- * - замена строки, содержащей ссылку на тэг <а>
- * - подсветка значений "Прекращен" и "Приостановлен"
  * 
  * @param {Renderable<CellContext<IModel, unknown>>} renderFn Функция рендеринга, которая должа принимать параметром контекст ячейки из таблицы.
  * @param {CellContext<IModel, unknown>} context собственно, контекст ячейки.
@@ -41,6 +35,18 @@ const motionProperties = {
 function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, context: CellContext<IModel, unknown>, currentQuery: QueryParams, location: Location): React.ReactNode | JSX.Element {
     const JSX = flexRender(renderFn, context);
     const columnID: string = context.column.id;
+    if (columnID === "applicantFullName") {
+        let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto",
+                style: {maxWidth: '200px',},
+                title: context.getValue()
+            },
+            highlight(cellValue, currentQuery.fullText),
+        )
+    }
     if (columnID === "RegNumber") {
         return createElement(
             motion.span,
@@ -60,20 +66,30 @@ function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, co
                     rel: "noopener noreferrer",
                     onClick: (e: MouseEvent) => e.stopPropagation()
                 },
-                context.getValue() as ReactNode,   
+                highlight(context.getValue() as string | null, currentQuery.fullText) 
             )
         )
     }
-    if (columnID === "tnved" || columnID === "regulation") {
+    if (columnID === "tnved") {
         return createElement(
             'span',
             {
                 className: "text-wrap overflow-hidden line-clamp-2 mx-auto",
                 style: {maxWidth: '100px',}
             },
-            isEmpty(context.getValue()) ? 'нет данных' as ReactNode : String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2') as ReactNode,
+            isEmpty(context.getValue()) ? '-' as ReactNode : String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2') as ReactNode,
         )
-        debugger
+    }
+    if (columnID === 'regulations') {
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden line-clamp-2 mx-auto",
+                style: {maxWidth: '150px',},
+                title: context.getValue()
+            },
+            isEmpty(context.getValue()) ? '-' as ReactNode : String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2') as ReactNode,
+        )
     }
     if (columnID === "nameType") {
         return createElement(
@@ -85,15 +101,21 @@ function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, co
             String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2') as ReactNode,
         )
     }
-    if (columnID === "applicantFullName") {
+    if (columnID === "NPstatus") {
+        let dynamicColor: string | null;
+        let fontWeight: number | null;
+        switch(String(context.getValue()).toLowerCase()) {
+            case "да":  dynamicColor = 'var(--cell-active)'; fontWeight = 800; break
+            case "нет": dynamicColor = `var(--cell-suspended)`; fontWeight = 800; break
+            default: dynamicColor = null; fontWeight = null 
+        }
         return createElement(
             'span',
             {
                 className: "text-wrap overflow-hidden mx-auto",
-                style: {maxWidth: '200px',},
-                title: context.getValue()
+                style: {maxWidth: '100px', color: dynamicColor, fontWeight  }
             },
-            String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2') as ReactNode,
+            context.getValue() as ReactNode,
         )
     }
     if (
@@ -117,6 +139,7 @@ function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, co
                 return createElement('span', {
                     style: {
                         color: `var(--cell-active)`,
+                        fontWeight: 800
                     }
                 }, value)
             }
@@ -124,6 +147,7 @@ function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, co
                 return createElement('span', {
                     style: {
                         color: `var(--cell-terminated)`,
+                        fontWeight: 800
                     }
                 }, value)
             }
@@ -131,6 +155,7 @@ function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, co
                 return createElement('span', {
                     style: {
                         color: `var(--cell-suspended)`,
+                        fontWeight: 800
                     }
                 }, value)
             }
@@ -138,6 +163,7 @@ function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, co
                 return createElement('span', {
                     style: {
                         color: `var(--cell-part-suspended)`,
+                        fontWeight: 800
                     }
                 }, value)
             }

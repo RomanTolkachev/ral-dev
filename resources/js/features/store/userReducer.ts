@@ -17,7 +17,7 @@ type TRalTableModel =
     'RegNumber' |
     'status_change_date' |
     'np_regulations_tnveds.regulation' |
-    'np_regulations_tnveds.tnved'
+    'ral_short_info_view.regulations'
  
 
 type TAccreditationAreaModel =
@@ -50,7 +50,8 @@ const initialState = {
             'NPstatus',
             'NP_status_change_date',
             'np_regulations_tnveds.tnved',
-            'np_regulations_tnveds.regulation'
+            'ral_short_info_view.regulations',
+
         ] as Array<TRalTableModel>,
         AccreditationAreaColumns: [
             'nov_GOTS',

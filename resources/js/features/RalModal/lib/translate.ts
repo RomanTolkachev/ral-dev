@@ -42,6 +42,8 @@ export const translate = (accessorKey: ReactNode | undefined): string => {
             return 'ТН ВЭД'
         case 'regulation':
             return 'Регулирования'
+        case 'regulations':
+            return 'Регулирования'
         default:
             return 'дефолт'
     }

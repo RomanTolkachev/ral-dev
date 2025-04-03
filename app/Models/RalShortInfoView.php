@@ -30,7 +30,7 @@ class RalShortInfoView extends Model
     /**
      * реализация полнотекстового поиска по 3 колонкам 
      */
-    // #[SearchUsingPrefix([])]#
+    // #[SearchUsingPrefix([])]
     // #[SearchUsingFullText(['RegNumber', 'oaDescription', 'fullName'])]
     public function toSearchableArray()
     {

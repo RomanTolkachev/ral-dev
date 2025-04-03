@@ -1,5 +1,11 @@
 import { createElement, ReactNode } from 'react'
-
+/**
+ * Сравнивает значение в ячейке со значением в параметре fullText в query.
+ * Если есть совпадение, то вхождение оборачивается в mark
+ * @param text 
+ * @param pattern 
+ * @returns ReactNode
+ */
 function highlight(text: string | null, pattern: string): ReactNode {
     if (!text || !pattern) return text
     if (pattern[0] === '') return text
