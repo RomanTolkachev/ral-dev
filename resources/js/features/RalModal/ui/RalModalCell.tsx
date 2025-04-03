@@ -4,31 +4,31 @@ import { Cell, } from "@tanstack/react-table"
 import { FunctionComponent } from "react"
 import { useLocation } from "react-router"
 import customFlexRender from "./customModalCell"
+import customModalCell from "./customModalCell"
 
 export interface IProps {
     className?: string
     cellData: Cell<IModel, unknown>
 }
 
-const ModalCell: FunctionComponent<IProps> = ({ cellData }) => {
+const RalModalCell: FunctionComponent<IProps> = ({ cellData }) => {
     const [, getQuery] = useParamsCustom();
     const location: any = useLocation();
     const { getContext, column, row } = cellData;
 
     /**
-     * Переменная достает из таблицы ячейку и возвращает JSX
+     * Функция достает из таблицы ячейку и возвращает JSX
      */
     const renderFn = column.columnDef.cell;
 
     return (
         <td
             key={cellData.id}
-            className={`overflow-hidden p-2 w-[${cellData.column.getSize()}px] text-center`}>
-            <span className={'first-letter:capitalize'}>
-                {customFlexRender(renderFn, getContext(), getQuery(), location)}
-            </span>
+            className={`overflow-hidden text-center text-table-base p-1 [&_li]:leading-[1]`}>
+            {/* w-[${cellData.column.getSize()}px]  добавить для resize*/}
+                {customModalCell(renderFn, getContext(), getQuery(), location)}
         </td>
     );
 }
 
-export default ModalCell;
+export default RalModalCell;

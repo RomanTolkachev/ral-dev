@@ -1,6 +1,7 @@
 import highlight from "@/Components/Table/lib/highlightText";
 import { IModel } from "@/features/RalTable/model/types";
 import { Renderable, CellContext, flexRender } from "@tanstack/react-table";
+import { isEmpty } from "lodash";
 import { motion } from "motion/react";
 import { createElement, ReactNode } from "react";
 
@@ -26,10 +27,6 @@ const motionProperties = {
  * Middlaware, который модифицирует компонент, отрисовываемый в ячейке.
  * На данный момент реализованы следующие модификации:
  * 
- * - все ячейки в колонке id возвращают Link из react-router
- * - оборачивание частьи значения в <mark> функция highLight
- * - замена строки, содержащей ссылку на тэг <а>
- * - подсветка значений "Прекращен" и "Приостановлен"
  * 
  * @param {Renderable<CellContext<IModel, unknown>>} renderFn Функция рендеринга, которая должа принимать параметром контекст ячейки из таблицы.
  * @param {CellContext<IModel, unknown>} context собственно, контекст ячейки.
@@ -37,9 +34,27 @@ const motionProperties = {
  * @param {location} location вызов useLocation.
  * @returns {React.ReactNode | JSX.Element} Модифицированное значение или элемент.
  */
-function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, context: CellContext<IModel, unknown>, currentQuery: QueryParams, location: Location): React.ReactNode | JSX.Element {
+function customModalCell(renderFn: Renderable<CellContext<IModel, unknown>>, context: CellContext<IModel, unknown>, currentQuery: QueryParams, location: Location): React.ReactNode | JSX.Element {
+    const rowValue = context.row.getAllCells()[0].renderValue()
     const JSX = flexRender(renderFn, context);
     const columnID: string = context.column.id;
+    if ( columnID.toLowerCase() === 'value' && !isEmpty(context.getValue())) {
+        switch (rowValue) {
+            case "Регулирования": {
+                let splittedCellData = String(context.getValue()).split(";")
+                return createElement(
+                    'ul',
+                    {
+                        className: "",
+                    },
+                    splittedCellData.map(value => {
+                        return createElement('li', {className: "mb-2"}, value + ";" ) 
+                    }) as ReactNode,   
+                )
+            }
+        }
+    }
+
     // if (columnID === "RegNumber") {
     //     return createElement(
     //         motion.span,
@@ -78,7 +93,7 @@ function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, co
         // ниже проверки на строковое значение
         if (typeof value === "string") {
             if (value.includes('http')) {
-                return createElement(motion.a, { href: value, ...linkMotionProps, target: "_blank", rel: "noopener noreferrer", onClick: e => e.stopPropagation()  }, value)
+                return createElement(motion.a, { href: value, ...linkMotionProps, target: "_blank", rel: "noopener noreferrer", onClick: e => e.stopPropagation() }, value)
             }
             if (value === "Действует") {
                 return createElement('span', {
@@ -114,4 +129,5 @@ function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, co
     }
 }
 
-export default customFlexRender;
+export default customModalCell;
+

@@ -5,6 +5,7 @@ import { Preloader } from "@/Components/utils/Preloader";
 import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import RalCell from "@/features/RalTable/ui/RalTable/Cell/ui/RalCell";
 import transpondInTwoCols from "../lib/transpondInTwoCols";
+import RalModalCell from "./RalModalCell";
 
 
 interface IProps {
@@ -60,10 +61,10 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
                         <tbody className={'font-medium text-table-base'}>
                             {table.getRowModel().rows.map((row) => {
                                 return (
-                                    <tr className={'even:bg-row-modal-even odd:bg-row-modal-odd [&_td:first-child]:text-nowrap [&_td:first-child]:text-start'} key={row.id}>
+                                    <tr className={'even:bg-row-modal-even odd:bg-row-modal-odd [&_td:first-child]:text-nowrap [&_td]:text-start [&_ul]'} key={row.id}>
                                         {row.getVisibleCells().map((cell) => {
                                             return (
-                                                <RalCell cellData={cell} />
+                                                <RalModalCell key={cell.id} cellData={cell} />
                                             )
                                         })}
                                     </tr>
@@ -71,11 +72,7 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
                             })}
                             {/* этот последний ряд является заглушкой. Если в таблице всего 1 ряд с данными, то эта заглушка растянется по вертикали на все свободное место */}
                             <tr className={'even:bg-row-modal-even odd:bg-row-modal-odd [&_td:first-child]:text-nowrap'}>
-                                { table
-                                    .getRowModel()
-                                    .rows[0].getVisibleCells()
-                                    .map(() => <></>)     
-                                }
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>
