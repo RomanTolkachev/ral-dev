@@ -50,7 +50,13 @@ class TableFilterService
         $regulations->sortValues = new \stdClass();
         $regulations->sortValues->type = "huge";
 
-        $filters = [$fullText, ...$filters, $regulations];
+        // добавление поиска для ТН ВЭД
+        $tnved = new \stdClass();
+        $tnved->header = "tnved";
+        $tnved->sortValues = new \stdClass();
+        $tnved->sortValues->type = "huge";
+
+        $filters = [$fullText, ...$filters, $regulations, $tnved];
 
 
         return $filters ?? [];

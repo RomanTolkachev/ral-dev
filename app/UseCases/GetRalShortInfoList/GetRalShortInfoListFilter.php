@@ -163,6 +163,15 @@ class GetRalShortInfoListFilter extends AbstractFilter
         return $query;
     }
 
+    protected function tnved(array $value): Builder
+    {
+        $query = $this->builder;
+        foreach ($value as $item) {
+            $query = $query->Where('np_regulations_tnveds.tnved', 'like', "%$item%");
+        }
+        return $query;
+    }
+
     protected function fullText(array $value): Builder
     {
         $searchRes = $this->model::search($value[0])->get();

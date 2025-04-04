@@ -52,32 +52,11 @@ function customModalCell(renderFn: Renderable<CellContext<IModel, unknown>>, con
                     }) as ReactNode,   
                 )
             }
+            case "ТН ВЭД": {
+                return highlight(context.getValue() as string, currentQuery.tnved) 
+            }
         }
     }
-
-    // if (columnID === "RegNumber") {
-    //     return createElement(
-    //         motion.span,
-    //         {
-    //             className: "inline-block",
-    //             ...motionProperties,
-    //         },
-    //         createElement(
-    //             "a",
-    //             {
-    //                 className: "underline",
-    //                 state: {
-    //                     background: location,
-    //                 },
-    //                 href: `${context.row.original.link}`,
-    //                 target: "_blank",
-    //                 rel: "noopener noreferrer",
-    //                 onClick: (e: MouseEvent) => e.stopPropagation()
-    //             },
-    //             context.getValue() as ReactNode,   
-    //         )
-    //     )
-    // }
     if (
         !JSX ||
         typeof JSX === 'string' ||

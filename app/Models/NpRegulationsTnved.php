@@ -10,4 +10,5 @@ class NpRegulationsTnved extends Model
     use HasFactory;
 
     public $timestamps = false; 
+
 }
