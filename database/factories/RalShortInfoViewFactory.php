@@ -33,7 +33,7 @@ class RalShortInfoViewFactory extends Factory
             'NPstatus' => $this->generateNpStatusOrNull(),
             // 'id' => $this->faker->unique()->randomNumber(9),
             'NP_status_change_date' => null,
-            'regulations' => '222,333,444',
+            'regulations' => $this->generateRegulations(),
         ];
     }
 
@@ -201,5 +201,12 @@ class RalShortInfoViewFactory extends Factory
         $result = $this->getRandByHisWeight($variants);
 
         return $result === $nullVariantKey ? null : $result;
+    }
+
+    protected function generateRegulations(): string
+    {
+        $arr = array_fill(0, mt_rand(0, 5), null);
+        $arr = collect($arr)->map(fn() => $this->faker->sentence(mt_rand(3,6)));
+        return implode(';' , $arr->toArray());
     }
 }
