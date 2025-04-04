@@ -66,7 +66,6 @@ const initialState = {
             'nameType',
             'NPstatus',
             'NP_status_change_date',
-            'regulations'
         ] as Array<TRalTableModel>,
     }
 };

@@ -6,7 +6,7 @@ import { isEmpty } from "lodash"
      * @returns 
      */
     function customValidation(value: Array<string>) {
-        return isEmpty(value) || value[0].length >= 4 ? true : "минимум 4 символа"
+        return isEmpty(value) || value[0].length >= 2 ? true : "минимум 2 символа"
     }
 
     export default customValidation

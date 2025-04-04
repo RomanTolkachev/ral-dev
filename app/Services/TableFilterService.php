@@ -7,7 +7,7 @@ class TableFilterService
     public function getFiltersFor(string $modelClass, array $userFilters): array
     {
         $headers = array_filter(
-            $modelClass::getPublicHeaders(), 
+            $modelClass::getPublicHeaders(),
             fn($item) => in_array($item, $userFilters)
         );
 
@@ -43,7 +43,15 @@ class TableFilterService
         $fullText->header = "fullText";
         $fullText->sortValues = new \stdClass();
         $fullText->sortValues->type = "huge";
-        $filters = [$fullText, ...$filters];
+
+        // добавление поиска для регуляций
+        $regulations = new \stdClass();
+        $regulations->header = "regulations";
+        $regulations->sortValues = new \stdClass();
+        $regulations->sortValues->type = "huge";
+
+        $filters = [$fullText, ...$filters, $regulations];
+
 
         return $filters ?? [];
     }

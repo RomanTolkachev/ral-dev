@@ -48,7 +48,7 @@ function customModalCell(renderFn: Renderable<CellContext<IModel, unknown>>, con
                         className: "",
                     },
                     splittedCellData.map(value => {
-                        return createElement('li', {className: "mb-2"}, value + ";" ) 
+                        return createElement('li', {className: "mb-2"}, highlight(value + ";", currentQuery.regulations))  
                     }) as ReactNode,   
                 )
             }
