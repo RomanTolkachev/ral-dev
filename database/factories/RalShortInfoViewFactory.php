@@ -24,7 +24,7 @@ class RalShortInfoViewFactory extends Factory
             'status_change_date' => $statusChangeDateOrNull,
             'nameType' => $this->generateNameTypeOrNull(),
             'nameTypeActivity' => $this->generateNameTypeActivityOrNull(),
-            'regDate' => $this->faker->dateTimeBetween('-10 years'),
+            'regDate' => Carbon::parse($this->faker->dateTimeBetween('-10 years'))->toIso8601ZuluString(),
             'fullName' => $credentials['fullName'],
             'address' => $this->faker->address(),
             'applicantINN' => $this->generateApplicantINN(),

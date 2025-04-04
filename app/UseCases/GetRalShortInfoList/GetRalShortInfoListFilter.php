@@ -154,6 +154,20 @@ class GetRalShortInfoListFilter extends AbstractFilter
                 return $this->builder->whereBetween('NP_status_change_date', $value);
         }
     }
+    // protected function regulations(array $value): Builder
+    // {
+        // dd("зашли");
+        // switch (true) {
+        //     case empty($value[0]) && empty($value[1]): 
+        //         return $this->builder;
+        //     case (empty($value[0]) && !empty($value[1])):
+        //         return $this->builder->where('NP_status_change_date', '<', $value[1]);
+        //     case (!empty($value[0]) && empty($value[1])):
+        //         return $this->builder->where('NP_status_change_date', '>', $value[0]);
+        //     default: 
+        //         return $this->builder->whereBetween('NP_status_change_date', $value);
+        // }
+    // }
 
     protected function fullText(array $value): Builder
     {

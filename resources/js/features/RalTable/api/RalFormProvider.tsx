@@ -122,6 +122,8 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
         }
     }, [isPending, JSON.stringify(filters)]);
 
+    console.log(methods.formState)
+
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField }}>
             <FormProvider {...methods}>
