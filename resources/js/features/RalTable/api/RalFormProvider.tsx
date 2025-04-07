@@ -33,6 +33,9 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
     /** Устанавливаем default для полей формы. Везде массив. Т.к поля фильтров запрашиваются асинхронно,
     * установлено несколько проверок, чтобы default всегда были валидны  
     */
+
+    
+
     const startValues = filters //TODO: выдергивать perPage из localStorage или state
         ? filters.reduce((acc: Record<string, any>, key) => {
             // Проверка, существует ли ключ в acc перед добавлением, т.к значения некоторых ключей установлены на фронте и их нельзя перезаписывать
@@ -42,6 +45,8 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
             return acc;
         }, DEFAULT_REQUEST)
         : DEFAULT_REQUEST;
+
+        console.log(startValues)
 
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
         mode: "onChange",
@@ -62,15 +67,12 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
         formData: IFormValues,
     ): void => {
         if (isEqual(prevQueries.current, formData)) {
-            // console.log("формы равны")
             return;
         } else if (!isEqual(excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData))) {
-            // console.log("сработал else if, текущая форма: ", excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData) )
             methods.setValue('page', 1);
             methods.formState.isValid && setQuery({ ...formData, page: 1 }, shouldReplace); // второй параметр true делает replace истории
             prevQueries.current = { ...formData, page: 1 };
         } else {
-            // console.log("сработал else", excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData))
             methods.setValue('page', formData.page);
             methods.formState.isValid && setQuery({ ...formData, page: formData.page }, shouldReplace)
         }
@@ -88,7 +90,6 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
      * Сброс формы до дефолтного состояние и сабмит дефолтных значений
      */
     function customResetField(fieldName: keyof IFormValues): void {
-        console.log({[fieldName]: methods.formState.defaultValues![fieldName]})
         methods.reset({...methods.getValues(), [fieldName]: methods.formState.defaultValues![fieldName]}, {keepDefaultValues: true});
         methods.handleSubmit(data => customSubmitHandler(data))()
     }
@@ -122,7 +123,6 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
         }
     }, [isPending, JSON.stringify(filters)]);
 
-    console.log(methods.formState)
 
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField }}>

@@ -88,7 +88,7 @@ export const PageInput: FunctionComponent<IProps> = ({ className, dataLenght, fo
                             navArrow />
                     </PageNavButton>
                     <PageNavButton
-                        isDisabled={isPending ||currentPage === lastPage}
+                        isDisabled={isPending || currentPage === lastPage}
                         clickHandler={() => handlePageChange(lastPage)}>
                         <SVG
                             className={`rotate-180 ${currentPage === lastPage ? "text-[rgb(var(--page-nav-icon-inactive))]" : "text-[rgb(var(--page-nav-icon-active))]"}`}

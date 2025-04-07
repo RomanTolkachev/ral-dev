@@ -16,6 +16,7 @@ import IPagination from '@/shared/types/pagination'
 import Pagination from '../Inputs/PageInput/Pagination'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router'
+import RalHeader from '@/features/RalTable/ui/RalTable/Cell/ui/RalHeader'
 
 
 interface IProps {
@@ -102,6 +103,8 @@ export const Table: FunctionComponent<IProps> = () => {
         ralData && setAnimationKey(prev => prev + 1)
     }, [ralData])
 
+    console.log(table.getHeaderGroups()[0].headers)
+
     return (
         <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
             <div className={'text-header-text text-sm p-2 ml-6 flex gap-4 items-center'}>
@@ -127,24 +130,7 @@ export const Table: FunctionComponent<IProps> = () => {
                                 className={`min-h-full min-w-full max-h-full text-sm table-auto rounded-t-md [&_td]:border-r [&_td]:border-r-filter-dropdown-button`}>
                                 <thead className={'select-none relative text-header-text font-medium'}>
                                     <tr className={'text-header-text text-nowrap'}>
-                                        {table.getHeaderGroups()[0].headers.map((header) => {
-                                            return (
-                                                <th
-                                                    style={{
-                                                        // width: header.getSize(),
-                                                    }}
-                                                    className={`sticky z-[1] bg-row-even top-0 p-2 overflow-hidden`}
-                                                    key={header.id}>
-                                                    <span className={''}>
-                                                        {header.column.columnDef.header as ReactNode}
-                                                    </span>
-                                                    {/* <span
-                                                        className={`bg-resizer absolute translate-x-1/2 cursor-col-resize opacity-0 hover:opacity-100 z-10 w-1.5 bg-button-violet  h-full top-0 right-0 `}
-                                                        onMouseDown={header.getResizeHandler()}
-                                                        onTouchStart={header.getResizeHandler()}></span> */}
-                                                </th>
-                                            )
-                                        })}
+                                        {table.getHeaderGroups()[0].headers.map((header) => <RalHeader key={header.id} headerData={header} />)}    
                                     </tr>
                                 </thead>
                                 <motion.tbody key={animationKey} variants={parentVariants} initial="start" animate="end" className={'font-medium'}>
@@ -162,11 +148,7 @@ export const Table: FunctionComponent<IProps> = () => {
                                                 key={row.id}
                                                 onClick={() => handleRowClick(`${row.original.id}${location.search}`)}
                                             >
-                                                {row.getVisibleCells().map((cell) => {
-                                                    return (
-                                                        <RalCell key={cell.id} cellData={cell} />
-                                                    )
-                                                })}
+                                                {row.getVisibleCells().map((cell) => <RalCell key={cell.id} cellData={cell} />)}
                                             </motion.tr>
                                         )
                                     })}
@@ -174,9 +156,7 @@ export const Table: FunctionComponent<IProps> = () => {
                                         {table
                                             .getRowModel()
                                             .rows[0].getVisibleCells()
-                                            .map((item, key) => {
-                                                return <td key={`last-row${key}`}></td>
-                                            })}
+                                            .map((item, key) => <td key={`last-row${key}`}></td>)}  
                                     </motion.tr>
                                 </motion.tbody>
                             </table>
