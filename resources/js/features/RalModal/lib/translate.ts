@@ -39,11 +39,11 @@ export const translate = (accessorKey: ReactNode | undefined): string => {
         case 'is_relevant':
             return 'релевантность НЧ'
         case 'tnved':
-            return 'ТН ВЭД'
+            return 'ТН ВЭД (НЧ)'
         case 'regulation':
-            return 'Регулирования'
+            return 'ТР ТС/ЕАЭС (НЧ)'
         case 'regulations':
-            return 'Регулирования'
+            return 'ТР ТС/ЕАЭС (НЧ)'
         default:
             return 'дефолт'
     }

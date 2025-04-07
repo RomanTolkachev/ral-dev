@@ -11,15 +11,15 @@ export const translateHeaderName = (accessorKey: ReactNode | undefined): string 
         case 'new_status_AL':
             return 'Акт. статус'
         case 'status_change_date':
-            return 'дата смены статуса'
+            return 'Дата смены статуса'
         case 'nameType':
-            return 'тип АЛ'
+            return 'Тип АЛ'
         case 'nameTypeActivity':
-            return 'тип направления деятельности'
+            return 'Тип направления деятельности'
         case 'regDate':
             return 'Дата рег.'
         case 'fullName':
-            return 'полное наименование'
+            return 'Полное наименование'
         case 'address':
             return 'Адрес'
         case 'applicantFullName':
@@ -37,11 +37,11 @@ export const translateHeaderName = (accessorKey: ReactNode | undefined): string 
         case 'fullText':
             return 'Поиск'
         case 'tnved':
-            return 'ТН ВЭД'
+            return 'ТН ВЭД (НЧ)'
         case 'regulation':
-            return 'ТР ЕАЭС'
+            return 'ТР ТС/ЕАЭС (НЧ)'
         case 'regulations':
-            return 'ТР ЕАЭС'
+            return 'ТР ТС/ЕАЭС (НЧ)'
         default:
             return 'дефолт'
     }
