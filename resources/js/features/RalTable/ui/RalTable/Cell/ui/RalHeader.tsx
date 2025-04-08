@@ -35,13 +35,14 @@ const RalHeader: FunctionComponent<IProps> = ({ className, headerData }) => {
                             const regex = new RegExp(`^${columnName}`, 'i');
                             let isActive = regex.test(value);
                             let descRegexp = new RegExp('desc','i')
-                            let isArrowDown = isActive && descRegexp.test(value)
+                            let isArrowDown = value === '' || (isActive && descRegexp.test(value)) || !isActive;
                             let color = isActive ? "text-[var(--cell-suspended)]" : undefined
                             let direction = isArrowDown ? 'rotate-180' : 'rotate-0'
                             console.log(isArrowDown) 
                             return (
                                 <span
-                                    onClick={() => updateForm(value === columnName ? `${columnName}_desc` : columnName)}
+                                    onClick={() => value === `${columnName}_desc` ? updateForm(columnName) : updateForm(`${columnName}_desc`)}
+                                        
                                     className="w-6 flex justify-center items-center"
                                     >
                                     <SVG className={`w-4 transition-all ${color} ${direction}`} arrow />
