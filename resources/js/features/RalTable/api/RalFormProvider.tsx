@@ -43,8 +43,6 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
         }, DEFAULT_REQUEST)
         : DEFAULT_REQUEST;
 
-        console.log(startValues)
-
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
         mode: "onChange",
         reValidateMode: "onChange",

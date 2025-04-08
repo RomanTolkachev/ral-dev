@@ -103,8 +103,6 @@ export const Table: FunctionComponent<IProps> = () => {
         ralData && setAnimationKey(prev => prev + 1)
     }, [ralData])
 
-    console.log(table.getHeaderGroups()[0].headers)
-
     return (
         <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
             <div className={'text-header-text text-sm p-2 ml-6 flex gap-4 items-center'}>

@@ -17,7 +17,7 @@ const orderable: (keyof IRalItem)[] = ["NP_status_change_date", "regDate", "stat
 const RalHeader: FunctionComponent<IProps> = ({ className, headerData }) => {
 
     let isOrderable: boolean = orderable.includes(headerData.id as keyof IRalItem)
-    const { control, trigger, getValues, setValue } = useFormContext();
+    const { control, trigger, getValues } = useFormContext();
     const { customSubmitHandler } = useContext(CustomSubmitHandlerContext);
     const [scope, animate] = useAnimate();
     const columnName = headerData.id;
@@ -39,35 +39,44 @@ const RalHeader: FunctionComponent<IProps> = ({ className, headerData }) => {
                             let isActive = regex.test(value);
                             let descRegexp = new RegExp('desc', 'i')
                             let isArrowDown = value === '' || (isActive && descRegexp.test(value)) || !isActive;
+                            const [firstRender, setIsFirstRender] = useState(true)
 
 
                             // чтобы при первом рендере стрелочка не анимировалась, если она должна смотреть вниз 
                             useLayoutEffect(() => {
-                                if (scope.current) {
+                                if (scope.current && firstRender) {
                                     animate(scope.current, {
                                         rotate: isArrowDown ? 180 : 0,
                                     }, { duration: 0 });
                                 }
                             }, []);
 
+                            useEffect(() => {
+                                console.log("рендер из лэйаут эффект", columnName)
+                                setIsFirstRender(false)
+                            }, [])
+
 
                             // смысл в том, чтобы форма сабмитилась только после анимирования стрелки, иначе некрасиво
                             useEffect(() => {
-                                const asyncAnimate = (scope: HTMLElement, properties: Record<string, any>) => {
-                                    return new Promise<void>((resolve) => {
-                                        animate(scope, properties, { onComplete: resolve })
-                                    })
-                                }
-                                const animateAndSubmit = async () => {
-                                    if (scope.current) {
-                                        isActive ? await asyncAnimate(scope.current, { color: 'var(--cell-suspended)' }) : await asyncAnimate(scope.current, { color: 'rgb(137, 137, 137)' })
-                                        isArrowDown ? await asyncAnimate(scope.current, { rotate: 180 }) : await asyncAnimate(scope.current, { rotate: 0 })
+                                if (!firstRender) {
+                                    const asyncAnimate = (scope: HTMLElement, properties: Record<string, any>) => {
+                                        return new Promise<void>((resolve) => {
+                                            animate(scope, properties, { onComplete: resolve })
+                                        })
                                     }
-                                    const isValid = await trigger();
-                                    isValid && customSubmitHandler(getValues())
+                                    const animateAndSubmit = async () => {
+                                        if (scope.current) {
+                                            isActive ? await asyncAnimate(scope.current, { color: 'var(--cell-suspended)' }) : await asyncAnimate(scope.current, { color: 'rgb(137, 137, 137)' })
+                                            isArrowDown ? await asyncAnimate(scope.current, { rotate: 180 }) : await asyncAnimate(scope.current, { rotate: 0 })
+                                        }
+                                        const isValid = await trigger();
+                                        isValid && customSubmitHandler(getValues())
+                                    }
+                                    animateAndSubmit();
                                 }
-                                animateAndSubmit();
-                            }, [isArrowDown, isActive])
+
+                            }, [isArrowDown, isActive, firstRender])
 
                             return (
                                 <motion.span

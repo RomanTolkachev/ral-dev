@@ -178,4 +178,20 @@ class GetRalShortInfoListFilter extends AbstractFilter
         $ids = $searchRes->pluck('id')->toArray();
         return $this->builder->whereIn('ral_short_info_view.id', $ids);
     }
+
+    // переставляем null в конец
+    protected function order(string $value): Builder
+    {
+        $query = $this->builder;
+        $formattedColumn = preg_replace('/_desc$/', "", $value);
+        if(str_ends_with($value, 'desc')) {
+            $query = $query->orderByRaw("CASE WHEN {$formattedColumn} IS NULL THEN '31-12-1800' ELSE {$formattedColumn} END DESC");
+            // dd($query->toSql());
+            return $query;
+        } else {
+            // $query = $query->orderBy($value);
+            $query = $query->orderByRaw("CASE WHEN {$formattedColumn} IS NULL THEN '31-12-9999' ELSE {$formattedColumn} END ASC");
+            return $query;
+        }
+    }
 }
