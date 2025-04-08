@@ -1,7 +1,9 @@
 import { SVG } from "@/Components/utils/SVG"
+import { CustomSubmitHandlerContext } from "@/features/ralTable/api/RalFormProvider"
 import { IRalItem } from "@/shared/types/ral"
 import { Header } from "@tanstack/react-table"
-import { FunctionComponent, ReactNode } from "react"
+import { motion, ObjectTarget, Target, useAnimate, useAnimation } from "motion/react"
+import { FunctionComponent, ReactNode, RefObject, useContext, useEffect, useLayoutEffect, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 
 interface IProps {
@@ -16,7 +18,8 @@ const RalHeader: FunctionComponent<IProps> = ({ className, headerData }) => {
 
     let isOrderable: boolean = orderable.includes(headerData.id as keyof IRalItem)
     const { control, trigger, getValues, setValue } = useFormContext();
-
+    const { customSubmitHandler } = useContext(CustomSubmitHandlerContext);
+    const [scope, animate] = useAnimate();
     const columnName = headerData.id;
 
     return (
@@ -31,22 +34,51 @@ const RalHeader: FunctionComponent<IProps> = ({ className, headerData }) => {
                     <Controller
                         name={"order"}
                         control={control}
-                        render={({ field: { value, onChange: updateForm }, fieldState }) => {
+                        render={({ field: { value, onChange: updateForm, ref }, fieldState }) => {
                             const regex = new RegExp(`^${columnName}`, 'i');
                             let isActive = regex.test(value);
-                            let descRegexp = new RegExp('desc','i')
+                            let descRegexp = new RegExp('desc', 'i')
                             let isArrowDown = value === '' || (isActive && descRegexp.test(value)) || !isActive;
-                            let color = isActive ? "text-[var(--cell-suspended)]" : undefined
-                            let direction = isArrowDown ? 'rotate-180' : 'rotate-0'
-                            console.log(isArrowDown) 
+
+
+                            // чтобы при первом рендере стрелочка не анимировалась, если она должна смотреть вниз 
+                            useLayoutEffect(() => {
+                                if (scope.current) {
+                                    animate(scope.current, {
+                                        rotate: isArrowDown ? 180 : 0,
+                                    }, { duration: 0 });
+                                }
+                            }, []);
+
+
+                            // смысл в том, чтобы форма сабмитилась только после анимирования стрелки, иначе некрасиво
+                            useEffect(() => {
+                                const asyncAnimate = (scope: HTMLElement, properties: Record<string, any>) => {
+                                    return new Promise<void>((resolve) => {
+                                        animate(scope, properties, { onComplete: resolve })
+                                    })
+                                }
+                                const animateAndSubmit = async () => {
+                                    if (scope.current) {
+                                        isActive ? await asyncAnimate(scope.current, { color: 'var(--cell-suspended)' }) : await asyncAnimate(scope.current, { color: 'rgb(137, 137, 137)' })
+                                        isArrowDown ? await asyncAnimate(scope.current, { rotate: 180 }) : await asyncAnimate(scope.current, { rotate: 0 })
+                                    }
+                                    const isValid = await trigger();
+                                    isValid && customSubmitHandler(getValues())
+                                }
+                                animateAndSubmit();
+                            }, [isArrowDown, isActive])
+
                             return (
-                                <span
-                                    onClick={() => value === `${columnName}_desc` ? updateForm(columnName) : updateForm(`${columnName}_desc`)}
-                                        
+                                <motion.span
+                                    ref={scope}
+                                    onClick={
+                                        () => value === `${columnName}_desc` ? updateForm(columnName) : updateForm(`${columnName}_desc`)
+                                    }
                                     className="w-6 flex justify-center items-center"
-                                    >
-                                    <SVG className={`w-4 transition-all ${color} ${direction}`} arrow />
-                                </span>
+                                >
+                                    <SVG className={`w-4`} arrow />
+                                </motion.span>
                             )
                         }}
                     />

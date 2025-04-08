@@ -33,9 +33,6 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
     /** Устанавливаем default для полей формы. Везде массив. Т.к поля фильтров запрашиваются асинхронно,
     * установлено несколько проверок, чтобы default всегда были валидны  
     */
-
-    
-
     const startValues = filters //TODO: выдергивать perPage из localStorage или state
         ? filters.reduce((acc: Record<string, any>, key) => {
             // Проверка, существует ли ключ в acc перед добавлением, т.к значения некоторых ключей установлены на фронте и их нельзя перезаписывать
