@@ -40,7 +40,7 @@ function customModalCell(renderFn: Renderable<CellContext<IModel, unknown>>, con
     const columnID: string = context.column.id;
     if ( columnID.toLowerCase() === 'value' && !isEmpty(context.getValue())) {
         switch (rowValue) {
-            case "Регулирования": {
+            case "ТР ТС/ЕАЭС (НЧ)": {
                 let splittedCellData = String(context.getValue()).split(";")
                 return createElement(
                     'ul',
