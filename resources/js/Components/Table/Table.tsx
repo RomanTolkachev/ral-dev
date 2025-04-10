@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useLayoutEffect, useMemo, useState } from 'react'
+import { FunctionComponent, useLayoutEffect, useMemo, useState } from 'react'
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { Preloader } from '@/Components/utils/Preloader'
 import { SVG } from '@/Components/utils/SVG'
@@ -6,17 +6,19 @@ import { useRalQuery } from '@/features/ralTable/api/useRalQuery'
 import { getHeaders } from '@/Components/Table/lib/getHeaders'
 import { IRalItem } from '@/shared/types/ral'
 import { translateHeaderName } from '@/Components/Table/lib/translateHeaderName'
-import { PageInput } from '@/Components/Inputs/PageInput/PageInput'
+import { PageNavigation } from '@/Components/Inputs/PageNavigation/PageNavigation'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import { isEmpty } from 'lodash'
 import DEFAULT_REQUEST from '@/features/ralTable/config'
 import RalCell from '@/features/RalTable/ui/RalTable/Cell/ui/RalCell'
 import { useSelectorTyped } from '@/features/store/typedUseSelector'
 import IPagination from '@/shared/types/pagination'
-import Pagination from '../Inputs/PageInput/Pagination'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router'
 import RalHeader from '@/features/RalTable/ui/RalTable/Cell/ui/RalHeader'
+import FoundedResults from '../Inputs/PageNavigation/Pagination'
+import { Controller } from 'react-hook-form'
+import PerPageController from '../Inputs/PerPageController'
 
 
 interface IProps {
@@ -104,17 +106,8 @@ export const Table: FunctionComponent<IProps> = () => {
     }, [ralData])
 
     return (
-        <div className={'h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden'}>
-            <div className={'text-header-text text-sm p-2 ml-6 flex gap-4 items-center'}>
-                <PageInput
-                    total={ralData?.total}
-                    isPending={isPending}
-                    currentPage={ralData?.current_page}
-                    lastPage={ralData?.last_page}
-                    dataLenght={tableData?.length}
-                />
-            </div>
-            <div className={'p-2 w-full h-full grow flex overflow-hidden'}>
+        <div className={'h-full grow grid grid-rows-[1fr_auto] grid-cols-[1fr] overflow-hidden'}>
+            <div className={'p-2 w-full h-full grow shrink flex overflow-hidden '}>
                 <div className={'my-block min-w-full h-full bg-background-block'}>
                     <div
                         className={
@@ -159,7 +152,7 @@ export const Table: FunctionComponent<IProps> = () => {
                                 </motion.tbody>
                             </table>
                         ) : (
-                            <div className={' w-full h-full grid place-items-center'}>
+                            <div className={'w-full h-full grid place-items-center'}>
                                 <div className='w-[300px]'>
                                     <SVG className={' mb-2'} notFound />
                                     <p
@@ -175,14 +168,21 @@ export const Table: FunctionComponent<IProps> = () => {
                     </div>
                 </div>
             </div>
-            <div className={'flex justify-end'}>
-                <Pagination
-                    className={"text-header-text text-sm p-2 mr-6"}
+            <div className={'text-sm py-4 px-2 ml-6 flex gap-4 h-fit items-center justify-between text-table-base font-semibold'}>
+                <FoundedResults
+                    className='w-52 min-w-fit'
                     dataLenght={tableData?.length}
                     currentPage={ralData?.current_page}
                     lastPage={ralData?.last_page}
-                    total={ralData?.total}>
-                </Pagination>
+                    total={ralData?.total}
+                />
+                <PerPageController />
+                <PageNavigation
+                    total={ralData?.total}
+                    isPending={isPending}
+                    currentPage={ralData?.current_page}
+                    lastPage={ralData?.last_page}
+                />
             </div>
         </div>
     )

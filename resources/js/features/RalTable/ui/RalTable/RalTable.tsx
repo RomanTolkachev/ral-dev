@@ -20,15 +20,10 @@ export const Raltable = () => {
                     </div>
                 </div>
             </section>
-            <section className={'shrink pt-8 grow flex flex-col'}>
-                <div className={'flex justify-end gap-3 pr-10 mb-2'}>
-                    <MainButton color={'red'}>кнопка 1</MainButton>
-                    <MainButton color={'white'}>кнопка 2</MainButton>
-                    <MainButton color={'violet'}>кнопка 3</MainButton>
-                </div>
+            <section className={'shrink grow flex flex-col'}>
                 <Table />
-            <DevTool control={control} />
             </section>
+            <DevTool control={control} />
         </div>
     )
 }

@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { TPaginatedRal } from '@/shared/types/ral'
 import qs from 'qs'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import IPagination from '../types/pagination'
