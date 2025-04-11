@@ -46,6 +46,7 @@ export const Table: FunctionComponent<IProps> = () => {
     const userColumns = useSelectorTyped(state => state.userState.settings.ralTableColumns); // тут дальше в стейте будем хранить настройки для столбца юзера
 
     const queries = isEmpty(getQuery()) ? DEFAULT_REQUEST : getQuery();
+
     queries.user_columns = userColumns; // к дефолтному запросу добавляем колонки пользователя
 
     const { data: ralData, isPending } = useRalQuery<IPagination>(queries); //TODO: тут нужно вынести выше и через пропсы давать query

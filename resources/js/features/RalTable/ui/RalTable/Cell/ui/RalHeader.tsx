@@ -52,7 +52,6 @@ const RalHeader: FunctionComponent<IProps> = ({ className, headerData }) => {
                             }, []);
 
                             useEffect(() => {
-                                console.log("рендер из лэйаут эффект", columnName)
                                 setIsFirstRender(false)
                             }, [])
 

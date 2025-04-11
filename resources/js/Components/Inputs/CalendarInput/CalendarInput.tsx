@@ -23,13 +23,17 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
     const [startDate, setStartDate] = useState(DEFAULT_REQUEST.status_change_date[0]);
     const [endDate, setEndDate] = useState(DEFAULT_REQUEST.status_change_date[1]);
     const [, getQuery] = useParamsCustom()
-    const query = getQuery();
+    let query: Record<string,any> = {};
     const { control, formState, getValues, } = useFormContext();
     const { customSubmitHandler } = useContext(CustomSubmitHandlerContext);
 
     const { isValid, } = formState;
     const inputName = inputData.header;
     const defaultValue = formState.defaultValues ? formState.defaultValues[inputName] : ["",""];
+
+    useEffect(() => {
+        query = getQuery()
+    }, [])
 
     // логика проверки изменения query параметров при изменении popstate
     const prevValueRef = useRef<any>();

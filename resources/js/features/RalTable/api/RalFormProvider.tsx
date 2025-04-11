@@ -1,5 +1,5 @@
 import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
-import { createContext, FunctionComponent, PropsWithChildren, useEffect, useMemo, useRef } from 'react'
+import { createContext, FunctionComponent, PropsWithChildren, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useRalFilters } from '@/features/ralTable/api/useRalFilters'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import DEFAULT_REQUEST from '../config'
@@ -42,6 +42,7 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
             return acc;
         }, DEFAULT_REQUEST)
         : DEFAULT_REQUEST;
+        
 
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
         mode: "onChange",
@@ -50,7 +51,9 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
     })
 
     // после получения фильтров записываем их для последующего сравнения
-    prevQueries.current = { ...startValues, ...getQuery() }
+    useEffect(() => {
+        prevQueries.current = { ...startValues, ...getQuery() }
+    }, [filters])
 
     /**
      * Обработчик формы с проверкой сброса страницы на первую, если параметры поиска изменились. В замыкании предыдущее и текущее значение формы,
@@ -66,10 +69,16 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
         } else if (!isEqual(excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData))) {
             methods.setValue('page', 1);
             methods.formState.isValid && setQuery({ ...formData, page: 1 }, shouldReplace); // второй параметр true делает replace истории
-            prevQueries.current = { ...formData, page: 1 };
-        } else {
+            prevQueries.current = { ...formData, page: 1, perPage: formData.perPage };
+        } else if (!isEqual(prevQueries.current!.page, formData.page)) {
             methods.setValue('page', formData.page);
+            prevQueries.current = { ...formData, page: formData.page };
             methods.formState.isValid && setQuery({ ...formData, page: formData.page }, shouldReplace)
+        } else if (!isEqual(prevQueries.current!.perPage, formData.perPage)) {
+            methods.setValue('page', 1);
+            methods.setValue('perPage', formData.perPage);
+            methods.formState.isValid && setQuery({ ...formData, page: 1, perPage: formData.perPage}, shouldReplace)
+            prevQueries.current = { ...formData, page: 1, perPage: formData.perPage  };
         }
     }
 
@@ -77,7 +86,9 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
      * Сброс формы до дефолтного состояние и сабмит дефолтных значений
      */
     function customResetHandler(): void {
+        const perPage = methods.getValues().perPage
         methods.reset();
+        methods.setValue('perPage', perPage);
         methods.handleSubmit(data => customSubmitHandler(data))()
     }
 
@@ -102,6 +113,7 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
                 acc[item.header] = [];
                 return acc;
             }, {});
+            // console.log(newQueries,DEFAULT_REQUEST  )
             /** 
             * когда фильтры пришли, мы задаем defaultValues через reset, первый аргумент которого будут новые defaultValues
             */

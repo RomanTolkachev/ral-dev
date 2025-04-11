@@ -43,7 +43,11 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
     const { watch, control } = useFormContext();
     const inputName = inputData.header;
     const [, getQuery] = useParamsCustom();
-    const queries = getQuery()
+    let queries; 
+
+    useEffect(() => {
+        queries = getQuery()
+    })
 
     // проверка должен ли быть открыт item, при первом рендере. Если есть активный фильтр, то будет открыт
     useEffect(() => {

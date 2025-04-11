@@ -2,10 +2,11 @@ const PERIOD: number = 2
 
 type TDefaultRalRequest = {
     page: number,
-    perPage: number,
+    perPage: string,
     status_change_date: string[]
     user_columns?: string[]
     regDate?: string[]
+    NP_status_change_date?: string[]
     order: string
 }
 
@@ -21,12 +22,13 @@ export const dateFormatter = new Intl.DateTimeFormat("en-CA", {
 
 const DEFAULT_REQUEST:TDefaultRalRequest  = {
     page: 1,
-    perPage: 10,
+    perPage: "10",
     status_change_date: [
         // dateFormatter.format(startdate),
         // dateFormatter.format(currentDate),
         "",""
     ],
+    NP_status_change_date: ["",""],
     regDate: ["",""],
     order: ""
 }
