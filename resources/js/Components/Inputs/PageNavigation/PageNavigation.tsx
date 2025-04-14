@@ -73,7 +73,7 @@ export const PageNavigation: FunctionComponent<IProps> = ({ className, formName 
                         )}
                         <span className='flex gap-2'> 
                             <span>из</span>
-                            <span className='text-end min-w-6'>{lastPage}</span>
+                            <span className='text-end min-w-10'>{lastPage}</span>
                         </span>
                         <PageNavButton
                             isDisabled={isPending || currentPage === lastPage}
