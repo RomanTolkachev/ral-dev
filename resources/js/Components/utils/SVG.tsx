@@ -272,27 +272,8 @@ export const SVG: FunctionComponent<IProps> = ({
                 </svg>
             )}
             {burger && (
-                <svg width="100%" height="100%" className={`${className}`} viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_54720_4121)">
-                        <g filter="url(#filter0_d_54720_4121)">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M16.1409 3.43888C16.6646 3.10371 17.3354 3.10371 17.8591 3.43888L31.1404 11.9389C31.8817 12.4134 32.0981 13.399 31.6236 14.1404C31.1491 14.8817 30.1635 15.0981 29.4221 14.6236L28.1562 13.8135V26.5625C28.1562 28.9097 26.2535 30.8125 23.9062 30.8125H10.0938C7.74654 30.8125 5.84375 28.9097 5.84375 26.5625V13.8135L4.57787 14.6236C3.8365 15.0981 2.85086 14.8817 2.37638 14.1404C1.90191 13.399 2.11827 12.4134 2.85964 11.9389L16.1409 3.43888ZM11.9531 15.6719C11.513 15.6719 11.1562 16.0286 11.1562 16.4688C11.1562 16.9089 11.513 17.2656 11.9531 17.2656H22.0469C22.487 17.2656 22.8438 16.9089 22.8438 16.4688C22.8438 16.0286 22.487 15.6719 22.0469 15.6719H11.9531ZM11.1562 19.6562C11.1562 19.2161 11.513 18.8594 11.9531 18.8594H16.2031C16.6432 18.8594 17 19.2161 17 19.6562C17 20.0964 16.6432 20.4531 16.2031 20.4531H11.9531C11.513 20.4531 11.1562 20.0964 11.1562 19.6562ZM11.9531 22.0469C11.513 22.0469 11.1562 22.4036 11.1562 22.8438C11.1562 23.2839 11.513 23.6406 11.9531 23.6406H18.3281C18.7682 23.6406 19.125 23.2839 19.125 22.8438C19.125 22.4036 18.7682 22.0469 18.3281 22.0469H11.9531Z" fill="white" />
-                        </g>
-                    </g>
-                    <defs>
-                        <filter id="filter0_d_54720_4121" x="-0.875195" y="0.1875" width="35.7504" height="33.625" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                            <feOffset />
-                            <feGaussianBlur stdDeviation="1.5" />
-                            <feComposite in2="hardAlpha" operator="out" />
-                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.7 0" />
-                            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_54720_4121" />
-                            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_54720_4121" result="shape" />
-                        </filter>
-                        <clipPath id="clip0_54720_4121">
-                            <rect width="34" height="34" fill="white" />
-                        </clipPath>
-                    </defs>
+                <svg width="100%" height="100%" className={`${className}`} viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0 12H18V10H0V12ZM0 7H18V5H0V7ZM0 0V2H18V0H0Z" fill="#898989" />
                 </svg>
             )}
         </>

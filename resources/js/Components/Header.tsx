@@ -22,20 +22,27 @@ export const Header: FunctionComponent<PropsWithChildren<IProps>> = ({ className
     return (
         <header className='w-full grid grid-cols-[300px_1fr] grid-rows-[auto] text-text-primary'>
             <div className='p-2'>
-                <div className='my-block bg-background-block h-full flex items-center justify-center'>
-                    <Link to='/'>
-                        <div title="На главную" className='cursor-pointer bg-input-primary w-28 text-input-text text-sm text-center p-1 h-full shadow-input-page border-black/10 rounded-full focus:border-transparent'>
-                            <SVG className='h-8' home />
+                <div className='my-block bg-background-block h-full flex items-center'>
+                    <div className='shrink-0 grow-0 px-2'>
+                        <SVG burger className='h-4' />
+                    </div>
+                    <div  className='shring grow  '>
+                        <div title="На главную" className='cursor-pointer mx-auto bg-input-primary w-28 text-input-text text-sm text-center p-1 h-full shadow-input-page border-black/10 rounded-full focus:border-transparent'>
+                            <Link to='/'>
+                                <SVG className='h-8' home />
+                            </Link>
                         </div>
-                    </Link>
+                    </div>
                 </div>
             </div>
             <div className='p-2'>
                 <div className='my-block bg-background-block h-full flex justify-between items-center'>
-                    <HeaderNavButton links={directories}>
-                        справочники
-                    </HeaderNavButton>
-                    <span>кабинет менеджера</span>
+                    <div className='flex ml-10 gap-10'>
+                        <HeaderNavButton links={directories}>
+                            Cправочники
+                        </HeaderNavButton>
+                        <span className='bg-header-nav-button text-header-nav-text py-1 px-8 rounded-full shadow-md'>Кабинет менеджера</span>
+                    </div>
                     <Toggle />
                 </div>
             </div>

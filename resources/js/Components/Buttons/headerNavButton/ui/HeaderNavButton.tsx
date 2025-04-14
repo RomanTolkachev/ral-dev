@@ -17,10 +17,10 @@ export const HeaderNavButton: FunctionComponent<IProps> = ({ className, children
     const buttonRef = useRef<HTMLButtonElement>(null)
     return (
         <HeaderNavButtonContext.Provider value={links}>
-            <div className="relative flex flex-col items-center line-clamp-2">
+            <div className="relative flex flex-col h-full items-center shadow-md line-clamp-2 rounded-full">
                 <button
                     ref={buttonRef}
-                    className={`${className} bg-header-nav-button text-header-nav-text py-1 px-8 rounded-md`}
+                    className={`${className} bg-header-nav-button text-header-nav-text py-1 px-8 `}
                     onClick={() =>  setIsOpen(prevState => !prevState)}
                 >
                     {children}
