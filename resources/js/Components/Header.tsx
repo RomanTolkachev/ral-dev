@@ -20,7 +20,7 @@ const directories: TLinkItem[] = [
 
 export const Header: FunctionComponent<PropsWithChildren<IProps>> = ({ className, children }) => {
     return (
-        <header className='w-full grid grid-cols-[300px_1fr] grid-rows-[auto] text-text-primary'>
+        <header className='w-full grid grid-cols-[300px_1fr] grid-rows-[auto] text-text-primary text-sm'>
             <div className='p-2'>
                 <div className='my-block bg-background-block h-full flex items-center'>
                     <div className='shrink-0 grow-0 px-2'>

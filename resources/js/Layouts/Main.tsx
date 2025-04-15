@@ -8,6 +8,7 @@ import Modal from '@/Components/modal/Modal'
 import { RalModal } from '@/features/ralModal/ui/RalModal'
 import { AccreditationAreaTable } from '@/features/accreditationArea/ui/AccreditetionAreaTable'
 import { AnimatePresence } from 'motion/react'
+import Home from '@/features/home/ui/Home'
 
 
 
@@ -27,7 +28,8 @@ function Main() {
             }>
             <Header />
             <Routes>
-                <Route path="/" element={<Navigate to="/directory/ral" replace />} />
+                {/* <Route path="/" element={<Navigate to="/directory/ral" replace />} /> */}
+                <Route path="/" element={<Home/>} />
                 <Route path="/directory" element={<TableLayout />}>
                     <Route path="ral/*" element={
                             <RalFormProvider>
