@@ -1,7 +1,8 @@
 export interface IIconData {
     iconPath: string
     order: number
-    linkTo: string
+    reactLink: string
+    straightLink?: string
     bg?: string
     title: string
 }
