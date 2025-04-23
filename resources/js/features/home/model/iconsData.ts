@@ -2,7 +2,7 @@ import { IIconData } from "./types";
 
 const iconsData: IIconData[] = [
     {
-        iconPath: "/main_logos/bear.png",
+        iconPath: "/main_logos/bear_light.png",
         reactLink: "",
         straightLink: "https://24.certico.ru/",
         order: 1,
@@ -10,7 +10,7 @@ const iconsData: IIconData[] = [
         title: "24.certico.ru"
     },
     {
-        iconPath: "/main_logos/wolf.png",
+        iconPath: "/main_logos/wolf_light.png",
         reactLink: "",
         straightLink: "",
         order: 2,
@@ -18,7 +18,7 @@ const iconsData: IIconData[] = [
         title: "Ночной дозор"
     },
     {
-        iconPath: "/main_logos/kraken.png",
+        iconPath: "/main_logos/kraken_light.png",
         reactLink: "",
         straightLink: "https://webserver.certico.ru/doc_tracker",
         order: 8,
@@ -26,7 +26,7 @@ const iconsData: IIconData[] = [
         title: "Монитор судьбы"
     },
     {
-        iconPath: "/main_logos/deer.png",
+        iconPath: "/main_logos/deer_light.png",
         reactLink: "",
         straightLink: "https://webserver.certico.ru/managerlc",
         order: 9,
@@ -34,7 +34,7 @@ const iconsData: IIconData[] = [
         title: "Кабинет менеджера"
     },
     {
-        iconPath: "/main_logos/falcon.png",
+        iconPath: "/main_logos/falcon_light.png",
         reactLink: "",
         straightLink: "",
         order: 5,
@@ -42,7 +42,7 @@ const iconsData: IIconData[] = [
         title: "Falcon strike"
     },
     {
-        iconPath: "/main_logos/fish.png",
+        iconPath: "/main_logos/fish_light.png",
         reactLink: "",
         straightLink: "https://webserver.certico.ru/request",
         order: 4,
@@ -50,7 +50,7 @@ const iconsData: IIconData[] = [
         title: "Проработки"
     },
     {
-        iconPath: "/main_logos/gorynich.png",
+        iconPath: "/main_logos/gorynich_light.png",
         reactLink: "directory/ral",
         straightLink: "",
         order: 3,
@@ -58,7 +58,7 @@ const iconsData: IIconData[] = [
         title: "Р.А.Л"
     },
     {
-        iconPath: "/main_logos/lion.png",
+        iconPath: "/main_logos/lion_light.png",
         reactLink: "",
         straightLink: "https://webserver.certico.ru/inspection_control",
         order: 6,
@@ -66,7 +66,7 @@ const iconsData: IIconData[] = [
         title: "Табло ИК"
     },
     {
-        iconPath: "/main_logos/snake.png",
+        iconPath: "/main_logos/snake_light.png",
         reactLink: "",
         straightLink: "https://24.certico.ru/services/lists/status-97",
         order: 10,
@@ -74,7 +74,7 @@ const iconsData: IIconData[] = [
         title: "Табло ИЦС"
     },
     {
-        iconPath: "/main_logos/zirael.png",
+        iconPath: "/main_logos/zirael_light.png",
         reactLink: "",
         straightLink: "https://webserver.certico.ru/ral",
         order: 7,

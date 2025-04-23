@@ -20,6 +20,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->dateTime('created_at', 6)->nullable();
             $table->dateTime('updated_at', 6)->nullable();
+            $table->dateTime('eleted_at', 6)->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

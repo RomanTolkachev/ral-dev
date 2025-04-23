@@ -6,9 +6,16 @@ import { RalFormProvider } from '@/features/ralTable/api/RalFormProvider'
 import { NotFound } from '@/Components/utils/404'
 import Modal from '@/Components/modal/Modal'
 import { RalModal } from '@/features/ralModal/ui/RalModal'
-import { AccreditationAreaTable } from '@/features/accreditationArea/ui/AccreditetionAreaTable'
+// import { AccreditationAreaTable } from '@/features/accreditationArea/ui/AccreditetionAreaTable'
 import { AnimatePresence } from 'motion/react'
 import Home from '@/features/home/ui/Home'
+import { useQuery } from '@tanstack/react-query'
+import { fetchCookies, getUser, login } from '@/shared/api/api'
+import { useEffect } from 'react'
+import { useDispatchTyped } from '@/features/store/typedUseSelector'
+import { setUser } from '@/features/store/userReducer'
+import LoginPage from '@/features/Login/LoginPage'
+import RalSettings from '@/features/RalTable/ui/RalSettings/RalSettings'
 
 
 
@@ -17,6 +24,8 @@ function Main() {
     const navigate = useNavigate();
     const location = useLocation();
     const background = location.state && location.state.background
+
+    
 
     function closeRalModal() {
         location.state ? navigate(-1) : navigate(`/directory/ral/${location.search}`)
@@ -37,22 +46,22 @@ function Main() {
                                 {/* <AnimatePresence> //TODO: не работает exit animation
                                     {background && ( */}
                                         <Routes location={location} key={location.pathname}>
+                                            <Route 
+                                                path='settings'
+                                                element={<Modal closeModal={() => navigate(-1)} children={<RalSettings />} />}
+                                            />
                                             <Route
                                                 path=":ralId"
                                                 element={
-                                                    <Modal closeModal={closeRalModal} children={<RalModal />} />
-                                                }
+                                                    <Modal closeModal={() => navigate(-1)} children={<RalModal />} />}                                        
                                             />
                                         </Routes>
                                      {/* )} 
                                 </AnimatePresence> */}
                             </RalFormProvider>
                     } />
-                    <Route 
-                        path='accreditation-area' 
-                        element={<AccreditationAreaTable />}>
-                    </Route>
                 </Route>
+                <Route path='/login' element={<LoginPage />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </div>

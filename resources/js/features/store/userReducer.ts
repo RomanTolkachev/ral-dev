@@ -1,41 +1,40 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { IUser } from "@/shared/types/user";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type TRalTableModel =
-    'ral_short_info_view.link' |
-    'nameType' |
-    'nameTypeActivity' |
-    'fullName' |
-    'address' |
-    'oaDescription' |
-    'NPstatus' |
-    'ral_short_info_view.id' |
-    'regDate' |
-    'NP_status_change_date' |
-    'applicantFullName' |
-    'new_status_AL' |
-    'applicantINN' |
-    'RegNumber' |
-    'status_change_date' |
-    'np_regulations_tnveds.regulation' |
+const ralColumns = [
+    'ral_short_info_view.link',
+    'nameType',
+    'nameTypeActivity',
+    'fullName',
+    'address',
+    'oaDescription',
+    'NPstatus',
+    'ral_short_info_view.id',
+    'regDate',
+    'NP_status_change_date',
+    'applicantFullName',
+    'new_status_AL',
+    'applicantINN',
+    'applicantINN',
+    'RegNumber',
+    'status_change_date',
+    'np_regulations_tnveds.regulation',
     'ral_short_info_view.regulations'
+] as const;
+
+type TRalTableModel = typeof ralColumns[number];
  
 
-type TAccreditationAreaModel =
-    'nov_GOTS' |
-    'nov_TNVED' |
-    'comparable_GOTS' |
-    'comparable_TNVED' 
-
 export interface IUserReducer {
-    user: any;
+    user: IUser | null;
     settings: {
         ralTableColumns: Array<TRalTableModel>
         userFilters: Array<TRalTableModel>
     }
 }
 
-const initialState = {
-    user: 'Hi I am user',
+const initialState: IUserReducer = {
+    user: null,
     settings: {
         ralTableColumns: [
             'applicantFullName',
@@ -51,14 +50,7 @@ const initialState = {
             'NP_status_change_date',
             'np_regulations_tnveds.tnved',
             'ral_short_info_view.regulations',
-
         ] as Array<TRalTableModel>,
-        AccreditationAreaColumns: [
-            'nov_GOTS',
-            'nov_TNVED',
-            'comparable_GOTS',
-            'comparable_TNVED'
-        ] as Array<TAccreditationAreaModel>,
         userFilters: [
             'new_status_AL',
             'regDate',
@@ -70,23 +62,15 @@ const initialState = {
     }
 };
 
-export const userReducer = (
-    state: IUserReducer = initialState,
-    action: any,
-): IUserReducer => {
-    switch (action.type) {
-        default: {
-            return state;
-        }
-    }
-};
-
 const userState = createSlice({
     name: 'user',
     initialState,
     reducers: {
-
+        setUser: (state, action: PayloadAction<IUser>) => {
+            state.user = action.payload
+        }
     }
 })
 
+export const { setUser } = userState.actions;
 export default userState.reducer

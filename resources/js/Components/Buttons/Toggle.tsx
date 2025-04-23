@@ -48,10 +48,10 @@ export const Toggle: FunctionComponent<IProps> = ({className}) => {
     const toggleSwitch = () => {theme === "light" ? setTheme("dark") : setTheme("light")};
 
     return (
-        <div onClick={toggleSwitch} className={`${className} w-7 h-7 p-1  flex`}>
+        <div onClick={toggleSwitch} className={`${className} w-7 h-7 p-1 flex`}>
             <AnimatePresence mode="wait">
-                {theme === "dark" && <motion.div key={"toggle-1"} initial={{opacity: 0}} animate={{opacity: 1}} exit={{ opacity: 1 }}><SVG sun /></motion.div>}
-                {theme === "light" && <motion.div key={"toggle-2"} initial={{opacity: 0}} animate={{opacity: 1}} exit={{ opacity: 1 }}><SVG moon /></motion.div>}
+                {theme === "dark" && <motion.div key={"toggle-1"} initial={{opacity: 0}} animate={{opacity: 1}} exit={{ opacity: 1 }}><SVG className='h-full' sun /></motion.div>}
+                {theme === "light" && <motion.div key={"toggle-2"} initial={{opacity: 0}} animate={{opacity: 1}} exit={{ opacity: 1 }}><SVG className='h-full' moon /></motion.div>}
             </AnimatePresence>
         </div>
     );

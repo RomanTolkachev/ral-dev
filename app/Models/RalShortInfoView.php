@@ -37,7 +37,7 @@ class RalShortInfoView extends Model
         return [
             'RegNumber' => $this->RegNumber,
             'applicantINN' => $this->applicantINN,
-            'fullName' => $this->fullName,
+            'applicantFullName' => $this->applicantFullName,
         ];
     }
 

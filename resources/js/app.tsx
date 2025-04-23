@@ -9,6 +9,7 @@ import ReactDOM from "react-dom/client"
 import Main from './Layouts/Main'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import AuthProvider from './app/providers/AuthProvider'
 
 export const store = configureStore({
     reducer: rootReducer, //@ts-ignore
@@ -23,7 +24,9 @@ root.render(
         <ReactQueryDevtools initialIsOpen={true} />
         <Provider store={store}>
             <BrowserRouter>
-                <Main />
+                <AuthProvider>
+                    <Main />
+                </AuthProvider>
             </BrowserRouter>
         </Provider>
     </QueryClientProvider>
