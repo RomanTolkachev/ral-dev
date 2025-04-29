@@ -2,7 +2,7 @@ import { IModel } from "@/features/RalTable/model/types"
 import useParamsCustom from "@/shared/query/useParamsCustom"
 import { Cell, } from "@tanstack/react-table"
 import { FunctionComponent } from "react"
-import { useLocation } from "react-router"
+import { useLocation } from "react-router-dom"
 import customFlexRender from "./customModalCell"
 import customModalCell from "./customModalCell"
 

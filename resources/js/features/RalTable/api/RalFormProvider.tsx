@@ -2,7 +2,7 @@ import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
 import { createContext, FunctionComponent, PropsWithChildren, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useRalFilters } from '@/features/ralTable/api/useRalFilters'
 import useParamsCustom from '@/shared/query/useParamsCustom'
-import DEFAULT_REQUEST from '../config'
+import config from '../config'
 import { isEmpty, isEqual, keys, values } from 'lodash'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import { useSelectorTyped } from '@/features/store/typedUseSelector'
@@ -15,7 +15,6 @@ interface IFormValues {
 type QueryParams = Record<string, any>
 
 export const CustomSubmitHandlerContext = createContext<any>(null); // TODO: ANY!!
-
 
 export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
@@ -30,9 +29,7 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
         return Object.keys(getQuery()).length ? true : false
     }, [JSON.stringify(getQuery())]);
 
-    /** Устанавливаем default для полей формы. Везде массив. Т.к поля фильтров запрашиваются асинхронно,
-    * установлено несколько проверок, чтобы default всегда были валидны  
-    */
+    // Устанавливаем default для полей формы. Везде массив. Т.к поля фильтров запрашиваются асинхронно, установлено несколько проверок, чтобы default всегда были валидны
     const startValues = filters //TODO: выдергивать perPage из localStorage или state
         ? filters.reduce((acc: Record<string, any>, key) => {
             // Проверка, существует ли ключ в acc перед добавлением, т.к значения некоторых ключей установлены на фронте и их нельзя перезаписывать
@@ -40,9 +37,9 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
                 acc[key.header] = [];
             }
             return acc;
-        }, DEFAULT_REQUEST)
-        : DEFAULT_REQUEST;
-        
+        }, config.DEFAULT_REQUEST)
+        : config.DEFAULT_REQUEST;
+
 
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
         mode: "onChange",
@@ -77,8 +74,8 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
         } else if (!isEqual(prevQueries.current!.perPage, formData.perPage)) {
             methods.setValue('page', 1);
             methods.setValue('perPage', formData.perPage);
-            methods.formState.isValid && setQuery({ ...formData, page: 1, perPage: formData.perPage}, shouldReplace)
-            prevQueries.current = { ...formData, page: 1, perPage: formData.perPage  };
+            methods.formState.isValid && setQuery({ ...formData, page: 1, perPage: formData.perPage }, shouldReplace)
+            prevQueries.current = { ...formData, page: 1, perPage: formData.perPage };
         }
     }
 
@@ -96,33 +93,25 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
      * Сброс формы до дефолтного состояние и сабмит дефолтных значений
      */
     function customResetField(fieldName: keyof IFormValues): void {
-        methods.reset({...methods.getValues(), [fieldName]: methods.formState.defaultValues![fieldName]}, {keepDefaultValues: true});
+        methods.reset({ ...methods.getValues(), [fieldName]: methods.formState.defaultValues![fieldName] }, { keepDefaultValues: true });
         methods.handleSubmit(data => customSubmitHandler(data))()
     }
 
 
-    /**
-     * установка значений инпутов при обновлении или переходе по ссылке, если в query что-то есть 
-     */
+    // установка значений инпутов при обновлении или переходе по ссылке, если в query что-то есть
     useEffect(() => {
-        /**
-         * фильтры приходят с БЭКа, поэтому они указаны в зависимости и имеется проверка, что они не falsy
-         */
+        // фильтры приходят с БЭКа, поэтому они указаны в зависимости и имеется проверка, что они не falsy
         if (!isEmpty(values(filters))) {
             const newQueries = filters!.reduce((acc: Record<string, any>, item: ISearchingFormItem) => {
                 acc[item.header] = [];
                 return acc;
             }, {});
-            // console.log(newQueries,DEFAULT_REQUEST  )
-            /** 
-            * когда фильтры пришли, мы задаем defaultValues через reset, первый аргумент которого будут новые defaultValues
-            */
-            methods.reset({ ...newQueries, ...DEFAULT_REQUEST }, { keepDefaultValues: false })
+            // когда фильтры пришли, мы задаем defaultValues через reset, первый аргумент которого будут новые defaultValues
+            methods.reset({ ...newQueries, ...config.DEFAULT_REQUEST }, { keepDefaultValues: false })
         }
-        /**
-        * Если в URL имеются queries, то после reset заново устанавливаются значения этих полей. 
-        * В компонентах фильтра происходит сверка defaultValue и currentValue, они они разнятся то у кнопки рисуется значек
-        */
+        /* Если в URL имеются queries, то после reset заново устанавливаются значения этих полей. 
+          В компонентах фильтра происходит сверка defaultValue и currentValue, они они разнятся т
+          о у кнопки рисуется значек */
         if (!isEmpty(queries)) {
             keys(queries).forEach(query => {
                 methods.setValue(query, queries[query])

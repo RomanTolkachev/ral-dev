@@ -1,8 +1,7 @@
-import { FunctionComponent, PropsWithChildren, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { FunctionComponent, useContext } from 'react';
 import { Toggle } from './Buttons/Toggle';
-import { HeaderNavButton } from './Buttons/headerNavButton/ui/HeaderNavButton';
 import { SVG } from './utils/SVG';
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '@/app/providers/AuthProvider';
 import { Preloader } from './utils/Preloader';
 import { motion } from 'motion/react';
@@ -21,10 +20,13 @@ const directories: TLinkItem[] = [
     { path: 'directory/accreditation-area', text: "Области аккредитации" }
 ]
 
+
 export const Header: FunctionComponent<IProps> = ({ className }) => {
     const userData = useContext(AuthContext);
-    const user = userData?.user?.userInfo?.name
-    const loading = userData?.user.isFetching
+    const user = userData?.userInfo?.name
+    const loading = userData?.isFetching
+    const location = useLocation()
+
 
     return (
         <header className='w-full grid grid-cols-[300px_1fr] grid-rows-[auto] text-text-primary text-sm'>
@@ -47,10 +49,14 @@ export const Header: FunctionComponent<IProps> = ({ className }) => {
                     <div className='flex ml-10 gap-10'>
                     </div>
                     <div className='flex gap-5 items-center'>
-                        {/* <div className='min-w-8'>{user ? user : loading ? <Preloader widthStyles='w-6' /> : <Link to={`/login`} >войти</Link>}</div>
-                        <Link to={`${useLocation().pathname}/settings`}>
+                        <div className='min-w-8'>
+                            {user ? <Link to="/personal">{user}</Link>  : loading ? <Preloader widthStyles='w-6' /> : 
+                            <Link to={`/login`} state={{from: location.pathname}} >войти</Link>}
+                            
+                        </div>
+                        <Link to={`${location.pathname}/settings`} state={{from: location.pathname}} className={`${location.pathname === '/' ? "hidden" : "" }`}>
                             <motion.div whileHover={{ scale: 1.05, cursor: "pointer" }}><SVG gear className='size-6' /></motion.div>
-                        </Link> */}
+                        </Link>
                         <div className='h-8'><Toggle /></div>
                     </div>
                 </nav>

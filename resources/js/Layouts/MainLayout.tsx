@@ -1,31 +1,23 @@
 import { Header } from '@/Components/Header'
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { TableLayout } from './TableLayout'
 import { Raltable } from '@/features/ralTable/ui/RalTable/RalTable'
 import { RalFormProvider } from '@/features/ralTable/api/RalFormProvider'
 import { NotFound } from '@/Components/utils/404'
 import Modal from '@/Components/modal/Modal'
 import { RalModal } from '@/features/ralModal/ui/RalModal'
-// import { AccreditationAreaTable } from '@/features/accreditationArea/ui/AccreditetionAreaTable'
 import { AnimatePresence } from 'motion/react'
 import Home from '@/features/home/ui/Home'
-import { useQuery } from '@tanstack/react-query'
-import { fetchCookies, getUser, login } from '@/shared/api/api'
-import { useEffect } from 'react'
-import { useDispatchTyped } from '@/features/store/typedUseSelector'
-import { setUser } from '@/features/store/userReducer'
 import LoginPage from '@/features/Login/LoginPage'
 import RalSettings from '@/features/RalTable/ui/RalSettings/RalSettings'
+import { OnlyAuth, OnlyUnAuth } from '@/app/ProtectedRoute'
+import PersonalPage from '@/features/Login/PersonalPage'
+// import AccreditationAreaTable from '@/features/AccreditationArea/AccreditationAreaTable'
 
-
-
-
-function Main() {
+function MainLayout() {
     const navigate = useNavigate();
     const location = useLocation();
     const background = location.state && location.state.background
-
-    
 
     function closeRalModal() {
         location.state ? navigate(-1) : navigate(`/directory/ral/${location.search}`)
@@ -60,12 +52,14 @@ function Main() {
                                 </AnimatePresence> */}
                             </RalFormProvider>
                     } />
+                    {/* <Route path='accreditation_area/*' element={<AccreditationAreaTable />} /> */}
                 </Route>
-                <Route path='/login' element={<LoginPage />} />
+                <Route path='/login' element={<OnlyUnAuth component={<LoginPage />} />} />
+                <Route path='/personal' element={<OnlyAuth component={<PersonalPage />} />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </div>
     )
 }
 
-export default Main
+export default MainLayout

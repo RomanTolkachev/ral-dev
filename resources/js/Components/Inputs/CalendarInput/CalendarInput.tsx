@@ -6,11 +6,13 @@ import { enterExitAnimation as animationParams } from '@/shared/framer-motion/en
 import { isEqual } from 'lodash'
 import dateRangeValidation from './lib/dateRangeValidation'
 import { SVG } from '@/Components/utils/SVG'
-import DEFAULT_REQUEST from '@/features/ralTable/config'
 import { MainButton } from '@/Components/Buttons/MainButton'
 import { CustomSubmitHandlerContext } from '@/features/ralTable/api/RalFormProvider'
 import { AnimatePresence, motion } from 'motion/react'
 import openCalendarPicker from './lib/openCalendarPicker'
+
+
+// вместо данных из DEFAULT_REQUEST на строках на 25, 26, 70 и 85 поставил пустые строки
 
 interface IProps {
     className?: string
@@ -20,8 +22,8 @@ interface IProps {
 }
 
 export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData }) => {
-    const [startDate, setStartDate] = useState(DEFAULT_REQUEST.status_change_date[0]);
-    const [endDate, setEndDate] = useState(DEFAULT_REQUEST.status_change_date[1]);
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
     const [, getQuery] = useParamsCustom()
     let query: Record<string,any> = {};
     const { control, formState, getValues, } = useFormContext();
@@ -67,7 +69,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                         <span className='select-none'>от</span>
                         <input
                             type="date"
-                            value={value ? value[0] : DEFAULT_REQUEST.status_change_date[0]}
+                            value={value ? value[0] : ""}
                             onChange={(e) => { onChange(handleMinChange(e)) }}
                             className={
                                 `${formState.errors[inputName] && 'ring-2 !ring-error border-transparent '}` +
@@ -82,7 +84,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                         <span className='select-none'>до</span>
                         <input
                             type="date"
-                            value={value ? value[1] : DEFAULT_REQUEST.status_change_date[1]}
+                            value={value ? value[1] : ""}
                             onChange={(e) => onChange(handleMaxChange(e))}
                             className={
                                 `${formState.errors[inputName] && 'ring-2 !ring-error border-transparent '}` +

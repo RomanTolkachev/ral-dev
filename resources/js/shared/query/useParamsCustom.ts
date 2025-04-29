@@ -11,8 +11,8 @@ function useParamsCustom(): TParamsCustom {
         setSearchParams(qs.stringify(query, { arrayFormat: 'brackets' }), {replace})
     }
 
-    function getQuery() {
-        return qs.parse(searchParams.toString())
+    function getQuery<T extends Record<string, unknown>>(): T {
+        return qs.parse(searchParams.toString()) as T
     }
 
     return [setQuery, getQuery]

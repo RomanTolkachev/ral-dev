@@ -1,31 +1,29 @@
-import { MainButton } from "@/Components/Buttons/MainButton"
 import { Table } from "@/Components/Table/Table"
 import { DevTool } from "@hookform/devtools"
 import { useFormContext } from "react-hook-form"
 import RalSearchingForm from "../RalSearchingForm/RalSearchingForm"
-import { AuthContext } from "@/app/providers/AuthProvider"
-import { useContext } from "react"
-import { useQuery } from "@tanstack/react-query"
-import { getTableSettings } from "@/shared/api/api"
-import { isEmpty } from "lodash"
-import LoadingDots from "@/Components/utils/LoadingDots"
+import { FunctionComponent, ReactNode } from "react"
+import { useUserInfo } from "../../hooks/useUserInfo"
+import useRalColumns from "../../api/useRalColumns"
+import useRalQuery from "../../api/useRalQuery"
+import CenteredLoader from "./CenteredLoader"
 
-export const Raltable = () => {
-    
+export const Raltable: FunctionComponent = () => {
+
     const { control } = useFormContext();
 
-    // получение данных о пользователе
-    const user = useContext(AuthContext);
-    const userId = user?.user?.userInfo?.id
-    const isUserChacked = user ? !user?.user?.isLoading : false // user может быть undefined
-   
-    // const {data, isFetching, isLoading, error} = useQuery({
-    //     enabled: !isEmpty(user),
-    //     queryKey: ["ralSettings"],
-    //     queryFn: () => {
-    //         return userId ? getTableSettings(userId, "ral_short_info_view") : Promise.reject("User ID is undefined");
-    //     },
-    // })
+    const { userId, isUserChecked } = useUserInfo();
+    const { columns, isColumnsFetching, isColumnsLoading } = useRalColumns(userId);
+    const shouldFetchRal = isUserChecked && (!userId || !isColumnsFetching && !isColumnsLoading);
+    const { ralData, isRalPending } = useRalQuery(shouldFetchRal, userId, columns)
+
+    const content = (): ReactNode => {
+        return !isUserChecked
+            ? <CenteredLoader>получение данных о пользователе</CenteredLoader>
+            :  !shouldFetchRal
+                ? <CenteredLoader>получение пользовательских настроек</CenteredLoader>
+                : <Table propsData={ralData} loading={isRalPending} />
+    }
 
     return (
         <div className='flex grow shrink min-h-0'>
@@ -40,8 +38,8 @@ export const Raltable = () => {
                 </div>
             </section>
             <section className={'shrink grow flex flex-col'}>
-                {/* {isUserChacked ? <Table /> : <div className="h-full w-full flex items-center justify-center">получение данных о пользователе<LoadingDots /></div>} */}
-                <Table />
+                {content()}
+                {/* <Table /> */}
             </section>
             <DevTool control={control} />
         </div>

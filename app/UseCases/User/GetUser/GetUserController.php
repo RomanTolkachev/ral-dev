@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCases\GetUser;
+namespace App\UseCases\User\GetUser;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { SVG } from "../utils/SVG";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 
 interface IModalProps {
     closeModal: () => void;

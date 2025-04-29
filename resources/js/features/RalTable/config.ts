@@ -1,3 +1,4 @@
+
 const PERIOD: number = 2
 
 type TDefaultRalRequest = {
@@ -30,7 +31,48 @@ const DEFAULT_REQUEST:TDefaultRalRequest  = {
     ],
     NP_status_change_date: ["",""],
     regDate: ["",""],
-    order: ""
+    order: "",
+    user_columns: [""]
 }
 
-export default DEFAULT_REQUEST;
+const RAL_COLUMNS = [
+    'ral_short_info_view.link',
+    'nameType',
+    'nameTypeActivity',
+    'fullName',
+    'address',
+    'oaDescription',
+    'NPstatus',
+    'ral_short_info_view.id',
+    'regDate',
+    'NP_status_change_date',
+    'applicantFullName',
+    'new_status_AL',
+    'applicantINN',
+    'applicantINN',
+    'RegNumber',
+    'status_change_date',
+    'np_regulations_tnveds.tnved',
+    'np_regulations_tnveds.regulation',
+    'ral_short_info_view.regulations'
+] as const;
+
+export type TRalTableModel = typeof RAL_COLUMNS[number];
+
+const DEFAULT_COLUMNS: TRalTableModel[]  = [
+    'applicantFullName',
+    'RegNumber',
+    'regDate',
+    'ral_short_info_view.link',
+    'status_change_date',
+    'nameType',
+    'new_status_AL',
+    'ral_short_info_view.id',
+    'applicantINN',
+    'NPstatus',
+    'NP_status_change_date',
+    'np_regulations_tnveds.tnved',
+    'ral_short_info_view.regulations',
+];
+
+export default { DEFAULT_REQUEST, DEFAULT_COLUMNS, RAL_COLUMNS }

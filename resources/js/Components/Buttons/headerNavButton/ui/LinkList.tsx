@@ -2,7 +2,7 @@ import { motion } from "motion/react"
 import { Dispatch, FunctionComponent, RefObject, SetStateAction, useContext, useEffect, useRef } from "react"
 import motionVatiants from "../lib/motion"
 import { HeaderNavButtonContext } from "./HeaderNavButton"
-import { Link } from "react-router"
+import { Link } from "react-router-dom"
 
 interface IProps {
     className?: string

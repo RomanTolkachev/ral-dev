@@ -1,10 +1,7 @@
 <?php
 
-namespace App\UseCases\Login;
+namespace App\UseCases\User\Login;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 

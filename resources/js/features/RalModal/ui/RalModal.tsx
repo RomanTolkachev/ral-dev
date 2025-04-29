@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useMemo, useState } from "react"
-import { useParams } from "react-router"
+import { useParams } from "react-router-dom"
 import { axiosApi } from "@/shared/api/api";
 import { Preloader } from "@/Components/utils/Preloader";
 import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";

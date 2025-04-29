@@ -28,6 +28,7 @@ const PerPageController: FunctionComponent<IProps> = () => {
                     const [active, setActive] = useState<string>(getQuery().perPage || value.toString());
                     const [shouldSubmit, setShouldSubmit] = useState<boolean>(false);
 
+
                     useEffect(() => {
                         setActive(value.toString())
                     }, [value])
