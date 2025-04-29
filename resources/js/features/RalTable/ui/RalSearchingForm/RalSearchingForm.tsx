@@ -14,10 +14,12 @@ interface IProps {
 
 type IForm = Record<string, any>
 
-const RalSearchingForm: FunctionComponent<IProps> = memo(({ className }) => {
+const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
     const userFilters = useSelectorTyped(state => state.userState.settings)
     const { data: filters, isPending } = useRalFilters(userFilters);
     const { customResetHandler } = useContext(CustomSubmitHandlerContext)
+
+    console.log(filters)
 
     return (
         <form 
@@ -41,6 +43,6 @@ const RalSearchingForm: FunctionComponent<IProps> = memo(({ className }) => {
             </div >
         </form >
     );
-})
+}
 
 export default RalSearchingForm;

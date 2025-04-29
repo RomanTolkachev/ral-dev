@@ -10,7 +10,7 @@ interface Props {
 
 }
 
-interface IAuthContext {
+export interface IAuthContext {
     userInfo: IUser | undefined
     isLoading: boolean
     reFetchUser: UseMutateFunction<IUser, Error, void, unknown>

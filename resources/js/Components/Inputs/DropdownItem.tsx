@@ -1,13 +1,14 @@
-import { FunctionComponent, memo, useEffect, useState } from 'react'
+import { FunctionComponent, memo, useContext, useEffect, useState } from 'react'
 import { DropdownFilterButton } from '@/Components/Buttons/DropdownFilterButton'
 import { motion, Variants } from 'framer-motion'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import { InputCustom } from '@/Components/Inputs/InputCustom/InputCustom'
 import { CalendarInput } from '@/Components/Inputs/CalendarInput/CalendarInput'
 import { CheckBoxCustom } from '@/Components/Inputs/CheckBoxCustom'
-import { isEqual, keys, values } from 'lodash'
+import { isEqual, keys  } from 'lodash'
 import { useFormContext } from 'react-hook-form'
 import useParamsCustom from '@/shared/query/useParamsCustom'
+import { ICustomSubmitHandlerContext, CustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
 
 interface IProps {
     className?: string
@@ -37,7 +38,7 @@ const itemVariants: Variants = {
     open: {},
 }
 
-export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, className }) => {
+export const DropdownItem: FunctionComponent<IProps> = ({ inputData, className }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [checkedCount, setCheckedCount] = useState<number>(0);
     const { watch, control } = useFormContext();
@@ -94,4 +95,4 @@ export const DropdownItem: FunctionComponent<IProps> = memo(({ inputData, classN
             </motion.div>
         </motion.div>
     )
-})
+}

@@ -2,17 +2,17 @@ import { FunctionComponent, memo, useContext } from 'react'
 import { Preloader } from '@/Components/utils/Preloader'
 import { DropdownItem } from '@/Components/Inputs/DropdownItem'
 import { MainButton } from '@/Components/Buttons/MainButton'
-import { useSelectorTyped } from '@/features/store/typedUseSelector'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
+import { AbstractFormProvider, CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
 
 
 interface IProps {
     className?: string
+    filters?: ISearchingFormItem[]
 }
 
-const AbstractSearchingForm: FunctionComponent<IProps> = memo(({ className }) => {
-    const isPending = false;
-    const filters: ISearchingFormItem[] = [
+const defaultFilters: ISearchingFormItem[] =
+    [
         {
             header: "test",
             headerType: 'bla',
@@ -24,7 +24,7 @@ const AbstractSearchingForm: FunctionComponent<IProps> = memo(({ className }) =>
             }
         },
         {
-            header: "test2",
+            header: "test1",
             headerType: 'bla',
             sortValues: {
                 type: 'huge',
@@ -35,14 +35,22 @@ const AbstractSearchingForm: FunctionComponent<IProps> = memo(({ className }) =>
         }
     ]
 
+const AbstractSearchingForm: FunctionComponent<IProps> = ({ className, filters = defaultFilters }) => {
+
+    const submitContext = useContext<ICustomSubmitHandlerContext>(CustomSubmitHandlerContext)
+    console.log(submitContext)
+
+    if (!submitContext) {
+        return null
+    }
     return (
         <form
             className={`${className} flex-col overflow-hidden flex`}>
             <div className={'px-6 pt-6 w-full grow shrink overflow-y-scroll space-y-4'}>
-                {isPending ? (
+                {!filters ? (
                     <Preloader widthStyles={'w-16'} />
                 ) : (
-                    filters?.map((filterItem, key) => {
+                    filters.map((filterItem, key) => {
                         return <DropdownItem inputData={filterItem} key={`ddi-${key}`} />
                     })
                 )}
@@ -57,6 +65,6 @@ const AbstractSearchingForm: FunctionComponent<IProps> = memo(({ className }) =>
             </div >
         </form >
     );
-})
+}
 
 export default AbstractSearchingForm;

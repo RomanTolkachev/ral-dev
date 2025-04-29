@@ -1,4 +1,4 @@
-import { FunctionComponent, memo, PropsWithChildren, useContext } from 'react'
+import { FunctionComponent, PropsWithChildren, useContext } from 'react'
 import { SVG } from '@/Components/utils/SVG'
 import { translateHeaderName } from '@/Components/Table/lib/translateHeaderName'
 import { AnimatePresence, motion } from 'motion/react'
@@ -24,7 +24,7 @@ const motionProps = {
     exit: { opacity: 0 }
 }
 
-export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> = memo(({
+export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> = ({
     children,
     clickHandler,
     inputName,
@@ -34,7 +34,9 @@ export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> 
     hasAlert,
     checkedCount
 }) => {
+
     const { customResetField } = useContext(CustomSubmitHandlerContext);
+
     return (
         <div
             key={key}
@@ -82,4 +84,4 @@ export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> 
             }
         </div>
     )
-})
+}

@@ -12,7 +12,7 @@ import LoginPage from '@/features/Login/LoginPage'
 import RalSettings from '@/features/RalTable/ui/RalSettings/RalSettings'
 import { OnlyAuth, OnlyUnAuth } from '@/app/ProtectedRoute'
 import PersonalPage from '@/features/Login/PersonalPage'
-// import AccreditationAreaTable from '@/features/AccreditationArea/AccreditationAreaTable'
+import AccreditationAreaTable from '@/features/AccreditationArea/AccreditationAreaTable'
 
 function MainLayout() {
     const navigate = useNavigate();
@@ -29,7 +29,6 @@ function MainLayout() {
             }>
             <Header />
             <Routes>
-                {/* <Route path="/" element={<Navigate to="/directory/ral" replace />} /> */}
                 <Route path="/" element={<Home/>} />
                 <Route path="/directory" element={<TableLayout />}>
                     <Route path="ral/*" element={
@@ -52,7 +51,9 @@ function MainLayout() {
                                 </AnimatePresence> */}
                             </RalFormProvider>
                     } />
-                    {/* <Route path='accreditation_area/*' element={<AccreditationAreaTable />} /> */}
+                    <Route path='accreditation_area' element={
+                        <AccreditationAreaTable />} 
+                    />
                 </Route>
                 <Route path='/login' element={<OnlyUnAuth component={<LoginPage />} />} />
                 <Route path='/personal' element={<OnlyAuth component={<PersonalPage />} />} />

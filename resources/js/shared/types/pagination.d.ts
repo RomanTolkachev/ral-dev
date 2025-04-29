@@ -20,4 +20,10 @@ interface IPagination {
     total: number
 }
 
+export type TDefaultPaginationRequest = {
+    page: number,
+    perPage: string,
+    order: unknown
+}
+
 export default IPagination
