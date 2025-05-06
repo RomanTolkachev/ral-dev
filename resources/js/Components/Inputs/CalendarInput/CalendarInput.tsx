@@ -1,118 +1,101 @@
-import { ChangeEvent, FunctionComponent, useContext, useEffect, useRef, useState } from 'react'
-import { Control, Controller, FieldValues, useFormContext, UseFormRegister } from 'react-hook-form'
+import { FunctionComponent, useContext } from 'react'
+import { Controller, useFormContext } from 'react-hook-form'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
-import useParamsCustom from '@/shared/query/useParamsCustom'
-import { enterExitAnimation as animationParams } from '@/shared/framer-motion/enter-exit-animation'
 import { isEqual } from 'lodash'
-import dateRangeValidation from './lib/dateRangeValidation'
+import { AnimatePresence, motion } from 'motion/react'
+import { enterExitAnimation as animationParams } from '@/shared/framer-motion/enter-exit-animation'
 import { SVG } from '@/Components/utils/SVG'
 import { MainButton } from '@/Components/Buttons/MainButton'
-import { AnimatePresence, motion } from 'motion/react'
 import openCalendarPicker from './lib/openCalendarPicker'
+import dateRangeValidation from './lib/dateRangeValidation'
 import { CustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
-
-
-// вместо данных из DEFAULT_REQUEST на строках на 25, 26, 70 и 85 поставил пустые строки
 
 interface IProps {
     className?: string
-    register?: UseFormRegister<FieldValues>
-    control?: Control
     inputData: ISearchingFormItem
 }
 
 export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData }) => {
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
-    const [, getQuery] = useParamsCustom()
-    let query: Record<string,any> = {};
-    const { control, formState, getValues, } = useFormContext();
-    const handlers = useContext(CustomSubmitHandlerContext);
+    const { control, getValues, formState } = useFormContext()
+    const handlers = useContext(CustomSubmitHandlerContext)
+
     if (!handlers) return null
-    const {customSubmitHandler} = handlers
 
-    const { isValid, } = formState;
-    const inputName = inputData.header;
-    const defaultValue = formState.defaultValues ? formState.defaultValues[inputName] : ["",""];
-
-    useEffect(() => {
-        query = getQuery()
-    }, [])
-
-    // логика проверки изменения query параметров при изменении popstate
-    const prevValueRef = useRef<any>();
-    useEffect(() => {
-        if (!isEqual(query, prevValueRef.current)) {
-            if (query[inputName]) {
-                setStartDate(query[inputName][0]);
-                setEndDate(query[inputName][1]);
-            }
-        }
-        prevValueRef.current = query;
-    }, [query]);
-
-    function handleMinChange(e: ChangeEvent<HTMLInputElement>) {
-        setStartDate(e.target.value);
-        return [e.target.value, endDate];
-    }
-    function handleMaxChange(e: ChangeEvent<HTMLInputElement>) {
-        setEndDate(e.target.value);
-        return [startDate, e.target.value];
-    }
+    const { customSubmitHandler } = handlers
+    const inputName = inputData.header
+    const defaultValue = formState!.defaultValues![inputName];
 
     return (
         <Controller
             name={inputName}
             control={control}
             rules={{ validate: dateRangeValidation }}
-            render={({ field: { value, onChange }, fieldState: { error, invalid } }) => (
-                <div className={`${className} p-1 space-y-2 text-input-text`}>
-                    <div className='custom-date w-full !flex items-center gap-4'>
-                        <span className='select-none'>от</span>
-                        <input
-                            type="date"
-                            value={value ? value[0] : ""}
-                            onChange={(e) => { onChange(handleMinChange(e)) }}
-                            className={
-                                `${invalid && 'ring-2 !ring-error border-transparent '}` +
-                                ' bg-input-primary text-input-text appearance-none rounded-full shadow-input-search border-black/10' +
-                                ' ring-transparent' +
-                                ' focus:ring-2 focus:ring-button-violet'
-                            }
-                        />
-                        <SVG clickHandler={openCalendarPicker} schedule className='calendar-icon w-6' />
-                    </div>
-                    <div className='custom-date w-full !flex items-center gap-4'>
-                        <span className='select-none'>до</span>
-                        <input
-                            type="date"
-                            value={value ? value[1] : ""}
-                            onChange={(e) => onChange(handleMaxChange(e))}
-                            className={
-                                `${invalid && 'ring-2 !ring-error border-transparent '}` +
-                                ' bg-input-primary  text-input-text w-full  border-black/10 appearance-none rounded-full shadow-input-search pl-5' +
-                                ' ring-transparent' +
-                                ' focus:ring-2 focus:ring-button-violet'
-                            }
-                        />
-                        <SVG clickHandler={(e: any) => openCalendarPicker(e)} schedule className='calendar-icon w-6' />
-                    </div>
-                    <AnimatePresence>
-                        {error && error.message &&
-                            <motion.div {...animationParams} className='text-error text-center'>
-                                {error.message}
-                            </motion.div>}
-                    </AnimatePresence>
-                    <MainButton
-                        onClick={(e: MouseEvent) => { e.preventDefault(); customSubmitHandler(getValues()) }}
-                        isDisabled={isEqual(value, defaultValue || !isValid )}
-                        color='violet'
-                        className={`w-full mx-auto ${isEqual(value, defaultValue) || !isValid ? "bg-gray-300" : ""}`}>
-                        Применить
-                    </MainButton>
-                </div>
-            )}>
-        </Controller>
-    );
-}
+            render={({ field: { value = ["", ""], onChange }, fieldState: { error } }) => {
 
+
+                return (
+                    <div className={`${className} p-1 space-y-2 text-input-text`}>
+                        <div className="custom-date w-full flex items-center gap-4">
+                            <div className="relative gap-4 flex items-center">
+                            <span className="select-none">от</span>
+                                <input
+                                    type="date"
+                                    value={value[0]}
+                                    onChange={(e) => onChange([e.target.value, value[1]])}
+                                    className={`
+                                        pr-10 pl-4 py-2
+                                        ${error ? 'ring-2 ring-error border-transparent' : ''}
+                                        bg-input-primary text-input-text appearance-none rounded-full shadow-input-search border-black/10
+                                        ring-transparent focus:ring-2 focus:ring-button-violet`}
+                                />
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer">
+                                    <SVG clickHandler={openCalendarPicker} schedule className="w-5 h-5 text-gray-500" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="custom-date w-full flex items-center gap-4">
+                            <div className="relative gap-4 flex items-center">
+                            <span className="select-none">от</span>
+                                <input
+                                    type="date"
+                                    value={value[1]}
+                                    onChange={(e) => onChange([e.target.value, value[1]])}
+                                    className={`
+                                        pr-10 pl-4 py-2
+                                        ${error ? 'ring-2 ring-error border-transparent' : ''}
+                                        bg-input-primary text-input-text appearance-none rounded-full shadow-input-search border-black/10
+                                        ring-transparent focus:ring-2 focus:ring-button-violet`}
+                                />
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer">
+                                    <SVG clickHandler={openCalendarPicker} schedule className="w-5 h-5 text-gray-500" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <AnimatePresence>
+                            {error?.message && (
+                                <motion.div {...animationParams} className="text-error text-center">
+                                    {error.message}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        <MainButton
+                            onClick={(e: any) => {
+                                e.preventDefault()
+                                customSubmitHandler(getValues())
+                            }}
+                            isDisabled={isEqual(value, defaultValue)}
+                            color="violet"
+                            className={`w-full mx-auto ${isEqual(value, defaultValue) ? 'bg-gray-300' : ''
+                                }`}
+                        >
+                            Применить
+                        </MainButton>
+                    </div>
+                )
+            }}
+        />
+    )
+}
