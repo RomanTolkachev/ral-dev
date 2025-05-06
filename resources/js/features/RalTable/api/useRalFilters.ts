@@ -11,7 +11,7 @@ import { objectToString } from '@/shared/objectToString'
 export function useRalFilters(actualFilters: Record<string, any>) {
     const { data, isPending } = useQuery({
         queryKey: ['filters', objectToString(actualFilters)],
-        queryFn: () => fetchRalFilters(actualFilters).then((res) => res.data),
+        queryFn: () => fetchRalFilters(actualFilters),
     })
     return { data, isPending }
 }

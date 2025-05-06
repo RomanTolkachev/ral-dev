@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import qs from 'qs'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import IPagination from '../types/pagination'

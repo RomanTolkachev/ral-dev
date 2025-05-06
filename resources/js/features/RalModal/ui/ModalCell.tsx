@@ -1,4 +1,4 @@
-import { IModel } from "@/features/RalTable/model/types"
+import { TRalModel } from "@/features/RalTable/model/types"
 import useParamsCustom from "@/shared/query/useParamsCustom"
 import { Cell, } from "@tanstack/react-table"
 import { FunctionComponent } from "react"
@@ -7,7 +7,7 @@ import customFlexRender from "./customModalCell"
 
 export interface IProps {
     className?: string
-    cellData: Cell<IModel, unknown>
+    cellData: Cell<TRalModel, unknown>
 }
 
 const ModalCell: FunctionComponent<IProps> = ({ cellData }) => {

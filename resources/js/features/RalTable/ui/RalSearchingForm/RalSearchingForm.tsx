@@ -1,20 +1,22 @@
-import { FunctionComponent, memo, useContext, useEffect, useMemo, useState } from 'react'
+import { FunctionComponent, useContext } from 'react'
 import { Preloader } from '@/Components/utils/Preloader'
 import { DropdownItem } from '@/Components/Inputs/DropdownItem'
 import { MainButton } from '@/Components/Buttons/MainButton'
-import { useSelectorTyped } from '@/features/store/typedUseSelector'
 import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
-import { useRalFilters } from '../../api/useRalFilters'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
+import createTranslateFn from '@/Components/Table/lib/translate'
+import { TranslateContext } from '@/Components/Table/AbstractSearchingForm'
 
 
 interface IProps {
     className?: string
+    dictionary?: Record<string, string>
 }
 
-const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
+const RalSearchingForm: FunctionComponent<IProps> = ({ className, dictionary }) => {
 
     const handlers = useContext<ICustomSubmitHandlerContext>(CustomSubmitHandlerContext)
+    const translateFn = dictionary ? createTranslateFn(dictionary) : null
 
     if (!handlers) {
         return null
@@ -31,7 +33,11 @@ const RalSearchingForm: FunctionComponent<IProps> = ({ className }) => {
                     <Preloader widthStyles={'w-16'} />
                 ) : (
                     (filters as ISearchingFormItem[]).map((filterItem, key) => {
-                        return <DropdownItem inputData={filterItem} key={`ddi-${key}`} />
+                       return (
+                        <TranslateContext.Provider value={translateFn} key={`ddi-${key}`}>
+                            <DropdownItem inputData={filterItem}  />
+                        </TranslateContext.Provider> 
+                       ) 
                     })
                 )}
             </div>

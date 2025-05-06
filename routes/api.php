@@ -8,7 +8,7 @@ use App\Http\Controllers\TestController;
 use App\UseCases\GetCertificationBody\GetCertificationBodyController;
 use App\UseCases\User\GetUser\GetUserController;
 use App\UseCases\User\Login\LoginController;
-use App\UseCases\User\Logout\LogOutController;
+use App\UseCases\User\LogOut\LogOutController;
 use App\UseCases\User\TableSettings\GetTableSettings\GetTableSettingsController;
 use App\UseCases\User\TableSettings\SetTableSettings\SetTableSettingsController;
 use Illuminate\Support\Facades\Route;

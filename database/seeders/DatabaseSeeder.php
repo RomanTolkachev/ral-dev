@@ -10,5 +10,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RalShortInfoViewSeeder::class);
         $this->call(NpRegulationsTnvedSeeder::class);
+        $this->call(AccreditationAreaSeeder::class);
     }
 }

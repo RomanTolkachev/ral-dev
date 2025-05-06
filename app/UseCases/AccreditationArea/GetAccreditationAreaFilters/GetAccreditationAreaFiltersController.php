@@ -11,7 +11,7 @@ class GetAccreditationAreaFiltersController
 {
     public function __invoke(TableFilterService $tableFilterService, Request $request)
     {
-        $filters = $tableFilterService->getFiltersFor(AccreditationArea::class, $request->userFilters ?? []);
+        // $filters = $tableFilterService->getFiltersFor(AccreditationArea::class, $request->userFilters ?? []);
         $filters = [
             [
                 'header' => "gost",

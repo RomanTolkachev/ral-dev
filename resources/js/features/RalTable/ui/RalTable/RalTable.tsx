@@ -7,6 +7,7 @@ import { useUserInfo } from "../../hooks/useUserInfo"
 import useRalColumns from "../../api/useRalColumns"
 import useRalQuery from "../../api/useRalQuery"
 import CenteredLoader from "./CenteredLoader"
+import config from "../../config"
 
 export const Raltable: FunctionComponent = () => {
 
@@ -33,7 +34,7 @@ export const Raltable: FunctionComponent = () => {
                     }>
                     <div className={'p-2 flex flex-col grow shrink overflow-hidden'}>
                         <div className={'my-block bg-background-block pt-6 flex grow overflow-hidden'}>
-                            <RalSearchingForm className={'w-full'} />
+                            <RalSearchingForm dictionary={config.DICTIONARY} className={'w-full'} />
                         </div>
                     </div>
                 </section>

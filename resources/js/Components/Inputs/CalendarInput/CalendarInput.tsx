@@ -65,7 +65,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
             name={inputName}
             control={control}
             rules={{ validate: dateRangeValidation }}
-            render={({ field: { value, onChange }, fieldState: { error } }) => (
+            render={({ field: { value, onChange }, fieldState: { error, invalid } }) => (
                 <div className={`${className} p-1 space-y-2 text-input-text`}>
                     <div className='custom-date w-full !flex items-center gap-4'>
                         <span className='select-none'>от</span>
@@ -74,7 +74,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                             value={value ? value[0] : ""}
                             onChange={(e) => { onChange(handleMinChange(e)) }}
                             className={
-                                `${formState.errors[inputName] && 'ring-2 !ring-error border-transparent '}` +
+                                `${invalid && 'ring-2 !ring-error border-transparent '}` +
                                 ' bg-input-primary text-input-text appearance-none rounded-full shadow-input-search border-black/10' +
                                 ' ring-transparent' +
                                 ' focus:ring-2 focus:ring-button-violet'
@@ -89,7 +89,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                             value={value ? value[1] : ""}
                             onChange={(e) => onChange(handleMaxChange(e))}
                             className={
-                                `${formState.errors[inputName] && 'ring-2 !ring-error border-transparent '}` +
+                                `${invalid && 'ring-2 !ring-error border-transparent '}` +
                                 ' bg-input-primary  text-input-text w-full  border-black/10 appearance-none rounded-full shadow-input-search pl-5' +
                                 ' ring-transparent' +
                                 ' focus:ring-2 focus:ring-button-violet'

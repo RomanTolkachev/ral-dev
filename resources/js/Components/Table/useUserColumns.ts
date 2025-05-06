@@ -10,7 +10,7 @@ type TParams = {
 }
 
 const useUserColumns = ({ userId, tableName, defaultColumns }: TParams) => {
-    const { data: fetchedColumns = [], isFetching: isColumnsFetching, isLoading: isColumnsLoading, error: columnsError } = useQuery<TRalTableModel[], AxiosError>({
+    const { data: fetchedColumns = [], isFetching: isColumnsFetching, isLoading: isColumnsLoading, error: columnsError } = useQuery<string[], AxiosError>({
         enabled: !!userId,
         queryKey: ["ralColumns"],
         retry: (failureCount, error) => ([401, 404].includes(error.status!) ? false : true),

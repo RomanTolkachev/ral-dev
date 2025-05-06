@@ -11,6 +11,7 @@ import { Table } from '@/Components/Table/Table';
 import CenteredLoader from '../ralTable/ui/RalTable/CenteredLoader';
 import useUserColumns from '@/Components/Table/useUserColumns';
 import translate from './lib/translate';
+import { useFormContext } from 'react-hook-form';
 
 interface Props {
     className?: string;
@@ -18,9 +19,9 @@ interface Props {
 
 const AccreditationAreaTable: FunctionComponent<Props> = ({ className }) => {
 
-    // const { control } = useFormContext();
-
     const tableName = 'accreditation_area';
+
+    const {control} = useFormContext();
 
     const user = useContext(AuthContext);
     const userId = user?.userInfo?.id
@@ -31,7 +32,7 @@ const AccreditationAreaTable: FunctionComponent<Props> = ({ className }) => {
         return null
     }
 
-    const { columns: userColumns, isColumnsFetching, isColumnsLoading } = useUserColumns({
+    const { columns: userColumns, isColumnsLoading } = useUserColumns({
         userId: userId,
         defaultColumns: config.DEFAULT_REQUEST.columns,
         tableName
@@ -72,7 +73,7 @@ const AccreditationAreaTable: FunctionComponent<Props> = ({ className }) => {
             <section className={'shrink grow flex flex-col'}>
                 {content()}
             </section>
-            {/* <DevTool control={control} /> */}
+            <DevTool control={control} />
         </div>
     )
 };

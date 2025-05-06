@@ -1,5 +1,5 @@
 import highlight from "@/Components/Table/lib/highlightText";
-import { IModel } from "@/features/RalTable/model/types";
+import { TRalModel } from "@/features/RalTable/model/types";
 import { Renderable, CellContext, flexRender } from "@tanstack/react-table";
 import { isEmpty } from "lodash";
 import { motion } from "motion/react";
@@ -34,7 +34,7 @@ const motionProperties = {
  * @param {location} location вызов useLocation.
  * @returns {React.ReactNode | JSX.Element} Модифицированное значение или элемент.
  */
-function customModalCell(renderFn: Renderable<CellContext<IModel, unknown>>, context: CellContext<IModel, unknown>, currentQuery: QueryParams, location: Location): React.ReactNode | JSX.Element {
+function customModalCell(renderFn: Renderable<CellContext<TRalModel, unknown>>, context: CellContext<TRalModel, unknown>, currentQuery: QueryParams, location: Location): React.ReactNode | JSX.Element {
     const rowValue = context.row.getAllCells()[0].renderValue()
     const JSX = flexRender(renderFn, context);
     const columnID: string = context.column.id;

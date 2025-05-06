@@ -2,16 +2,6 @@ import { TDefaultRalRequest, TRalModel } from "./model/types"
 
 const PERIOD: number = 2
 
-// type TDefaultRalRequest = {
-//     page: number,
-//     perPage: string,
-//     status_change_date: string[]
-//     columns?: string[]
-//     regDate?: string[]
-//     NP_status_change_date?: string[]
-//     order: string
-// }
-
 const currentDate = new Date();
 const startdate = new Date(currentDate);
 startdate.setFullYear(currentDate.getFullYear()-PERIOD)
@@ -60,6 +50,41 @@ const DEFAULT_COLUMNS: TRalModel[]  = [
     'ral_short_info_view.regulations',
 ];
 
+const DEFAULT_FILTERS: TRalModel[]  = [
+    'regDate',
+    'status_change_date',
+    'nameType',
+    'new_status_AL',
+    'ral_short_info_view.id',
+    'NPstatus',
+    'NP_status_change_date',
+    'np_regulations_tnveds.tnved',
+    'ral_short_info_view.regulations',
+];
+
+const DICTIONARY:Record<string, string> = {
+    ["ral_short_info_view.link"]: 'Ссылка',
+    RegNumber: 'Рег. номер',
+    old_status_AL: 'Предыдущий статус',
+    new_status_AL: 'Акт. статус',
+    status_change_date: 'Дата смены статуса',
+    nameType: 'Тип АЛ',
+    nameTypeActivity: 'Тип направления деятельности',
+    regDate: 'Дата рег.',
+    fullName: 'Полное наименование',
+    address: 'Адрес',
+    applicantFullName: 'Наименование',
+    applicantINN: 'ИНН',
+    oaDescription: 'Описание',
+    NPstatus: 'Статус НЧ',
+    id: 'id',
+    NP_status_change_date: 'Дата изм. статуса НЧ',
+    fullText: 'Поиск',
+    tnved: 'ТН ВЭД (НЧ)',
+    regulation: 'ТР ТС/ЕАЭС (НЧ)',
+    regulations: 'ТР ТС/ЕАЭС (НЧ)',
+}
+
 const DEFAULT_REQUEST:TDefaultRalRequest  = {
     page: 1,
     perPage: "10",
@@ -77,4 +102,4 @@ const DEFAULT_REQUEST:TDefaultRalRequest  = {
     columns: DEFAULT_COLUMNS
 }
 
-export default { DEFAULT_REQUEST, DEFAULT_COLUMNS, RAL_MODEL }
+export default { DEFAULT_REQUEST, DEFAULT_COLUMNS, RAL_MODEL, DICTIONARY, DEFAULT_FILTERS }

@@ -15,6 +15,7 @@ class AccreditationAreaFactory extends Factory
      * @return array<string, mixed>
      */
     protected $predefinedTNVEDS = ['2233', '8788', '1122', '5677', '7655', '4344', '9999', '8181'];
+    protected $predefinedCharacteristic = ['прочность', 'напряжение', 'гибкость', 'запах', 'термоустойчивость', 'размер'];
 
     protected function getRandomGost(): String {
         $gostNum = $this->faker->numerify('####');
@@ -24,21 +25,17 @@ class AccreditationAreaFactory extends Factory
     
     public function definition(): array
     {
-        $randomNovTNVEDS = '';
-        $randomComparableTNVEDS = '';
-
-        for ($i = 0; $i < rand(1,5); $i++) {
-            $randomNovTNVEDS = $randomNovTNVEDS . $this->faker->randomElement($this->predefinedTNVEDS) .";";
-        }
-        for ($i = 0; $i < rand(1,5); $i++) {
-            $randomComparableTNVEDS = $randomComparableTNVEDS . $this->faker->randomElement($this->predefinedTNVEDS) .";";
-        }
-
         return [
-            'nov_gosts' => $this->getRandomGost(),
-            'nov_tnveds' => json_encode($randomNovTNVEDS),
-            'comperable_gosts' => $this->getRandomGost(),
-            'comperable_tnveds' => json_encode($randomComparableTNVEDS),
+            "source_row" => $this->faker->numberBetween(1, 20),
+            "gost" => $this->getRandomGost(),
+            "gost_object" => "описание госта",
+            "okpd" => $this->faker->numberBetween(100, 120) . $this->faker->numberBetween(1, 20),
+            "tn_ved" => $this->faker->randomElement($this->predefinedTNVEDS),
+            "characteristic" => $this->faker->randomElement($this->predefinedCharacteristic),
+            "characteristic_range" => $this->faker->sentence(rand(3, 5)),
+            "source_page" => $this->faker->numberBetween(1, 300),
+            "id_ral" => $this->faker->numberBetween(1, 300),
+            "source_file" => "название источника файла",
         ];
     }
 }

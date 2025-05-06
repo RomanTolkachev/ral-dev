@@ -1,10 +1,9 @@
 import { axiosApi } from "@/shared/api/api";
-import { TRalTableModel } from "../../config";
-import { Cookies } from "react-cookie";
+import { TRalModel } from "../../model/types";
 
 export type TParams = {
     userId: string,
-    settings: TRalTableModel[]
+    settings: TRalModel[]
 }
 
 export const setSettings = (newSetting: TParams): Promise<void> => {

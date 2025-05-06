@@ -6,9 +6,8 @@ import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import excludePaginationQueries from '@/shared/query/excludePaginationQueries'
 import { TDefaultPaginationRequest } from '../types/pagination'
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
-import { fetchAbstractFilters, fetchRalFilters } from './api'
+import { fetchAbstractFilters } from './api'
 import { AuthContext } from '@/app/providers/AuthProvider'
-import { AxiosError } from 'axios'
 
 
 interface IFormValues {
@@ -57,7 +56,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         queryKey: ["filters", tableName, defaultFilters]
     })
 
-    const { data: filters, isPending: isFiltersPending } = filtersData
+    const { data: filters, isPending: isFiltersPending, isFetched } = filtersData
 
     // от данной переменной зависит, нужно ли перезаписывать состояния URL. Если query пустые на момент вызова onSubmit, то в историю добавится шаг.
     const shouldReplace = useMemo<boolean>(() => {
@@ -143,13 +142,14 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
             methods.reset({ ...newQueries, ...defaultRequest }, { keepDefaultValues: false })
         }
         /* Если в URL имеются queries, то после reset заново устанавливаются значения этих полей. 
-          В компонентах фильтра происходит сверка defaultValue и currentValue, они они разнятся то
+          В компонентах фильтра происходит сверка defaultValue и currentValue, если они разнятся то
            у кнопки рисуется значек */
         if (!isEmpty(queries)) {
             keys(queries).forEach(query => {
                 methods.setValue(query, queries[query])
             })
         }
+       
     }, [isFiltersPending, JSON.stringify(filters)]);
 
     return (

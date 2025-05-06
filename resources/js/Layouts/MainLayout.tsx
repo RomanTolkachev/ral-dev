@@ -26,6 +26,7 @@ function MainLayout() {
     function closeRalModal() {
         location.state ? navigate(-1) : navigate(`/directory/ral/${location.search}`)
     }
+    
     return (
         <div
             className={
@@ -38,7 +39,7 @@ function MainLayout() {
                     <Route path="ral/*" element={
                         <>
                             <AbstractFormProvider
-                                defaultFilters={ralConfig.DEFAULT_COLUMNS}
+                                defaultFilters={ralConfig.DEFAULT_FILTERS}
                                 defaultRequest={ralConfig.DEFAULT_REQUEST}
                                 tableName="ral"
                             ><Raltable />
@@ -61,7 +62,7 @@ function MainLayout() {
                                 </AnimatePresence> */}
                         </>
                     } />
-                    <Route path='accreditation_area' element={
+                    <Route path='accreditation_area'  element={
                         <AbstractFormProvider
                             defaultFilters={accreditationAreaConfig.DEFAULT_FILTERS}
                             defaultRequest={accreditationAreaConfig.DEFAULT_REQUEST}

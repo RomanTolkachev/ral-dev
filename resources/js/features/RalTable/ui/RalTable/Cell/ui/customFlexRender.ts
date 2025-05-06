@@ -1,5 +1,5 @@
 import highlight from "@/Components/Table/lib/highlightText";
-import { IModel } from "@/features/RalTable/model/types";
+import { TRalModel } from "@/features/RalTable/model/types";
 import { Renderable, CellContext, flexRender } from "@tanstack/react-table";
 import { isEmpty } from "lodash";
 import { motion } from "motion/react";
@@ -32,7 +32,7 @@ const motionProperties = {
  * @param {location} location вызов useLocation.
  * @returns {React.ReactNode | JSX.Element} Модифицированное значение или элемент.
  */
-function customFlexRender(renderFn: Renderable<CellContext<IModel, unknown>>, context: CellContext<IModel, unknown>, currentQuery: QueryParams, location: Location): React.ReactNode | JSX.Element {
+function customFlexRender(renderFn: Renderable<CellContext<TRalModel, unknown>>, context: CellContext<TRalModel, unknown>, currentQuery: QueryParams, location: Location): React.ReactNode | JSX.Element {
     const JSX = flexRender(renderFn, context);
     const columnID: string = context.column.id;
     if (columnID === "applicantFullName") {

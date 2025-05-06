@@ -10,6 +10,9 @@ import { motion } from 'motion/react'
 import { useNavigate } from 'react-router'
 import { Preloader } from '../utils/Preloader'
 import createTranslateFn from './lib/translate'
+import { PageNavigation } from '../Inputs/PageNavigation/PageNavigation'
+import FoundedResults from '../Inputs/PageNavigation/Pagination'
+import PerPageController from '../Inputs/PerPageController'
 
 
 interface IProps {
@@ -175,13 +178,21 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
                     </div>
                 </div>
             </div>
-            <div className={'flex justify-end'}>
-                {/* <Pagination
-                    className={"text-header-text text-sm p-2 mr-6"}
+            <div className={'text-sm py-4 px-2 ml-6 flex gap-4 h-fit items-center justify-between text-table-base font-semibold'}>
+                <FoundedResults
+                    className='w-52 min-w-fit'
                     dataLenght={tableData?.length}
-                    currentPage={ralData?.current_page}
-                    lastPage={ralData?.last_page}>
-                </Pagination> */}
+                    currentPage={paginatedData?.current_page}
+                    lastPage={paginatedData?.last_page}
+                    total={paginatedData?.total}
+                />
+                <PerPageController />
+                <PageNavigation
+                    total={paginatedData?.total}
+                    isPending={loading}
+                    currentPage={paginatedData?.current_page}
+                    lastPage={paginatedData?.last_page}
+                />
             </div>
         </div>
     )

@@ -23,6 +23,8 @@ const AbstractSearchingForm: FunctionComponent<IProps> = ({ className, filters, 
         return null
     }
 
+    const {customResetHandler} = submitContext;
+
     return (
         <form
             className={`${className} flex-col overflow-hidden flex`}>
@@ -32,8 +34,8 @@ const AbstractSearchingForm: FunctionComponent<IProps> = ({ className, filters, 
                 ) : (
                     filters.map((filterItem, key) => {
                         return (
-                        <TranslateContext.Provider value={translateFn}>
-                           <DropdownItem inputData={filterItem} key={`ddi-${key}`} /> 
+                        <TranslateContext.Provider value={translateFn} key={`ddi-${key}`}>
+                           <DropdownItem inputData={filterItem}  /> 
                         </TranslateContext.Provider>   
                         ) 
                     })
@@ -42,7 +44,7 @@ const AbstractSearchingForm: FunctionComponent<IProps> = ({ className, filters, 
             <div className={`sticky w-fit bottom-0 bg-background-block flex flex-col py-6 space-y-4 gap-2 mx-auto`}>
                 <MainButton
                     className={`w-full`}
-                    onClick={() => console.log("сброс фильтров")}
+                    onClick={customResetHandler}
                     color={'white'}
                     type='reset'>Сбросить фильтры
                 </MainButton>

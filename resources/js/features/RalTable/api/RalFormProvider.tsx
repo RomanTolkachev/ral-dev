@@ -30,7 +30,7 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
 
     // Устанавливаем default для полей формы. Везде массив. Т.к поля фильтров запрашиваются асинхронно, установлено несколько проверок, чтобы default всегда были валидны
     const startValues = filters 
-        ? filters.reduce((acc: Record<string, any>, key) => {
+        ? filters.reduce((acc: Record<string, any>, key:ISearchingFormItem) => {
             // Проверка, существует ли ключ в acc перед добавлением, т.к значения некоторых ключей установлены на фронте и их нельзя перезаписывать
             if (!(key.header in acc)) {
                 acc[key.header] = [];
