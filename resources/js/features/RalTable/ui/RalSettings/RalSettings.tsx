@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import config, { TRalTableModel } from '../../config';
+import config from '../../config';
 import { keys, values } from 'lodash';
 import { Controller, FormProvider, useFormContext } from 'react-hook-form';
 import { div } from 'motion/react-client';
@@ -8,6 +8,7 @@ import { useUserInfo } from '../../hooks/useUserInfo';
 import { Reorder } from 'motion/react';
 import { useMutation } from '@tanstack/react-query';
 import { setSettings, TParams } from './api';
+import { TRalModel } from '../../model/types';
 
 interface Props {
     className?: string;
@@ -19,8 +20,8 @@ const RalSettings: FunctionComponent<Props> = ({ className }) => {
     const { userId, isUserChecked } = useUserInfo();
     const { columns, isColumnsFetching } = useRalColumns(userId);
    
-    const [fullList, setFullList] = useState([...columns, ...config.RAL_COLUMNS.filter(item => !columns.includes(item))])
-    const [columnsValues, setColumnsValues] = useState<TRalTableModel[]>(columns);
+    const [fullList, setFullList] = useState([...columns, ...config.RAL_MODEL.filter(item => !columns.includes(item))])
+    const [columnsValues, setColumnsValues] = useState<TRalModel[]>(columns);
 
     useLayoutEffect(() => {
         setColumnsValues(columns)

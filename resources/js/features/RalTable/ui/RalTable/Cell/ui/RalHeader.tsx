@@ -1,5 +1,5 @@
 import { SVG } from "@/Components/utils/SVG"
-import { CustomSubmitHandlerContext } from "@/features/ralTable/api/RalFormProvider"
+import { CustomSubmitHandlerContext } from "@/shared/api/AbstractFormProvider"
 import { IRalItem } from "@/shared/types/ral"
 import { Header } from "@tanstack/react-table"
 import { motion, ObjectTarget, Target, useAnimate, useAnimation } from "motion/react"
@@ -18,7 +18,9 @@ const RalHeader: FunctionComponent<IProps> = ({ className, headerData }) => {
 
     let isOrderable: boolean = orderable.includes(headerData.id as keyof IRalItem)
     const { control, trigger, getValues } = useFormContext();
-    const { customSubmitHandler } = useContext(CustomSubmitHandlerContext);
+    const handlers = useContext(CustomSubmitHandlerContext);
+    if (!handlers) return null
+    const {customSubmitHandler} = handlers
     const [scope, animate] = useAnimate();
     const columnName = headerData.id;
 

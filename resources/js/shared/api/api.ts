@@ -3,7 +3,7 @@ import qs from 'qs'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import IPagination from '../types/pagination'
 import { IUser } from '../types/user'
-import { TRalTableModel } from '@/features/ralTable/config'
+import { TRalModel } from '@/features/ralTable/model/types'
 
 // export const LOCAL_URL: 'http://127.0.0.1:8000/api' = 'http://127.0.0.1:8000/api'
 export const LOCAL_URL: "/api" = "/api"
@@ -24,8 +24,26 @@ const webApi = axios.create({
     }
 })
 
-export const fetchRalFilters = (queries: Record<string, any>) =>
+export const fetchRalFilters = (queries?: Record<string, any>) =>
     axiosApi.get<ISearchingFormItem[]>('/ral/filters', {
+        params: queries,
+        withCredentials: true,
+        paramsSerializer: function (params) {
+            return decodeURIComponent(qs.stringify(params, { arrayFormat: 'brackets' }))
+        },
+    }).then(res => res.data)
+
+export const fetchAbstractFilters = (tableName:string, queries?: Record<string, any>) =>
+    axiosApi.get<ISearchingFormItem[]>(`/${tableName}/filters`, {
+        params: queries,
+        withCredentials: true,
+        paramsSerializer: function (params) {
+            return decodeURIComponent(qs.stringify(params, { arrayFormat: 'brackets' }))
+        },
+    }).then(res => res.data)
+
+export const fetchAbstractTable = (tableName: string, queries: Record<string, any>) =>
+    axiosApi.get<IPagination>(`${tableName}`, {
         params: queries,
         withCredentials: true,
         paramsSerializer: function (params) {
@@ -76,8 +94,8 @@ export const getUser = () => {
     }).then(res => res.data)
 }
 
-export const getTableSettings = (userId: string, tableName: string): Promise<TRalTableModel[]> => {
-    return axiosApi.get<TRalTableModel[]>(`/settings`, {
+export const getTableSettings = (userId: string, tableName: string): Promise<TRalModel[]> => {
+    return axiosApi.get<TRalModel[]>(`/settings`, {
         params: {userId, tableName},
         headers: {
             Accept: "application/json", 

@@ -1,6 +1,42 @@
 import { TDefaultPaginationRequest } from "@/shared/types/pagination";
 import { IAccreditationAreaDefaultRequest, TAccreditationAreaModel } from "./model";
 
+export const RAL_MODEL = [
+    'ral_short_info_view.link',
+    'nameType',
+    'nameTypeActivity',
+    'fullName',
+    'address',
+    'oaDescription',
+    'NPstatus',
+    'ral_short_info_view.id',
+    'regDate',
+    'NP_status_change_date',
+    'applicantFullName',
+    'new_status_AL',
+    'applicantINN',
+    'applicantINN',
+    'RegNumber',
+    'status_change_date',
+    'np_regulations_tnveds.tnved',
+    'np_regulations_tnveds.regulation',
+    'ral_short_info_view.regulations'
+] as const
+
+const DICTIONARY: Record<TAccreditationAreaModel, string> ={
+    id: "ID",
+    gost: "ГОСТ",
+    characteristic: "Характеристика",
+    id_ral: "ID лаборатории",
+    okpd: "ОКПД",
+    characteristic_range: "Область аккредитации",
+    tn_ved: "ТН ВЭД",
+    gost_object: "расшифровка ГОСТ",
+    source_file: "Файл-источник",
+    source_page: "Страница в источнике",
+    source_row: "Пункт в источнике",
+}
+
 const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
     "characteristic", 
     "characteristic_range", 
@@ -23,4 +59,4 @@ const DEFAULT_REQUEST: IAccreditationAreaDefaultRequest = {
     columns: DEFAULT_COLUMNS
 }
 
-export default {DEFAULT_FILTERS, DEFAULT_REQUEST}
+export default {DEFAULT_FILTERS, DEFAULT_REQUEST, DICTIONARY}

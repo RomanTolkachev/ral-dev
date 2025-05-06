@@ -12,7 +12,7 @@ class GetFiltersController
 
     public function __invoke(TableFilterService $tableFilterService, Request $request): JsonResponse
     {
-        $filters = $tableFilterService->getFiltersFor(RalShortInfoView::class, $request->userFilters);
+        $filters = $tableFilterService->getFiltersFor(RalShortInfoView::class, $request->userFilters ?? []);
         return new JsonResponse($filters);
     }
 }

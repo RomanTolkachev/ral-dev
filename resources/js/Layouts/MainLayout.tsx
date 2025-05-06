@@ -1,8 +1,7 @@
 import { Header } from '@/Components/Header'
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { TableLayout } from './TableLayout'
 import { Raltable } from '@/features/ralTable/ui/RalTable/RalTable'
-import { RalFormProvider } from '@/features/ralTable/api/RalFormProvider'
 import { NotFound } from '@/Components/utils/404'
 import Modal from '@/Components/modal/Modal'
 import { RalModal } from '@/features/ralModal/ui/RalModal'
@@ -13,11 +12,16 @@ import RalSettings from '@/features/RalTable/ui/RalSettings/RalSettings'
 import { OnlyAuth, OnlyUnAuth } from '@/app/ProtectedRoute'
 import PersonalPage from '@/features/Login/PersonalPage'
 import AccreditationAreaTable from '@/features/AccreditationArea/AccreditationAreaTable'
+import ralConfig from '@/features/ralTable/config'
+import accreditationAreaConfig from '@/features/AccreditationArea/config'
+import { AbstractFormProvider } from '@/shared/api/AbstractFormProvider'
+
 
 function MainLayout() {
     const navigate = useNavigate();
     const location = useLocation();
     const background = location.state && location.state.background
+
 
     function closeRalModal() {
         location.state ? navigate(-1) : navigate(`/directory/ral/${location.search}`)
@@ -29,30 +33,42 @@ function MainLayout() {
             }>
             <Header />
             <Routes>
-                <Route path="/" element={<Home/>} />
+                <Route path="/" element={<Home />} />
                 <Route path="/directory" element={<TableLayout />}>
                     <Route path="ral/*" element={
-                            <RalFormProvider>
-                                <Raltable />
-                                {/* <AnimatePresence> //TODO: не работает exit animation
+                        <>
+                            <AbstractFormProvider
+                                defaultFilters={ralConfig.DEFAULT_COLUMNS}
+                                defaultRequest={ralConfig.DEFAULT_REQUEST}
+                                tableName="ral"
+                            ><Raltable />
+                            </AbstractFormProvider>
+
+                            {/* <AnimatePresence> //TODO: не работает exit animation
                                     {background && ( */}
-                                        <Routes location={location} key={location.pathname}>
-                                            <Route 
-                                                path='settings'
-                                                element={<Modal closeModal={() => navigate(-1)} children={<RalSettings />} />}
-                                            />
-                                            <Route
-                                                path=":ralId"
-                                                element={
-                                                    <Modal closeModal={() => navigate(-1)} children={<RalModal />} />}                                        
-                                            />
-                                        </Routes>
-                                     {/* )} 
+                            <Routes location={location} key={location.pathname}>
+                                <Route
+                                    path='settings'
+                                    element={<Modal closeModal={() => navigate(-1)} children={<RalSettings />} />}
+                                />
+                                <Route
+                                    path=":ralId"
+                                    element={
+                                        <Modal closeModal={() => navigate(-1)} children={<RalModal />} />}
+                                />
+                            </Routes>
+                            {/* )} 
                                 </AnimatePresence> */}
-                            </RalFormProvider>
+                        </>
                     } />
                     <Route path='accreditation_area' element={
-                        <AccreditationAreaTable />} 
+                        <AbstractFormProvider
+                            defaultFilters={accreditationAreaConfig.DEFAULT_FILTERS}
+                            defaultRequest={accreditationAreaConfig.DEFAULT_REQUEST}
+                            tableName="accreditation_area">
+                            <AccreditationAreaTable />
+                        </AbstractFormProvider>
+                    }
                     />
                 </Route>
                 <Route path='/login' element={<OnlyUnAuth component={<LoginPage />} />} />

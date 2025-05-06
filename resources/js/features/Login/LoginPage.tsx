@@ -10,13 +10,13 @@ interface Props {
 }
 
 const LoginPage: FunctionComponent<Props> = ({ className }) => {
-    const { control, getValues, handleSubmit, reset, setError, } = useFormContext<ILoginForm>();
+    // const { control, getValues, handleSubmit, reset, setError, } = useFormContext<ILoginForm>();
     const authContext = useContext(AuthContext);
-
-
+    
     if (!authContext) {
         return null
     }
+    const {reset, control, handleSubmit} = authContext.methods
 
     const { loginStatus: { mutateAsync, isLoading, error, resetError } } = authContext;
 

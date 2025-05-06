@@ -3,7 +3,7 @@ import { IUser } from '@/shared/types/user';
 import { UseMutateFunction, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { createContext, FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, UseFormReturn } from 'react-hook-form';
 
 interface Props {
     className?: string;
@@ -15,13 +15,16 @@ export interface IAuthContext {
     isLoading: boolean
     reFetchUser: UseMutateFunction<IUser, Error, void, unknown>
     isFetching: boolean
+    isFetched: boolean
     loginStatus: {
         mutateAsync: (data: { email: string; password: string }) => void;
         isLoading: boolean;
         error: AxiosError | null;
         resetError: () => void
-    };
+    },
+    methods: UseFormReturn<ILoginForm, any, undefined>
 }
+
 
 export interface ILoginForm {
     email: string
@@ -38,7 +41,8 @@ const AuthProvider: FunctionComponent<PropsWithChildren<Props>> = ({ className, 
         data: fetchedUser,
         isFetching,
         refetch,
-        isLoading
+        isLoading,
+        isFetched
     } = useQuery({
         queryKey: ['user'],
         retry: (errCount, err: AxiosError) => [401, 404].includes(err.status!) ? false : true,
@@ -60,6 +64,7 @@ const AuthProvider: FunctionComponent<PropsWithChildren<Props>> = ({ className, 
         userInfo: fetchedUser,
         isFetching,
         reFetchUser: mutate,
+        isFetched,
         isLoading,
         loginStatus: {
             mutateAsync: useLogin.mutateAsync,
@@ -79,10 +84,8 @@ const AuthProvider: FunctionComponent<PropsWithChildren<Props>> = ({ className, 
     });
 
     return (
-        <AuthContext.Provider value={contextValue}>
-            <FormProvider {...methods}>
-                {children}
-            </FormProvider>
+        <AuthContext.Provider value={{...contextValue, methods}}>
+            {children}
         </AuthContext.Provider>
     );
 };

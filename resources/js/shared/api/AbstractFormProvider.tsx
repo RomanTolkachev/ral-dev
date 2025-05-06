@@ -1,15 +1,18 @@
 import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
-import { createContext, FunctionComponent, PropsWithChildren, useEffect, useMemo, useRef } from 'react'
+import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useMemo, useRef } from 'react'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import { isEmpty, isEqual, keys, values } from 'lodash'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import excludePaginationQueries from '@/shared/query/excludePaginationQueries'
 import { TDefaultPaginationRequest } from '../types/pagination'
-import { useQuery } from '@tanstack/react-query'
-import { IAuthContext } from '@/app/providers/AuthProvider'
+import { useQuery, UseQueryResult } from '@tanstack/react-query'
+import { fetchAbstractFilters, fetchRalFilters } from './api'
+import { AuthContext } from '@/app/providers/AuthProvider'
+import { AxiosError } from 'axios'
+
 
 interface IFormValues {
-    [key: string]: any
+    [key: string ]: any
 }
 
 interface IDefaultRequest extends TDefaultPaginationRequest {
@@ -18,43 +21,43 @@ interface IDefaultRequest extends TDefaultPaginationRequest {
 
 interface IProps {
     tableName: string
-    queryFn: (queries?: Record<string, any>) => Promise<ISearchingFormItem[]>
     defaultRequest: IDefaultRequest
     defaultFilters: unknown
-    user: IAuthContext | undefined
+    user?: any | undefined
 }
 
 type QueryParams = Record<string, any>
 
 export type ICustomSubmitHandlerContext = {
-    filters: any
-    customSubmitHandler: any 
-    customResetHandler: any 
-    customResetField: any
+    filtersData: UseQueryResult<ISearchingFormItem[]>
+    customSubmitHandler: (formData: Record<string, unknown>) => void // тут плохо
+    customResetHandler: () => void
+    customResetField: (fieldName: string ) => void
 } | undefined
 
 export const CustomSubmitHandlerContext = createContext<ICustomSubmitHandlerContext>(undefined); // TODO: ANY!!
 
 export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> = ({
     tableName,
-    children, 
-    queryFn, 
-    defaultRequest, 
+    children,
+    defaultRequest,
     defaultFilters,
-    user 
 }) => {
+
+    const user = useContext(AuthContext)
 
     const [setQuery, getQuery] = useParamsCustom();
     const queries = getQuery();
     const prevQueries = useRef<QueryParams | null>(null);
-    const isUserEstableshed: boolean = !user!.isFetching && user!.userInfo?.id ? true : false // тут плохо
+    const isUserChecked: boolean = user!.isFetched ? true : false // тут плохо
 
-    const {data: filters, isPending: isFiltersPending} = useQuery({
-        enabled: isUserEstableshed,
-        queryFn: queryFn,
+    const filtersData = useQuery({
+        enabled: isUserChecked,
+        queryFn: () => fetchAbstractFilters(tableName, { userFilters: defaultFilters }),
         queryKey: ["filters", tableName, defaultFilters]
     })
 
+    const { data: filters, isPending: isFiltersPending } = filtersData
 
     // от данной переменной зависит, нужно ли перезаписывать состояния URL. Если query пустые на момент вызова onSubmit, то в историю добавится шаг.
     const shouldReplace = useMemo<boolean>(() => {
@@ -71,7 +74,6 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
             return acc;
         }, defaultRequest)
         : defaultRequest;
-
 
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
         mode: "onChange",
@@ -129,7 +131,6 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         methods.handleSubmit(data => customSubmitHandler(data))()
     }
 
-
     // установка значений инпутов при обновлении или переходе по ссылке, если в query что-то есть
     useEffect(() => {
         // фильтры приходят с БЭКа, поэтому они указаны в зависимости и имеется проверка, что они не falsy
@@ -152,7 +153,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     }, [isFiltersPending, JSON.stringify(filters)]);
 
     return (
-        <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filters }}>
+        <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData }}>
             <FormProvider {...methods}>
                 {children}
             </FormProvider>

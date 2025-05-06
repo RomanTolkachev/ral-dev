@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useLayoutEffect, useMemo, useState } from 'react'
+import { createContext, FunctionComponent, ReactNode, useLayoutEffect, useMemo, useState } from 'react'
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { SVG } from '@/Components/utils/SVG'
 import { getHeaders } from '@/Components/Table/lib/getHeaders'
@@ -8,33 +8,32 @@ import RalCell from '@/features/RalTable/ui/RalTable/Cell/ui/RalCell'
 import IPagination from '@/shared/types/pagination'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router'
+import { Preloader } from '../utils/Preloader'
+import createTranslateFn from './lib/translate'
 
 
 interface IProps {
     className?: string
     paginatedData: IPagination | undefined
-    columns: String[]  
+    loading: boolean
+    dictionary?: Record<string, any>
 }
 
-/**
- * параметры анимации
- */
+// параметры анимации
 const parentVariants = {
     start: {},
     end: { transition: { staggerChildren: 0.04, delayChildren: 0.1 } }
 }
-
-/**
- * параметры анимации
- */
 const childrenVariants = {
     start: { opacity: 0 },
     end: { opacity: 1 }
 }
 
-export const AbstractTable: FunctionComponent<IProps> = ({className, paginatedData }) => {
+export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedData, loading, dictionary }) => {
 
     const navigate = useNavigate();
+
+    const translateFn = dictionary ? createTranslateFn(dictionary) : null
 
     const headers = useMemo(() => {
         const data = paginatedData?.data as IRalItem[]
@@ -47,7 +46,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({className, paginatedDa
             colData = headers.map((header) => {
                 return {
                     accessorKey: header,
-                    header: translateHeaderName(header),
+                    header: translateFn ? translateFn(header) : header,
                     cell: (props: any) => { return <>{props.getValue()}</>; },
                     enableResizing: true,
                 }
@@ -55,7 +54,6 @@ export const AbstractTable: FunctionComponent<IProps> = ({className, paginatedDa
         }
         return colData;
     }, [paginatedData, headers])
-
 
     const tableData = useMemo(() => {
         return paginatedData?.data as IRalItem[] || []
@@ -76,7 +74,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({className, paginatedDa
     /**
      * функция для перехода по ссылке при клике на row
      */
-    function handleRowClick(to: string):void {
+    function handleRowClick(to: string): void {
         navigate(to)
     }
 
@@ -92,12 +90,6 @@ export const AbstractTable: FunctionComponent<IProps> = ({className, paginatedDa
     return (
         <div className={`${className} h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden`}>
             <div className={'text-header-text text-sm p-2 ml-6 flex gap-4 items-center'}>
-                {/* <PageInput
-                    total={paginatedData?.total}
-                    isPending={isPending}
-                    currentPage={paginatedData?.current_page}
-                    lastPage={paginatedData?.last_page}
-                    dataLenght={tableData?.length} /> */}
             </div>
             <div className={'p-2 w-full h-full grow flex overflow-hidden'}>
                 <div className={'my-block min-w-full h-full bg-background-block'}>
@@ -105,7 +97,9 @@ export const AbstractTable: FunctionComponent<IProps> = ({className, paginatedDa
                         className={
                             'text-base grow max-w-full h-full min-h-full max-h-full overflow-x-auto overflow-y-auto bg-background-block'
                         }>
-                        {Object.keys(tableData).length ? (
+                        {loading ? (
+                            <Preloader className={'h-full flex items-center'} widthStyles={'w-16'} />
+                        ) : Object.keys(tableData).length ? (
                             <table
                                 style={{ width: table.getTotalSize() }}
                                 className={`min-h-full min-w-full max-h-full text-sm table-auto rounded-t-md [&_td]:border-r [&_td]:border-r-filter-dropdown-button`}>
@@ -135,14 +129,14 @@ export const AbstractTable: FunctionComponent<IProps> = ({className, paginatedDa
                                     {table.getRowModel().rows.map((row) => {
                                         return (
                                             <motion.tr
-                                                variants={childrenVariants} 
+                                                variants={childrenVariants}
                                                 whileHover={{
                                                     y: -1,
-                                                    cursor: "pointer", 
-                                                    transition: {duration: 0.2}, 
+                                                    cursor: "pointer",
+                                                    transition: { duration: 0.2 },
                                                     boxShadow: "var(--row-hover)"
                                                 }}
-                                                className={'even:bg-row-even odd:bg-row-odd h-20 z-10'} 
+                                                className={'even:bg-row-even odd:bg-row-odd h-20 z-10'}
                                                 key={row.id}
                                                 onClick={() => handleRowClick(`${row.original.id}${location.search}`)}
                                             >

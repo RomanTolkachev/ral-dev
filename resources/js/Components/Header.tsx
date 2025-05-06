@@ -50,13 +50,15 @@ export const Header: FunctionComponent<IProps> = ({ className }) => {
                     </div>
                     <div className='flex gap-5 items-center'>
                         <div className='min-w-8'>
-                            {user ? <Link to="/personal">{user}</Link>  : loading ? <Preloader widthStyles='w-6' /> : 
-                            <Link to={`/login`} state={{from: location.pathname}} >войти</Link>}
-                            
+                            {user ? <Link to="/personal">{user}</Link> : loading ? <Preloader widthStyles='w-6' /> :
+                                <Link to={`/login`} state={{ from: location.pathname }} >войти</Link>}
+
                         </div>
-                        <Link to={`${location.pathname}/settings`} state={{from: location.pathname}} className={`${location.pathname === '/' ? "hidden" : "" }`}>
-                            <motion.div whileHover={{ scale: 1.05, cursor: "pointer" }}><SVG gear className='size-6' /></motion.div>
-                        </Link>
+                        {user &&
+                            <Link to={`${location.pathname}/settings`} state={{ from: location.pathname }} className={`${location.pathname === '/' ? "hidden" : ""}`}>
+                                <motion.div whileHover={{ scale: 1.05, cursor: "pointer" }}><SVG gear className='size-6' /></motion.div>
+                            </Link>
+                        }
                         <div className='h-8'><Toggle /></div>
                     </div>
                 </nav>

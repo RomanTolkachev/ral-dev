@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\AccreditationAreaController;
+use App\UseCases\AccreditationArea\GetAccreditationAreaFilters\GetAccreditationAreaFiltersController;
+use App\UseCases\AccreditationArea\GetAccreditationAreaList\GetAccreditationAreaListController;
 use App\Http\Controllers\GetFiltersController;
 use App\UseCases\GetRalShortInfoList\GetRalShortInfoListController;
 use App\Http\Controllers\TestController;
@@ -15,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get("ral", GetRalShortInfoListController::class);
 Route::get("ral/filters", GetFiltersController::class);
 Route::get("ral/certification_body", GetCertificationBodyController::class);
-Route::get("accreditation_area", AccreditationAreaController::class);
+Route::get("accreditation_area", GetAccreditationAreaListController::class);
+Route::get("accreditation_area/filters", GetAccreditationAreaFiltersController::class);
 Route::middleware('auth:sanctum')->get("test", TestController::class);
 Route::middleware('auth:sanctum')->get("user", GetUserController::class);
 Route::middleware('auth:sanctum')->get("settings", GetTableSettingsController::class);

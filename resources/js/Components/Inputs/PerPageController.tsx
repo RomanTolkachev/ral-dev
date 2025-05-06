@@ -1,4 +1,4 @@
-import { CustomSubmitHandlerContext } from "@/features/ralTable/api/RalFormProvider";
+import { CustomSubmitHandlerContext } from "@/shared/api/AbstractFormProvider";
 import useParamsCustom from "@/shared/query/useParamsCustom";
 import { motion } from "motion/react";
 import { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
@@ -11,7 +11,9 @@ interface IProps {
 
 const PerPageController: FunctionComponent<IProps> = () => {
     const { control, getValues, trigger } = useFormContext();
-    const { customSubmitHandler } = useContext(CustomSubmitHandlerContext);
+    const handlers = useContext(CustomSubmitHandlerContext);
+    if (!handlers) return null
+    const {customSubmitHandler} = handlers
     const [, getQuery] = useParamsCustom();
 
 

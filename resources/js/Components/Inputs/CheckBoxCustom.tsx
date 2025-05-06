@@ -1,7 +1,7 @@
 import { FunctionComponent, useContext, useEffect, useLayoutEffect } from 'react'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import { Controller, useFormContext } from 'react-hook-form'
-import { CustomSubmitHandlerContext } from '@/features/ralTable/api/RalFormProvider'
+import { CustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
 
 
 interface IProps {
@@ -12,7 +12,10 @@ interface IProps {
 export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData }) => {
 
     const { control, getValues } = useFormContext();
-    const { customSubmitHandler } = useContext(CustomSubmitHandlerContext)
+    const handlers = useContext(CustomSubmitHandlerContext)
+    if (!handlers) return null
+    const {customSubmitHandler} = handlers
+
     const inputName = inputData.header;
 
 const handleChange = (checked: boolean, name: string) => {

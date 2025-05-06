@@ -8,7 +8,6 @@ import { CheckBoxCustom } from '@/Components/Inputs/CheckBoxCustom'
 import { isEqual, keys  } from 'lodash'
 import { useFormContext } from 'react-hook-form'
 import useParamsCustom from '@/shared/query/useParamsCustom'
-import { ICustomSubmitHandlerContext, CustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
 
 interface IProps {
     className?: string

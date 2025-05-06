@@ -2,7 +2,8 @@ import { FunctionComponent, PropsWithChildren, useContext } from 'react'
 import { SVG } from '@/Components/utils/SVG'
 import { translateHeaderName } from '@/Components/Table/lib/translateHeaderName'
 import { AnimatePresence, motion } from 'motion/react'
-import { CustomSubmitHandlerContext } from '@/features/ralTable/api/RalFormProvider'
+import { CustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
+import { TranslateContext } from '../Table/AbstractSearchingForm'
 
 interface IProps {
     className?: string
@@ -11,7 +12,7 @@ interface IProps {
     isOpen: boolean
     hasAlert?: boolean
     checkedCount?: number
-    inputName?: string
+    inputName: string 
 }
 
 const motionProps = {
@@ -32,10 +33,14 @@ export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> 
     key,
     isOpen,
     hasAlert,
-    checkedCount
+    checkedCount,
 }) => {
 
-    const { customResetField } = useContext(CustomSubmitHandlerContext);
+    const handlers = useContext(CustomSubmitHandlerContext);
+    if (!handlers) return null
+    const {customResetField} = handlers
+
+    const translateFn = useContext(TranslateContext)
 
     return (
         <div
@@ -50,7 +55,8 @@ export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> 
                 flex rounded-2xl py-3 relative pl-4 pr-[3.5rem]
                 text-center border border-filter-dropdown-button-border `}>
 
-            <span>{translateHeaderName(children)}</span>
+            {/* <span>{translateHeaderName(children)}</span> */}
+            <span>{translateFn ? translateFn(children as string) : children }</span>
             <span
                 className={`${isOpen ? '-rotate-180' : '-rotate-90'} transition-all duration-200 w-6
                     absolute right-0 top-1/2 -translate-y-1/2 -translate-x-1/2 p-1`}>

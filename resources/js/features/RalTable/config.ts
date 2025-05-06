@@ -1,15 +1,16 @@
+import { TDefaultRalRequest, TRalModel } from "./model/types"
 
 const PERIOD: number = 2
 
-type TDefaultRalRequest = {
-    page: number,
-    perPage: string,
-    status_change_date: string[]
-    user_columns?: string[]
-    regDate?: string[]
-    NP_status_change_date?: string[]
-    order: string
-}
+// type TDefaultRalRequest = {
+//     page: number,
+//     perPage: string,
+//     status_change_date: string[]
+//     columns?: string[]
+//     regDate?: string[]
+//     NP_status_change_date?: string[]
+//     order: string
+// }
 
 const currentDate = new Date();
 const startdate = new Date(currentDate);
@@ -21,21 +22,7 @@ export const dateFormatter = new Intl.DateTimeFormat("en-CA", {
     day: "2-digit",
 })
 
-const DEFAULT_REQUEST:TDefaultRalRequest  = {
-    page: 1,
-    perPage: "10",
-    status_change_date: [
-        // dateFormatter.format(startdate),
-        // dateFormatter.format(currentDate),
-        "",""
-    ],
-    NP_status_change_date: ["",""],
-    regDate: ["",""],
-    order: "",
-    user_columns: [""]
-}
-
-const RAL_COLUMNS = [
+const RAL_MODEL = [
     'ral_short_info_view.link',
     'nameType',
     'nameTypeActivity',
@@ -55,11 +42,9 @@ const RAL_COLUMNS = [
     'np_regulations_tnveds.tnved',
     'np_regulations_tnveds.regulation',
     'ral_short_info_view.regulations'
-] as const;
+] as const
 
-export type TRalTableModel = typeof RAL_COLUMNS[number];
-
-const DEFAULT_COLUMNS: TRalTableModel[]  = [
+const DEFAULT_COLUMNS: TRalModel[]  = [
     'applicantFullName',
     'RegNumber',
     'regDate',
@@ -75,4 +60,21 @@ const DEFAULT_COLUMNS: TRalTableModel[]  = [
     'ral_short_info_view.regulations',
 ];
 
-export default { DEFAULT_REQUEST, DEFAULT_COLUMNS, RAL_COLUMNS }
+const DEFAULT_REQUEST:TDefaultRalRequest  = {
+    page: 1,
+    perPage: "10",
+    status_change_date: [
+        // dateFormatter.format(startdate),
+        // dateFormatter.format(currentDate),
+        "",""
+    ],
+    NP_status_change_date: ["",""],
+    regDate: ["",""],
+    new_status_AL: [],
+    order: "",
+    nameType: [],
+    NPstatus: [],
+    columns: DEFAULT_COLUMNS
+}
+
+export default { DEFAULT_REQUEST, DEFAULT_COLUMNS, RAL_MODEL }

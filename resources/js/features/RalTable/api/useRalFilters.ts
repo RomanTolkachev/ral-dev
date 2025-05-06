@@ -15,3 +15,4 @@ export function useRalFilters(actualFilters: Record<string, any>) {
     })
     return { data, isPending }
 }
+

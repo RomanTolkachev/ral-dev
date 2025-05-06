@@ -4,10 +4,10 @@ import { Control, Controller, useFormContext } from 'react-hook-form'
 import { SVG } from '@/Components/utils/SVG.tsx'
 import splitValue from './lib/splitValue.ts'
 import joinValue from './lib/joinValue.ts'
-import { CustomSubmitHandlerContext } from '@/features/ralTable/api/RalFormProvider.tsx'
 import { AnimatePresence, motion } from 'motion/react'
 import { enterExitAnimation as animationParams } from '@/shared/framer-motion/enter-exit-animation.ts'
 import customValidation from './lib/customValidation.ts'
+import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider.tsx'
 
 interface IProps {
     className?: string
@@ -22,7 +22,11 @@ interface IProps {
  * query параметров обратно в input
  */
 export const InputCustom: FunctionComponent<IProps> = ({ className, inputData }) => {
-    const { customSubmitHandler } = useContext(CustomSubmitHandlerContext);
+    const handlers = useContext<ICustomSubmitHandlerContext>(CustomSubmitHandlerContext);
+    
+    if (!handlers) return null
+    const {customSubmitHandler} = handlers
+
     const inputName = inputData.header
     const { control, trigger, getValues } = useFormContext();
 

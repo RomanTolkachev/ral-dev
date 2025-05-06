@@ -9,5 +9,5 @@ export const useUserInfo = () => {
     const loginStatus = userContext?.loginStatus
     const isUserChecked = !isLoading;
   
-    return { userId, isUserChecked, loginStatus };
+    return { userId, isUserChecked, loginStatus, user: userContext };
   };

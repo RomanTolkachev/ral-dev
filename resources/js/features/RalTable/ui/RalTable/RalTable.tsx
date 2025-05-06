@@ -20,28 +20,28 @@ export const Raltable: FunctionComponent = () => {
     const content = (): ReactNode => {
         return !isUserChecked
             ? <CenteredLoader>получение данных о пользователе</CenteredLoader>
-            :  !shouldFetchRal
+            : !shouldFetchRal
                 ? <CenteredLoader>получение пользовательских настроек</CenteredLoader>
                 : <Table propsData={ralData} loading={isRalPending} />
     }
 
     return (
-        <div className='flex grow shrink min-h-0'>
-            <section
-                className={
-                    'bg-background shrink-0 grid grid-rows-[1fr] !grid-cols-[300px] h-full overflow-hidden'
-                }>
-                <div className={'p-2 flex flex-col grow shrink overflow-hidden'}>
-                    <div className={'my-block bg-background-block pt-6 flex grow overflow-hidden'}>
-                        <RalSearchingForm className={'w-full'} />
+            <div className='flex grow shrink min-h-0'>
+                <section
+                    className={
+                        'bg-background shrink-0 grid grid-rows-[1fr] !grid-cols-[300px] h-full overflow-hidden'
+                    }>
+                    <div className={'p-2 flex flex-col grow shrink overflow-hidden'}>
+                        <div className={'my-block bg-background-block pt-6 flex grow overflow-hidden'}>
+                            <RalSearchingForm className={'w-full'} />
+                        </div>
                     </div>
-                </div>
-            </section>
-            <section className={'shrink grow flex flex-col'}>
-                {content()}
-                {/* <Table /> */}
-            </section>
-            <DevTool control={control} />
-        </div>
+                </section>
+                <section className={'shrink grow flex flex-col'}>
+                    {content()}
+                    {/* <Table /> */}
+                </section>
+                    <DevTool control={control} />
+            </div>
     )
 }

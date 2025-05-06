@@ -7,9 +7,9 @@ import { isEqual } from 'lodash'
 import dateRangeValidation from './lib/dateRangeValidation'
 import { SVG } from '@/Components/utils/SVG'
 import { MainButton } from '@/Components/Buttons/MainButton'
-import { CustomSubmitHandlerContext } from '@/features/ralTable/api/RalFormProvider'
 import { AnimatePresence, motion } from 'motion/react'
 import openCalendarPicker from './lib/openCalendarPicker'
+import { CustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
 
 
 // вместо данных из DEFAULT_REQUEST на строках на 25, 26, 70 и 85 поставил пустые строки
@@ -27,7 +27,9 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
     const [, getQuery] = useParamsCustom()
     let query: Record<string,any> = {};
     const { control, formState, getValues, } = useFormContext();
-    const { customSubmitHandler } = useContext(CustomSubmitHandlerContext);
+    const handlers = useContext(CustomSubmitHandlerContext);
+    if (!handlers) return null
+    const {customSubmitHandler} = handlers
 
     const { isValid, } = formState;
     const inputName = inputData.header;

@@ -5,7 +5,6 @@ import useParamsCustom from '@/shared/query/useParamsCustom'
 import config from '../config'
 import { isEmpty, isEqual, keys, values } from 'lodash'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
-import { useSelectorTyped } from '@/features/store/typedUseSelector'
 import excludePaginationQueries from '@/shared/query/excludePaginationQueries'
 
 interface IFormValues {
@@ -19,10 +18,10 @@ export const CustomSubmitHandlerContext = createContext<any>(null); // TODO: ANY
 export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
     const [setQuery, getQuery] = useParamsCustom();
-    const userFilters = useSelectorTyped(state => state.userState.settings)
-    const { data: filters, isPending } = useRalFilters(userFilters);
+    const { data: filters, isPending } = useRalFilters(config.DEFAULT_COLUMNS);
     const queries = getQuery();
     const prevQueries = useRef<QueryParams | null>(null);
+
 
     // от данной переменной зависит, нужно ли перезаписывать состояния URL. Если query пустые на момент вызова onSubmit, то в историю добавится шаг.
     const shouldReplace = useMemo<boolean>(() => {
@@ -30,7 +29,7 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
     }, [JSON.stringify(getQuery())]);
 
     // Устанавливаем default для полей формы. Везде массив. Т.к поля фильтров запрашиваются асинхронно, установлено несколько проверок, чтобы default всегда были валидны
-    const startValues = filters //TODO: выдергивать perPage из localStorage или state
+    const startValues = filters 
         ? filters.reduce((acc: Record<string, any>, key) => {
             // Проверка, существует ли ключ в acc перед добавлением, т.к значения некоторых ключей установлены на фронте и их нельзя перезаписывать
             if (!(key.header in acc)) {
@@ -97,7 +96,6 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
         methods.handleSubmit(data => customSubmitHandler(data))()
     }
 
-
     // установка значений инпутов при обновлении или переходе по ссылке, если в query что-то есть
     useEffect(() => {
         // фильтры приходят с БЭКа, поэтому они указаны в зависимости и имеется проверка, что они не falsy
@@ -108,7 +106,7 @@ export const RalFormProvider: FunctionComponent<PropsWithChildren> = ({ children
             }, {});
             // когда фильтры пришли, мы задаем defaultValues через reset, первый аргумент которого будут новые defaultValues
             methods.reset({ ...newQueries, ...config.DEFAULT_REQUEST }, { keepDefaultValues: false })
-        }
+        } 
         /* Если в URL имеются queries, то после reset заново устанавливаются значения этих полей. 
           В компонентах фильтра происходит сверка defaultValue и currentValue, они они разнятся т
           о у кнопки рисуется значек */

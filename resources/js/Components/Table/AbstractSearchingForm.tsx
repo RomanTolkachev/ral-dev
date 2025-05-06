@@ -1,48 +1,28 @@
-import { FunctionComponent, memo, useContext } from 'react'
+import { createContext, FunctionComponent, useContext } from 'react'
 import { Preloader } from '@/Components/utils/Preloader'
 import { DropdownItem } from '@/Components/Inputs/DropdownItem'
 import { MainButton } from '@/Components/Buttons/MainButton'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
-import { AbstractFormProvider, CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
+import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
+import createTranslateFn from './lib/translate'
 
+export const TranslateContext = createContext<ReturnType<typeof createTranslateFn> | null>(null);
 
 interface IProps {
     className?: string
     filters?: ISearchingFormItem[]
+    dictionary?: Record<string, string>
 }
 
-const defaultFilters: ISearchingFormItem[] =
-    [
-        {
-            header: "test",
-            headerType: 'bla',
-            sortValues: {
-                type: 'huge',
-                checkboxValues: [1, 2, 3],
-                min: "0",
-                max: "5",
-            }
-        },
-        {
-            header: "test1",
-            headerType: 'bla',
-            sortValues: {
-                type: 'huge',
-                checkboxValues: [1, 2, 3],
-                min: "0",
-                max: "5",
-            }
-        }
-    ]
-
-const AbstractSearchingForm: FunctionComponent<IProps> = ({ className, filters = defaultFilters }) => {
+const AbstractSearchingForm: FunctionComponent<IProps> = ({ className, filters, dictionary }) => {
 
     const submitContext = useContext<ICustomSubmitHandlerContext>(CustomSubmitHandlerContext)
-    console.log(submitContext)
+    const translateFn = dictionary ? createTranslateFn(dictionary) : null
 
     if (!submitContext) {
         return null
     }
+
     return (
         <form
             className={`${className} flex-col overflow-hidden flex`}>
@@ -51,7 +31,11 @@ const AbstractSearchingForm: FunctionComponent<IProps> = ({ className, filters =
                     <Preloader widthStyles={'w-16'} />
                 ) : (
                     filters.map((filterItem, key) => {
-                        return <DropdownItem inputData={filterItem} key={`ddi-${key}`} />
+                        return (
+                        <TranslateContext.Provider value={translateFn}>
+                           <DropdownItem inputData={filterItem} key={`ddi-${key}`} /> 
+                        </TranslateContext.Provider>   
+                        ) 
                     })
                 )}
             </div>

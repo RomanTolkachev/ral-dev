@@ -5,9 +5,10 @@ import { useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { isEmpty } from "lodash"
 import { useMemo } from "react"
-import config, { TRalTableModel } from "../config"
+import { TRalModel } from "../model/types"
+import config from "../config"
 
-const useRalQuery = (enabled: boolean, userId: string | undefined, columns: TRalTableModel[]) => {
+const useRalQuery = (enabled: boolean, userId: string | undefined, columns: TRalModel[]) => {
 
     const [, getQuery] = useParamsCustom();
     const rawQuery = getQuery();

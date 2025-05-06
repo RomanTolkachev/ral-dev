@@ -1,8 +1,9 @@
-import { CustomSubmitHandlerContext } from '@/features/ralTable/api/RalFormProvider'
+
 import { FunctionComponent, useContext } from 'react'
 import { useFormContext, Controller } from 'react-hook-form'
 import PageNavButton from '@/Components/Buttons/PageNaVButton'
 import { SVG } from '@/Components/utils/SVG'
+import { CustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
 
 
 interface IProps {
@@ -16,7 +17,10 @@ interface IProps {
 
 export const PageNavigation: FunctionComponent<IProps> = ({ className, formName = 'page', lastPage = 1, currentPage, isPending = false, total }) => {
     const { control, trigger, getValues, setValue } = useFormContext();
-    const { customSubmitHandler } = useContext(CustomSubmitHandlerContext)
+    const handlers = useContext(CustomSubmitHandlerContext)
+
+    if (!handlers) return null
+    const {customSubmitHandler} =  handlers 
 
     const handlePageChange = async (newPage: number) => {
         setValue(formName, newPage);
