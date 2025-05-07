@@ -40,9 +40,8 @@ export const Raltable: FunctionComponent = () => {
                 </section>
                 <section className={'shrink grow flex flex-col'}>
                     {content()}
-                    {/* <Table /> */}
                 </section>
-                    <DevTool control={control} />
+                <DevTool control={control} />
             </div>
     )
 }

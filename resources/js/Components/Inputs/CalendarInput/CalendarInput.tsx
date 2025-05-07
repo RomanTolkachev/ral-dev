@@ -60,7 +60,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                                 <input
                                     type="date"
                                     value={value[1]}
-                                    onChange={(e) => onChange([e.target.value, value[1]])}
+                                    onChange={(e) => onChange([value[0], e.target.value])}
                                     className={`
                                         pr-10 pl-4 py-2
                                         ${error ? 'ring-2 ring-error border-transparent' : ''}

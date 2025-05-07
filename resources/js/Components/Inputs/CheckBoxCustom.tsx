@@ -18,7 +18,7 @@ export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData
 
     const inputName = inputData.header;
 
-const handleChange = (checked: boolean, name: string) => {
+    const handleChange = (checked: boolean, name: string) => {
         const nameNoEmptyString: string = name === null ? "пустые" : name
         if (checked) {
             return [...getValues(inputName), nameNoEmptyString ];
@@ -26,7 +26,6 @@ const handleChange = (checked: boolean, name: string) => {
             return getValues(inputName).filter((item: string) => item !== nameNoEmptyString);
         }
     }
-
 
     return (
         <div className={`${className} flex flex-col pl-3 pr-3 pt-3 max-h-32 overflow-y-auto thumb-secondary space-y-1`}>
@@ -41,7 +40,8 @@ const handleChange = (checked: boolean, name: string) => {
                         key={`cb-${key}`}
                         name={inputName}
                         control={control}
-                        render={({ field: {onChange, value = []} }) => (
+                        render={({ field: {onChange, value = []} }) => {
+                           return (
                             <div
                                 className={
                                     'flex items-center border-b last:border-b-0 py-2 border-checkbox-custom-border text-gray-light-gray'
@@ -59,12 +59,13 @@ const handleChange = (checked: boolean, name: string) => {
                                     }
                                     type="checkbox"
                                     onChange={e => {
-                                        onChange(handleChange(e.target.checked, item)); // onchange записывает значение в react-hook-form
-                                        customSubmitHandler(getValues()) // сабмитим обновленное состояние формы
-                                    } }
+                                        onChange(handleChange(e.target.checked, item));
+                                        customSubmitHandler(getValues())
+                                    }}
                                 />
                             </div>
-                        )}
+                        )
+                        } }
                     >
                     </Controller>
                 )

@@ -75,8 +75,9 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         : defaultRequest;
 
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
+        disabled: !filtersData.isFetched,
         mode: "onChange",
-        reValidateMode: "onChange",
+        reValidateMode: 'onChange',
         defaultValues: startValues,
     })
 
@@ -85,29 +86,36 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         prevQueries.current = { ...startValues, ...getQuery() }
     }, [filters])
 
+   
     /**
      * Обработчик формы с проверкой сброса страницы на первую, если параметры поиска изменились. В замыкании предыдущее и текущее значение формы,
      * а также query
      * @param formData Текущее состояние формы
      * @returns void. Записывает query параметры в строку поиска
      */
-    const customSubmitHandler = (
+    const customSubmitHandler = async (
         formData: IFormValues,
-    ): void => {
+    ): Promise<void> => {
+        const isValid = await methods.trigger();
+        console.log("зашли в сабмит", isValid)
         if (isEqual(prevQueries.current, formData)) {
+            console.log("одинакова")
             return;
         } else if (!isEqual(excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData))) {
+            console.log("зашли 1 else if", isValid)
             methods.setValue('page', 1);
-            methods.formState.isValid && setQuery({ ...formData, page: 1 }, shouldReplace); // второй параметр true делает replace истории
+            isValid && setQuery({ ...formData, page: 1 }, shouldReplace); // второй параметр true делает replace истории
             prevQueries.current = { ...formData, page: 1, perPage: formData.perPage };
         } else if (!isEqual(prevQueries.current!.page, formData.page)) {
+            console.log("зашли в 2 else if", isValid, formData.page)
             methods.setValue('page', formData.page);
             prevQueries.current = { ...formData, page: formData.page };
-            methods.formState.isValid && setQuery({ ...formData, page: formData.page }, shouldReplace)
+            isValid && setQuery({ ...formData, page: formData.page }, shouldReplace)
         } else if (!isEqual(prevQueries.current!.perPage, formData.perPage)) {
+            console.log("зашли в 3 else if", isValid)
             methods.setValue('page', 1);
             methods.setValue('perPage', formData.perPage);
-            methods.formState.isValid && setQuery({ ...formData, page: 1, perPage: formData.perPage }, shouldReplace)
+            isValid && setQuery({ ...formData, page: 1, perPage: formData.perPage }, shouldReplace)
             prevQueries.current = { ...formData, page: 1, perPage: formData.perPage };
         }
     }
@@ -115,8 +123,8 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     /**
      * Сброс формы до дефолтного состояния и сабмит дефолтных значений
      */
-    function customResetHandler(): void {
-        const perPage = methods.getValues().perPage
+    async function customResetHandler(): Promise<void> {
+        const perPage = await methods.getValues().perPage
         methods.reset();
         methods.setValue('perPage', perPage);
         methods.handleSubmit(data => customSubmitHandler(data))()
@@ -126,6 +134,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
      * Сброс формы до дефолтного состояние и сабмит дефолтных значений
      */
     function customResetField(fieldName: keyof IFormValues): void {
+        console.log({[fieldName]: methods.formState.defaultValues![fieldName]})
         methods.reset({ ...methods.getValues(), [fieldName]: methods.formState.defaultValues![fieldName] }, { keepDefaultValues: true });
         methods.handleSubmit(data => customSubmitHandler(data))()
     }
@@ -140,6 +149,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
             }, {});
             // когда фильтры пришли, мы задаем defaultValues через reset, первый аргумент которого будут новые defaultValues
             methods.reset({ ...newQueries, ...defaultRequest }, { keepDefaultValues: false })
+            methods.trigger()
         }
         /* Если в URL имеются queries, то после reset заново устанавливаются значения этих полей. 
           В компонентах фильтра происходит сверка defaultValue и currentValue, если они разнятся то
@@ -149,7 +159,6 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
                 methods.setValue(query, queries[query])
             })
         }
-       
     }, [isFiltersPending, JSON.stringify(filters)]);
 
     return (

@@ -5,7 +5,7 @@
     function openCalendarPicker(e: React.MouseEvent<SVGSVGElement>): void {
         const parent: HTMLElement | null = e.currentTarget.parentElement;
         if (parent) {
-            let input = parent.querySelector('input');
+            let input = parent.previousElementSibling! as HTMLInputElement | null;
             input?.showPicker();
         }
     }

@@ -68,6 +68,7 @@ export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> 
                         <motion.span
                             onMouseDown={(e) => {
                                 e.stopPropagation()
+                                
                                 customResetField(inputName)}
                             } 
                             key={`alert`}
@@ -79,8 +80,9 @@ export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> 
                         <motion.span
                             onMouseDown={(e) => {
                                 e.stopPropagation()
-                                customResetField(inputName)}
-                            } 
+                                console.log(customResetField, inputName)
+                                customResetField(inputName)
+                            }} 
                             key={`counter`}
                             {...motionProps}
                             className='absolute inline-block bg-error py-[1px] pl-1 pr-2 text-white text-xs rounded-full'>

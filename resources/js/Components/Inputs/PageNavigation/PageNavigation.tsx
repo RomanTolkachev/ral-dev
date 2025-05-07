@@ -16,16 +16,15 @@ interface IProps {
 }
 
 export const PageNavigation: FunctionComponent<IProps> = ({ className, formName = 'page', lastPage = 1, currentPage, isPending = false, total }) => {
-    const { control, trigger, getValues, setValue } = useFormContext();
+    const { control, trigger, getValues } = useFormContext();
     const handlers = useContext(CustomSubmitHandlerContext)
 
     if (!handlers) return null
     const {customSubmitHandler} =  handlers 
 
     const handlePageChange = async (newPage: number) => {
-        setValue(formName, newPage);
         const isValid = await trigger()
-        isValid && customSubmitHandler(getValues())
+        isValid && customSubmitHandler({...getValues(), page: newPage})
     }
 
     return (
