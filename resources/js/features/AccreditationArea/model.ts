@@ -18,5 +18,5 @@ export type TAccreditationAreaModel = typeof AccreditationAreaModel[number];
 
 export interface IAccreditationAreaDefaultRequest extends TDefaultPaginationRequest {
     order: TAccreditationAreaModel[]
-    columns: TAccreditationAreaModel[]
+    user_columns: TAccreditationAreaModel[]
 }

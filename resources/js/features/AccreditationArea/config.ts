@@ -50,13 +50,18 @@ const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
     "tn_ved",
 ];
 
-const DEFAULT_FILTERS: TAccreditationAreaModel[] = ['gost', "tn_ved"]
+const DEFAULT_FILTERS: Partial<Record<TAccreditationAreaModel, string[]>> & TDefaultPaginationRequest = {
+    gost : [], 
+    tn_ved: [],     
+    page: 1,
+    perPage: "10" 
+}
 
 const DEFAULT_REQUEST: IAccreditationAreaDefaultRequest = {
     page: 1,
     perPage: '10',
     order: ["id"],
-    columns: DEFAULT_COLUMNS
+    user_columns: DEFAULT_COLUMNS
 }
 
-export default {DEFAULT_FILTERS, DEFAULT_REQUEST, DICTIONARY}
+export default {DEFAULT_FILTERS, DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY}

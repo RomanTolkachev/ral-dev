@@ -1,4 +1,4 @@
-import { FunctionComponent, useContext } from 'react';
+import { FunctionComponent, memo, useContext } from 'react';
 import { Toggle } from './Buttons/Toggle';
 import { SVG } from './utils/SVG';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -21,7 +21,7 @@ const directories: TLinkItem[] = [
 ]
 
 
-export const Header: FunctionComponent<IProps> = ({ className }) => {
+const Header: FunctionComponent<IProps> = ({ className }) => {
     const userData = useContext(AuthContext);
     const user = userData?.userInfo?.name
     const loading = userData?.isFetching
@@ -66,3 +66,5 @@ export const Header: FunctionComponent<IProps> = ({ className }) => {
         </header>
     );
 };
+
+export default memo(Header)

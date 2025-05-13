@@ -1,16 +1,13 @@
 import AbstractSearchingForm from '@/Components/Table/AbstractSearchingForm';
 import { DevTool } from '@hookform/devtools';
-import React, { createContext, FunctionComponent, ReactNode, useContext } from 'react';
+import { FunctionComponent, ReactNode, useContext } from 'react';
 import { AbstractTable } from '@/Components/Table/AbstractTable';
-import { AbstractFormProvider, CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider';
+import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider';
 import config from './config';
 import { AuthContext } from '@/app/providers/AuthProvider';
-import { fetchAccreditationAreaFilters } from './api';
 import useTableDataQuery from '@/Components/Table/useTableDataQuery';
-import { Table } from '@/Components/Table/Table';
 import CenteredLoader from '../ralTable/ui/RalTable/CenteredLoader';
 import useUserColumns from '@/Components/Table/useUserColumns';
-import translate from './lib/translate';
 import { useFormContext } from 'react-hook-form';
 
 interface Props {
@@ -34,7 +31,7 @@ const AccreditationAreaTable: FunctionComponent<Props> = ({ className }) => {
 
     const { columns: userColumns, isColumnsLoading } = useUserColumns({
         userId: userId,
-        defaultColumns: config.DEFAULT_REQUEST.columns,
+        defaultColumns: config.DEFAULT_COLUMNS,
         tableName
     })
     const { filtersData: { data: filters, isFetched: isFiltersFetched } } = filtersContext
@@ -42,7 +39,7 @@ const AccreditationAreaTable: FunctionComponent<Props> = ({ className }) => {
     const { data, fetchStatus, isPending } = useTableDataQuery({
         enabled: isFiltersFetched,
         tableName,
-        columns: userColumns ? userColumns : config.DEFAULT_REQUEST.columns,
+        columns: userColumns ? userColumns : config.DEFAULT_COLUMNS,
         userId: user?.userInfo?.id,
         defaultRequest: config.DEFAULT_REQUEST
     })

@@ -1,11 +1,10 @@
-import { Header } from '@/Components/Header'
+import Header from '@/Components/Header'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { TableLayout } from './TableLayout'
 import { Raltable } from '@/features/ralTable/ui/RalTable/RalTable'
 import { NotFound } from '@/Components/utils/404'
 import Modal from '@/Components/modal/Modal'
 import { RalModal } from '@/features/ralModal/ui/RalModal'
-import { AnimatePresence } from 'motion/react'
 import Home from '@/features/home/ui/Home'
 import LoginPage from '@/features/Login/LoginPage'
 import RalSettings from '@/features/RalTable/ui/RalSettings/RalSettings'
@@ -17,11 +16,11 @@ import accreditationAreaConfig from '@/features/AccreditationArea/config'
 import { AbstractFormProvider } from '@/shared/api/AbstractFormProvider'
 
 
+
 function MainLayout() {
     const navigate = useNavigate();
     const location = useLocation();
     const background = location.state && location.state.background
-
 
     function closeRalModal() {
         location.state ? navigate(-1) : navigate(`/directory/ral/${location.search}`)

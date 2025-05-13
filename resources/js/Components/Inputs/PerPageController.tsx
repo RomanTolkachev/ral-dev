@@ -16,8 +16,6 @@ const PerPageController: FunctionComponent<IProps> = () => {
     const {customSubmitHandler} = handlers
     const [, getQuery] = useParamsCustom();
 
-
-
     return (
         <div className="flex gap-3 items-center relative">
             <span>Показывать на странице</span>

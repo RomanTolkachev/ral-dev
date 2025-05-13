@@ -11,17 +11,17 @@ import { AuthContext } from '@/app/providers/AuthProvider'
 
 
 interface IFormValues {
-    [key: string ]: any
+    [key: string]: any
 }
 
 interface IDefaultRequest extends TDefaultPaginationRequest {
-    columns: unknown[]
+    user_columns: unknown[]
 }
 
 interface IProps {
     tableName: string
     defaultRequest: IDefaultRequest
-    defaultFilters: unknown
+    defaultFilters: Record<string, any>
     user?: any | undefined
 }
 
@@ -31,7 +31,7 @@ export type ICustomSubmitHandlerContext = {
     filtersData: UseQueryResult<ISearchingFormItem[]>
     customSubmitHandler: (formData: Record<string, unknown>) => void // тут плохо
     customResetHandler: () => void
-    customResetField: (fieldName: string ) => void
+    customResetField: (fieldName: string) => void
 } | undefined
 
 export const CustomSubmitHandlerContext = createContext<ICustomSubmitHandlerContext>(undefined); // TODO: ANY!!
@@ -52,41 +52,30 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
 
     const filtersData = useQuery({
         enabled: isUserChecked,
-        queryFn: () => fetchAbstractFilters(tableName, { userFilters: defaultFilters }),
+        queryFn: () => fetchAbstractFilters(tableName, { userFilters: keys(defaultFilters) }),
         queryKey: ["filters", tableName, defaultFilters]
     })
 
-    const { data: filters, isPending: isFiltersPending, isFetched } = filtersData
+    const { data: filters = [], isPending: isFiltersPending, isFetched } = filtersData
 
     // от данной переменной зависит, нужно ли перезаписывать состояния URL. Если query пустые на момент вызова onSubmit, то в историю добавится шаг.
     const shouldReplace = useMemo<boolean>(() => {
         return Object.keys(getQuery()).length ? true : false
     }, [JSON.stringify(queries)]);
 
-    // Устанавливаем default для полей формы. Везде массив. Т.к поля фильтров запрашиваются асинхронно, установлено несколько проверок, чтобы default всегда были валидны
-    const startValues = filters
-        ? filters.reduce((acc: Record<string, any>, key) => {
-            // Проверка, существует ли ключ в acc перед добавлением, т.к значения некоторых ключей установлены на фронте и их нельзя перезаписывать
-            if (!(key.header in acc)) {
-                acc[key.header] = [];
-            }
-            return acc;
-        }, defaultRequest)
-        : defaultRequest;
-
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
         disabled: !filtersData.isFetched,
         mode: "onChange",
         reValidateMode: 'onChange',
-        defaultValues: startValues,
+        defaultValues: { ...defaultFilters, ...filters },
     })
+
 
     // после получения фильтров записываем их для последующего сравнения
     useEffect(() => {
-        prevQueries.current = { ...startValues, ...getQuery() }
-    }, [filters])
+        prevQueries.current = { ...defaultFilters, ...queries, user_columns: defaultRequest.user_columns }
+    }, [isFetched])
 
-   
     /**
      * Обработчик формы с проверкой сброса страницы на первую, если параметры поиска изменились. В замыкании предыдущее и текущее значение формы,
      * а также query
@@ -99,10 +88,11 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         const isValid = await methods.trigger();
         console.log("зашли в сабмит", isValid)
         if (isEqual(prevQueries.current, formData)) {
-            console.log("одинакова")
+            console.log("одинакова", prevQueries.current, formData)
             return;
         } else if (!isEqual(excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData))) {
-            console.log("зашли 1 else if", isValid)
+            console.log("зашли 1 else if", isValid, methods.formState.errors)
+            console.log({ prev: excludePaginationQueries(prevQueries.current!), new: excludePaginationQueries(formData) })
             methods.setValue('page', 1);
             isValid && setQuery({ ...formData, page: 1 }, shouldReplace); // второй параметр true делает replace истории
             prevQueries.current = { ...formData, page: 1, perPage: formData.perPage };
@@ -134,9 +124,11 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
      * Сброс формы до дефолтного состояние и сабмит дефолтных значений
      */
     function customResetField(fieldName: keyof IFormValues): void {
-        console.log({[fieldName]: methods.formState.defaultValues![fieldName]})
         methods.reset({ ...methods.getValues(), [fieldName]: methods.formState.defaultValues![fieldName] }, { keepDefaultValues: true });
-        methods.handleSubmit(data => customSubmitHandler(data))()
+        methods.handleSubmit(data => {
+            console.log(data);
+            customSubmitHandler(data)
+        })()
     }
 
     // установка значений инпутов при обновлении или переходе по ссылке, если в query что-то есть
@@ -159,7 +151,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
                 methods.setValue(query, queries[query])
             })
         }
-    }, [isFiltersPending, JSON.stringify(filters)]);
+    }, [isFetched]);
 
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData }}>

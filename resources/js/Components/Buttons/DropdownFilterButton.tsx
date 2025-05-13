@@ -80,7 +80,6 @@ export const DropdownFilterButton: FunctionComponent<PropsWithChildren<IProps>> 
                         <motion.span
                             onMouseDown={(e) => {
                                 e.stopPropagation()
-                                console.log(customResetField, inputName)
                                 customResetField(inputName)
                             }} 
                             key={`counter`}

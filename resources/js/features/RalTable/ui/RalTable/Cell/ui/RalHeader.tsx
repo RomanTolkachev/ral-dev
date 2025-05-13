@@ -2,8 +2,8 @@ import { SVG } from "@/Components/utils/SVG"
 import { CustomSubmitHandlerContext } from "@/shared/api/AbstractFormProvider"
 import { IRalItem } from "@/shared/types/ral"
 import { Header } from "@tanstack/react-table"
-import { motion, ObjectTarget, Target, useAnimate, useAnimation } from "motion/react"
-import { FunctionComponent, ReactNode, RefObject, useContext, useEffect, useLayoutEffect, useState } from "react"
+import { motion, useAnimate } from "motion/react"
+import { FunctionComponent, memo, ReactNode, useContext, useEffect, useLayoutEffect, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 
 interface IProps {
@@ -16,8 +16,8 @@ const orderable: (keyof IRalItem)[] = ["NP_status_change_date", "regDate", "stat
 
 const RalHeader: FunctionComponent<IProps> = ({ className, headerData }) => {
 
-    let isOrderable: boolean = orderable.includes(headerData.id as keyof IRalItem)
-    const { control, trigger, getValues } = useFormContext();
+    const isOrderable: boolean = orderable.includes(headerData.id as keyof IRalItem)
+    const { control, trigger, getValues, setValue } = useFormContext();
     const handlers = useContext(CustomSubmitHandlerContext);
     if (!handlers) return null
     const {customSubmitHandler} = handlers
@@ -38,18 +38,18 @@ const RalHeader: FunctionComponent<IProps> = ({ className, headerData }) => {
                         control={control}
                         render={({ field: { value, onChange: updateForm, ref }, fieldState }) => {
                             const regex = new RegExp(`^${columnName}`, 'i');
+
+                            
                             let isActive = regex.test(value);
                             let descRegexp = new RegExp('desc', 'i')
                             let isArrowDown = value === '' || (isActive && descRegexp.test(value)) || !isActive;
                             const [firstRender, setIsFirstRender] = useState(true)
 
-
                             // чтобы при первом рендере стрелочка не анимировалась, если она должна смотреть вниз 
-                            useLayoutEffect(() => {
+                            useEffect(() => {
                                 if (scope.current && firstRender) {
-                                    animate(scope.current, {
-                                        rotate: isArrowDown ? 180 : 0,
-                                    }, { duration: 0 });
+                                    scope.current.style.transform = `rotate(${isArrowDown ? 180 : 0}deg)`
+                                    scope.current.style.color = isActive ? 'var(--cell-suspended)' : 'rgb(137, 137, 137)';
                                 }
                             }, []);
 
@@ -57,34 +57,40 @@ const RalHeader: FunctionComponent<IProps> = ({ className, headerData }) => {
                                 setIsFirstRender(false)
                             }, [])
 
+                            const asyncAnimate = (scope: HTMLElement, properties: Record<string, any>) => {
+                                 return new Promise<void>((resolve) => {
+                                     animate(scope, properties, { onComplete: resolve })
+                                })
+                            }
 
-                            // смысл в том, чтобы форма сабмитилась только после анимирования стрелки, иначе некрасиво
-                            useEffect(() => {
-                                if (!firstRender) {
-                                    const asyncAnimate = (scope: HTMLElement, properties: Record<string, any>) => {
-                                        return new Promise<void>((resolve) => {
-                                            animate(scope, properties, { onComplete: resolve })
-                                        })
+                            const handleToggle = async () => {
+                                if (!firstRender && scope.current) {
+                                    const newOrder = value === `${columnName}_desc`
+                                        ? columnName
+                                        : `${columnName}_desc`;
+                            
+                                    const newIsArrowDown = newOrder.endsWith('_desc');
+                                    const newIsActive = newOrder.startsWith(columnName);
+                            
+                                    await asyncAnimate(scope.current, {
+                                        color: newIsActive ? 'var(--cell-suspended)' : 'rgb(137, 137, 137)',
+                                        rotate: newIsArrowDown ? 180 : 0,
+                                    });
+
+                                    setValue('order', newOrder);
+                                    const isValid = await trigger();
+                                    const formData = { ...getValues(), order: newOrder };
+                            
+                                    if (isValid) {
+                                        customSubmitHandler(formData);
                                     }
-                                    const animateAndSubmit = async () => {
-                                        if (scope.current) {
-                                            isActive ? await asyncAnimate(scope.current, { color: 'var(--cell-suspended)' }) : await asyncAnimate(scope.current, { color: 'rgb(137, 137, 137)' })
-                                            isArrowDown ? await asyncAnimate(scope.current, { rotate: 180 }) : await asyncAnimate(scope.current, { rotate: 0 })
-                                        }
-                                        const isValid = await trigger();
-                                        isValid && customSubmitHandler(getValues())
-                                    }
-                                    animateAndSubmit();
                                 }
-
-                            }, [isArrowDown, isActive, firstRender])
+                            }
 
                             return (
                                 <motion.span
                                     ref={scope}
-                                    onClick={
-                                        () => value === `${columnName}_desc` ? updateForm(columnName) : updateForm(`${columnName}_desc`)
-                                    }
+                                    onClick={ handleToggle }
                                     className="w-6 flex justify-center items-center"
                                 >
                                     <SVG className={`w-4`} arrow />

@@ -152,7 +152,7 @@ export const Table: FunctionComponent<IProps> = ({ propsData, loading }) => {
             </div>
             <div className={'text-sm py-4 px-2 ml-6 flex gap-4 h-fit items-center justify-between text-table-base font-semibold'}>
                 <FoundedResults
-                    className='w-52 min-w-fit'
+                    className='w-52 min-w-fit max-lg:hidden'
                     dataLenght={tableData?.length}
                     currentPage={propsData?.current_page}
                     lastPage={propsData?.last_page}
