@@ -26,7 +26,7 @@ const DEFAULT_COLUMNS: TRalModel[] = [
     'ral_short_info_view.link',
     'NP_status_change_date',
     'tnved',
-    'regulation',
+    'regulations',
 ];
 
 const DEFAULT_FILTERS: Partial<Record<TRalModel | "fullText" , string[]>> & TDefaultPaginationRequest = {
