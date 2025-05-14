@@ -11,12 +11,13 @@ const AccreditationAreaModel = [
     'tn_ved', 
     'characteristic', 
     'characteristic_range',
-    'id_ral'
+    'id_ral',
+    'match_status'
 ] as const;
 
 export type TAccreditationAreaModel = typeof AccreditationAreaModel[number];
 
 export interface IAccreditationAreaDefaultRequest extends TDefaultPaginationRequest {
-    order: TAccreditationAreaModel[]
+    order?: TAccreditationAreaModel[]
     user_columns: TAccreditationAreaModel[]
 }

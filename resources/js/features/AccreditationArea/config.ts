@@ -1,27 +1,6 @@
 import { TDefaultPaginationRequest } from "@/shared/types/pagination";
 import { IAccreditationAreaDefaultRequest, TAccreditationAreaModel } from "./model";
 
-export const RAL_MODEL = [
-    'ral_short_info_view.link',
-    'nameType',
-    'nameTypeActivity',
-    'fullName',
-    'address',
-    'oaDescription',
-    'NPstatus',
-    'ral_short_info_view.id',
-    'regDate',
-    'NP_status_change_date',
-    'applicantFullName',
-    'new_status_AL',
-    'applicantINN',
-    'applicantINN',
-    'RegNumber',
-    'status_change_date',
-    'np_regulations_tnveds.tnved',
-    'np_regulations_tnveds.regulation',
-    'ral_short_info_view.regulations'
-] as const
 
 const DICTIONARY: Record<TAccreditationAreaModel, string> ={
     id: "ID",
@@ -35,6 +14,7 @@ const DICTIONARY: Record<TAccreditationAreaModel, string> ={
     source_file: "Файл-источник",
     source_page: "Страница в источнике",
     source_row: "Пункт в источнике",
+    match_status: 'Совпадение поиска'
 }
 
 const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
@@ -60,7 +40,7 @@ const DEFAULT_FILTERS: Partial<Record<TAccreditationAreaModel, string[]>> & TDef
 const DEFAULT_REQUEST: IAccreditationAreaDefaultRequest = {
     page: 1,
     perPage: '10',
-    order: ["id"],
+    // order: ["id"],
     user_columns: DEFAULT_COLUMNS
 }
 

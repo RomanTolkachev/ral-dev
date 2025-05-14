@@ -22,7 +22,7 @@ const RAL_MODEL = [
     'status_change_date',
     'regulations',
     'tnved',
-    'np_regulations_tnveds.regulation',
+    'regulation',
 ] as const
 
 export type TRalModel = typeof RAL_MODEL[number];

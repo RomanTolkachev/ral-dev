@@ -46,7 +46,7 @@ class TableFilterService
 
         // добавление поиска для регуляций
         $regulations = new \stdClass();
-        $regulations->header = "regulations";
+        $regulations->header = "regulation";
         $regulations->sortValues = new \stdClass();
         $regulations->sortValues->type = "huge";
 

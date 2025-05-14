@@ -26,7 +26,7 @@ const DEFAULT_COLUMNS: TRalModel[] = [
     'ral_short_info_view.link',
     'NP_status_change_date',
     'tnved',
-    'np_regulations_tnveds.regulation',
+    'regulation',
 ];
 
 const DEFAULT_FILTERS: Partial<Record<TRalModel | "fullText" , string[]>> & TDefaultPaginationRequest = {
@@ -37,7 +37,7 @@ const DEFAULT_FILTERS: Partial<Record<TRalModel | "fullText" , string[]>> & TDef
     ["NPstatus"]: [],
     ["NP_status_change_date"]: ["", ""],
     ["tnved"]: [],
-    regulations: [],
+    ["regulation"]: [],
     page: 1,
     perPage: "10",
     order: "",

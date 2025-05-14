@@ -34,16 +34,16 @@ class GetAccrediTationAreaListHandler
             $hasTnVed = $tnved === [] ? false : stripos($item["tn_ved"], $tnved[0]) === 0;
 
             if ($hasGost && $hasTnVed) {
-                $result[$key]["match_status"] = 'full';
+                $result[$key]["match_status"] = 'полное';
             }
             if ($hasGost && !$hasTnVed) {
-                $result[$key]["match_status"] = 'partial';
+                $result[$key]["match_status"] = 'частичное';
             }
             if (!$hasGost && $hasTnVed) {
-                $result[$key]["match_status"] = 'partial';
+                $result[$key]["match_status"] = 'частичное';
             }
             if (!$hasGost && !$hasTnVed) {
-                $result[$key]["match_status"] = 'none';
+                $result[$key]["match_status"] = 'не применимо';
             }
         }
 
