@@ -37,6 +37,7 @@ const DEFAULT_FILTERS: Partial<Record<TRalModel | "fullText" , string[]>> & TDef
     ["NPstatus"]: [],
     ["NP_status_change_date"]: ["", ""],
     ["tnved"]: [],
+    regulations: [],
     page: 1,
     perPage: "10",
     order: "",

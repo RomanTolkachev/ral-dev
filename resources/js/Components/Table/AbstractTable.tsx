@@ -1,4 +1,4 @@
-import { createContext, FunctionComponent, ReactNode, useLayoutEffect, useMemo, useState } from 'react'
+import { createContext, FunctionComponent, ReactNode, useContext, useLayoutEffect, useMemo, useState } from 'react'
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { SVG } from '@/Components/utils/SVG'
 import { getHeaders } from '@/Components/Table/lib/getHeaders'
@@ -13,6 +13,8 @@ import createTranslateFn from './lib/translate'
 import { PageNavigation } from '../Inputs/PageNavigation/PageNavigation'
 import FoundedResults from '../Inputs/PageNavigation/Pagination'
 import PerPageController from '../Inputs/PerPageController'
+import customModalCell from '@/features/ralModal/ui/customModalCell'
+import { CustomCellContext } from '@/shared/api/AbstractFormProvider'
 
 
 interface IProps {
@@ -20,6 +22,7 @@ interface IProps {
     paginatedData: IPagination | undefined
     loading: boolean
     dictionary?: Record<string, any>
+    customCellrender?: any
 }
 
 // параметры анимации
@@ -37,6 +40,8 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
     const navigate = useNavigate();
 
     const translateFn = dictionary ? createTranslateFn(dictionary) : null
+
+    const CustomCell = useContext(CustomCellContext)
 
     const headers = useMemo(() => {
         const data = paginatedData?.data as IRalItem[]
@@ -145,7 +150,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
                                             >
                                                 {row.getVisibleCells().map((cell) => {
                                                     return (
-                                                        <RalCell key={cell.id} cellData={cell} />
+                                                        <CustomCell key={cell.id} cellData={cell} />
                                                     )
                                                 })}
                                             </motion.tr>

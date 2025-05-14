@@ -8,9 +8,8 @@ class GetAccrediTationAreaListHandler
 {
     public function __construct(protected GetAccreditationAreaListFilter $filter) {}
 
-    public function execute(int $page, int $itemsPerPage, array $columns): GetAccreditationAreaListResource
+    public function execute(int $page, int $itemsPerPage, array $columns, array $gost, array $tnved): GetAccreditationAreaListResource
     {
-        // dd($itemsPerPage);
         $query = AccreditationArea::query();
 
         foreach ($columns as $column) {
@@ -23,11 +22,30 @@ class GetAccrediTationAreaListHandler
         $result = $query->filter(
             $this->filter
         )
-        
+
         ->paginate(
             page: $page,
             perPage: $itemsPerPage
         );
+      
+        foreach($result as $key => $item)
+        {
+            $hasGost = $gost === [] ? false : stripos($item["gost"], $gost[0]) === 0;
+            $hasTnVed = $tnved === [] ? false : stripos($item["tn_ved"], $tnved[0]) === 0;
+
+            if ($hasGost && $hasTnVed) {
+                $result[$key]["match_status"] = 'full';
+            }
+            if ($hasGost && !$hasTnVed) {
+                $result[$key]["match_status"] = 'partial';
+            }
+            if (!$hasGost && $hasTnVed) {
+                $result[$key]["match_status"] = 'partial';
+            }
+            if (!$hasGost && !$hasTnVed) {
+                $result[$key]["match_status"] = 'none';
+            }
+        }
 
         return new GetAccreditationAreaListResource($result);
     }

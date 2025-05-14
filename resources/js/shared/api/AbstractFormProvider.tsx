@@ -23,6 +23,7 @@ interface IProps {
     defaultRequest: IDefaultRequest
     defaultFilters: Record<string, any>
     user?: any | undefined
+    customCell?: () => any
 }
 
 type QueryParams = Record<string, any>
@@ -36,12 +37,17 @@ export type ICustomSubmitHandlerContext = {
 
 export const CustomSubmitHandlerContext = createContext<ICustomSubmitHandlerContext>(undefined); // TODO: ANY!!
 
+export const CustomCellContext = createContext<null | any>(null)
+
 export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> = ({
     tableName,
     children,
     defaultRequest,
     defaultFilters,
+    customCell,
 }) => {
+
+    console.log(customCell)
 
     const user = useContext(AuthContext)
 
@@ -70,7 +76,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         defaultValues: { ...defaultFilters, ...filters },
     })
 
-
+    // methods.formState.dirtyFields
     // после получения фильтров записываем их для последующего сравнения
     useEffect(() => {
         prevQueries.current = { ...defaultFilters, ...queries, user_columns: defaultRequest.user_columns }
@@ -156,8 +162,40 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData }}>
             <FormProvider {...methods}>
-                {children}
+                <CustomCellContext.Provider value={customCell}>
+                    {children}
+                </CustomCellContext.Provider>
             </FormProvider>
         </CustomSubmitHandlerContext.Provider>
     )
 }
+
+// const Item=()=>{
+//     const [settingFilter,setSettingsFilter];
+//     const [settingsTable,setSettingsTable];
+
+//     useEffect(()=>{
+
+//     },[settingFilter,settingsTable])
+//     return <>
+//     <div>   
+//         <Filter onChangeSettings={setSettingsFilter}/>
+//         <div>
+//             <Table onChangeSettings={setSettingsTable}/><Paginatio onChangeSetting={setSettingsPaggination}/>
+//         </div>
+//     </div>
+//     </>
+// }
+
+// const Filter=()=>{
+//     const form=useForm();
+
+//     useEffect(()=>{
+//         onChagseSetting(form)
+//     },[form])
+
+//     return <Form>
+//         <Input/>
+//         <Input/>
+//     </Form>
+// }

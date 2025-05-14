@@ -20,7 +20,7 @@ const RalSettings: FunctionComponent<Props> = ({ className }) => {
     const { userId, isUserChecked } = useUserInfo();
     const { columns, isColumnsFetching } = useRalColumns(userId);
    
-    const [fullList, setFullList] = useState([...columns, ...config.RAL_MODEL.filter(item => !columns.includes(item))])
+    const [fullList, setFullList] = useState([...columns, ...config.DEFAULT_COLUMNS.filter(item => !columns.includes(item))])
     const [columnsValues, setColumnsValues] = useState<TRalModel[]>(columns);
 
     useLayoutEffect(() => {
