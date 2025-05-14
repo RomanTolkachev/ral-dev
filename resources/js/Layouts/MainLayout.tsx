@@ -64,7 +64,8 @@ function MainLayout() {
                     } />
                     <Route path='accreditation_area'  element={
                         <AbstractFormProvider
-                            customCell={AccreditationAreaCell}
+                            CustomCell={AccreditationAreaCell}
+                            rowClickFn={() => null}
                             defaultFilters={accreditationAreaConfig.DEFAULT_FILTERS}
                             defaultRequest={accreditationAreaConfig.DEFAULT_REQUEST}
                             tableName="accreditation_area">

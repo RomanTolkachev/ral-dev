@@ -6,7 +6,7 @@ const DICTIONARY: Record<TAccreditationAreaModel, string> ={
     id: "ID",
     gost: "ГОСТ",
     characteristic: "Характеристика",
-    id_ral: "ID лаборатории",
+    id_ral: "Лаборатория",
     okpd: "ОКПД",
     characteristic_range: "Область аккредитации",
     tn_ved: "ТН ВЭД",
@@ -18,10 +18,10 @@ const DICTIONARY: Record<TAccreditationAreaModel, string> ={
 }
 
 const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
+    // "id", 
     "characteristic", 
     "characteristic_range", 
     'gost', "gost_object", 
-    "id", 
     "id_ral", 
     "okpd", 
     "source_file", 

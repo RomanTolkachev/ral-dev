@@ -12,4 +12,9 @@ class AccreditationArea extends Model
     use HasFactory, HasColumnsHelp, HasQueryFilters;
     public $table = "accreditation_area";
     public $timestamps = false;
+
+    public function getIdRalAttribute()
+    {
+        return RalShortInfoView::find($this->attributes['id_ral'])->RegNumber ?? 'значение отсутствует';
+    }
 }

@@ -23,7 +23,8 @@ interface IProps {
     defaultRequest: IDefaultRequest
     defaultFilters: Record<string, any>
     user?: any | undefined
-    customCell?: () => any
+    CustomCell?: FunctionComponent<any>
+    rowClickFn?: () => void
 }
 
 type QueryParams = Record<string, any>
@@ -37,17 +38,20 @@ export type ICustomSubmitHandlerContext = {
 
 export const CustomSubmitHandlerContext = createContext<ICustomSubmitHandlerContext>(undefined); // TODO: ANY!!
 
-export const CustomCellContext = createContext<null | any>(null)
+type CustomisationContext = {
+    CustomCell?: FunctionComponent<any>
+    rowClickFn?: () => void
+}
+export const CustomCellContext = createContext<null | CustomisationContext>(null)
 
 export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> = ({
     tableName,
     children,
     defaultRequest,
     defaultFilters,
-    customCell,
+    CustomCell,
+    rowClickFn
 }) => {
-
-    console.log(customCell)
 
     const user = useContext(AuthContext)
 
@@ -162,7 +166,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData }}>
             <FormProvider {...methods}>
-                <CustomCellContext.Provider value={customCell}>
+                <CustomCellContext.Provider value={{CustomCell, rowClickFn}}>
                     {children}
                 </CustomCellContext.Provider>
             </FormProvider>

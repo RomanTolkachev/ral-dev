@@ -13,6 +13,7 @@ function translate(raw: TAccreditationAreaModel): string {
         source_file: "Файл-источник",
         source_page: "Страница в источнике",
         source_row: "Пункт в источнике",
+        match_status: "Совпадение поиска"
     }
     return dictionary[raw] ?? raw as string
 }

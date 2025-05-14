@@ -1,10 +1,8 @@
-import { createContext, FunctionComponent, ReactNode, useContext, useLayoutEffect, useMemo, useState } from 'react'
+import { FunctionComponent, ReactNode, useContext, useLayoutEffect, useMemo, useState } from 'react'
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { SVG } from '@/Components/utils/SVG'
 import { getHeaders } from '@/Components/Table/lib/getHeaders'
 import { IRalItem } from '@/shared/types/ral'
-import { translateHeaderName } from '@/Components/Table/lib/translateHeaderName'
-import RalCell from '@/features/RalTable/ui/RalTable/Cell/ui/RalCell'
 import IPagination from '@/shared/types/pagination'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router'
@@ -13,7 +11,6 @@ import createTranslateFn from './lib/translate'
 import { PageNavigation } from '../Inputs/PageNavigation/PageNavigation'
 import FoundedResults from '../Inputs/PageNavigation/Pagination'
 import PerPageController from '../Inputs/PerPageController'
-import customModalCell from '@/features/ralModal/ui/customModalCell'
 import { CustomCellContext } from '@/shared/api/AbstractFormProvider'
 
 
@@ -41,7 +38,8 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
 
     const translateFn = dictionary ? createTranslateFn(dictionary) : null
 
-    const CustomCell = useContext(CustomCellContext)
+    const {CustomCell, rowClickFn} = useContext(CustomCellContext) ?? {};
+
 
     const headers = useMemo(() => {
         const data = paginatedData?.data as IRalItem[]
@@ -83,7 +81,11 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
      * функция для перехода по ссылке при клике на row
      */
     function handleRowClick(to: string): void {
-        navigate(to)
+        if (rowClickFn) {
+            rowClickFn()
+        } else {
+            navigate(to)
+        }
     }
 
     /**
@@ -150,7 +152,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
                                             >
                                                 {row.getVisibleCells().map((cell) => {
                                                     return (
-                                                        <CustomCell key={cell.id} cellData={cell} />
+                                                        CustomCell && <CustomCell key={cell.id} cellData={cell} />
                                                     )
                                                 })}
                                             </motion.tr>
