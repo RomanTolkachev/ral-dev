@@ -45,6 +45,17 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             highlight(cellValue, currentQuery.gost),
         )
     }
+    // if (columnID === "characteristic_range") {
+    //     let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
+    //     return createElement(
+    //         'span',
+    //         {
+    //             className: "text-wrap overflow-hidden mx-auto",
+    //             style: {maxWidth: '100px',},
+    //         },
+    //         cellValue
+    //     )
+    // }
     if (columnID === "tn_ved") {
         let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
         return createElement(

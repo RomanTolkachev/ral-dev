@@ -15,6 +15,7 @@ import ralConfig from '@/features/ralTable/config'
 import accreditationAreaConfig from '@/features/AccreditationArea/config'
 import { AbstractFormProvider } from '@/shared/api/AbstractFormProvider'
 import AccreditationAreaCell from '@/features/AccreditationArea/AccreditationAreaCell'
+import AccreditationAreaHeader from '@/features/AccreditationArea/AccreditationAreaHeader'
 
 
 
@@ -64,6 +65,8 @@ function MainLayout() {
                     } />
                     <Route path='accreditation_area'  element={
                         <AbstractFormProvider
+                            cellWidths={accreditationAreaConfig.CELL_WIDTH}
+                            CustomHeader={AccreditationAreaHeader}
                             CustomCell={AccreditationAreaCell}
                             rowClickFn={() => null}
                             defaultFilters={accreditationAreaConfig.DEFAULT_FILTERS}

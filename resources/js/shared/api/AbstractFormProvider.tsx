@@ -24,6 +24,8 @@ interface IProps {
     defaultFilters: Record<string, any>
     user?: any | undefined
     CustomCell?: FunctionComponent<any>
+    CustomHeader?: FunctionComponent<any>
+    cellWidths?: Record<string, number>
     rowClickFn?: () => void
 }
 
@@ -40,7 +42,9 @@ export const CustomSubmitHandlerContext = createContext<ICustomSubmitHandlerCont
 
 type CustomisationContext = {
     CustomCell?: FunctionComponent<any>
+    CustomHeader?: FunctionComponent<any>
     rowClickFn?: () => void
+    cellWidths?: IProps["cellWidths"]
 }
 export const CustomCellContext = createContext<null | CustomisationContext>(null)
 
@@ -50,7 +54,9 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     defaultRequest,
     defaultFilters,
     CustomCell,
-    rowClickFn
+    CustomHeader,
+    rowClickFn,
+    cellWidths
 }) => {
 
     const user = useContext(AuthContext)
@@ -166,7 +172,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData }}>
             <FormProvider {...methods}>
-                <CustomCellContext.Provider value={{CustomCell, rowClickFn}}>
+                <CustomCellContext.Provider value={{CustomCell, CustomHeader, rowClickFn, cellWidths}}>
                     {children}
                 </CustomCellContext.Provider>
             </FormProvider>

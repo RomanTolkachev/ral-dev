@@ -38,7 +38,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
 
     const translateFn = dictionary ? createTranslateFn(dictionary) : null
 
-    const {CustomCell, rowClickFn} = useContext(CustomCellContext) ?? {};
+    const {CustomCell, rowClickFn, CustomHeader, cellWidths } = useContext(CustomCellContext) ?? {};
 
 
     const headers = useMemo(() => {
@@ -50,11 +50,13 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
         let colData: ColumnDef<any>[] = [];
         if (headers.length !== 0) {
             colData = headers.map((header) => {
+                console.log(cellWidths?.[header])
                 return {
                     accessorKey: header,
                     header: translateFn ? translateFn(header) : header,
                     cell: (props: any) => { return <>{props.getValue()}</>; },
                     enableResizing: true,
+                    size: cellWidths?.[header] ?? 150
                 }
             })
         }
@@ -112,9 +114,9 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
                         ) : Object.keys(tableData).length ? (
                             <table
                                 style={{ width: table.getTotalSize() }}
-                                className={`min-h-full min-w-full max-h-full text-sm table-auto rounded-t-md [&_td]:border-r [&_td]:border-r-filter-dropdown-button`}>
+                                className={`min-h-full min-w-full max-h-full text-sm table-fixed rounded-t-md [&_td]:border-r [&_td]:border-r-filter-dropdown-button`}>
                                 <thead className={'select-none relative text-header-text font-medium'}>
-                                    <tr className={'text-header-text text-nowrap'}>
+                                    <tr className={'text-header-text'}>
                                         {table.getHeaderGroups()[0].headers.map((header) => {
                                             return (
                                                 <th
@@ -123,9 +125,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
                                                     }}
                                                     className={`sticky z-[1] bg-row-even top-0 p-2 overflow-hidden`}
                                                     key={header.id}>
-                                                    <span className={''}>
-                                                        {header.column.columnDef.header as ReactNode}
-                                                    </span>
+                                                        {CustomHeader ? <CustomHeader headerData={header.column.columnDef}/> : header.column.columnDef.header as ReactNode}
                                                     {/* <span
                                                         className={`bg-resizer absolute translate-x-1/2 cursor-col-resize opacity-0 hover:opacity-100 z-10 w-1.5 bg-button-violet  h-full top-0 right-0 `}
                                                         onMouseDown={header.getResizeHandler()}

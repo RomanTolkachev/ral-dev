@@ -43,8 +43,18 @@ const DEFAULT_FILTERS: Partial<Record<TAccreditationAreaModel, string[]>> & TDef
 const DEFAULT_REQUEST: IAccreditationAreaDefaultRequest = {
     page: 1,
     perPage: '10',
-    // order: ["id"],
     user_columns: DEFAULT_COLUMNS
 }
 
-export default {DEFAULT_FILTERS, DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY}
+const CELL_WIDTH: Partial<Record<TAccreditationAreaModel, number>> = {
+    source_file_label: 60,
+    characteristic_range: 120,
+    source_row: 90,
+    source_page: 120,
+    tn_ved: 90,
+    okpd: 70,
+    gost: 80,
+    id_ral: 120,
+}
+
+export default {DEFAULT_FILTERS, DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY, CELL_WIDTH}
