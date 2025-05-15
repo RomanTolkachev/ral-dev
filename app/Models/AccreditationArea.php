@@ -15,6 +15,6 @@ class AccreditationArea extends Model
 
     public function getIdRalAttribute()
     {
-        return RalShortInfoView::find($this->attributes['id_ral'])->RegNumber ?? 'значение отсутствует';
+        return RalShortInfoView::find($this->attributes['id_ral'])->applicantFullName ?? 'значение отсутствует';
     }
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string("source_page");
             $table->bigInteger("id_ral");
             $table->string("source_file");
+            $table->string("source_file_label");
             $table->id();
         });
     }

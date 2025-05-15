@@ -2,6 +2,7 @@ import { TDefaultPaginationRequest } from "@/shared/types/pagination";
 
 const AccreditationAreaModel = [
     'id', 
+    'source_file_label',
     'source_row', 
     'source_page', 
     'source_file', 

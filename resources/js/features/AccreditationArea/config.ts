@@ -5,28 +5,31 @@ import { IAccreditationAreaDefaultRequest, TAccreditationAreaModel } from "./mod
 const DICTIONARY: Record<TAccreditationAreaModel, string> ={
     id: "ID",
     gost: "ГОСТ",
-    characteristic: "Характеристика",
+    characteristic: "Определяемая характеристика (Показатель)",
     id_ral: "Лаборатория",
-    okpd: "ОКПД",
-    characteristic_range: "Область аккредитации",
-    tn_ved: "ТН ВЭД",
-    gost_object: "расшифровка ГОСТ",
+    okpd: "КОД ОКПД 2",
+    characteristic_range: "Диапазон определения",
+    tn_ved: "КОД ТН ВЭД ЕАЭС",
+    gost_object: "Наименование объекта",
     source_file: "Файл-источник",
     source_page: "Страница в источнике",
     source_row: "Пункт в источнике",
-    match_status: 'Совпадение поиска'
+    match_status: 'Совпадение поиска',
+    source_file_label: 'Тип области'
 }
 
 const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
     // "id", 
-    "characteristic", 
-    "characteristic_range", 
-    'gost', "gost_object", 
     "id_ral", 
-    "okpd", 
+    "source_file_label",
     "source_file", 
     "source_page", 
     "source_row",
+    'gost', 
+    "characteristic", 
+    "characteristic_range", 
+    "gost_object", 
+    "okpd", 
     "tn_ved",
 ];
 
