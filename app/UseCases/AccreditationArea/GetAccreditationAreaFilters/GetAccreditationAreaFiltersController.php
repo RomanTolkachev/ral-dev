@@ -27,6 +27,14 @@ class GetAccreditationAreaFiltersController
                     'type' => 'huge'
                 ],
             ],
+            [
+                'header' => "source_file_label",
+                'headerType' => 'varchar',
+                'sortValues' => [
+                    'type' => 'checkBox',
+                    'checkboxValues' => ["У", "Р", "С"]
+                ],
+            ],
         ];
         return new JsonResponse($filters);
     }

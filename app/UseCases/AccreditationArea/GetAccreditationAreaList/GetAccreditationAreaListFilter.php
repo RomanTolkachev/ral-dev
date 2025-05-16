@@ -42,4 +42,12 @@ class GetAccreditationAreaListFilter extends AbstractFilter
         }
         return $query;
     }
+    protected function sourceFileLabel(array $value): Builder
+    {
+        $query = $this->builder;
+        foreach ($value as $item) {
+            $query = $query->orWhere('source_file_label', '=', $item);
+        }
+        return $query;
+    }
 }
