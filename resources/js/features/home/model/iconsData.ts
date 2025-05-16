@@ -66,6 +66,14 @@ const iconsData: IIconData[] = [
         title: "Табло ИК"
     },
     {
+        iconPath: "/main_logos/zirael_light.png",
+        reactLink: "",
+        straightLink: "https://webserver.certico.ru/ral",
+        order: 7,
+        bg: "#B4DCE3",
+        title: "Дайджест Р.А.Л"
+    },
+    {
         iconPath: "/main_logos/snake_light.png",
         reactLink: "",
         straightLink: "https://24.certico.ru/services/lists/status-97",
@@ -74,12 +82,20 @@ const iconsData: IIconData[] = [
         title: "Табло ИЦС"
     },
     {
-        iconPath: "/main_logos/zirael_light.png",
+        iconPath: "/main_logos/crow_light.png",
         reactLink: "",
-        straightLink: "https://webserver.certico.ru/ral",
-        order: 7,
-        bg: "#B4DCE3",
-        title: "Дайджест Р.А.Л"
+        straightLink: "https://exchange.certico.local/",
+        order: 11,
+        bg: "#D7D7D7",
+        title: "Локальная почта"
+    },
+    {
+        iconPath: "/main_logos/dogo_light.png",
+        reactLink: "http://webserver.certico.local/directory/accreditation_area",
+        straightLink: "",
+        order: 12,
+        bg: "#C3B693",
+        title: "Поиск по ОА ИЛ"
     },
 ]
 
