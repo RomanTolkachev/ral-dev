@@ -29,7 +29,7 @@ class GetAccreditationAreaListFilter extends AbstractFilter
     {
         $query = $this->builder;
         foreach ($value as $item) {
-            $query = $query->orWhere('gost', 'like', "%$item%");
+            $query = $query->orWhere('gost', 'like', "$item%");
         }
         return $query;
     }

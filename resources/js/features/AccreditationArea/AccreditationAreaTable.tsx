@@ -1,7 +1,6 @@
 import AbstractSearchingForm from '@/Components/Table/AbstractSearchingForm';
 import { DevTool } from '@hookform/devtools';
 import { FunctionComponent, ReactNode, useContext } from 'react';
-import { AbstractTable } from '@/Components/Table/AbstractTable';
 import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider';
 import config from './config';
 import { AuthContext } from '@/app/providers/AuthProvider';
@@ -9,6 +8,7 @@ import useTableDataQuery from '@/Components/Table/useTableDataQuery';
 import CenteredLoader from '../ralTable/ui/RalTable/CenteredLoader';
 import useUserColumns from '@/Components/Table/useUserColumns';
 import { useFormContext } from 'react-hook-form';
+import { AbstractTable } from '@/Components/Table';
 
 interface Props {
     className?: string;

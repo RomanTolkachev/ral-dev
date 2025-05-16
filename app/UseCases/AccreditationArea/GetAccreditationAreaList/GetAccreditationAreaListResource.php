@@ -19,6 +19,23 @@ class GetAccreditationAreaListResource extends JsonResource
         unset($result['next_page_url']);
         unset($result['prev_page_url']);
 
+        $result['data'] = array_map(function (array $data) {
+            if (!array_key_exists('ral_short_info_view', $data)){
+                return $data;
+            }
+            if (!is_array($data['ral_short_info_view'])) {
+                unset($data['ral_short_info_view']);
+            return $data;
+            }
+            if (!isset($data['ral_short_info_view']['applicantFullName'])) {
+                unset($data['ral_short_info_view']);
+            return $data;
+            }
+            $data['id_ral'] = $data['ral_short_info_view']['applicantFullName'];
+            unset($data['ral_short_info_view']);
+            return $data;
+        }, $result['data']);
+
         return $result;
     }
 }

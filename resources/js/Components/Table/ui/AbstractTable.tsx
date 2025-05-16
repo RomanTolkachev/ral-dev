@@ -6,12 +6,13 @@ import { IRalItem } from '@/shared/types/ral'
 import IPagination from '@/shared/types/pagination'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router'
-import { Preloader } from '../utils/Preloader'
-import createTranslateFn from './lib/translate'
-import { PageNavigation } from '../Inputs/PageNavigation/PageNavigation'
-import FoundedResults from '../Inputs/PageNavigation/Pagination'
-import PerPageController from '../Inputs/PerPageController'
 import { CustomCellContext } from '@/shared/api/AbstractFormProvider'
+import { PageNavigation } from '@/Components/Inputs/PageNavigation/PageNavigation'
+import FoundedResults from '@/Components/Inputs/PageNavigation/Pagination'
+import PerPageController from '@/Components/Inputs/PerPageController'
+import { Preloader } from '@/Components/utils/Preloader'
+import createTranslateFn from '../lib/translate'
+import CustomCell from './CustomCell'
 
 
 interface IProps {
@@ -38,7 +39,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
 
     const translateFn = dictionary ? createTranslateFn(dictionary) : null
 
-    const {CustomCell, rowClickFn, CustomHeader, cellWidths } = useContext(CustomCellContext) ?? {};
+    const { rowClickFn, CustomHeader, cellWidths } = useContext(CustomCellContext) ?? {};
 
 
     const headers = useMemo(() => {
@@ -152,7 +153,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
                                             >
                                                 {row.getVisibleCells().map((cell) => {
                                                     return (
-                                                        CustomCell && <CustomCell key={cell.id} cellData={cell} />
+                                                        <CustomCell key={cell.id} cellData={cell} />
                                                     )
                                                 })}
                                             </motion.tr>

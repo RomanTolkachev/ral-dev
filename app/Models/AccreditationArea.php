@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\HasColumnsHelp;
 use App\Models\Traits\HasQueryFilters;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AccreditationArea extends Model
 {
@@ -13,8 +14,9 @@ class AccreditationArea extends Model
     public $table = "accreditation_area";
     public $timestamps = false;
 
-    public function getIdRalAttribute()
+    public function ralShortInfoView(): BelongsTo
     {
-        return RalShortInfoView::find($this->attributes['id_ral'])->applicantFullName ?? 'значение отсутствует';
+        return $this->belongsTo(RalShortInfoView::class, 'id_ral', 'id');
     }
+
 }

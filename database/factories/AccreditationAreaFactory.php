@@ -36,7 +36,7 @@ class AccreditationAreaFactory extends Factory
             "source_page" => $this->faker->numberBetween(1, 300),
             "id_ral" => $this->faker->numberBetween(1, 300),
             "source_file" => "название источника файла",
-            "source_file_label" => $this->faker->randomElement(["У", "C", "Р"]),
+            "source_file_label" => $this->faker->randomElement(["АО", "РОА", "СОА"]),
         ];
     }
 }

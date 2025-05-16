@@ -56,6 +56,7 @@ const CELL_WIDTH: Partial<Record<TAccreditationAreaModel, number>> = {
     okpd: 70,
     gost: 80,
     id_ral: 120,
+    gost_object: 300
 }
 
 export default {DEFAULT_FILTERS, DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY, CELL_WIDTH}

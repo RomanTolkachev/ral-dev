@@ -10,7 +10,7 @@ class GetAccrediTationAreaListHandler
 
     public function execute(int $page, int $itemsPerPage, array $columns, array $gost, array $tnved): GetAccreditationAreaListResource
     {
-        $query = AccreditationArea::query();
+        $query = AccreditationArea::with("ralShortInfoView:id,applicantFullName");
 
         foreach ($columns as $column) {
             switch ($column) {
@@ -37,10 +37,10 @@ class GetAccrediTationAreaListHandler
                 $result[$key]["match_status"] = 'полное';
             }
             if ($hasGost && !$hasTnVed) {
-                $result[$key]["match_status"] = 'частичное';
+                $result[$key]["match_status"] = 'совпадение по ГОСТ';
             }
             if (!$hasGost && $hasTnVed) {
-                $result[$key]["match_status"] = 'частичное';
+                $result[$key]["match_status"] = 'совпадение по ТН ВЭД';
             }
             if (!$hasGost && !$hasTnVed) {
                 $result[$key]["match_status"] = 'не применимо';
