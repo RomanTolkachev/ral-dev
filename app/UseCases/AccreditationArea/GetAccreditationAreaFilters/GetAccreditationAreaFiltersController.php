@@ -35,6 +35,13 @@ class GetAccreditationAreaFiltersController
                     'checkboxValues' => ["АО", "РОА", "СОА"]
                 ],
             ],
+            [
+                'header' => "id_ral",
+                'headerType' => 'varchar',
+                'sortValues' => [
+                    'type' => 'huge',
+                ],
+            ],
         ];
         return new JsonResponse($filters);
     }

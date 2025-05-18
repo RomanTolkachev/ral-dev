@@ -91,7 +91,7 @@ const iconsData: IIconData[] = [
     },
     {
         iconPath: "/main_logos/dogo_light.png",
-        reactLink: "http://webserver.certico.local/directory/accreditation_area",
+        reactLink: "directory/accreditation_area",
         straightLink: "",
         order: 12,
         bg: "#C3B693",

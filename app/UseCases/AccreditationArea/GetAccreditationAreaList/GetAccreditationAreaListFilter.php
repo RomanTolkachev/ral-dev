@@ -50,4 +50,17 @@ class GetAccreditationAreaListFilter extends AbstractFilter
         }
         return $query;
     }
+    protected function idRal(array $value): Builder
+    {
+        $query = $this->builder;
+        $query = $query->whereHas('ralShortInfoView', function (Builder $q) use ($value) {
+            $q->where(function ($subQuery) use ($value) {
+                foreach ($value as $item) {
+                    $subQuery->orWhere('applicantFullName', 'like', "%$item%");
+                }
+            });
+        });
+
+        return $query;
+    }
 }

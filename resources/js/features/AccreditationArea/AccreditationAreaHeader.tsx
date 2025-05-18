@@ -1,9 +1,7 @@
-import { TRalModel } from "@/features/RalTable/model/types"
-import useParamsCustom from "@/shared/query/useParamsCustom"
-import { Cell, ColumnDef, } from "@tanstack/react-table"
+
+import { ColumnDef, } from "@tanstack/react-table"
 import { FunctionComponent, ReactNode } from "react"
-import { useLocation } from "react-router-dom"
-import customFlexRender from "./customFlexRender"
+
 
 export interface IProps {
     className?: string
@@ -33,7 +31,6 @@ const AccreditationAreaHeader: FunctionComponent<IProps> = ({ headerData }) => {
     }
     return (
         <span
-            // key={id}
             className={`overflow-hidden text-center inline-block w-full`}>
             {/* w-[${cellData.column.getSize()}px]  добавить для resize*/}
             {headerData.header as ReactNode}

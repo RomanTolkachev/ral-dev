@@ -11,6 +11,8 @@ class GetAccreditationAreaListController extends Controller
 {
     public function __invoke(GetAccrediTationAreaListHandler $handler, GetAccreditationAreaListRequest $request): JsonResponse
     {
+
+        // dd($request);
         $result = $handler->execute(
             $request->page, 
             $request->perPage, 
