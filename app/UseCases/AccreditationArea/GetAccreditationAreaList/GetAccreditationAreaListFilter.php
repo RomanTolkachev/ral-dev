@@ -56,7 +56,7 @@ class GetAccreditationAreaListFilter extends AbstractFilter
         $query = $query->whereHas('ralShortInfoView', function (Builder $q) use ($value) {
             $q->where(function ($subQuery) use ($value) {
                 foreach ($value as $item) {
-                    $subQuery->orWhere('applicantFullName', 'like', "%$item%");
+                    $subQuery->orWhere('fullName', 'like', "%$item%");
                 }
             });
         });

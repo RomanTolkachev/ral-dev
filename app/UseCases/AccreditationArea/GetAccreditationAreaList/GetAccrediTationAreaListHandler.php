@@ -10,7 +10,7 @@ class GetAccrediTationAreaListHandler
 
     public function execute(int $page, int $itemsPerPage, array $columns, array $gost, array $tnved): GetAccreditationAreaListResource
     {
-        $query = AccreditationArea::with("ralShortInfoView:id,applicantFullName");
+        $query = AccreditationArea::with("ralShortInfoView:id,fullName");
 
         foreach ($columns as $column) {
             switch ($column) {

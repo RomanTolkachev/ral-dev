@@ -27,11 +27,11 @@ class GetAccreditationAreaListResource extends JsonResource
                 unset($data['ral_short_info_view']);
             return $data;
             }
-            if (!isset($data['ral_short_info_view']['applicantFullName'])) {
+            if (!isset($data['ral_short_info_view']['fullName'])) {
                 unset($data['ral_short_info_view']);
             return $data;
             }
-            $data['id_ral'] = $data['ral_short_info_view']['applicantFullName'];
+            $data['id_ral'] = $data['ral_short_info_view']['fullName'];
             unset($data['ral_short_info_view']);
             return $data;
         }, $result['data']);
