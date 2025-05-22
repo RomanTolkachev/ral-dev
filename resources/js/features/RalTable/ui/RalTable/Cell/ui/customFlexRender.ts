@@ -47,6 +47,18 @@ function customFlexRender(renderFn: Renderable<CellContext<TRalModel, unknown>>,
             highlight(cellValue, currentQuery.fullText),
         )
     }
+    if (columnID === "fullName") {
+        let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto",
+                style: {maxWidth: '200px',},
+                title: context.getValue()
+            },
+            highlight(cellValue, currentQuery.fullText),
+        )
+    }
     if (columnID === "RegNumber") {
         return createElement(
             motion.span,
