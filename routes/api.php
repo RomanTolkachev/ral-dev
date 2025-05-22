@@ -11,6 +11,7 @@ use App\UseCases\User\Login\LoginController;
 use App\UseCases\User\LogOut\LogOutController;
 use App\UseCases\User\TableSettings\GetTableSettings\GetTableSettingsController;
 use App\UseCases\User\TableSettings\SetTableSettings\SetTableSettingsController;
+use App\UseCases\GetInputValues\GetInputValuesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get("ral", GetRalShortInfoListController::class);
@@ -18,6 +19,7 @@ Route::get("ral/filters", GetFiltersController::class);
 Route::get("ral/certification_body", GetCertificationBodyController::class);
 Route::get("accreditation_area", GetAccreditationAreaListController::class);
 Route::get("accreditation_area/filters", GetAccreditationAreaFiltersController::class);
+Route::get("input_values", GetInputValuesController::class);
 Route::middleware('auth:sanctum')->get("test", TestController::class);
 Route::middleware('auth:sanctum')->get("user", GetUserController::class);
 Route::middleware('auth:sanctum')->get("settings", GetTableSettingsController::class);

@@ -15,6 +15,7 @@ import ralConfig from '@/features/ralTable/config'
 import accreditationAreaConfig from '@/features/AccreditationArea/config'
 import { AbstractFormProvider } from '@/shared/api/AbstractFormProvider'
 import AccreditationAreaHeader from '@/features/AccreditationArea/AccreditationAreaHeader'
+// import TestInput from '@/Components/Test/TestInput'
 
 
 
@@ -74,6 +75,7 @@ function MainLayout() {
                         </AbstractFormProvider>
                     }
                     />
+                    {/* <Route path='test' element={<TestInput />} /> */}
                 </Route>
                 <Route path='/login' element={<OnlyUnAuth component={<LoginPage />} />} />
                 <Route path='/personal' element={<OnlyAuth component={<PersonalPage />} />} />

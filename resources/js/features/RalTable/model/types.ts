@@ -15,6 +15,7 @@ const RAL_MODEL = [
     'regDate',
     'NP_status_change_date',
     'applicantFullName',
+    'old_status_AL',
     'new_status_AL',
     'applicantINN',
     'applicantINN',
@@ -23,6 +24,7 @@ const RAL_MODEL = [
     'regulations',
     'tnved',
     'regulation',
+    "fullText"
 ] as const
 
 export type TRalModel = typeof RAL_MODEL[number];

@@ -10,7 +10,7 @@ class GetRalShortInfoListUseCase
 
     public function execute(int $page, int $itemsPerPage, array $columns): GetRalShortInfoListResource
     {
-        // dd($itemsPerPage);
+        
         $query = RalShortInfoView::query()->leftJoin('np_regulations_tnveds', 'np_regulations_tnveds.link', '=', 'ral_short_info_view.link');
 
         foreach ($columns as $column) {
@@ -19,14 +19,10 @@ class GetRalShortInfoListUseCase
                     $query->addSelect($column);
             }
         }
-        // dd($query);
+
         $result = $query->filter(
             $this->filter
         )
-        
-        // ->toSql();
-
-        // dd($result);
         
         ->paginate(
             page: $page,

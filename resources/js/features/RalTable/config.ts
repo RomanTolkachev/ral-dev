@@ -14,6 +14,7 @@ export const dateFormatter = new Intl.DateTimeFormat("en-CA", {
 })
 
 const DEFAULT_COLUMNS: TRalModel[] = [
+    "fullName",
     'applicantFullName',
     'RegNumber',
     'regDate',
@@ -44,8 +45,8 @@ const DEFAULT_FILTERS: Partial<Record<TRalModel | "fullText" , string[]>> & TDef
     fullText: [],
 };
 
-const DICTIONARY: Record<string, string> = {
-    link: 'Ссылка',
+const DICTIONARY: Record<TRalModel, string> = {
+    ["ral_short_info_view.link"]: 'Ссылка',
     RegNumber: 'Рег. номер',
     old_status_AL: 'Предыдущий статус',
     new_status_AL: 'Акт. статус',
@@ -53,13 +54,13 @@ const DICTIONARY: Record<string, string> = {
     nameType: 'Тип АЛ',
     nameTypeActivity: 'Тип направления деятельности',
     regDate: 'Дата рег.',
-    fullName: 'Полное наименование',
+    fullName: 'Наименование АЛ',
     address: 'Адрес',
-    applicantFullName: 'Наименование',
+    applicantFullName: 'Наименование ЮЛ',
     applicantINN: 'ИНН',
     oaDescription: 'Описание',
     NPstatus: 'Статус НЧ',
-    id: 'id',
+    ["ral_short_info_view.id"]: 'id',
     NP_status_change_date: 'Дата изм. статуса НЧ',
     fullText: 'Поиск',
     tnved: 'ТН ВЭД (НЧ)',
