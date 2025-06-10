@@ -40,7 +40,7 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             'span',
             {
                 className: "text-wrap overflow-hidden mx-auto",
-                style: {maxWidth: '200px',},
+                style: { maxWidth: '200px', },
             },
             highlight(cellValue, currentQuery.gost),
         )
@@ -51,11 +51,35 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             'span',
             {
                 className: "text-wrap overflow-hidden mx-auto",
-                style: {maxWidth: '200px',},
+                style: { maxWidth: '200px', },
             },
             highlight(cellValue, currentQuery.tn_ved),
         )
     }
+    if (columnID === "ralShortInfoView__fullName") {
+        let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto",
+                style: { maxWidth: '200px', },
+            },
+            highlight(cellValue, currentQuery.ralShortInfoView__fullName),
+        )
+    }
+
+        if (columnID === "ralShortInfoView__RegNumber") {
+        let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto",
+                style: { maxWidth: '200px', },
+            },
+            highlight(cellValue, currentQuery.ralShortInfoView__RegNumber),
+        )
+    }
+
     if (
         !JSX ||
         typeof JSX === 'string' ||
@@ -71,7 +95,7 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         // ниже проверки на строковое значение
         if (typeof value === "string") {
             if (value.includes('http')) {
-                return createElement(motion.a, { href: value, ...linkMotionProps, target: "_blank", rel: "noopener noreferrer", onClick: e => e.stopPropagation()  }, value)
+                return createElement(motion.a, { href: value, ...linkMotionProps, target: "_blank", rel: "noopener noreferrer", onClick: e => e.stopPropagation() }, value)
             }
             if (value === "Действует") {
                 return createElement('span', {

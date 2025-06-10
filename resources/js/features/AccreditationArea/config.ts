@@ -15,12 +15,17 @@ const DICTIONARY: Record<TAccreditationAreaModel, string> ={
     source_page: "Страница в источнике",
     source_row: "Пункт в источнике",
     match_status: 'Совпадение поиска',
-    source_file_label: 'Тип области'
+    source_file_label: 'Тип области',
+    RegDate: "Рег. номер",
+    ralShortInfoView__fullName: "Лаборатория",
+    ralShortInfoView__RegNumber: "Рег. номер"
 }
 
 const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
     // "id", 
-    "id_ral", 
+    "ralShortInfoView__fullName", // двойное подчеркивание
+    "ralShortInfoView__RegNumber", 
+    "id_ral",
     "source_file_label",
     "source_file", 
     "source_page", 
@@ -39,7 +44,8 @@ const DEFAULT_FILTERS: Partial<Record<TAccreditationAreaModel, string[]>> & TDef
     id_ral: [],
     source_file_label: [],    
     page: 1,
-    perPage: "10" 
+    perPage: "10",
+    ralShortInfoView__RegNumber: []
 }
 
 const DEFAULT_REQUEST: IAccreditationAreaDefaultRequest = {

@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\RalShortInfo;
-use Illuminate\Http\JsonResponse;
+use App\Models\AccreditationArea;
+use App\Services\ConfirmRelationsService;
 
 class TestController
 {
     public function __invoke()
     {
-        return 'heelo world';
+        $service = new ConfirmRelationsService();
+        dump($service->prepareRalations([], AccreditationArea::class));
     }
 }

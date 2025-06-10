@@ -19,7 +19,7 @@ export const translateHeaderName = (accessorKey: ReactNode | undefined): string 
         case 'regDate':
             return 'Дата рег.'
         case 'fullName':
-            return 'наименование АЛ'
+            return 'Наименование АЛ'
         case 'address':
             return 'Адрес'
         case 'applicantFullName':

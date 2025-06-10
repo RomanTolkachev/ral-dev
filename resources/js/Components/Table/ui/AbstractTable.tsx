@@ -47,11 +47,13 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
         return paginatedData ? getHeaders(data) : []
     }, [paginatedData])
 
+    const sanitizeKey = (key: string) => key.replace(/\./g, '_'); // в некоторых ключах может быть точка. С точкой не работает
+
     const columns: ColumnDef<any>[] = useMemo(() => {
         let colData: ColumnDef<any>[] = [];
         if (headers.length !== 0) {
             colData = headers.map((header) => {
-                console.log(cellWidths?.[header])
+                const sanitizedKey = sanitizeKey(header);
                 return {
                     accessorKey: header,
                     header: translateFn ? translateFn(header) : header,

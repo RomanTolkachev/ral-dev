@@ -9,9 +9,8 @@ use App\Models\AccreditationArea;
 
 class GetAccreditationAreaFiltersController
 {
-    public function __invoke(TableFilterService $tableFilterService, Request $request)
+    public function __invoke()
     {
-        // $filters = $tableFilterService->getFiltersFor(AccreditationArea::class, $request->userFilters ?? []);
         $filters = [
             [
                 'header' => "gost",
@@ -36,7 +35,14 @@ class GetAccreditationAreaFiltersController
                 ],
             ],
             [
-                'header' => "id_ral",
+                'header' => "ralShortInfoView__fullName",
+                'headerType' => 'varchar',
+                'sortValues' => [
+                    'type' => 'huge',
+                ],
+            ],
+            [
+                'header' => "ralShortInfoView__RegNumber",
                 'headerType' => 'varchar',
                 'sortValues' => [
                     'type' => 'huge',

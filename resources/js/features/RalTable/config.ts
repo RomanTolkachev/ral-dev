@@ -14,14 +14,14 @@ export const dateFormatter = new Intl.DateTimeFormat("en-CA", {
 })
 
 const DEFAULT_COLUMNS: TRalModel[] = [
-    "fullName",
     'applicantFullName',
+    'applicantINN',
+    "fullName",
     'RegNumber',
     'regDate',
     'status_change_date',
     'nameType',
     'new_status_AL',
-    'applicantINN',
     'NPstatus',
     'ral_short_info_view.id',
     'ral_short_info_view.link',

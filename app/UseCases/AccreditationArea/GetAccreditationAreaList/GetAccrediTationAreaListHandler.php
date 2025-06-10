@@ -3,16 +3,19 @@
 namespace App\UseCases\AccreditationArea\GetAccreditationAreaList;
 
 use App\Models\AccreditationArea;
+use App\Services\ConfirmRelationsService;
 
 class GetAccrediTationAreaListHandler
 {
-    public function __construct(protected GetAccreditationAreaListFilter $filter) {}
+    public function __construct(protected GetAccreditationAreaListFilter $filter, protected ConfirmRelationsService $relations) {}
 
     public function execute(int $page, int $itemsPerPage, array $columns, array $gost, array $tnved): GetAccreditationAreaListResource
     {
-        $query = AccreditationArea::with("ralShortInfoView:id,fullName");
 
-        foreach ($columns as $column) {
+        $query = AccreditationArea::with($this->relations->prepareRalations($columns));
+        $noRelationsColumns = $this->relations->filterRelatedColumns($columns);
+
+        foreach ($noRelationsColumns as $column) {
             switch ($column) {
                 default:
                     $query->addSelect($column);
