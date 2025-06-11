@@ -45,7 +45,8 @@ const DEFAULT_FILTERS: Partial<Record<TAccreditationAreaModel, string[]>> & TDef
     source_file_label: [],    
     page: 1,
     perPage: "10",
-    ralShortInfoView__RegNumber: []
+    ralShortInfoView__RegNumber: [],
+    ralShortInfoView__fullName: []
 }
 
 const DEFAULT_REQUEST: IAccreditationAreaDefaultRequest = {
@@ -64,6 +65,14 @@ const CELL_WIDTH: Partial<Record<TAccreditationAreaModel, number>> = {
     gost: 80,
     id_ral: 120,
     gost_object: 300
+}
+
+const config: IConfig = {
+    DICTIONARY,
+    DEFAULT_COLUMNS,
+    DEFAULT_FILTERS,
+    DEFAULT_REQUEST,
+    CELL_WIDTH
 }
 
 export default {DEFAULT_FILTERS, DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY, CELL_WIDTH}

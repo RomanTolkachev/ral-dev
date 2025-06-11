@@ -12,10 +12,21 @@ declare global {
 
     /* eslint-disable no-var */
     var route: typeof ziggyRoute;
+
+    /**
+     * 
+     */
+    interface IConfig<T extends string> {
+        DICTIONARY: Record<T, string>;
+        DEFAULT_COLUMNS: T[];
+        DEFAULT_FILTERS: Partial<Record<T, string[]>> & TDefaultPaginationRequest;
+        DEFAULT_REQUEST: IAccreditationAreaDefaultRequest;
+        CELL_WIDTH: Partial<Record<T, number>>;
+    }
 }
 
 declare module '@inertiajs/core' {
-    interface PageProps extends InertiaPageProps, AppPageProps {}
+    interface PageProps extends InertiaPageProps, AppPageProps { }
 }
 
 export type AppThunk = ThunkAction<

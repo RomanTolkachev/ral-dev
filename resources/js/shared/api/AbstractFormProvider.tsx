@@ -157,8 +157,8 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
             methods.trigger()
         }
         /* Если в URL имеются queries, то после reset заново устанавливаются значения этих полей. 
-          В компонентах фильтра происходит сверка defaultValue и currentValue, если они разнятся то
-           у кнопки рисуется значек */
+        В компонентах фильтра происходит сверка defaultValue и currentValue, если они разнятся то
+        у кнопки рисуется значек */
         if (!isEmpty(queries)) {
             keys(queries).forEach(query => {
                 methods.setValue(query, queries[query])
@@ -169,40 +169,10 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData }}>
             <FormProvider {...methods}>
-                <CustomCellContext.Provider value={{CustomHeader, rowClickFn, cellWidths}}>
+                <CustomCellContext.Provider value={{ CustomHeader, rowClickFn, cellWidths }}>
                     {children}
                 </CustomCellContext.Provider>
             </FormProvider>
         </CustomSubmitHandlerContext.Provider>
     )
 }
-
-// const Item=()=>{
-//     const [settingFilter,setSettingsFilter];
-//     const [settingsTable,setSettingsTable];
-
-//     useEffect(()=>{
-
-//     },[settingFilter,settingsTable])
-//     return <>
-//     <div>   
-//         <Filter onChangeSettings={setSettingsFilter}/>
-//         <div>
-//             <Table onChangeSettings={setSettingsTable}/><Paginatio onChangeSetting={setSettingsPaggination}/>
-//         </div>
-//     </div>
-//     </>
-// }
-
-// const Filter=()=>{
-//     const form=useForm();
-
-//     useEffect(()=>{
-//         onChagseSetting(form)
-//     },[form])
-
-//     return <Form>
-//         <Input/>
-//         <Input/>
-//     </Form>
-// }

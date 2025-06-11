@@ -52,8 +52,9 @@ class GetAccreditationAreaListFilter extends AbstractFilter
         }
         return $query;
     }
-    protected function idRal(array $value): Builder
+    protected function ralShortInfoViewFullName(array $value): Builder
     {
+        // dd("зашли");
         $query = $this->builder;
 
         $matchedIds = RalShortInfoView::select('id')
@@ -69,11 +70,19 @@ class GetAccreditationAreaListFilter extends AbstractFilter
             return $query->whereRaw('1 = 0');
         }
 
-        return $query->where(function ($q) use ($matchedIds) {
-            foreach (array_chunk($matchedIds, 1000) as $chunk) {
-                $q->orWhereIn('id_ral', $chunk);
-            }
-        });
+        // Создаем временную таблицу
+        $tempTable = '##temp_ids_' . uniqid();
+        DB::statement("CREATE TABLE {$tempTable} (id INT PRIMARY KEY)");
+
+        // Вставляем данные пачками
+        foreach (array_chunk($matchedIds, 1000) as $chunk) {
+            DB::table($tempTable)->insert(
+                array_map(fn($id) => ['id' => $id], $chunk)
+            );
+        }
+
+        // Используем JOIN вместо WHERE IN
+        return $query->join(DB::raw("{$tempTable} tmp1"), 'acreditation_area.id_ral', '=', 'tmp1.id');
     }
 
     protected function ralShortInfoViewRegNumber(array $value): Builder
@@ -104,6 +113,7 @@ class GetAccreditationAreaListFilter extends AbstractFilter
             );
         }
 
-        return $query->join(DB::raw("{$tempTable} tmp"), 'acreditation_area.id_ral', '=', 'tmp.id');
+        // Используем JOIN вместо WHERE IN
+        return $query->join(DB::raw("{$tempTable} tmp2"), 'acreditation_area.id_ral', '=', 'tmp2.id');
     }
 }
