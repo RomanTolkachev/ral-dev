@@ -14,7 +14,10 @@ function translate(raw: TAccreditationAreaModel): string {
         source_page: "Страница в источнике",
         source_row: "Пункт в источнике",
         match_status: "Совпадение поиска",
-        source_file_label: 'Тип области'
+        source_file_label: 'Тип области',
+        ralShortInfoView__fullName: 'Лаборатория',
+        ralShortInfoView__RegNumber: 'Рег. номер',
+        RegDate: 'Рег. дата'
     }
     return dictionary[raw] ?? raw as string
 }
