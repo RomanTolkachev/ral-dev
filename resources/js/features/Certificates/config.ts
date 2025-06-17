@@ -67,7 +67,7 @@ const CELL_WIDTH: Partial<Record<TAccreditationAreaModel, number>> = {
     gost_object: 300
 }
 
-const config: IConfig<TAccreditationAreaModel> = {
+const config: IConfig = {
     DICTIONARY,
     DEFAULT_COLUMNS,
     DEFAULT_FILTERS,

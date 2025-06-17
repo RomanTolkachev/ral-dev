@@ -18,7 +18,6 @@ class GetAccreditationAreaListFilter extends AbstractFilter
     {
         $this->model = $model;
         parent::__construct($request);
-        // $this->request = $request;
     }
 
     /**
@@ -30,20 +29,24 @@ class GetAccreditationAreaListFilter extends AbstractFilter
     protected function gost(array $value): Builder
     {
         $query = $this->builder;
-        foreach ($value as $item) {
-            $query = $query->orWhere('gost', 'like', "$item%");
-        }
+        $query = $query->where('gost', 'like', "$value[0]%");
         return $query;
     }
 
     protected function tnVed(array $value): Builder
     {
         $query = $this->builder;
+        $query = $query->where( function($q) use ($value) {
+            foreach($value as $item) {
+                $q->orWhere('tn_ved', 'like', "%$item%");
+            }
+        });
         foreach ($value as $item) {
-            $query = $query->orWhere('tn_ved', 'like', "%$item%");
+            $query = $query->orWhere('gost', 'like', "$item%");
         }
         return $query;
     }
+
     protected function sourceFileLabel(array $value): Builder
     {
         $query = $this->builder;
@@ -54,7 +57,6 @@ class GetAccreditationAreaListFilter extends AbstractFilter
     }
     protected function ralShortInfoViewFullName(array $value): Builder
     {
-        // dd("зашли");
         $query = $this->builder;
 
         $matchedIds = RalShortInfoView::select('id')
