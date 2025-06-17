@@ -72,8 +72,6 @@ const DEFAULT_REQUEST: TDefaultRalRequest = {
     page: 1,
     perPage: "10",
     status_change_date: [
-        // dateFormatter.format(startdate),
-        // dateFormatter.format(currentDate),
         "", ""
     ],
     NP_status_change_date: ["", ""],
@@ -83,6 +81,14 @@ const DEFAULT_REQUEST: TDefaultRalRequest = {
     nameType: [],
     NPstatus: [],
     user_columns: DEFAULT_COLUMNS
+}
+
+export const config: IConfig<TRalModel> = {
+    CELL_WIDTH: {},
+    DEFAULT_COLUMNS,
+    DEFAULT_FILTERS,
+    DEFAULT_REQUEST,
+    DICTIONARY
 }
 
 export default { DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY, DEFAULT_FILTERS }

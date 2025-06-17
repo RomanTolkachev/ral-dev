@@ -12,10 +12,11 @@ import { OnlyAuth, OnlyUnAuth } from '@/app/ProtectedRoute'
 import PersonalPage from '@/features/Login/PersonalPage'
 import AccreditationAreaTable from '@/features/AccreditationArea/AccreditationAreaTable'
 import ralConfig from '@/features/ralTable/config'
-import accreditationAreaConfig from '@/features/AccreditationArea/config'
+import { config as accAreaConfig } from '@/features/AccreditationArea/config'
 import { AbstractFormProvider } from '@/shared/api/AbstractFormProvider'
 import AccreditationAreaHeader from '@/features/AccreditationArea/AccreditationAreaHeader'
-// import TestInput from '@/Components/Test/TestInput'
+import CertificatesTable from '@/features/Certificates/CertificatesTable'
+import { config as certificatesConfig } from '@/features/Certificates/config'
 
 
 
@@ -27,7 +28,7 @@ function MainLayout() {
     function closeRalModal() {
         location.state ? navigate(-1) : navigate(`/directory/ral/${location.search}`)
     }
-    
+
     return (
         <div
             className={
@@ -37,17 +38,13 @@ function MainLayout() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/directory" element={<TableLayout />}>
+
                     <Route path="ral/*" element={
                         <>
-                            <AbstractFormProvider
-                                defaultFilters={ralConfig.DEFAULT_FILTERS}
-                                defaultRequest={ralConfig.DEFAULT_REQUEST}
-                                tableName="ral"
-                            ><Raltable />
+                            <AbstractFormProvider config={ralConfig} tableName="ral">
+                                <Raltable />
                             </AbstractFormProvider>
 
-                            {/* <AnimatePresence> //TODO: не работает exit animation
-                                    {background && ( */}
                             <Routes location={location} key={location.pathname}>
                                 <Route
                                     path='settings'
@@ -59,23 +56,26 @@ function MainLayout() {
                                         <Modal closeModal={() => navigate(-1)} children={<RalModal />} />}
                                 />
                             </Routes>
-                            {/* )} 
-                                </AnimatePresence> */}
                         </>
                     } />
-                    <Route path='accreditation_area'  element={
+
+                    <Route path='accreditation_area' element={
                         <AbstractFormProvider
-                            cellWidths={accreditationAreaConfig.CELL_WIDTH}
+                            config={accAreaConfig}
                             CustomHeader={AccreditationAreaHeader}
-                            rowClickFn={() => null}
-                            defaultFilters={accreditationAreaConfig.DEFAULT_FILTERS}
-                            defaultRequest={accreditationAreaConfig.DEFAULT_REQUEST}
                             tableName="accreditation_area">
                             <AccreditationAreaTable />
                         </AbstractFormProvider>
-                    }
-                    />
-                    {/* <Route path='test' element={<TestInput />} /> */}
+                    } />
+
+                    <Route path='certificates' element={
+                        <AbstractFormProvider
+                            config={certificatesConfig}
+                            tableName='certificates'>
+                            <CertificatesTable />
+                        </AbstractFormProvider>
+                    } />
+
                 </Route>
                 <Route path='/login' element={<OnlyUnAuth component={<LoginPage />} />} />
                 <Route path='/personal' element={<OnlyAuth component={<PersonalPage />} />} />

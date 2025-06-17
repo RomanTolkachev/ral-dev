@@ -4,7 +4,6 @@ import useParamsCustom from '@/shared/query/useParamsCustom'
 import { isEmpty, isEqual, keys, values } from 'lodash'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import excludePaginationQueries from '@/shared/query/excludePaginationQueries'
-import { TDefaultPaginationRequest } from '../types/pagination'
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { fetchAbstractFilters } from './api'
 import { AuthContext } from '@/app/providers/AuthProvider'
@@ -14,17 +13,12 @@ interface IFormValues {
     [key: string]: any
 }
 
-interface IDefaultRequest extends TDefaultPaginationRequest {
-    user_columns: unknown[]
-}
 
 interface IProps {
+    config: IConfig<string>
     tableName: string
-    defaultRequest: IDefaultRequest
-    defaultFilters: Record<string, any>
     user?: any | undefined
     CustomHeader?: FunctionComponent<any>
-    cellWidths?: Record<string, number>
     rowClickFn?: () => void
 }
 
@@ -42,21 +36,21 @@ export const CustomSubmitHandlerContext = createContext<ICustomSubmitHandlerCont
 type CustomisationContext = {
     CustomHeader?: FunctionComponent<any>
     rowClickFn?: () => void
-    cellWidths?: IProps["cellWidths"]
+    cellWidths?: Partial<Record<string, number>>
 }
 export const CustomCellContext = createContext<null | CustomisationContext>(null)
 
 export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> = ({
+    config,
     tableName,
     children,
-    defaultRequest,
-    defaultFilters,
     CustomHeader,
     rowClickFn,
-    cellWidths
 }) => {
 
     const user = useContext(AuthContext)
+
+    const { CELL_WIDTH, DEFAULT_FILTERS, DEFAULT_REQUEST } = config;
 
     const [setQuery, getQuery] = useParamsCustom();
     const queries = getQuery();
@@ -65,8 +59,8 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
 
     const filtersData = useQuery({
         enabled: isUserChecked,
-        queryFn: () => fetchAbstractFilters(tableName, { userFilters: keys(defaultFilters) }),
-        queryKey: ["filters", tableName, defaultFilters]
+        queryFn: () => fetchAbstractFilters(tableName, { userFilters: keys(DEFAULT_FILTERS) }),
+        queryKey: ["filters", tableName, DEFAULT_FILTERS]
     })
 
     const { data: filters = [], isPending: isFiltersPending, isFetched } = filtersData
@@ -80,13 +74,13 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         disabled: !filtersData.isFetched,
         mode: "onChange",
         reValidateMode: 'onChange',
-        defaultValues: { ...defaultFilters, ...filters },
+        defaultValues: { ...DEFAULT_FILTERS, ...filters },
     })
 
     // methods.formState.dirtyFields
     // после получения фильтров записываем их для последующего сравнения
     useEffect(() => {
-        prevQueries.current = { ...defaultFilters, ...queries, user_columns: defaultRequest.user_columns }
+        prevQueries.current = { ...DEFAULT_FILTERS, ...queries, user_columns: DEFAULT_REQUEST.user_columns }
     }, [isFetched])
 
     /**
@@ -153,7 +147,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
                 return acc;
             }, {});
             // когда фильтры пришли, мы задаем defaultValues через reset, первый аргумент которого будут новые defaultValues
-            methods.reset({ ...newQueries, ...defaultRequest }, { keepDefaultValues: false })
+            methods.reset({ ...newQueries, ...DEFAULT_REQUEST }, { keepDefaultValues: false })
             methods.trigger()
         }
         /* Если в URL имеются queries, то после reset заново устанавливаются значения этих полей. 
@@ -169,7 +163,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData }}>
             <FormProvider {...methods}>
-                <CustomCellContext.Provider value={{ CustomHeader, rowClickFn, cellWidths }}>
+                <CustomCellContext.Provider value={{ CustomHeader, rowClickFn, cellWidths: CELL_WIDTH }}>
                     {children}
                 </CustomCellContext.Provider>
             </FormProvider>

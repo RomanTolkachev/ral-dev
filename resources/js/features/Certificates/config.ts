@@ -87,9 +87,9 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     "expertSnils", 
     "id", 
     "certificate_id",
-    "certificate_testinglabs__id", //внешняя
-    "certification_authority__id", //внешняя
-    "certificate_applicant__id", //внешняя
+    // "certificate_testinglabs__id", //внешняя
+    // "certification_authority__id", //внешняя
+    // "certificate_applicant__id", //внешняя
 ];
 
 
@@ -107,7 +107,7 @@ const DEFAULT_REQUEST = {
 const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
 }
 
-const config: IConfig<TCertificateModel> = {
+export const config: IConfig<TCertificateModel> = {
     DICTIONARY,
     DEFAULT_COLUMNS,
     DEFAULT_FILTERS,
