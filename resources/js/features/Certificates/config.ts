@@ -1,73 +1,113 @@
 import { TDefaultPaginationRequest } from "@/shared/types/pagination";
-import { IAccreditationAreaDefaultRequest, TAccreditationAreaModel } from "./model";
+import { TCertificateModel } from "./model";
 
 
-const DICTIONARY: Record<TAccreditationAreaModel, string> ={
-    id: "ID",
-    gost: "ГОСТ",
-    characteristic: "Определяемая характеристика (Показатель)",
-    id_ral: "Лаборатория",
-    okpd: "КОД ОКПД 2",
-    characteristic_range: "Диапазон определения",
-    tn_ved: "КОД ТН ВЭД ЕАЭС",
-    gost_object: "Наименование объекта",
-    source_file: "Файл-источник",
-    source_page: "Страница в источнике",
-    source_row: "Пункт в источнике",
-    match_status: 'Совпадение поиска',
-    source_file_label: 'Тип области',
-    RegDate: "Рег. номер",
-    ralShortInfoView__fullName: "Лаборатория",
-    ralShortInfoView__RegNumber: "Рег. номер"
+const DICTIONARY: Record<TCertificateModel, string> = {
+    applicantFilialFullNames: "applicantFilialFullNames",
+    applicantLegalSubjectType: "applicantLegalSubjectType",
+    applicantName: "applicantName",
+    applicantOpf: "applicantOpf",
+    applicantType: "applicantType",
+    blankNumber: "blankNumber",
+    certificate_applicant__id: "certificate_applicant__id",
+    certificate_id: "certificate_id",
+    certificate_link: "certificate_link",
+    certificate_name: "certificate_name",
+    certificate_status: "certificate_status",
+    certificate_testinglabs__id: "certificate_testinglabs__id",
+    certification_authority__id: "certification_authority__id",
+    certificationAuthorityAttestatRegNumber: "certificationAuthorityAttestatRegNumber",
+    certObjectType: "certObjectType",
+    certType: "certType",
+    date: "date",
+    endDate: "endDate",
+    expertFio: "expertFio",
+    expertSnils: "expertSnils",
+    group: "group",
+    id: "id",
+    idRalCertificationAuthority: "idRalCertificationAuthority",
+    manufacterFilialFullNames: "manufacterFilialFullNames",
+    manufacterLegalSubjectType: "manufacterLegalSubjectType",
+    manufacterName: "manufacterName",
+    manufacterOpf: "manufacterOpf",
+    manufacterType: "manufacterType",
+    previous_status: "previous_status",
+    previous_update_status_date: "previous_update_status_date",
+    productBatchSize: "productBatchSize",
+    productFullName: "productFullName",
+    productIdentificationArticle: "productIdentificationArticle",
+    productIdentificationGtin: "productIdentificationGtin",
+    productIdentificationModel: "productIdentificationModel",
+    productIdentificationName: "productIdentificationName",
+    productIdentificationSort: "productIdentificationSort",
+    productIdentificationTrademark: "productIdentificationTrademark",
+    productIdentificationType: "productIdentificationType",
+    productOrig: "productOrig",
+    technicalReglaments: "technicalReglaments",
+    update_status_date: "update_status_date"
 }
 
-const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
-    // "id", 
-    "ralShortInfoView__fullName", // двойное подчеркивание
-    "ralShortInfoView__RegNumber", 
-    "id_ral",
-    "source_file_label",
-    "source_file", 
-    "source_page", 
-    "source_row",
-    'gost', 
-    "characteristic", 
-    "characteristic_range", 
-    "gost_object", 
-    "okpd", 
-    "tn_ved",
+const DEFAULT_COLUMNS: TCertificateModel[] = [
+    "certificate_name", 
+    "certificate_status", 
+    "certificate_link", 
+    "update_status_date", 
+    "previous_update_status_date", 
+    "previous_status", 
+    "date", 
+    "endDate", 
+    "blankNumber", 
+    "technicalReglaments", 
+    "group", 
+    "certType", 
+    "certObjectType", 
+    "applicantLegalSubjectType", 
+    "applicantType", 
+    "applicantName", 
+    "applicantOpf", 
+    "applicantFilialFullNames", 
+    "manufacterLegalSubjectType", 
+    "manufacterType", 
+    "manufacterName", 
+    "manufacterOpf", 
+    "manufacterFilialFullNames", 
+    "idRalCertificationAuthority", 
+    "certificationAuthorityAttestatRegNumber", 
+    "productOrig", 
+    "productFullName", 
+    "productBatchSize", 
+    "productIdentificationName", 
+    "productIdentificationType", 
+    "productIdentificationTrademark", 
+    "productIdentificationModel", 
+    "productIdentificationArticle", 
+    "productIdentificationSort", 
+    "productIdentificationGtin", 
+    "expertFio", 
+    "expertSnils", 
+    "id", 
+    "certificate_id",
+    "certificate_testinglabs__id", //внешняя
+    "certification_authority__id", //внешняя
+    "certificate_applicant__id", //внешняя
 ];
 
-const DEFAULT_FILTERS: Partial<Record<TAccreditationAreaModel, string[]>> & TDefaultPaginationRequest = {
-    gost : [], 
-    tn_ved: [], 
-    id_ral: [],
-    source_file_label: [],    
+
+const DEFAULT_FILTERS: Partial<Record<TCertificateModel, string[]>> & TDefaultPaginationRequest = {
     page: 1,
     perPage: "10",
-    ralShortInfoView__RegNumber: [],
-    ralShortInfoView__fullName: []
 }
 
-const DEFAULT_REQUEST: IAccreditationAreaDefaultRequest = {
+const DEFAULT_REQUEST = {
     page: 1,
     perPage: '10',
     user_columns: DEFAULT_COLUMNS
 }
 
-const CELL_WIDTH: Partial<Record<TAccreditationAreaModel, number>> = {
-    source_file_label: 60,
-    characteristic_range: 120,
-    source_row: 90,
-    source_page: 120,
-    tn_ved: 90,
-    okpd: 70,
-    gost: 80,
-    id_ral: 120,
-    gost_object: 300
+const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
 }
 
-const config: IConfig = {
+const config: IConfig<TCertificateModel> = {
     DICTIONARY,
     DEFAULT_COLUMNS,
     DEFAULT_FILTERS,
@@ -75,4 +115,4 @@ const config: IConfig = {
     CELL_WIDTH
 }
 
-export default {DEFAULT_FILTERS, DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY, CELL_WIDTH}
+export default { DEFAULT_FILTERS, DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY, CELL_WIDTH }
