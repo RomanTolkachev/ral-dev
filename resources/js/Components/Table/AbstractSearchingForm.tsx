@@ -23,7 +23,7 @@ const AbstractSearchingForm: FunctionComponent<IProps> = ({ className, filters, 
         return null
     }
 
-    const {customResetHandler} = submitContext;
+    const { customResetHandler } = submitContext;
 
     return (
         <form
@@ -32,13 +32,15 @@ const AbstractSearchingForm: FunctionComponent<IProps> = ({ className, filters, 
                 {!filters ? (
                     <Preloader widthStyles={'w-16'} />
                 ) : (
-                    filters.map((filterItem, key) => {
-                        return (
-                        <TranslateContext.Provider value={translateFn} key={`ddi-${key}`}>
-                           <DropdownItem inputData={filterItem}  /> 
-                        </TranslateContext.Provider>   
-                        ) 
-                    })
+                    !filters.length
+                        ? <div className='text-center'>Фильтры отсутствуют</div>
+                        : (filters.map((filterItem, key) => {
+                            return (
+                                <TranslateContext.Provider value={translateFn} key={`ddi-${key}`}>
+                                    <DropdownItem inputData={filterItem} />
+                                </TranslateContext.Provider>
+                            )
+                        }))
                 )}
             </div>
             <div className={`sticky w-fit bottom-0 bg-background-block flex flex-col py-6 space-y-4 gap-2 mx-auto`}>

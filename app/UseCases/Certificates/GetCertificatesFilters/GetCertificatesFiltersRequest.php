@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCases\AccreditationArea\GetAccreditationAreaFilters;
+namespace App\UseCases\Certificates\GetCertificatesFilters;
 
 use Illuminate\Http\Request;
 

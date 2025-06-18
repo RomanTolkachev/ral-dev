@@ -5,6 +5,7 @@ use App\UseCases\AccreditationArea\GetAccreditationAreaList\GetAccreditationArea
 use App\Http\Controllers\GetFiltersController;
 use App\UseCases\GetRalShortInfoList\GetRalShortInfoListController;
 use App\UseCases\Certificates\GetCertificatesList\GetCertificatesListController;
+use App\UseCases\Certificates\GetCertificatesFilters\GetCertificatesFiltersController;
 use App\Http\Controllers\TestController;
 use App\UseCases\GetCertificationBody\GetCertificationBodyController;
 use App\UseCases\User\GetUser\GetUserController;
@@ -24,7 +25,7 @@ Route::get("accreditation_area", GetAccreditationAreaListController::class);
 Route::get("accreditation_area/filters", GetAccreditationAreaFiltersController::class);
 
 Route::get("certificates", GetCertificatesListController::class);
-
+Route::get("certificates/filters", GetCertificatesFiltersController::class);
 
 Route::get("input_values", GetInputValuesController::class);
 Route::middleware('auth:sanctum')->get("user", GetUserController::class);
