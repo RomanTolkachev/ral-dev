@@ -38,9 +38,9 @@ const CertificateModel = [
     "expertSnils", 
     "id", 
     "certificate_id",
-    "certificate_testinglabs__id", //внешняя
-    "certification_authority__id", //внешняя
-    "certificate_applicant__id", //внешняя
+    "certificateTestinglab__id", //внешняя
+    "certificationAuthority__id", //внешняя
+    "certificateApplicant__id", //внешняя
 ] as const;
 
 export type TCertificateModel = typeof CertificateModel[number];

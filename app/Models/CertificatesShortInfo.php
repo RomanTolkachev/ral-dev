@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\HasQueryFilters;
+use App\Models\CertificateTestinglab;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CertificatesShortInfo extends Model
 {
@@ -22,5 +24,9 @@ class CertificatesShortInfo extends Model
             'endDate' => 'datetime:d.m.Y',
         ];
     }
-    
+
+    public function certificateTestingLab(): BelongsTo
+    {
+        return $this->belongsTo(CertificateTestinglab::class, 'id_cert', 'id');
+    }
 }

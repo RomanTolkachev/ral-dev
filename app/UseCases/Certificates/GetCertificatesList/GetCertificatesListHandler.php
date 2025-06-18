@@ -5,6 +5,7 @@ namespace App\UseCases\Certificates\GetCertificatesList;
 use App\Models\CertificatesShortInfo;
 use App\Services\ConfirmRelationsService;
 
+
 class GetCertificatesListHandler
 {
     public function __construct(protected GetCertificatesListFilter $filter, protected ConfirmRelationsService $relations) {}
@@ -12,6 +13,7 @@ class GetCertificatesListHandler
     public function execute(int $page, int $itemsPerPage, array $columns): GetCertificatesListResource
     {
 
+        // dd($this->relations->prepareRalations($columns));
         $query = CertificatesShortInfo::with($this->relations->prepareRalations($columns));
         $noRelationsColumns = $this->relations->filterRelatedColumns($columns);
 

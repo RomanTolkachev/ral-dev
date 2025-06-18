@@ -26,10 +26,10 @@ class GetCertificatesListFilter extends AbstractFilter
      * @return Builder
      */
 
-    protected function ralShortInfoViewFullName(array $value): Builder
-    {
-        $query = $this->builder;
-        return $query;
-    }
+    // protected function ralShortInfoViewFullName(array $value): Builder
+    // {
+    //     $query = $this->builder;
+    //     return $query;
+    // }
 
 }
