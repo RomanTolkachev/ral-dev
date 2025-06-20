@@ -38,9 +38,30 @@ const CertificateModel = [
     "expertSnils", 
     "id", 
     "certificate_id",
-    "certificateTestinglab__id", //внешняя
-    "certificationAuthority__id", //внешняя
-    "certificateApplicant__id", //внешняя
+
+
+    'link',
+    'nameType',
+    'nameTypeActivity',
+    'fullName',
+    'address',
+    'oaDescription',
+    'NPstatus',
+    'ral_short_info_view__id',
+    'regDate',
+    'NP_status_change_date',
+    'applicantFullName',
+    'old_status_AL',
+    'new_status_AL',
+    'applicantINN',
+    'applicantINN',
+    'RegNumber',
+    'status_change_date',
+    'regulations',
+    'tnved',
+    'regulation',
+
+
 ] as const;
 
 export type TCertificateModel = typeof CertificateModel[number];

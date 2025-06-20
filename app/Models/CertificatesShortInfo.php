@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\HasQueryFilters;
 use App\Models\CertificateTestinglab;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class CertificatesShortInfo extends Model
 {
@@ -25,8 +27,21 @@ class CertificatesShortInfo extends Model
         ];
     }
 
-    public function certificateTestingLab(): BelongsTo
+    // public function certificateTestinglab(): HasOne
+    // {
+    //     // return $this->belongsTo(CertificateTestinglab::class, 'id', 'id_cert');
+    //     return $this->hasOne(CertificateTestinglab::class, 'id_cert');
+    // }
+
+    public function ralShortInfoView(): HasOneThrough
     {
-        return $this->belongsTo(CertificateTestinglab::class, 'id_cert', 'id');
+        return $this->hasOneThrough(
+            RalShortInfoView::class, 
+            CertificateTestinglab::class, 
+            'id_cert', 
+            'id', 
+            'id', 
+            'id_ral'
+        );
     }
 }

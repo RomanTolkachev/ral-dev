@@ -68,6 +68,66 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         )
     }
 
+    if (columnID === "certificate_name") {
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto line-clamp-2",
+                style: { maxWidth: '200px', },
+            },
+            highlight(String(context.getValue()), currentQuery.certificate_name),
+        )
+    }
+    if (columnID === "oaDescription") {
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto line-clamp-2",
+                style: { maxWidth: '200px', },
+            },
+            highlight(String(context.getValue()), currentQuery.oaDescription),
+        )
+    }
+    if (columnID === "group") {
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto line-clamp-2",
+                style: { maxWidth: '200px', },
+            },
+            highlight(String(context.getValue()), currentQuery.group),
+        )
+    }
+    if (columnID === "certType") {
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto line-clamp-2",
+                style: { maxWidth: '200px', },
+            },
+            highlight(String(context.getValue()), currentQuery.certType),
+        )
+    }
+    if (
+        columnID === "productIdentificationName" || 
+        columnID === "productIdentificationType" || 
+        columnID === "productIdentificationTrademark" || 
+        columnID === "productIdentificationModel" || 
+        columnID === "productIdentificationArticle"  ||
+        columnID === "productIdentificationSort" ||
+        columnID === "regulations"
+
+    ) {
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto line-clamp-2",
+                style: { maxWidth: '200px', },
+            },
+            String(context.getValue()),
+        )
+    }
+
         if (columnID === "ralShortInfoView__RegNumber") {
         let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
         return createElement(

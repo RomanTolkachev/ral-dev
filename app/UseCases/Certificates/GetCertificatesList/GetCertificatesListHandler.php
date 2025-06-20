@@ -12,17 +12,24 @@ class GetCertificatesListHandler
 
     public function execute(int $page, int $itemsPerPage, array $columns): GetCertificatesListResource
     {
-
+        
+        $query = CertificatesShortInfo::with("ralShortInfoView");
+        // $query = CertificatesShortInfo::with("ralShortInfoView")->get();
         // dd($this->relations->prepareRalations($columns));
-        $query = CertificatesShortInfo::with($this->relations->prepareRalations($columns));
+
         $noRelationsColumns = $this->relations->filterRelatedColumns($columns);
 
-        foreach ($noRelationsColumns as $column) {
-            switch ($column) {
-                default:
-                    $query->addSelect($column);
-            }
-        }
+        // dd($query);
+
+        // foreach ([...$noRelationsColumns] as $column) {
+        //     switch ($column) {
+        //         default:
+        //             // dump($column);
+        //             $query->addSelect($column);
+        //     }
+        // }
+
+        // dd($query->toSql());
 
         $result = $query->filter(
             $this->filter

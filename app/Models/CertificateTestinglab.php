@@ -9,9 +9,9 @@ class CertificateTestinglab extends Model
     public $table = "certificate_testinglabs";
     public $timestamps = false;
 
-    public function certificatesShortInfo()
-    {
-        return $this->hasOne(CertificatesShortInfo::class, 'id');
-    }
+    // public function certifaceteShortInfo()
+    // {
+    //     return $this->belongsTo(CertificatesShortInfo::class, 'id');
+    // }
 
 }
