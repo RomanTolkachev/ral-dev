@@ -146,11 +146,12 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             createElement(
                 "a",
                 {
-                    className: "underline",
+                    className: "underline line-clamp-2",
                     state: {
                         background: location,
                     },
                     href: `${context.row.original.certificate_link}`,
+                    title: context.getValue(),
                     target: "_blank",
                     rel: "noopener noreferrer",
                     onClick: (e: MouseEvent) => e.stopPropagation()
