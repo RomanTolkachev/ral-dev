@@ -44,4 +44,12 @@ class CertificatesShortInfo extends Model
             'id_ral'
         );
     }
+
+    public function certificateApplicant(): HasOne
+    {
+        return $this->hasOne(
+            CertificateApplicant::class,
+            "certificate_id"
+        );
+    }
 }

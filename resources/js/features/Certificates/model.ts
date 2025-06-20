@@ -39,6 +39,7 @@ const CertificateModel = [
     "id", 
     "certificate_id",
 
+    // связанная табличка РАЛ
 
     'link',
     'nameType',
@@ -61,6 +62,34 @@ const CertificateModel = [
     'tnved',
     'regulation',
 
+    // свазанная табличка certificate_applicant
+
+    'certificate_applicant__id',
+    'certificate_applicant__certificate_id',
+    'idLegalSubject',
+    'idEgrul',
+    'idApplicantType',
+    'idLegalSubjectType',
+    'certificate_applicant__fullName',
+    'shortName',
+    'idPerson',
+    'surname',
+    'firstName',
+    'patronymic',
+    'headPosition',
+    'ogrn',
+    'ogrnAssignDate',
+    'inn',
+    'kpp',
+    'idLegalForm',
+    'certificate_applicant__regDate',
+    'regOrganName',
+    'addlRegInfo',
+    'isEecRegister',
+    'passportIssueDate',
+    'passportIssuedBy',
+    'passportNum',
+    'idPersonDoc'
 
 ] as const;
 
