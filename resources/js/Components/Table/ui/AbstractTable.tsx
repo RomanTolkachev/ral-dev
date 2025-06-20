@@ -44,16 +44,13 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
 
     const headers = useMemo(() => {
         const data = paginatedData?.data as IRalItem[]
-        return paginatedData ? getHeaders(data, ["ral id", "link", "certificate_link"]) : []
+        return paginatedData ? getHeaders(data, ["ral id", "link", "certificate_link", "id"]) : []
     }, [paginatedData])
-
-    const sanitizeKey = (key: string) => key.replace(/\./g, '_'); // в некоторых ключах может быть точка. С точкой не работает
 
     const columns: ColumnDef<any>[] = useMemo(() => {
         let colData: ColumnDef<any>[] = [];
         if (headers.length !== 0) {
             colData = headers.map((header) => {
-                const sanitizedKey = sanitizeKey(header);
                 return {
                     accessorKey: header,
                     header: translateFn ? translateFn(header) : header,
@@ -103,9 +100,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
     }, [paginatedData])
 
     return (
-        <div className={`${className} h-full grow grid grid-rows-[auto_1fr_auto] grid-cols-[1fr] overflow-hidden`}>
-            <div className={'text-header-text text-sm p-2 ml-6 flex gap-4 items-center'}>
-            </div>
+        <div className={`${className} h-full grow grid grid-rows-[1fr_auto] grid-cols-[1fr] overflow-hidden`}>
             <div className={'p-2 w-full h-full grow flex overflow-hidden'}>
                 <div className={'my-block min-w-full h-full bg-background-block'}>
                     <div
