@@ -44,7 +44,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
 
     const headers = useMemo(() => {
         const data = paginatedData?.data as IRalItem[]
-        return paginatedData ? getHeaders(data, ["ral id", "link"]) : []
+        return paginatedData ? getHeaders(data, ["ral id", "link", "certificate_link"]) : []
     }, [paginatedData])
 
     const sanitizeKey = (key: string) => key.replace(/\./g, '_'); // в некоторых ключах может быть точка. С точкой не работает

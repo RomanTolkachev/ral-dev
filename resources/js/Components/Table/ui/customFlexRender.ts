@@ -67,17 +67,6 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             highlight(cellValue, currentQuery.ralShortInfoView__fullName),
         )
     }
-
-    if (columnID === "certificate_name") {
-        return createElement(
-            'span',
-            {
-                className: "text-wrap overflow-hidden mx-auto line-clamp-2",
-                style: { maxWidth: '200px', },
-            },
-            highlight(String(context.getValue()), currentQuery.certificate_name),
-        )
-    }
     if (columnID === "oaDescription") {
         return createElement(
             'span',
@@ -88,38 +77,28 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             highlight(String(context.getValue()), currentQuery.oaDescription),
         )
     }
-    if (columnID === "group") {
-        return createElement(
-            'span',
-            {
-                className: "text-wrap overflow-hidden mx-auto line-clamp-2",
-                style: { maxWidth: '200px', },
-            },
-            highlight(String(context.getValue()), currentQuery.group),
-        )
-    }
-    if (columnID === "certType") {
-        return createElement(
-            'span',
-            {
-                className: "text-wrap overflow-hidden mx-auto line-clamp-2",
-                style: { maxWidth: '200px', },
-            },
-            highlight(String(context.getValue()), currentQuery.certType),
-        )
-    }
     if (
-        columnID === "productIdentificationName" || 
-        columnID === "productIdentificationType" || 
-        columnID === "productIdentificationTrademark" || 
-        columnID === "productIdentificationModel" || 
-        columnID === "productIdentificationArticle"  ||
+        columnID === "productIdentificationName" ||
+        columnID === "productIdentificationType" ||
+        columnID === "productIdentificationTrademark" ||
+        columnID === "productIdentificationModel" ||
+        columnID === "productIdentificationArticle" ||
         columnID === "productIdentificationSort" ||
         columnID === "regulations" ||
         columnID === "manufacterFilialFullNames" ||
         columnID === "address" ||
         columnID === "technicalReglaments" ||
-        columnID === "productFullName" 
+        columnID === "productFullName" ||
+        columnID === "productBatchSize" ||
+        columnID === "exprtFio" ||
+        columnID === "expertSnils" ||
+        columnID === "group" ||
+        columnID === "certType" ||
+        columnID === "productIdentificationGtin" ||
+        columnID === "update_status_date" ||
+        columnID === "previous_update_status_date" ||
+        columnID === "previous_status" ||
+        columnID === "blankNumber"
 
     ) {
         return createElement(
@@ -127,11 +106,13 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             {
                 className: "text-wrap overflow-hidden mx-auto line-clamp-2",
                 style: { maxWidth: '200px', },
+                title: context.getValue()
             },
             String(context.getValue()),
         )
     }
-        if (columnID === "RegNumber") {
+
+    if (columnID === "RegNumber") {
         return createElement(
             motion.span,
             {
@@ -150,12 +131,36 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
                     rel: "noopener noreferrer",
                     onClick: (e: MouseEvent) => e.stopPropagation()
                 },
-                highlight(context.getValue() as string | null, currentQuery.fullText) 
+                highlight(context.getValue() as string | null, currentQuery.fullText)
             )
         )
     }
 
-        if (columnID === "ralShortInfoView__RegNumber") {
+        if (columnID === "certificate_name") {
+        return createElement(
+            motion.span,
+            {
+                className: "inline-block",
+                ...motionProperties,
+            },
+            createElement(
+                "a",
+                {
+                    className: "underline",
+                    state: {
+                        background: location,
+                    },
+                    href: `${context.row.original.certificate_link}`,
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                    onClick: (e: MouseEvent) => e.stopPropagation()
+                },
+                highlight(context.getValue() as string | null, currentQuery.certificate_name)
+            )
+        )
+    }
+
+    if (columnID === "ralShortInfoView__RegNumber") {
         let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
         return createElement(
             'span',
@@ -166,7 +171,7 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             highlight(cellValue, currentQuery.ralShortInfoView__RegNumber),
         )
 
-        
+
     }
 
     if (
