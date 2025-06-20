@@ -131,6 +131,29 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             String(context.getValue()),
         )
     }
+        if (columnID === "RegNumber") {
+        return createElement(
+            motion.span,
+            {
+                className: "inline-block",
+                ...motionProperties,
+            },
+            createElement(
+                "a",
+                {
+                    className: "underline",
+                    state: {
+                        background: location,
+                    },
+                    href: `${context.row.original.link}`,
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                    onClick: (e: MouseEvent) => e.stopPropagation()
+                },
+                highlight(context.getValue() as string | null, currentQuery.fullText) 
+            )
+        )
+    }
 
         if (columnID === "ralShortInfoView__RegNumber") {
         let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
@@ -142,6 +165,8 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             },
             highlight(cellValue, currentQuery.ralShortInfoView__RegNumber),
         )
+
+        
     }
 
     if (
