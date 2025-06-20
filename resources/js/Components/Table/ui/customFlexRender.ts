@@ -115,7 +115,11 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         columnID === "productIdentificationModel" || 
         columnID === "productIdentificationArticle"  ||
         columnID === "productIdentificationSort" ||
-        columnID === "regulations"
+        columnID === "regulations" ||
+        columnID === "manufacterFilialFullNames" ||
+        columnID === "address" ||
+        columnID === "technicalReglaments" ||
+        columnID === "productFullName" 
 
     ) {
         return createElement(
