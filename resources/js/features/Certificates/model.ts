@@ -89,7 +89,24 @@ const CertificateModel = [
     'passportIssueDate',
     'passportIssuedBy',
     'passportNum',
-    'idPersonDoc'
+    'idPersonDoc',
+
+    // certification_authority
+
+    'certification_authority__id',
+    'certification_authority__certificate_id',
+    'idCertificationAuthority',
+    'certification_authority__fullName',
+    'accredOrgName',
+    'attestatRegNumber',
+    'attestatRegDate',
+    'attestatEndDate',
+    'idRal',
+    'ogrn',
+    'idPerson',
+    'firstName',
+    'surname',
+    'patronymic'
 
 ] as const;
 

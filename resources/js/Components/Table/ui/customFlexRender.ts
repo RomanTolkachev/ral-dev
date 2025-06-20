@@ -98,7 +98,53 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         columnID === "update_status_date" ||
         columnID === "previous_update_status_date" ||
         columnID === "previous_status" ||
-        columnID === "blankNumber"
+        columnID === "blankNumber" ||
+
+
+
+        columnID === "certificate_applicant__id" ||
+        columnID === "certificate_applicant__certificate_id" ||
+        columnID === "idLegalSubject" ||
+        columnID === "idEgrul" ||
+        columnID === "idApplicantType" ||
+        columnID === "idLegalSubjectType" ||
+        columnID === "certificate_applicant__fullName" ||
+        columnID === "shortName" ||
+        columnID === "idPerson" ||
+        columnID === "surname" ||
+        columnID === "firstName" ||
+        columnID === "patronymic" ||
+        columnID === "headPosition" ||
+        columnID === "ogrn" ||
+        columnID === "ogrnAssignDate" ||
+        columnID === "inn" ||
+        columnID === "kpp" ||
+        columnID === "idLegalForm" ||
+        columnID === "certificate_applicant__regDate" ||
+        columnID === "regOrganName" ||
+        columnID === "addlRegInfo" ||
+        columnID === "isEecRegister" ||
+        columnID === "passportIssueDate" ||
+        columnID === "passportIssuedBy" ||
+        columnID === "passportNum" ||
+        columnID === "idPersonDoc" ||
+
+
+        columnID === "certification_authority__id" ||
+        columnID === "certification_authority__certificate_id" ||
+        columnID === "idCertificationAuthority" ||
+        columnID === "certification_authority__fullName" ||
+        columnID === "accredOrgName" ||
+        columnID === "attestatRegNumber" ||
+        columnID === "attestatRegDate" ||
+        columnID === "attestatEndDate" ||
+        columnID === "idRal" ||
+        columnID === "ogrn" ||
+        columnID === "idPerson" ||
+        columnID === "firstName" ||
+        columnID === "surname" ||
+        columnID === "patronymic"
+
 
     ) {
         return createElement(
@@ -136,7 +182,7 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         )
     }
 
-        if (columnID === "certificate_name") {
+    if (columnID === "certificate_name") {
         return createElement(
             motion.span,
             {

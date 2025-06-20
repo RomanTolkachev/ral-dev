@@ -91,7 +91,19 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     patronymic: "ЗА_patronymic",
     regOrganName: "ЗА_regOrganName",
     shortName: "ЗА_shortName",
-    surname: "ЗА_surname"
+    surname: "ЗА_surname",
+
+    // certification_authority
+
+    accredOrgName: "ATT_accredOrgName",
+    attestatEndDate: "ATT_attestatEndDate",
+    attestatRegDate: "ATT_attestatRegDate",
+    attestatRegNumber: "ATT_attestatRegNumber",
+    certification_authority__certificate_id: "ATT_certification_authority__certificate_id",
+    certification_authority__fullName: "ATT_certification_authority__fullName",
+    certification_authority__id: "ATT_certification_authority__id",
+    idCertificationAuthority: "ATT_idCertificationAuthority",
+    idRal: "ATT_idRal"
 
 }
 
@@ -182,7 +194,23 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     'passportIssueDate',
     'passportIssuedBy',
     'passportNum',
-    'idPersonDoc'
+    'idPersonDoc',
+
+
+    'certification_authority__id',
+    'certification_authority__certificate_id',
+    'idCertificationAuthority',
+    'certification_authority__fullName',
+    'accredOrgName',
+    'attestatRegNumber',
+    'attestatRegDate',
+    'attestatEndDate',
+    'idRal',
+    'ogrn',
+    'idPerson',
+    'firstName',
+    'surname',
+    'patronymic'
 
 ];
 

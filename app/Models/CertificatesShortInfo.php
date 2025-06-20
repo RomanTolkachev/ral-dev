@@ -27,20 +27,14 @@ class CertificatesShortInfo extends Model
         ];
     }
 
-    // public function certificateTestinglab(): HasOne
-    // {
-    //     // return $this->belongsTo(CertificateTestinglab::class, 'id', 'id_cert');
-    //     return $this->hasOne(CertificateTestinglab::class, 'id_cert');
-    // }
-
     public function ralShortInfoView(): HasOneThrough
     {
         return $this->hasOneThrough(
-            RalShortInfoView::class, 
-            CertificateTestinglab::class, 
-            'id_cert', 
-            'id', 
-            'id', 
+            RalShortInfoView::class,
+            CertificateTestinglab::class,
+            'id_cert',
+            'id',
+            'id',
             'id_ral'
         );
     }
@@ -49,6 +43,14 @@ class CertificatesShortInfo extends Model
     {
         return $this->hasOne(
             CertificateApplicant::class,
+            "certificate_id"
+        );
+    }
+
+    public function certificationAuthority(): HasOne
+    {
+        return $this->hasOne(
+            CertificationAuthority::class,
             "certificate_id"
         );
     }
