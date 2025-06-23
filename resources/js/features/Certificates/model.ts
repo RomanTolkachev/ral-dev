@@ -110,8 +110,8 @@ const CertificateModel = [
 
     // status_change
 
-    'status_change_id',
-    'status_change_certificate_id',
+    'status_change__id',
+    'certificate_id',
     'status',
     'begin_date',
     'end_date',

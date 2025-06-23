@@ -105,8 +105,8 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     idCertificationAuthority: "ATT_idCertificationAuthority",
     idRal: "ATT_idRal",
 
-    status_change_id: "status_change_id", 
-    status_change_certificate_id: "status_change_certificate_id", 
+    status_change__id: "status_change_id", 
+    // certificate_id: "status_change_certificate_id", 
     status: "status", 
     begin_date: "begin_date", 
     end_date: "end_date", 
@@ -222,8 +222,8 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     'surname',
     'patronymic',
 
-    'status_change_id',
-    'status_change_certificate_id',
+    'id',
+    'certificate_id',
     'status',
     'begin_date',
     'end_date',
