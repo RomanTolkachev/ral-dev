@@ -103,7 +103,17 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     certification_authority__fullName: "ATT_certification_authority__fullName",
     certification_authority__id: "ATT_certification_authority__id",
     idCertificationAuthority: "ATT_idCertificationAuthority",
-    idRal: "ATT_idRal"
+    idRal: "ATT_idRal",
+
+    status_change_id: "status_change_id", 
+    status_change_certificate_id: "status_change_certificate_id", 
+    status: "status", 
+    begin_date: "begin_date", 
+    end_date: "end_date", 
+    comment: "comment", 
+    publish_date: "publish_date", 
+    status_changes_by: "status_changes_by", 
+    idChangeStatus: "idChangeStatus", 
 
 }
 
@@ -210,7 +220,17 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     'idPerson',
     'firstName',
     'surname',
-    'patronymic'
+    'patronymic',
+
+    'status_change_id',
+    'status_change_certificate_id',
+    'status',
+    'begin_date',
+    'end_date',
+    'comment',
+    'publish_date',
+    'status_changes_by',
+    'idChangeStatus',
 
 ];
 

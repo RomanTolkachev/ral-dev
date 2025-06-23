@@ -54,4 +54,12 @@ class CertificatesShortInfo extends Model
             "certificate_id"
         );
     }
+
+    public function statusChange(): HasOne
+    {
+        return $this->hasOne(
+            StatusChange::class,
+            "certificate_id"
+        );
+    }
 }

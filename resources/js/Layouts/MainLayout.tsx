@@ -23,11 +23,6 @@ import { config as certificatesConfig } from '@/features/Certificates/config'
 function MainLayout() {
     const navigate = useNavigate();
     const location = useLocation();
-    const background = location.state && location.state.background
-
-    function closeRalModal() {
-        location.state ? navigate(-1) : navigate(`/directory/ral/${location.search}`)
-    }
 
     return (
         <div
@@ -71,7 +66,7 @@ function MainLayout() {
                     <Route path='certificates' element={
                         <AbstractFormProvider
                             config={certificatesConfig}
-                            tableName='certificates'>
+                            tableName='certificates' rowClickFn={() => { }}>
                             <CertificatesTable />
                         </AbstractFormProvider>
                     } />

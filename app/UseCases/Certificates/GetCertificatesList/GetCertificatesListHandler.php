@@ -13,7 +13,7 @@ class GetCertificatesListHandler
     public function execute(int $page, int $itemsPerPage, array $columns): GetCertificatesListResource
     {
         
-        $query = CertificatesShortInfo::with(["ralShortInfoView", "certificateApplicant", 'certificationAuthority']);
+        $query = CertificatesShortInfo::with(["ralShortInfoView", "certificateApplicant", 'certificationAuthority', "statusChange"]);
 
         $result = $query->filter(
             $this->filter
