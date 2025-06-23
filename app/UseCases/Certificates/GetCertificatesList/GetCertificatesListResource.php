@@ -11,11 +11,7 @@ class GetCertificatesListResource extends JsonResource
     {
         $result = parent::toArray($request);
 
-        // dd($result);
-
         $userCols = $request->query()["user_columns"];
-
-        // dd(collect($result["data"])->toFlatFilteredAndSorted($userCols)->toArray());
 
         $result["data"] = collect($result["data"])->toFlatFilteredAndSorted($userCols)->toArray();
 

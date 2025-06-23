@@ -26,10 +26,21 @@ class GetCertificatesListFilter extends AbstractFilter
      * @return Builder
      */
 
-    // protected function ralShortInfoViewFullName(array $value): Builder
-    // {
-    //     $query = $this->builder;
-    //     return $query;
-    // }
+    protected function certificateName(array $value): Builder
+    {
+        $query = $this->builder;
+        foreach ($value as $valueItem) {
+            $query->where(fn(Builder $q) => $q->orWhere("certificate_name", 'like', "%$valueItem%"));
+        }
+        return $query;
+    }
 
+    protected function certificateStatus(array $value): Builder
+    {
+        $query = $this->builder;
+        foreach ($value as $valueItem) {
+            $query->where(fn(Builder $q) => $q->orWhere("certificate_status",  $valueItem));
+        }
+        return $query;
+    }
 }

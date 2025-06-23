@@ -12,20 +12,21 @@ class GetCertificatesFiltersController
     public function __invoke()
     {
         $filters = [
-            // [
-            //     'header' => "gost",
-            //     'headerType' => 'nvarchar',
-            //     'sortValues' => [
-            //         'type' => 'huge'
-            //     ],
-            // ],
-            // [
-            //     'header' => "tn_ved",
-            //     'headerType' => 'nvarchar',
-            //     'sortValues' => [
-            //         'type' => 'huge'
-            //     ],
-            // ],
+            [
+                'header' => "certificate_name",
+                'headerType' => 'nvarchar',
+                'sortValues' => [
+                    'type' => 'huge'
+                ],
+            ],
+            [
+                'header' => "certificate_status",
+                'headerType' => 'nvarchar',
+                'sortValues' => [
+                    'type' => 'checkBox',
+                    'checkboxValues' => ["Приостановлен", "Прекращён", "Действует", "Продлен", "Недействителен", "Архивный"]
+                ],
+            ],
             // [
             //     'header' => "source_file_label",
             //     'headerType' => 'varchar',
