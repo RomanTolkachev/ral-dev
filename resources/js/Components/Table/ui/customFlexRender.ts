@@ -99,6 +99,7 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         columnID === "previous_update_status_date" ||
         columnID === "previous_status" ||
         columnID === "blankNumber" ||
+        columnID === "applicantFilialFullNames" ||
 
 
 
@@ -108,7 +109,7 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         columnID === "idEgrul" ||
         columnID === "idApplicantType" ||
         columnID === "idLegalSubjectType" ||
-        columnID === "certificate_applicant__fullName" ||
+        columnID === "fullName" ||
         columnID === "shortName" ||
         columnID === "idPerson" ||
         columnID === "surname" ||
