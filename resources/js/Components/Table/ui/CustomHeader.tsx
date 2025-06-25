@@ -24,12 +24,12 @@ export const CustomHeader: FunctionComponent<IProps> = ({ className, headerData,
     const columnName = headerData.id;
 
     return (
-        <th
-            style={{
-                // width: headerData.getSize(),
-            }}
-            className={`${className} sticky z-[1] bg-row-even top-0 p-2 overflow-hidden`}>
-            <span className={'flex gap-1 justify-center items-center'}>
+        // <th
+        //     style={{
+        //         // width: headerData.getSize(),
+        //     }}
+        //     className={`${className} sticky z-[1] bg-row-even top-0 p-2 overflow-hidden`}>
+            <span className={'flex gap-1 justify-center items-center sticky z-[1] bg-row-even top-0 p-2 overflow-hidden'}>
                 {headerData.column.columnDef.header as ReactNode}
                 {isOrderable &&
                     <Controller
@@ -100,10 +100,10 @@ export const CustomHeader: FunctionComponent<IProps> = ({ className, headerData,
                 }
             </span>
 
-            {/* <span
-                className={`bg-resizer absolute translate-x-1/2 cursor-col-resize opacity-0 hover:opacity-100 z-10 w-1.5 bg-button-violet  h-full top-0 right-0 `}
-                onMouseDown={headerData.getResizeHandler()}
-                onTouchStart={headerData.getResizeHandler()}></span> */}
-        </th>
+        //     {/* <span
+        //         className={`bg-resizer absolute translate-x-1/2 cursor-col-resize opacity-0 hover:opacity-100 z-10 w-1.5 bg-button-violet  h-full top-0 right-0 `}
+        //         onMouseDown={headerData.getResizeHandler()}
+        //         onTouchStart={headerData.getResizeHandler()}></span> */}
+        // </th>
     )
 }
