@@ -17,7 +17,8 @@ function translate(raw: TAccreditationAreaModel): string {
         source_file_label: 'Тип области',
         ralShortInfoView__fullName: 'Лаборатория',
         ralShortInfoView__RegNumber: 'Рег. номер',
-        RegDate: 'Рег. дата'
+        RegDate: 'Рег. дата',
+        full_gost: "ГОСТ полн."
     }
     return dictionary[raw] ?? raw as string
 }
