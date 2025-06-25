@@ -45,6 +45,17 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             highlight(cellValue, currentQuery.gost),
         )
     }
+    if (columnID === "full_gost") {
+        let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto",
+                // style: { maxWidth: '200px', },
+            },
+            highlight(cellValue, currentQuery.gost),
+        )
+    }
     if (columnID === "tn_ved") {
         let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
         return createElement(
@@ -71,8 +82,9 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         return createElement(
             'span',
             {
-                className: "text-wrap overflow-hidden mx-auto line-clamp-2",
-                style: { maxWidth: '200px', },
+                className: "text-wrap overflow-hidden mx-auto line-clamp-4",
+                title: context.getValue(),
+                // style: { maxWidth: '200px', },
             },
             highlight(String(context.getValue()), currentQuery.oaDescription),
         )

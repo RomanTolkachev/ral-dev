@@ -15,6 +15,7 @@ const AccreditationAreaModel = [
     'characteristic_range',
     'id_ral',
     'match_status',
+    "full_gost",
     "ralShortInfoView__RegNumber",
     "ralShortInfoView__fullName",
 ] as const;

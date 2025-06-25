@@ -18,7 +18,8 @@ const DICTIONARY: Record<TAccreditationAreaModel, string> ={
     source_file_label: 'Тип области',
     RegDate: "Рег. номер",
     ralShortInfoView__fullName: "Лаборатория",
-    ralShortInfoView__RegNumber: "Рег. номер"
+    ralShortInfoView__RegNumber: "Рег. номер",
+    full_gost: "ГОСТ полн."
 }
 
 const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
@@ -31,6 +32,7 @@ const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
     "source_page", 
     "source_row",
     'gost', 
+    "full_gost",
     "characteristic", 
     "characteristic_range", 
     "gost_object", 
@@ -64,7 +66,8 @@ const CELL_WIDTH: Partial<Record<TAccreditationAreaModel, number>> = {
     okpd: 70,
     gost: 80,
     id_ral: 120,
-    gost_object: 300
+    gost_object: 300,
+    full_gost: 300
 }
 
 const ORDERABLE_CELLS:TAccreditationAreaModel[] = [];

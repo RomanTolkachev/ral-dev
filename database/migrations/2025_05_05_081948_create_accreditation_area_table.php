@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger("id_ral");
             $table->string("source_file");
             $table->string("source_file_label");
+            $table->string("full_gost");
             $table->id();
         });
     }
