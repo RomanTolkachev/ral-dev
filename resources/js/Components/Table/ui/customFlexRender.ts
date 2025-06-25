@@ -51,6 +51,7 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             'span',
             {
                 className: "text-wrap overflow-hidden mx-auto",
+                title: context.getValue(),
                 // style: { maxWidth: '200px', },
             },
             highlight(cellValue, currentQuery.gost),
