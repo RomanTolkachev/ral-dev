@@ -1,6 +1,6 @@
 <?php
 
-namespace app\useCases\GetCertificationBody;
+namespace App\UseCases\GetCertificationBody;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

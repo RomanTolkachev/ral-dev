@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCases\User\Logout;
+namespace App\UseCases\User\LogOut;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

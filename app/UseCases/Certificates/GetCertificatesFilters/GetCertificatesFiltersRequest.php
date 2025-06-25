@@ -4,7 +4,7 @@ namespace App\UseCases\Certificates\GetCertificatesFilters;
 
 use Illuminate\Http\Request;
 
-class GetAccreditationAreaFiltersRequest
+class GetCertificatesFiltersRequest
 {
     public function rules(): array
     {

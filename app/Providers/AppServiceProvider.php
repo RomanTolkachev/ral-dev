@@ -45,6 +45,10 @@ class AppServiceProvider extends ServiceProvider
                             $filtered = collect($value)->only($template)->toArray();
 
                             foreach ($filtered as $fKey => $fValue) {
+
+                                // вот тут если $fValue это массив, то сделай так, чтобы все вложенные массивы схлопнулись в один общий массив
+                                // %fValue это может быть другая модель со связью один ко многим. Соответственно многие это другая модель (массив)
+
                                 if (array_key_exists($fKey, $item)) {
                                     $result[(string) $key . "__" . $fKey] = $fValue;
                                     // dump($key);
