@@ -14,7 +14,6 @@ import AccreditationAreaTable from '@/features/AccreditationArea/AccreditationAr
 import ralConfig from '@/features/ralTable/config'
 import { config as accAreaConfig } from '@/features/AccreditationArea/config'
 import { AbstractFormProvider } from '@/shared/api/AbstractFormProvider'
-import AccreditationAreaHeader from '@/features/AccreditationArea/AccreditationAreaHeader'
 import CertificatesTable from '@/features/Certificates/CertificatesTable'
 import { config as certificatesConfig } from '@/features/Certificates/config'
 
@@ -57,8 +56,8 @@ function MainLayout() {
                     <Route path='accreditation_area' element={
                         <AbstractFormProvider
                             config={accAreaConfig}
-                            CustomHeader={AccreditationAreaHeader}
-                            tableName="accreditation_area">
+                            tableName="accreditation_area"
+                            rowClickFn={() => { }}>    
                             <AccreditationAreaTable />
                         </AbstractFormProvider>
                     } />
@@ -66,7 +65,8 @@ function MainLayout() {
                     <Route path='certificates' element={
                         <AbstractFormProvider
                             config={certificatesConfig}
-                            tableName='certificates' rowClickFn={() => { }}>
+                            tableName='certificates' 
+                            rowClickFn={() => { }}>
                             <CertificatesTable />
                         </AbstractFormProvider>
                     } />

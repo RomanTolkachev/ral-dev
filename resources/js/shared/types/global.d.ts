@@ -22,6 +22,8 @@ declare global {
         DEFAULT_FILTERS: Partial<Record<T, string[]>> & TDefaultPaginationRequest;
         DEFAULT_REQUEST: {page: number, perPage: string, user_columns: T[]}
         CELL_WIDTH?: Partial<Record<T, number>>;
+        ORDERABLE_CELLS: T[]
+        HIDDEN_COLUMNS: T[]
     }
 }
 

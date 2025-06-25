@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useContext, useLayoutEffect, useMemo, useState } from 'react'
+import { FunctionComponent, useContext, useLayoutEffect, useMemo, useState } from 'react'
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { SVG } from '@/Components/utils/SVG'
 import { getHeaders } from '@/Components/Table/lib/getHeaders'
@@ -13,6 +13,7 @@ import PerPageController from '@/Components/Inputs/PerPageController'
 import { Preloader } from '@/Components/utils/Preloader'
 import createTranslateFn from '../lib/translate'
 import CustomCell from './CustomCell'
+import { CustomHeader } from './CustomHeader'
 
 
 interface IProps {
@@ -39,12 +40,12 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
 
     const translateFn = dictionary ? createTranslateFn(dictionary) : null
 
-    const { rowClickFn, CustomHeader, cellWidths } = useContext(CustomCellContext) ?? {};
+    const { rowClickFn, OrderableCells, cellWidths, HiddenColumns } = useContext(CustomCellContext) ?? {};
 
 
     const headers = useMemo(() => {
         const data = paginatedData?.data as IRalItem[]
-        return paginatedData ? getHeaders(data, ["ral id", "link", "certificate_link", "id"]) : []
+        return paginatedData ? getHeaders(data, HiddenColumns) : []
     }, [paginatedData])
 
     const columns: ColumnDef<any>[] = useMemo(() => {
@@ -71,8 +72,6 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
         data: tableData as IRalItem[],
         columns,
         getCoreRowModel: getCoreRowModel(),
-        // columnResizeMode: 'onChange',
-        // enableColumnResizing: true,
         defaultColumn: {
             minSize: 50,
             maxSize: 500,
@@ -123,11 +122,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
                                                     }}
                                                     className={`sticky z-[1] bg-row-even top-0 p-2 overflow-hidden`}
                                                     key={header.id}>
-                                                        {CustomHeader ? <CustomHeader headerData={header.column.columnDef}/> : header.column.columnDef.header as ReactNode}
-                                                    {/* <span
-                                                        className={`bg-resizer absolute translate-x-1/2 cursor-col-resize opacity-0 hover:opacity-100 z-10 w-1.5 bg-button-violet  h-full top-0 right-0 `}
-                                                        onMouseDown={header.getResizeHandler()}
-                                                        onTouchStart={header.getResizeHandler()}></span> */}
+                                                    <CustomHeader orderable={OrderableCells ?? []} headerData={header} />
                                                 </th>
                                             )
                                         })}

@@ -67,12 +67,16 @@ const CELL_WIDTH: Partial<Record<TAccreditationAreaModel, number>> = {
     gost_object: 300
 }
 
+const ORDERABLE_CELLS:TAccreditationAreaModel[] = [];
+
 export const config: IConfig<TAccreditationAreaModel> = {
     DICTIONARY,
     DEFAULT_COLUMNS,
     DEFAULT_FILTERS,
     DEFAULT_REQUEST,
-    CELL_WIDTH
+    CELL_WIDTH,
+    ORDERABLE_CELLS,
+    HIDDEN_COLUMNS: []
 }
 
-export default {DEFAULT_FILTERS, DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY, CELL_WIDTH}
+export default {DEFAULT_FILTERS, DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY, CELL_WIDTH, ORDERABLE_CELLS}

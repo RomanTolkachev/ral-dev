@@ -3,18 +3,17 @@ import { CustomSubmitHandlerContext } from "@/shared/api/AbstractFormProvider"
 import { IRalItem } from "@/shared/types/ral"
 import { Header } from "@tanstack/react-table"
 import { motion, useAnimate } from "motion/react"
-import { FunctionComponent, memo, ReactNode, useContext, useEffect, useLayoutEffect, useState } from "react"
+import { FunctionComponent, ReactNode, useContext, useEffect, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 
 interface IProps {
     className?: string
     key?: string | number
     headerData: Header<any, unknown>
+    orderable: string[]
 }
 
-const orderable: (keyof IRalItem)[] = ["NP_status_change_date", "regDate", "status_change_date"]
-
-const RalHeader: FunctionComponent<IProps> = ({ className, headerData }) => {
+export const CustomHeader: FunctionComponent<IProps> = ({ className, headerData, orderable }) => {
 
     const isOrderable: boolean = orderable.includes(headerData.id as keyof IRalItem)
     const { control, trigger, getValues, setValue } = useFormContext();
@@ -108,5 +107,3 @@ const RalHeader: FunctionComponent<IProps> = ({ className, headerData }) => {
         </th>
     )
 }
-
-export default RalHeader;

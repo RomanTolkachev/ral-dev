@@ -18,7 +18,6 @@ interface IProps {
     config: IConfig<string>
     tableName: string
     user?: any | undefined
-    CustomHeader?: FunctionComponent<any>
     rowClickFn?: () => void
 }
 
@@ -26,7 +25,7 @@ type QueryParams = Record<string, any>
 
 export type ICustomSubmitHandlerContext = {
     filtersData: UseQueryResult<ISearchingFormItem[]>
-    customSubmitHandler: (formData: Record<string, unknown>) => void // тут плохо
+    customSubmitHandler: (formData: Record<string, unknown>) => void
     customResetHandler: () => void
     customResetField: (fieldName: string) => void
 } | undefined
@@ -34,7 +33,8 @@ export type ICustomSubmitHandlerContext = {
 export const CustomSubmitHandlerContext = createContext<ICustomSubmitHandlerContext>(undefined); // TODO: ANY!!
 
 type CustomisationContext = {
-    CustomHeader?: FunctionComponent<any>
+    OrderableCells: string[]
+    HiddenColumns: string[]
     rowClickFn?: () => void
     cellWidths?: Partial<Record<string, number>>
 }
@@ -44,13 +44,14 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     config,
     tableName,
     children,
-    CustomHeader,
     rowClickFn,
 }) => {
 
     const user = useContext(AuthContext)
 
-    const { CELL_WIDTH, DEFAULT_FILTERS, DEFAULT_REQUEST } = config;
+    const { CELL_WIDTH, DEFAULT_FILTERS, DEFAULT_REQUEST, ORDERABLE_CELLS, HIDDEN_COLUMNS } = config;
+
+    console.log(ORDERABLE_CELLS)
 
     const [setQuery, getQuery] = useParamsCustom();
     const queries = getQuery();
@@ -163,7 +164,12 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData }}>
             <FormProvider {...methods}>
-                <CustomCellContext.Provider value={{ CustomHeader, rowClickFn, cellWidths: CELL_WIDTH }}>
+                <CustomCellContext.Provider value={{
+                    OrderableCells: ORDERABLE_CELLS,
+                    rowClickFn,
+                    HiddenColumns: HIDDEN_COLUMNS,
+                    cellWidths: CELL_WIDTH
+                }}>
                     {children}
                 </CustomCellContext.Provider>
             </FormProvider>

@@ -186,10 +186,8 @@ class GetRalShortInfoListFilter extends AbstractFilter
         $formattedColumn = preg_replace('/_desc$/', "", $value);
         if(str_ends_with($value, 'desc')) {
             $query = $query->orderByRaw("CASE WHEN {$formattedColumn} IS NULL THEN '31-12-1800' ELSE {$formattedColumn} END DESC");
-            // dd($query->toSql());
             return $query;
         } else {
-            // $query = $query->orderBy($value);
             $query = $query->orderByRaw("CASE WHEN {$formattedColumn} IS NULL THEN '31-12-9999' ELSE {$formattedColumn} END ASC");
             return $query;
         }

@@ -43,4 +43,42 @@ class GetCertificatesListFilter extends AbstractFilter
         }
         return $query;
     }
+
+    protected function order(string $value): Builder
+    {
+        $query = $this->builder;
+        $formattedColumn = preg_replace('/_desc$/', "", $value);
+        if (str_ends_with($value, 'desc')) {
+            $query = $query->orderByRaw("
+            CASE 
+                WHEN {$formattedColumn} IS NULL THEN 1
+                ELSE 0
+            END,
+            CASE 
+                WHEN {$formattedColumn} IS NULL THEN 
+                    CASE 
+                        WHEN ISDATE({$formattedColumn}) = 1 THEN '1800-12-31'
+                        ELSE '~'
+                    END
+                ELSE {$formattedColumn}
+            END DESC
+        ");
+        } else {
+            $query = $query->orderByRaw("
+            CASE 
+                WHEN {$formattedColumn} IS NULL THEN 1
+                ELSE 0
+            END,
+            CASE 
+                WHEN {$formattedColumn} IS NULL THEN 
+                    CASE 
+                        WHEN ISDATE({$formattedColumn}) = 1 THEN '9999-12-31'
+                        ELSE '~~'
+                    END
+                ELSE {$formattedColumn}
+            END ASC
+        ");
+        }
+        return $query;
+    }
 }

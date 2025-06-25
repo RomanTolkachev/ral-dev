@@ -105,20 +105,21 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     idCertificationAuthority: "ATT_idCertificationAuthority",
     idRal: "ATT_idRal",
 
-    status_change__id: "status_change_id", 
+    status_change__id: "status_change_id",
     // certificate_id: "status_change_certificate_id", 
-    status: "status", 
-    begin_date: "begin_date", 
-    end_date: "end_date", 
-    comment: "comment", 
-    publish_date: "publish_date", 
-    status_changes_by: "status_changes_by", 
-    idChangeStatus: "idChangeStatus", 
+    status: "status",
+    begin_date: "begin_date",
+    end_date: "end_date",
+    comment: "comment",
+    publish_date: "publish_date",
+    status_changes_by: "status_changes_by",
+    idChangeStatus: "idChangeStatus",
 
 }
 
 const DEFAULT_COLUMNS: TCertificateModel[] = [
     "certificate_name",
+    "blankNumber",
     "certificate_status",
     "certificate_link",
     "productIdentificationGtin",
@@ -127,7 +128,6 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     "previous_status",
     "date",
     "endDate",
-    "blankNumber",
     "technicalReglaments",
     "group",
     "certType",
@@ -231,30 +231,47 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     'publish_date',
     'status_changes_by',
     'idChangeStatus',
-
 ];
 
 
 const DEFAULT_FILTERS: Partial<Record<TCertificateModel, string[]>> & TDefaultPaginationRequest = {
     page: 1,
     perPage: "10",
+    order: ""
 }
 
 const DEFAULT_REQUEST = {
     page: 1,
     perPage: '10',
+    order: "",
     user_columns: DEFAULT_COLUMNS
 }
 
 const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
+    productIdentificationGtin: 400
 }
+
+const ORDERABLE_CELLS: TCertificateModel[] = ["blankNumber"]
+
+const HIDDEN_COLUMNS: TCertificateModel[] = ["link", "certificate_link", "id",]
+
 
 export const config: IConfig<TCertificateModel> = {
     DICTIONARY,
     DEFAULT_COLUMNS,
     DEFAULT_FILTERS,
     DEFAULT_REQUEST,
-    CELL_WIDTH
+    CELL_WIDTH,
+    ORDERABLE_CELLS,
+    HIDDEN_COLUMNS,
 }
 
-export default { DEFAULT_FILTERS, DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY, CELL_WIDTH }
+export default {
+    DEFAULT_FILTERS,
+    DEFAULT_REQUEST,
+    DEFAULT_COLUMNS,
+    DICTIONARY,
+    CELL_WIDTH,
+    ORDERABLE_CELLS,
+    HIDDEN_COLUMNS
+}
