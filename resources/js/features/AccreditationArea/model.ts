@@ -7,7 +7,6 @@ const AccreditationAreaModel = [
     'source_row', 
     'source_page', 
     'source_file', 
-    'gost', 
     'gost_object', 
     'okpd', 
     'tn_ved', 

@@ -13,7 +13,7 @@ class GetAccreditationAreaFiltersController
     {
         $filters = [
             [
-                'header' => "gost",
+                'header' => "full_gost",
                 'headerType' => 'nvarchar',
                 'sortValues' => [
                     'type' => 'huge'

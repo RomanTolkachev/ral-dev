@@ -4,7 +4,6 @@ import { IAccreditationAreaDefaultRequest, TAccreditationAreaModel } from "./mod
 
 const DICTIONARY: Record<TAccreditationAreaModel, string> ={
     id: "ID",
-    gost: "ГОСТ",
     characteristic: "Определяемая характеристика (Показатель)",
     id_ral: "Лаборатория",
     okpd: "КОД ОКПД 2",
@@ -19,7 +18,7 @@ const DICTIONARY: Record<TAccreditationAreaModel, string> ={
     RegDate: "Рег. номер",
     ralShortInfoView__fullName: "Лаборатория",
     ralShortInfoView__RegNumber: "Рег. номер",
-    full_gost: "ГОСТ полн."
+    full_gost: "ГОСТ"
 }
 
 const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
@@ -31,7 +30,6 @@ const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
     "source_file", 
     "source_page", 
     "source_row",
-    'gost', 
     "full_gost",
     "characteristic", 
     "characteristic_range", 
@@ -41,8 +39,8 @@ const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
 ];
 
 const DEFAULT_FILTERS: Partial<Record<TAccreditationAreaModel, string[]>> & TDefaultPaginationRequest = {
-    gost : [], 
     tn_ved: [], 
+    gost_object: [],
     id_ral: [],
     source_file_label: [],    
     page: 1,
@@ -64,7 +62,6 @@ const CELL_WIDTH: Partial<Record<TAccreditationAreaModel, number>> = {
     source_page: 120,
     tn_ved: 90,
     okpd: 70,
-    gost: 80,
     id_ral: 120,
     gost_object: 300,
     full_gost: 300

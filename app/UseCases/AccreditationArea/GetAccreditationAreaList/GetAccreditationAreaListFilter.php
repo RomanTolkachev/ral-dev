@@ -26,10 +26,10 @@ class GetAccreditationAreaListFilter extends AbstractFilter
      * @param array $value
      * @return Builder
      */
-    protected function gost(array $value): Builder
+    protected function fullGost(array $value): Builder
     {
         $query = $this->builder;
-        $query = $query->where('gost', 'like', "$value[0]%");
+        $query = $query->where('full_gost', 'like', "$value[0]%");
         return $query;
     }
 
