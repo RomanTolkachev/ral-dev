@@ -26,14 +26,13 @@ class GetAccrediTationAreaListHandler
             $this->filter
         )
 
-        ->paginate(
-            page: $page,
-            perPage: $itemsPerPage
-        );
-      
-        foreach($result as $key => $item)
-        {
-            $hasGost = $gost === [] ? false : stripos($item["gost"], $gost[0]) === 0;
+            ->paginate(
+                page: $page,
+                perPage: $itemsPerPage
+            );
+
+        foreach ($result as $key => $item) {
+            $hasGost = $gost === [] ? false : stripos($item["full_gost"], $gost[0]) === 0;
             $hasTnVed = $tnved === [] ? false : stripos($item["tn_ved"], $tnved[0]) === 0;
 
             if ($hasGost && $hasTnVed) {
@@ -52,5 +51,4 @@ class GetAccrediTationAreaListHandler
 
         return new GetAccreditationAreaListResource($result);
     }
-
 }

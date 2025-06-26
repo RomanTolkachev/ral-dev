@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::create('accreditation_area', function (Blueprint $table) {
             $table->string("source_row");
-            $table->string("gost");
             $table->string("gost_object");
             $table->string("okpd");
             $table->string("tn_ved");

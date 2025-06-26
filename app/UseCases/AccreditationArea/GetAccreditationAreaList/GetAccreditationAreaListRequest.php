@@ -19,7 +19,7 @@ class GetAccreditationAreaListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'page' => ['required', 'integer', 'between:1,5000'],
+            'page' => ['required', 'integer', 'between:1,20000'],
             'perPage' => ['required', 'integer', 'between:1,500'],
             'user_columns' => ['required', 'array', 'min:1'],
             'user_columns.*' => ['required', 'string']

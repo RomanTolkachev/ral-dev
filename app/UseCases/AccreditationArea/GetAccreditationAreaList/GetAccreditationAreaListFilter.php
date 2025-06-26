@@ -42,7 +42,7 @@ class GetAccreditationAreaListFilter extends AbstractFilter
             }
         });
         foreach ($value as $item) {
-            $query = $query->orWhere('gost', 'like', "$item%");
+            $query = $query->orWhere('full_gost', 'like', "$item%");
         }
         return $query;
     }

@@ -3,7 +3,6 @@ import { TAccreditationAreaModel } from "../model";
 function translate(raw: TAccreditationAreaModel): string {
     const dictionary: Record<TAccreditationAreaModel, string> = {
         id: "ID",
-        gost: "ГОСТ",
         characteristic: "Характеристика",
         id_ral: "ID лаборатории",
         okpd: "ОКПД",
@@ -18,7 +17,7 @@ function translate(raw: TAccreditationAreaModel): string {
         ralShortInfoView__fullName: 'Лаборатория',
         ralShortInfoView__RegNumber: 'Рег. номер',
         RegDate: 'Рег. дата',
-        full_gost: "ГОСТ полн."
+        full_gost: "ГОСТ"
     }
     return dictionary[raw] ?? raw as string
 }
