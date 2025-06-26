@@ -19,13 +19,6 @@ class GetCertificatesListFilter extends AbstractFilter
         parent::__construct($request);
     }
 
-    /**
-     * Фильтрация по Ссылке
-     *
-     * @param array $value
-     * @return Builder
-     */
-
     protected function certificateName(array $value): Builder
     {
         $query = $this->builder;
