@@ -8,6 +8,7 @@ use App\Models\Traits\HasQueryFilters;
 use App\Models\CertificateTestinglab;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class CertificatesShortInfo extends Model
@@ -55,11 +56,12 @@ class CertificatesShortInfo extends Model
         );
     }
 
-    public function statusChange(): HasOne
+    public function statusChange(): HasMany
     {
-        return $this->hasOne(
+        return $this->hasMany(
             StatusChange::class,
-            "certificate_id"
+            "certificate_id",
+            "id",
         );
     }
 }

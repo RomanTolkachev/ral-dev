@@ -34,35 +34,45 @@ class AppServiceProvider extends ServiceProvider
              * @return \Illuminate\Support\Collection
              */
             function (array $template): Collection {
-                /** @var \Illuminate\Support\Collection $collection */
-                $collection = $this;
-
-                return $collection->map(function ($item) use ($template) {
+                return $this->map(function ($item) use ($template) {
                     $result = [];
-                    foreach ($item as $key => $value) {
-                        if (is_array($value)) {
-                            // Обрабатываем вложенные массивы
-                            $filtered = collect($value)->only($template)->toArray();
+                    $existingKeys = array_keys($item);
 
-                            foreach ($filtered as $fKey => $fValue) {
+                    // Функция для обработки вложенных массивов
+                    $processNested = function ($array, $parentKey = null) use (&$result, &$existingKeys, &$processNested) {
+                        foreach ($array as $key => $value) {
+                            // Определяем конечный ключ
+                            $finalKey = $parentKey ? 
+                                (in_array($key, $existingKeys) ? $parentKey.'__'.$key : $key) : 
+                                $key;
 
-                                // вот тут если $fValue это массив, то сделай так, чтобы все вложенные массивы схлопнулись в один общий массив
-                                // %fValue это может быть другая модель со связью один ко многим. Соответственно многие это другая модель (массив)
-
-                                if (array_key_exists($fKey, $item)) {
-                                    $result[(string) $key . "__" . $fKey] = $fValue;
-                                    // dump($key);
+                            if (is_array($value)) {
+                                // Если значение - массив, обрабатываем рекурсивно
+                                $processNested($value, $finalKey);
+                            } else {
+                                // Конкатенируем значения с одинаковыми ключами
+                                $value = (string)($value ?? '');
+                                if (array_key_exists($finalKey, $result)) {
+                                    $result[$finalKey] .= ' // ' . $value;
                                 } else {
-                                    $result[$fKey] = $fValue;
+                                    $result[$finalKey] = $value;
                                 }
                             }
+                        }
+                    };
+
+                    // Обрабатываем основной элемент
+                    foreach ($item as $key => $value) {
+                        if (is_array($value)) {
+                            $processNested($value, in_array($key, $existingKeys) ? $key : null);
                         } elseif (in_array($key, $template)) {
                             $result[$key] = $value;
                         }
                     }
 
-                    // Упорядочиваем ключи в соответствии с $only
-                    return collect($template)->mapWithKeys(fn($k) => [$k => $result[$k] ?? null]);
+                    // Сортируем по шаблону
+                    return collect($template)
+                        ->mapWithKeys(fn($k) => [$k => $result[$k] ?? null]);
                 });
             }
         );
