@@ -91,6 +91,29 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         )
     }
     if (
+        columnID === "status_change__id" ||
+        columnID === "status" ||
+        columnID === "begin_date" ||
+        columnID === "end_date" ||
+        columnID === "comment" ||
+        columnID === "publish_date" ||
+        columnID === "status_changes_by" ||
+        columnID === "idChangeStatus"
+    ) {
+
+        const splitted = (context.getValue() as string).split(" // ");
+        console.log(splitted);
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden flex flex-col mx-auto line-clamp-4 px-2",
+                title: context.getValue(),
+                // style: { maxWidth: '200px', },
+            },
+            splitted.map((item, key) => createElement("span", {key, className: `text-left ${key !== splitted.length - 1 ? "mb-3" : ""}`}, item))
+        )
+    }
+    if (
         columnID === "productIdentificationName" ||
         columnID === "productIdentificationType" ||
         columnID === "productIdentificationTrademark" ||
@@ -158,8 +181,6 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         columnID === "firstName" ||
         columnID === "surname" ||
         columnID === "patronymic"
-
-
     ) {
         return createElement(
             'span',
