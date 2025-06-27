@@ -110,7 +110,7 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
                 title: context.getValue(),
                 // style: { maxWidth: '200px', },
             },
-            splitted.map((item, key) => createElement("span", {key, className: `text-left ${key !== splitted.length - 1 ? "mb-3" : ""}`}, item))
+            splitted.map((item, key) => createElement("span", {key, className: `text-left ${key !== splitted.length - 1 ? "mb-3" : ""}`}, item.replace(/\d{2}:\d{2}:\d{2}\.\d{3}/g, '')))
         )
     }
     if (
