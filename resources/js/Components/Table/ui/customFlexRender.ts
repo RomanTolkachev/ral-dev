@@ -102,7 +102,6 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
     ) {
 
         const splitted = context.getValue() ? (context.getValue() as string).split(" // ") : [];
-        console.log(splitted);
         return createElement(
             'span',
             {

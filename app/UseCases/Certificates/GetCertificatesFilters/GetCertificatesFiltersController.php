@@ -16,7 +16,7 @@ class GetCertificatesFiltersController
                 'header' => "certificate_name",
                 'headerType' => 'nvarchar',
                 'sortValues' => [
-                    'type' => 'huge'
+                    'type' => 'multi'
                 ],
             ],
             [

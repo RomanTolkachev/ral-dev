@@ -8,6 +8,7 @@ import { CheckBoxCustom } from '@/Components/Inputs/CheckBoxCustom'
 import { isEqual, keys  } from 'lodash'
 import { useFormContext } from 'react-hook-form'
 import useParamsCustom from '@/shared/query/useParamsCustom'
+import { MultiSelect } from './Multiselect/MultiSelect'
 
 interface IProps {
     className?: string
@@ -91,6 +92,7 @@ export const DropdownItem: FunctionComponent<IProps> = ({ inputData, className }
                 {inputData.sortValues.type === 'huge' && <InputCustom inputData={inputData} />}
                 {inputData.sortValues.type === 'date' && <CalendarInput inputData={inputData} />}
                 {inputData.sortValues.type === 'checkBox' && <CheckBoxCustom inputData={inputData} />}
+                {inputData.sortValues.type === 'multi' && <MultiSelect inputData={inputData} />}
             </motion.div>
         </motion.div>
     )
