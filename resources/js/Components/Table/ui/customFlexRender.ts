@@ -101,16 +101,16 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         columnID === "idChangeStatus"
     ) {
 
-        const splitted = (context.getValue() as string).split(" // ");
+        const splitted = context.getValue() ? (context.getValue() as string).split(" // ") : [];
         console.log(splitted);
         return createElement(
             'span',
             {
-                className: "text-wrap overflow-hidden flex flex-col mx-auto line-clamp-4 px-2",
+                className: "text-wrap overflow-hidden flex flex-col mx-auto px-2",
                 title: context.getValue(),
                 // style: { maxWidth: '200px', },
             },
-            splitted.map((item, key) => createElement("span", {key, className: `text-left ${key !== splitted.length - 1 ? "mb-3" : ""}`}, item.replace(/\d{2}:\d{2}:\d{2}\.\d{3}/g, '')))
+            splitted.map((item, key) => createElement("span", {key, className: `text-left line-clamp-2 overflow-hidden ${key !== splitted.length - 1 ? "mb-3" : ""}`}, item.replace(/\d{2}:\d{2}:\d{2}\.\d{3}/g, '')))
         )
     }
     if (
