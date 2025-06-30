@@ -52,7 +52,7 @@ export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData
                                 <input
                                     checked={value.includes(item)}
                                     className={
-                                        'ml-auto checked:text-checkbox-custom' +
+                                        'ml-auto cursor-pointer checked:text-checkbox-custom' +
                                         ' outline-none border focus:ring-checkbox-ring focus:ring-offset-0 rounded active:border-transparent ' +
                                         ' focus:outline-none ' +
                                         'bg-background-block'

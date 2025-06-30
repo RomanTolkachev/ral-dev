@@ -157,9 +157,9 @@ export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
                             {value.map((item: string, index: number) => (
                                 <div
                                     key={`selected-${index}`}
-                                    className="flex items-center group relative pr-6 min-w-0" // Добавлен min-w-0 здесь
+                                    className="flex items-center border-b last:border-b-0 border-checkbox-custom-border group relative pr-6 min-w-0"
                                 >
-                                    <span title={item} className="truncate pr-2 border-b last:border-b-0 py-2 border-checkbox-custom-border text-gray-light-gray">
+                                    <span title={item} className="truncate pr-2 py-2 text-gray-light-gray">
                                         {item}
                                     </span>
                                     <button
