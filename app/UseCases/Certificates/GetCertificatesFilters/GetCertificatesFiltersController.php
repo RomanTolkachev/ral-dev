@@ -27,6 +27,18 @@ class GetCertificatesFiltersController
                     'checkboxValues' => ["Приостановлен", "Прекращён", "Действует", "Продлен", "Недействителен", "Архивный"]
                 ],
             ],
+            [
+                'header' => "status_changes_by",
+                'headerType' => 'nvarchar',
+                'sortValues' => [
+                    'type' => 'checkBox',
+                    'checkboxValues' => [
+                        "По решению органа по сертификации", 
+                        "По решению национального органа по аккредитации",
+                        "None"
+                    ]
+                ],
+            ],
             // [
             //     'header' => "source_file_label",
             //     'headerType' => 'varchar',

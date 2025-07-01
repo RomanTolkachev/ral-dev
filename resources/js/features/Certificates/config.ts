@@ -237,7 +237,8 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
 const DEFAULT_FILTERS: Partial<Record<TCertificateModel, string[]>> & TDefaultPaginationRequest = {
     page: 1,
     perPage: "10",
-    order: ""
+    order: "",
+    status_changes_by: []
 }
 
 const DEFAULT_REQUEST = {
@@ -251,7 +252,7 @@ const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
     productIdentificationGtin: 400
 }
 
-const ORDERABLE_CELLS: TCertificateModel[] = ["blankNumber", "certificate_status"]
+const ORDERABLE_CELLS: TCertificateModel[] = ["blankNumber", "certificate_status", "productIdentificationGtin"]
 
 const HIDDEN_COLUMNS: TCertificateModel[] = ["link", "certificate_link", "id",]
 

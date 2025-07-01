@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Http\Filters\AbstractFilter;
 use App\Models\CertificatesShortInfo;
 use Illuminate\Support\Facades\DB;
+use App\Models\StatusChange;
 
 
 class GetCertificatesListFilter extends AbstractFilter
@@ -42,7 +43,8 @@ class GetCertificatesListFilter extends AbstractFilter
     protected function order(string $value): Builder
     {
         // $query = $this->builder;
-        $query = $this->builder->whereNotNull(preg_replace('/_(asc|desc)$/i', '', $value));
+        $query = $this->builder->whereNotNull(preg_replace('/_(asc|desc)$/i', '', $value))
+        ->where(preg_replace('/_(asc|desc)$/i', '', $value), '<>', '');
         // $formattedColumn = preg_replace('/_desc$/', "", $value);
         // if (str_ends_with($value, 'desc')) {
         //     $query = $query->orderByRaw("
@@ -76,5 +78,29 @@ class GetCertificatesListFilter extends AbstractFilter
         // ");
         // }
         return $query;
+    }
+    protected function statusChangesBy(array $values): Builder 
+    {
+        $query = $this->builder;
+        $ids = StatusChange::where( function($q) use ($values) {
+            foreach($values as $value) {
+                $q->orWhere('status_changes_by', $value);
+            }
+        })->distinct()->pluck('certificate_id')->toArray();
+
+        if (empty($ids)) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        $tempTable = '##temp_ids_' . uniqid();
+        DB::statement("CREATE TABLE {$tempTable} (certificate_id INT PRIMARY KEY)");
+
+        foreach (array_chunk($ids, 1000) as $chunk) {
+            DB::table($tempTable)->insert(
+                array_map(fn($id) => ['certificate_id' => $id], $chunk)
+            );
+        }
+
+        return $query->join(DB::raw("{$tempTable} tmp2"), 'certificates_short_info.id', '=', 'tmp2.certificate_id');
     }
 }
