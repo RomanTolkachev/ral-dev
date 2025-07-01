@@ -135,6 +135,8 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         columnID === "previous_status" ||
         columnID === "blankNumber" ||
         columnID === "applicantFilialFullNames" ||
+        columnID === "applicantName" ||
+        columnID === "manufacterName" ||
 
 
 

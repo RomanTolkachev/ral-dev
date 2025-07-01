@@ -13,20 +13,21 @@ interface IProps {
 
 export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
     const handlers = useContext<ICustomSubmitHandlerContext>(CustomSubmitHandlerContext);
-    if (!handlers) return null;
-
-    const { customSubmitHandler } = handlers;
     const { control, getValues, setValue, setError, clearErrors, formState: { errors }, trigger } = useFormContext();
     const inputName = inputData.header;
     const error = errors[inputName];
-    const currentValues = getValues()[inputName] || [];
     const [inputText, setInputText] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
+
+    if (!handlers) return null;
+    const { customSubmitHandler } = handlers;
 
     const isValidInput = inputText.length >= 2;
 
     const handleAdd = async (value: string) => {
         if (!value) return;
+
+        const currentValues = getValues()[inputName] || [];
 
         if (currentValues.includes(value)) {
             setError(inputName, {
@@ -39,16 +40,25 @@ export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
         const newValues = [...currentValues, value];
         setValue(inputName, newValues, { shouldDirty: true });
         setInputText('');
+        
         const isValid = await trigger(inputName);
-        isValid && customSubmitHandler(getValues());
+        if (isValid) {
+            await customSubmitHandler(getValues());
+        }
+        
         inputRef.current?.focus();
     };
 
     const handleRemove = async (valueToRemove: string) => {
+        const currentValues = getValues()[inputName] || [];
         const newValues = currentValues.filter((val: string) => val !== valueToRemove);
+        
         setValue(inputName, newValues, { shouldDirty: true });
+        
         const isValid = await trigger(inputName);
-        isValid && customSubmitHandler(getValues());
+        if (isValid) {
+            await customSubmitHandler(getValues());
+        }
     };
 
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -122,14 +132,14 @@ export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
                         onClick={handleSubmitClick}
                         disabled={!isValidInput}
                         className={`
-                                absolute right-2 top-1/2 transform -translate-y-1/2
-                                w-6 h-6 flex items-center justify-center
-                                rounded-full
+                            absolute right-2 top-1/2 transform -translate-y-1/2
+                            w-6 h-6 flex items-center justify-center
+                            rounded-full
                             ${isValidInput ?
                                 'bg-button-violet text-white cursor-pointer' :
                                 'bg-gray-300 text-gray-500 cursor-not-allowed'}
-                                transition-colors duration-200
-                                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-button-violet`}
+                            transition-colors duration-200
+                            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-button-violet`}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -165,6 +175,7 @@ export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
                                     <button
                                         onClick={() => handleRemove(item)}
                                         className="absolute right-0 text-gray-light-gray hover:text-red-500 ml-2"
+                                        type="button"
                                     >
                                         ×
                                     </button>

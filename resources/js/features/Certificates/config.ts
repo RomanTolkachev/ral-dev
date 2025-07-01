@@ -251,7 +251,7 @@ const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
     productIdentificationGtin: 400
 }
 
-const ORDERABLE_CELLS: TCertificateModel[] = ["blankNumber"]
+const ORDERABLE_CELLS: TCertificateModel[] = ["blankNumber", "certificate_status"]
 
 const HIDDEN_COLUMNS: TCertificateModel[] = ["link", "certificate_link", "id",]
 

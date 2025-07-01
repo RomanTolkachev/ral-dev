@@ -51,8 +51,6 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
 
     const { CELL_WIDTH, DEFAULT_FILTERS, DEFAULT_REQUEST, ORDERABLE_CELLS, HIDDEN_COLUMNS } = config;
 
-    console.log(ORDERABLE_CELLS)
-
     const [setQuery, getQuery] = useParamsCustom();
     const queries = getQuery();
     const prevQueries = useRef<QueryParams | null>(null);
@@ -94,6 +92,8 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         formData: IFormValues,
     ): Promise<void> => {
         const isValid = await methods.trigger();
+        const { dirtyFields } = methods.formState
+        console.log(dirtyFields)
         console.log("зашли в сабмит", isValid)
         if (isEqual(prevQueries.current, formData)) {
             console.log("одинакова", prevQueries.current, formData)
@@ -134,7 +134,6 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     function customResetField(fieldName: keyof IFormValues): void {
         methods.reset({ ...methods.getValues(), [fieldName]: methods.formState.defaultValues![fieldName] }, { keepDefaultValues: true });
         methods.handleSubmit(data => {
-            console.log(data);
             customSubmitHandler(data)
         })()
     }

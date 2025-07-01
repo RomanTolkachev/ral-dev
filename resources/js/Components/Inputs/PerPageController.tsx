@@ -37,7 +37,7 @@ const PerPageController: FunctionComponent<IProps> = () => {
                     const handleChange = async (e: React.MouseEvent<HTMLSpanElement>) => {
                         e.stopPropagation();
                         setActive(e.currentTarget.textContent || "" )
-                        onChange(Number(e.currentTarget.textContent));
+                        onChange(Number(e.currentTarget.textContent), );
                         const isValid = await trigger()
 
                         if (isValid) {

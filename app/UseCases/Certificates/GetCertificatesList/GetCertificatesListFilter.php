@@ -19,12 +19,14 @@ class GetCertificatesListFilter extends AbstractFilter
         parent::__construct($request);
     }
 
-    protected function certificateName(array $value): Builder
+    protected function certificateName(array $values): Builder
     {
         $query = $this->builder;
-        foreach ($value as $valueItem) {
-            $query->where(fn(Builder $q) => $q->orWhere("certificate_name", 'like', "%$valueItem%"));
-        }
+        $query->where(function(Builder $q) use ($values) {
+            foreach($values as $value) {
+                $q->orWhere("certificate_name", 'like', "%$value%");
+            }
+        }); 
         return $query;
     }
 
@@ -39,39 +41,40 @@ class GetCertificatesListFilter extends AbstractFilter
 
     protected function order(string $value): Builder
     {
-        $query = $this->builder;
-        $formattedColumn = preg_replace('/_desc$/', "", $value);
-        if (str_ends_with($value, 'desc')) {
-            $query = $query->orderByRaw("
-            CASE 
-                WHEN {$formattedColumn} IS NULL THEN 1
-                ELSE 0
-            END,
-            CASE 
-                WHEN {$formattedColumn} IS NULL THEN 
-                    CASE 
-                        WHEN ISDATE({$formattedColumn}) = 1 THEN '1800-12-31'
-                        ELSE '~'
-                    END
-                ELSE {$formattedColumn}
-            END DESC
-        ");
-        } else {
-            $query = $query->orderByRaw("
-            CASE 
-                WHEN {$formattedColumn} IS NULL THEN 1
-                ELSE 0
-            END,
-            CASE 
-                WHEN {$formattedColumn} IS NULL THEN 
-                    CASE 
-                        WHEN ISDATE({$formattedColumn}) = 1 THEN '9999-12-31'
-                        ELSE '~~'
-                    END
-                ELSE {$formattedColumn}
-            END ASC
-        ");
-        }
+        // $query = $this->builder;
+        $query = $this->builder->whereNotNull(preg_replace('/_(asc|desc)$/i', '', $value));
+        // $formattedColumn = preg_replace('/_desc$/', "", $value);
+        // if (str_ends_with($value, 'desc')) {
+        //     $query = $query->orderByRaw("
+        //     CASE 
+        //         WHEN {$formattedColumn} IS NULL THEN 1
+        //         ELSE 0
+        //     END,
+        //     CASE 
+        //         WHEN {$formattedColumn} IS NULL THEN 
+        //             CASE 
+        //                 WHEN ISDATE({$formattedColumn}) = 1 THEN '1800-12-31'
+        //                 ELSE '~'
+        //             END
+        //         ELSE {$formattedColumn}
+        //     END DESC
+        // ");
+        // } else {
+        //     $query = $query->orderByRaw("
+        //     CASE 
+        //         WHEN {$formattedColumn} IS NULL THEN 1
+        //         ELSE 0
+        //     END,
+        //     CASE 
+        //         WHEN {$formattedColumn} IS NULL THEN 
+        //             CASE 
+        //                 WHEN ISDATE({$formattedColumn}) = 1 THEN '9999-12-31'
+        //                 ELSE '~~'
+        //             END
+        //         ELSE {$formattedColumn}
+        //     END ASC
+        // ");
+        // }
         return $query;
     }
 }
