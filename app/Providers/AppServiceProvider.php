@@ -20,19 +20,12 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+        public function boot(): void
     {
         Vite::prefetch(concurrency: 3);
 
         Collection::macro(
             "toFlatFilteredAndSorted",
-            /**
-             * Функция разворачивает связанные модели в один уровень с родительской
-             * если ключ в связанной повторяется, то добавится префикс с именем вложенной модели
-             * затем происходит сортировка ключей в соответствии с параметром
-             * @param array $template
-             * @return \Illuminate\Support\Collection
-             */
             function (array $template): Collection {
                 return $this->map(function ($item) use ($template) {
                     $result = [];
