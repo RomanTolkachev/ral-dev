@@ -11,7 +11,7 @@ import { motion } from 'motion/react'
 import { useNavigate } from 'react-router'
 import RalHeader from '@/features/RalTable/ui/RalTable/Cell/ui/RalHeader'
 import FoundedResults from '../Inputs/PageNavigation/Pagination'
-import PerPageController from '../Inputs/PerPageController'
+import PerPageController from '../Inputs/PerPageController/PerPageController'
 
 
 interface IProps {
