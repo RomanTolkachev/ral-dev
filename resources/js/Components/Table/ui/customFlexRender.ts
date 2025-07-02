@@ -1,6 +1,5 @@
 import highlight from "@/Components/Table/lib/highlightText";
 import { Renderable, CellContext, flexRender } from "@tanstack/react-table";
-import { isEmpty } from "lodash";
 import { motion } from "motion/react";
 import { createElement, ReactNode } from "react";
 
