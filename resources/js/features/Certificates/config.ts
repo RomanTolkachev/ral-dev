@@ -119,8 +119,18 @@ const DICTIONARY: Record<TCertificateModel, string> = {
 
 const DEFAULT_COLUMNS: TCertificateModel[] = [
     "certificate_name",
-    "blankNumber",
     "certificate_status",
+    'id',
+    'certificate_id',
+    'status',
+    'begin_date',
+    'end_date',
+    'comment',
+    'publish_date',
+    'status_changes_by',
+    'idChangeStatus',
+    
+    
     "certificate_link",
     "productIdentificationGtin",
     "update_status_date",
@@ -222,15 +232,7 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     'surname',
     'patronymic',
 
-    'id',
-    'certificate_id',
-    'status',
-    'begin_date',
-    'end_date',
-    'comment',
-    'publish_date',
-    'status_changes_by',
-    'idChangeStatus',
+    "blankNumber",
 ];
 
 

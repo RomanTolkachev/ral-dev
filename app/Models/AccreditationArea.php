@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class AccreditationArea extends Model
 {
     use HasFactory, HasColumnsHelp, HasQueryFilters;
-    public $table = "accreditation_area";
+    public $table = "acreditation_area";
     public $timestamps = false;
 
     public function ralShortInfoView(): BelongsTo
