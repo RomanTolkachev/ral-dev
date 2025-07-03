@@ -121,7 +121,10 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     "certificate_name",
     "certificate_status",
     'id',
-    'certificate_id',
+
+    "update_status_date",
+    "previous_update_status_date",
+    "previous_status",
     'status',
     'begin_date',
     'end_date',
@@ -129,13 +132,12 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     'publish_date',
     'status_changes_by',
     'idChangeStatus',
-    
-    
+
+
     "certificate_link",
     "productIdentificationGtin",
-    "update_status_date",
-    "previous_update_status_date",
-    "previous_status",
+
+
     "date",
     "endDate",
     "technicalReglaments",
@@ -231,8 +233,8 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     'firstName',
     'surname',
     'patronymic',
-
     "blankNumber",
+    'certificate_id',
 ];
 
 

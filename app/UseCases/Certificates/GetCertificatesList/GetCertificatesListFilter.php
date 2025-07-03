@@ -103,4 +103,11 @@ class GetCertificatesListFilter extends AbstractFilter
 
         return $query->join(DB::raw("{$tempTable} tmp2"), 'certificates_short_info.id', '=', 'tmp2.certificate_id');
     }
+
+    protected function updateStatusDate()
+    {
+        
+    }
+
+
 }

@@ -39,14 +39,13 @@ class GetCertificatesFiltersController
                     ]
                 ],
             ],
-            // [
-            //     'header' => "source_file_label",
-            //     'headerType' => 'varchar',
-            //     'sortValues' => [
-            //         'type' => 'checkBox',
-            //         'checkboxValues' => ["ОА", "РОА", "СОА"]
-            //     ],
-            // ],
+            [
+                'header' => "update_status_date",
+                'headerType' => 'varchar',
+                'sortValues' => [
+                    'type' => 'date',
+                ],
+            ],
             // [
             //     'header' => "ralShortInfoView__fullName",
             //     'headerType' => 'varchar',
