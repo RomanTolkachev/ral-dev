@@ -16,14 +16,14 @@ class GetAccreditationAreaFiltersController
                 'header' => "full_gost",
                 'headerType' => 'nvarchar',
                 'sortValues' => [
-                    'type' => 'huge'
+                    'type' => 'singleText'
                 ],
             ],
             [
                 'header' => "tn_ved",
                 'headerType' => 'nvarchar',
                 'sortValues' => [
-                    'type' => 'huge'
+                    'type' => 'singleText'
                 ],
             ],
             [
@@ -38,14 +38,14 @@ class GetAccreditationAreaFiltersController
                 'header' => "ralShortInfoView__fullName",
                 'headerType' => 'varchar',
                 'sortValues' => [
-                    'type' => 'huge',
+                    'type' => 'multi',
                 ],
             ],
             [
                 'header' => "ralShortInfoView__RegNumber",
                 'headerType' => 'varchar',
                 'sortValues' => [
-                    'type' => 'huge',
+                    'type' => 'multi',
                 ],
             ],
         ];

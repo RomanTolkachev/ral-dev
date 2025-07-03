@@ -40,16 +40,16 @@ class GetCertificatesListFilter extends AbstractFilter
     protected function order(string $value): Builder
     {
         // $query = $this->builder;
-        $query = $this->builder->whereNotNull(preg_replace('/_(asc|desc)$/i', '', $value));
-            $formattedColumn = preg_replace('/_desc$/', "", $value);
+        $formattedColumn = preg_replace('/_desc$/', "", $value);
+        $query = $this->builder->whereNotNull($formattedColumn);
         if(str_ends_with($value, 'desc')) {
-            $query = $query->whereNotNull($formattedColumn)->orderByDesc($formattedColumn);
+            $query = $query->orderByDesc($formattedColumn);
             return $query;
         } else {
-            $query = $query->whereNotNull($formattedColumn)->orderBy($formattedColumn);
+            $query = $query->orderBy($formattedColumn);
             return $query;
         }
-            // ->where(preg_replace('/_(asc|desc)$/i', '', $value), '<>', '');
+        // ->where(preg_replace('/_(asc|desc)$/i', '', $value), '<>', '');
         // $formattedColumn = preg_replace('/_desc$/', "", $value);
         // dd("зашли");
         // if (str_ends_with($value, 'desc')) {
@@ -113,13 +113,13 @@ class GetCertificatesListFilter extends AbstractFilter
     protected function updateStatusDate(array $values): Builder
     {
         switch (true) {
-            case empty($values[0]) && empty($values[1]): 
+            case empty($values[0]) && empty($values[1]):
                 return $this->builder;
             case (empty($values[0]) && !empty($values[1])):
                 return $this->builder->where('update_status_date', '<', $values[1]);
             case (!empty($values[0]) && empty($values[1])):
                 return $this->builder->where('update_status_date', '>', $values[0]);
-            default: 
+            default:
                 return $this->builder->whereBetween('update_status_date', $values);
         }
     }
