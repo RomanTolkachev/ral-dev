@@ -1,7 +1,7 @@
 import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
 import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useMemo, useRef } from 'react'
 import useParamsCustom from '@/shared/query/useParamsCustom'
-import { isEmpty, isEqual, keys, values } from 'lodash'
+import { isEmpty, isEqual, keys, method, values } from 'lodash'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import excludePaginationQueries from '@/shared/query/excludePaginationQueries'
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
@@ -62,7 +62,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         queryKey: ["filters", tableName, DEFAULT_FILTERS]
     })
 
-    const { data: filters = [], isPending: isFiltersPending, isFetched } = filtersData
+    const { data: filters = [], isPending: isFiltersPending, isFetched } = filtersData;
 
     // от данной переменной зависит, нужно ли перезаписывать состояния URL. Если query пустые на момент вызова onSubmit, то в историю добавится шаг.
     const shouldReplace = useMemo<boolean>(() => {
@@ -73,8 +73,9 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         disabled: !filtersData.isFetched,
         mode: "onChange",
         reValidateMode: 'onChange',
-        defaultValues: { ...DEFAULT_FILTERS, ...filters },
+        defaultValues: { ...DEFAULT_FILTERS, ...filters, },
     })
+
 
     // methods.formState.dirtyFields
     // после получения фильтров записываем их для последующего сравнения
@@ -93,7 +94,6 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     ): Promise<void> => {
         const isValid = await methods.trigger();
         const { dirtyFields } = methods.formState
-        console.log(dirtyFields)
         console.log("зашли в сабмит", isValid)
         if (isEqual(prevQueries.current, formData)) {
             console.log("одинакова", prevQueries.current, formData)
@@ -147,7 +147,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
                 return acc;
             }, {});
             // когда фильтры пришли, мы задаем defaultValues через reset, первый аргумент которого будут новые defaultValues
-            methods.reset({ ...newQueries, ...DEFAULT_REQUEST }, { keepDefaultValues: false })
+            methods.reset({ ...newQueries, ...DEFAULT_FILTERS }, { keepDefaultValues: false })
             methods.trigger()
         }
         /* Если в URL имеются queries, то после reset заново устанавливаются значения этих полей. 

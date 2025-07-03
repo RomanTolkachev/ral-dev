@@ -23,29 +23,35 @@ class GetCertificatesListFilter extends AbstractFilter
     protected function certificateName(array $values): Builder
     {
         $query = $this->builder;
-        $query->where(function(Builder $q) use ($values) {
-            foreach($values as $value) {
+        $query->where(function (Builder $q) use ($values) {
+            foreach ($values as $value) {
                 $q->orWhere("certificate_name", 'like', "%$value%");
             }
-        }); 
+        });
         return $query;
     }
 
-    protected function certificateStatus(array $value): Builder
+    protected function certificateStatus(array $values): Builder
     {
         $query = $this->builder;
-        foreach ($value as $valueItem) {
-            $query->where(fn(Builder $q) => $q->orWhere("certificate_status",  $valueItem));
-        }
-        return $query;
+        return $query->whereIn("certificate_status", $values);
     }
 
     protected function order(string $value): Builder
     {
         // $query = $this->builder;
-        $query = $this->builder->whereNotNull(preg_replace('/_(asc|desc)$/i', '', $value))
-        ->where(preg_replace('/_(asc|desc)$/i', '', $value), '<>', '');
+        $query = $this->builder->whereNotNull(preg_replace('/_(asc|desc)$/i', '', $value));
+            $formattedColumn = preg_replace('/_desc$/', "", $value);
+        if(str_ends_with($value, 'desc')) {
+            $query = $query->whereNotNull($formattedColumn)->orderByDesc($formattedColumn);
+            return $query;
+        } else {
+            $query = $query->whereNotNull($formattedColumn)->orderBy($formattedColumn);
+            return $query;
+        }
+            // ->where(preg_replace('/_(asc|desc)$/i', '', $value), '<>', '');
         // $formattedColumn = preg_replace('/_desc$/', "", $value);
+        // dd("зашли");
         // if (str_ends_with($value, 'desc')) {
         //     $query = $query->orderByRaw("
         //     CASE 
@@ -77,13 +83,13 @@ class GetCertificatesListFilter extends AbstractFilter
         //     END ASC
         // ");
         // }
-        return $query;
+        // return $query;
     }
-    protected function statusChangesBy(array $values): Builder 
+    protected function statusChangesBy(array $values): Builder
     {
         $query = $this->builder;
-        $ids = StatusChange::where( function($q) use ($values) {
-            foreach($values as $value) {
+        $ids = StatusChange::where(function ($q) use ($values) {
+            foreach ($values as $value) {
                 $q->orWhere('status_changes_by', $value);
             }
         })->distinct()->pluck('certificate_id')->toArray();
@@ -104,10 +110,17 @@ class GetCertificatesListFilter extends AbstractFilter
         return $query->join(DB::raw("{$tempTable} tmp2"), 'certificates_short_info.id', '=', 'tmp2.certificate_id');
     }
 
-    protected function updateStatusDate()
+    protected function updateStatusDate(array $values): Builder
     {
-        
+        switch (true) {
+            case empty($values[0]) && empty($values[1]): 
+                return $this->builder;
+            case (empty($values[0]) && !empty($values[1])):
+                return $this->builder->where('update_status_date', '<', $values[1]);
+            case (!empty($values[0]) && empty($values[1])):
+                return $this->builder->where('update_status_date', '>', $values[0]);
+            default: 
+                return $this->builder->whereBetween('update_status_date', $values);
+        }
     }
-
-
 }

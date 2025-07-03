@@ -242,7 +242,8 @@ const DEFAULT_FILTERS: Partial<Record<TCertificateModel, string[]>> & TDefaultPa
     page: 1,
     perPage: "10",
     order: "",
-    status_changes_by: []
+    status_changes_by: [],
+    update_status_date: ["", ""]
 }
 
 const DEFAULT_REQUEST = {
@@ -253,10 +254,10 @@ const DEFAULT_REQUEST = {
 }
 
 const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
-    productIdentificationGtin: 400
+    update_status_date: 200
 }
 
-const ORDERABLE_CELLS: TCertificateModel[] = ["blankNumber", "certificate_status", "productIdentificationGtin"]
+const ORDERABLE_CELLS: TCertificateModel[] = ["update_status_date"]
 
 const HIDDEN_COLUMNS: TCertificateModel[] = ["link", "certificate_link", "id",]
 
