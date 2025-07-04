@@ -52,6 +52,7 @@ const CertificatesTable: FunctionComponent<Props> = ({ className }) => {
                 : <AbstractTable paginatedData={data} loading={isPending} dictionary={config.DICTIONARY} />
     }
 
+
     return (
         <div className='flex grow shrink min-h-0'>
             <section

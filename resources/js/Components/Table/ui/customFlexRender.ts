@@ -108,23 +108,24 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
                 title: context.getValue(),
                 // style: { maxWidth: '200px', },
             },
-            splitted.map((item, key) => createElement("span", {key, className: `text-left line-clamp-2 overflow-hidden ${key !== splitted.length - 1 ? "mb-3" : ""}`}, item.replace(/\d{2}:\d{2}:\d{2}\.\d{3}/g, '')))
+            splitted.map((item, key) => createElement("span", { key, className: `text-left line-clamp-2 overflow-hidden ${key !== splitted.length - 1 ? "mb-3" : ""}` }, item.replace(/\d{2}:\d{2}:\d{2}\.\d{3}/g, '')))
         )
     }
     if (
+        // Основные поля сертификата
         columnID === "productIdentificationName" ||
         columnID === "productIdentificationType" ||
         columnID === "productIdentificationTrademark" ||
         columnID === "productIdentificationModel" ||
         columnID === "productIdentificationArticle" ||
         columnID === "productIdentificationSort" ||
-        columnID === "regulations" ||
+        columnID === "ral_short_info_view__regulations" ||  // Было "regulations"
         columnID === "manufacterFilialFullNames" ||
-        columnID === "address" ||
+        columnID === "ral_short_info_view__address" ||      // Было "address"
         columnID === "technicalReglaments" ||
         columnID === "productFullName" ||
         columnID === "productBatchSize" ||
-        columnID === "exprtFio" ||
+        columnID === "expertFio" ||                        // Было "exprtFio" (исправлена опечатка)
         columnID === "expertSnils" ||
         columnID === "group" ||
         columnID === "certType" ||
@@ -137,56 +138,55 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         columnID === "applicantName" ||
         columnID === "manufacterName" ||
 
-
-
+        // Поля certificate_applicant (с префиксами)
         columnID === "certificate_applicant__id" ||
         columnID === "certificate_applicant__certificate_id" ||
-        columnID === "idLegalSubject" ||
-        columnID === "idEgrul" ||
-        columnID === "idApplicantType" ||
-        columnID === "idLegalSubjectType" ||
-        columnID === "fullName" ||
-        columnID === "shortName" ||
-        columnID === "idPerson" ||
-        columnID === "surname" ||
-        columnID === "firstName" ||
-        columnID === "patronymic" ||
-        columnID === "headPosition" ||
-        columnID === "ogrn" ||
-        columnID === "ogrnAssignDate" ||
-        columnID === "inn" ||
-        columnID === "kpp" ||
-        columnID === "idLegalForm" ||
+        columnID === "certificate_applicant__idLegalSubject" ||     // Было "idLegalSubject"
+        columnID === "certificate_applicant__idEgrul" ||           // Было "idEgrul"
+        columnID === "certificate_applicant__idApplicantType" ||   // Было "idApplicantType"
+        columnID === "certificate_applicant__idLegalSubjectType" || // Было "idLegalSubjectType"
+        columnID === "certificate_applicant__fullName" ||          // Было "fullName"
+        columnID === "certificate_applicant__shortName" ||         // Было "shortName"
+        columnID === "certificate_applicant__idPerson" ||          // Было "idPerson"
+        columnID === "certificate_applicant__surname" ||           // Было "surname"
+        columnID === "certificate_applicant__firstName" ||         // Было "firstName"
+        columnID === "certificate_applicant__patronymic" ||        // Было "patronymic"
+        columnID === "certificate_applicant__headPosition" ||      // Было "headPosition"
+        columnID === "certificate_applicant__ogrn" ||              // Было "ogrn"
+        columnID === "certificate_applicant__ogrnAssignDate" ||    // Было "ogrnAssignDate"
+        columnID === "certificate_applicant__inn" ||               // Было "inn"
+        columnID === "certificate_applicant__kpp" ||               // Было "kpp"
+        columnID === "certificate_applicant__idLegalForm" ||       // Было "idLegalForm"
         columnID === "certificate_applicant__regDate" ||
-        columnID === "regOrganName" ||
-        columnID === "addlRegInfo" ||
-        columnID === "isEecRegister" ||
-        columnID === "passportIssueDate" ||
-        columnID === "passportIssuedBy" ||
-        columnID === "passportNum" ||
-        columnID === "idPersonDoc" ||
+        columnID === "certificate_applicant__regOrganName" ||      // Было "regOrganName"
+        columnID === "certificate_applicant__addlRegInfo" ||       // Было "addlRegInfo"
+        columnID === "certificate_applicant__isEecRegister" ||     // Было "isEecRegister"
+        columnID === "certificate_applicant__passportIssueDate" || // Было "passportIssueDate"
+        columnID === "certificate_applicant__passportIssuedBy" ||  // Было "passportIssuedBy"
+        columnID === "certificate_applicant__passportNum" ||       // Было "passportNum"
+        columnID === "certificate_applicant__idPersonDoc" ||       // Было "idPersonDoc"
 
-
+        // Поля certification_authority (с префиксами)
         columnID === "certification_authority__id" ||
         columnID === "certification_authority__certificate_id" ||
-        columnID === "idCertificationAuthority" ||
+        columnID === "certification_authority__idCertificationAuthority" || // Было "idCertificationAuthority"
         columnID === "certification_authority__fullName" ||
-        columnID === "accredOrgName" ||
-        columnID === "attestatRegNumber" ||
-        columnID === "attestatRegDate" ||
-        columnID === "attestatEndDate" ||
-        columnID === "idRal" ||
-        columnID === "ogrn" ||
-        columnID === "idPerson" ||
-        columnID === "firstName" ||
-        columnID === "surname" ||
-        columnID === "patronymic"
+        columnID === "certification_authority__accredOrgName" ||  // Было "accredOrgName"
+        columnID === "certification_authority__attestatRegNumber" || // Было "attestatRegNumber"
+        columnID === "certification_authority__attestatRegDate" ||  // Было "attestatRegDate"
+        columnID === "certification_authority__attestatEndDate" ||  // Было "attestatEndDate"
+        columnID === "certification_authority__idRal" ||            // Было "idRal"
+        columnID === "certification_authority__ogrn" ||             // Было "ogrn"
+        columnID === "certification_authority__idPerson" ||         // Было "idPerson"
+        columnID === "certification_authority__firstName" ||        // Было "firstName"
+        columnID === "certification_authority__surname" ||          // Было "surname"
+        columnID === "certification_authority__patronymic"          // Было "patronymic"
     ) {
         return createElement(
             'span',
             {
                 className: "text-wrap overflow-hidden mx-auto line-clamp-2",
-                style: { maxWidth: '200px', },
+                style: { maxWidth: '200px' },
                 title: context.getValue()
             },
             String(context.getValue()),

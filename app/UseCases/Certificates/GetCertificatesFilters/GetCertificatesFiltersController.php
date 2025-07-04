@@ -28,7 +28,7 @@ class GetCertificatesFiltersController
                 ],
             ],
             [
-                'header' => "status_changes_by",
+                'header' => "status_change__status_changes_by",
                 'headerType' => 'nvarchar',
                 'sortValues' => [
                     'type' => 'checkBox',

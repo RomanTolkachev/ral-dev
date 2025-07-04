@@ -20,54 +20,68 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-        public function boot(): void
+    public function boot(): void
     {
         Vite::prefetch(concurrency: 3);
 
-        Collection::macro(
-            "toFlatFilteredAndSorted",
-            function (array $template): Collection {
-                return $this->map(function ($item) use ($template) {
-                    $result = [];
-                    $existingKeys = array_keys($item);
+        Collection::macro('customToFlat', function () {
 
-                    // Функция для обработки вложенных массивов
-                    $processNested = function ($array, $parentKey = null) use (&$result, &$existingKeys, &$processNested) {
-                        foreach ($array as $key => $value) {
-                            // Определяем конечный ключ
-                            $finalKey = $parentKey ? 
-                                (in_array($key, $existingKeys) ? $parentKey.'__'.$key : $key) : 
-                                $key;
+                            // dd($this);
+            return $this->map(function ($item) {
+                $result = [];
 
-                            if (is_array($value)) {
-                                // Если значение - массив, обрабатываем рекурсивно
-                                $processNested($value, $finalKey);
-                            } else {
-                                // Конкатенируем значения с одинаковыми ключами
-                                $value = (string)($value ?? '');
-                                if (array_key_exists($finalKey, $result)) {
-                                    $result[$finalKey] .= ' // ' . $value;
-                                } else {
-                                    $result[$finalKey] = $value;
-                                }
+                $processNested = function ($array, $parentKey = null) use (&$result, &$processNested) {
+                    if (!is_array($array)) return;
+
+                    // Обработка списков у связанных моделей - конкатенируем через //
+                    if (array_keys($array) === range(0, count($array) - 1)) {
+                        $concatenated = [];
+                        foreach ($array as $item) {
+                            if (!is_array($item)) continue;
+                            foreach ($item as $k => $v) {
+                                $value = (string)($v ?? '');
+                                $concatenated[$k] = isset($concatenated[$k])
+                                    ? $concatenated[$k] . ' // ' . $value
+                                    : $value;
                             }
                         }
-                    };
-
-                    // Обрабатываем основной элемент
-                    foreach ($item as $key => $value) {
-                        if (is_array($value)) {
-                            $processNested($value, in_array($key, $existingKeys) ? $key : null);
-                        } elseif (in_array($key, $template)) {
-                            $result[$key] = $value;
+                        foreach ($concatenated as $k => $v) {
+                            $result["{$parentKey}__{$k}"] = $v;
                         }
+                        return;
                     }
 
-                    // Сортируем по шаблону
-                    return collect($template)
-                        ->mapWithKeys(fn($k) => [$k => $result[$k] ?? null]);
-                });
-            }
-        );
+                    // Обработка ассоциативных массивов - добавляем связанным моделям префикс __ и переносим на верхний уровень
+                    foreach ($array as $k => $v) {
+                        $newKey = $parentKey ? "{$parentKey}__{$k}" : $k;
+                        if (is_array($v)) {
+                            $processNested($v, $newKey);
+                        } else {
+                            $result[$newKey] = (string)($v ?? '');
+                        }
+                    }
+                };
+
+                foreach ($item as $k => $v) {
+                    if (is_array($v)) {
+                        $processNested($v, $k);
+                    } else {
+                        $result[$k] = $v;
+                    }
+                }
+
+
+
+                return $result;
+            });
+        });
+
+        // Сортирует результат по заданному шаблону
+        Collection::macro('sortByTemplate', function (array $template) {
+            return $this->map(function ($item) use ($template) {
+                return collect($template)
+                    ->mapWithKeys(fn($k) => [$k => $item[$k] ?? null]);
+            });
+        });
     }
 }

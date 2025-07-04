@@ -51,6 +51,7 @@ export const DropdownItem: FunctionComponent<IProps> = ({ inputData, className }
         queries = getQuery()
     })
 
+
     // проверка должен ли быть открыт item, при первом рендере. Если есть активный фильтр, то будет открыт
     useEffect(() => {
         let defaultValue = control._defaultValues[inputName];

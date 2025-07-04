@@ -85,7 +85,7 @@ class GetCertificatesListFilter extends AbstractFilter
         // }
         // return $query;
     }
-    protected function statusChangesBy(array $values): Builder
+    protected function statusChangeStatusChangesBy(array $values): Builder
     {
         $query = $this->builder;
         $ids = StatusChange::where(function ($q) use ($values) {

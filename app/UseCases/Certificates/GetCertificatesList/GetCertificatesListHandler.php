@@ -18,6 +18,7 @@ class GetCertificatesListHandler
         $result = $query->filter(
             $this->filter
         )
+        ->where('id', 18496)
         ->paginate(
             page: $page,
             perPage: $itemsPerPage

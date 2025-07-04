@@ -13,7 +13,10 @@ class GetCertificatesListResource extends JsonResource
 
         $userCols = $request->query()["user_columns"];
 
-        $result["data"] = collect($result["data"])->toFlatFilteredAndSorted($userCols)->toArray();
+        
+        // dd( $result["data"]);
+        $result["data"] = collect($result["data"])->customToFlat()->sortByTemplate($userCols)->toArray();
+        // dd( $userCols);
 
         unset($result['links']);
         unset($result['path']);
