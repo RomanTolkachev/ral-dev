@@ -90,14 +90,14 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         )
     }
     if (
-        columnID === "status_change__id" ||
-        columnID === "status" ||
-        columnID === "begin_date" ||
-        columnID === "end_date" ||
-        columnID === "comment" ||
-        columnID === "publish_date" ||
-        columnID === "status_changes_by" ||
-        columnID === "idChangeStatus"
+        columnID === "status_change__status_change__id" ||
+        columnID === "status_change__status" ||
+        columnID === "status_change__begin_date" ||
+        columnID === "status_change__end_date" ||
+        columnID === "status_change__comment" ||
+        columnID === "status_change__publish_date" ||
+        columnID === "status_change__status_changes_by" ||
+        columnID === "status_change__idChangeStatus"
     ) {
 
         const splitted = context.getValue() ? (context.getValue() as string).split(" // ") : [];
