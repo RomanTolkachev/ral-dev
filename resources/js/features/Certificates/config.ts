@@ -19,21 +19,21 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "group": "group / Группа продукции ЕАЭС",
     "certType": "certType / Тип сертификата",
     "certObjectType": "certObjectType / Тип объекта сертификации",
-    
+
     // Информация о заявителе
     "applicantLegalSubjectType": "applicantLegalSubjectType / Тип заявителя",
     "applicantType": "applicantType / Вид заявителя",
     "applicantName": "applicantName / Полное наименование (заявителя)",
     "applicantOpf": "applicantOpf / Организационно-правовая форма (заявителя)",
     "applicantFilialFullNames": "applicantFilialFullNames / Полное наименование филиалов (заявителя)",
-    
+
     // Информация о производителе
     "manufacterLegalSubjectType": "manufacterLegalSubjectType / Тип изготовителя",
     "manufacterType": "manufacterType",
     "manufacterName": "manufacterName / Полное наименование (изготовителя)",
     "manufacterOpf": "manufacterOpf / Организационно-правовая форма (изготовителя)",
     "manufacterFilialFullNames": "manufacterFilialFullNames / Полное наименование филиалов (изготовителя)",
-    
+
     // Продукция
     "idRalCertificationAuthority": "idRalCertificationAuthority",
     "certificationAuthorityAttestatRegNumber": "certificationAuthorityAttestatRegNumber / Номер записи в РАЛ органа по сертификации",
@@ -47,11 +47,11 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "productIdentificationArticle": "productIdentificationArticle",
     "productIdentificationSort": "productIdentificationSort",
     "productIdentificationGtin": "productIdentificationGtin",
-    
+
     // Эксперты
     "expertFio": "expertFio",
     "expertSnils": "expertSnils",
-    
+
     // Поля из ral_short_info_view
     "ral_short_info_view__link": "ral_short_info_view__link / Ссылка на РАЛ",
     "ral_short_info_view__RegNumber": "ral_short_info_view__RegNumber / Рег. номер",
@@ -70,7 +70,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "ral_short_info_view__NPstatus": "ral_short_info_view__NPstatus",
     "ral_short_info_view__NP_status_change_date": "ral_short_info_view__NP_status_change_date / Дата изм. статуса НЧ",
     "ral_short_info_view__regulations": "ral_short_info_view__regulations",
-    
+
     // Поля из certificate_applicant
     "certificate_applicant__id": "certificate_applicant__id / ID заявителя",
     "certificate_applicant__certificate_id": "certificate_applicant__certificate_id",
@@ -98,7 +98,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "certificate_applicant__passportIssuedBy": "certificate_applicant__passportIssuedBy / Кем выдан паспорт",
     "certificate_applicant__passportNum": "certificate_applicant__passportNum / Номер паспорта",
     "certificate_applicant__idPersonDoc": "certificate_applicant__idPersonDoc / ID документа",
-    
+
     // Поля из certification_authority
     "certification_authority__id": "certification_authority__id / ID органа по сертификации",
     "certification_authority__certificate_id": "certification_authority__certificate_id",
@@ -114,13 +114,13 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "certification_authority__firstName": "certification_authority__firstName / Имя",
     "certification_authority__surname": "certification_authority__surname / Фамилия",
     "certification_authority__patronymic": "certification_authority__patronymic / Отчество",
-    
+
     // Поля из status_change
     "status_change__certificate_id": "status_change__certificate_id",
     "status_change__status": "status_change__status / Статус",
-    "status_change__begin_date": "status_change__begin_date / Дата начала",
-    "status_change__end_date": "status_change__end_date / Дата окончания",
-    "status_change__comment": "status_change__comment / Комментарий",
+    "status_change__begin_date": "Дата начала",
+    "status_change__end_date": "Дата окончания",
+    "status_change__comment": "Комментарий",
     "status_change__publish_date": "status_change__publish_date / Дата публикации",
     "status_change__status_changes_by": "Изменено",
     "status_change__id": "status_change__id / ID изменения",
@@ -131,10 +131,18 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     // Основные поля сертификата
     "certificate_name",
     "certificate_status",
+    // Поля из status_change
+    "status_change__status_changes_by",
+    "update_status_date",
+    "status_change__publish_date",
+    "status_change__certificate_id",
+    "status_change__status",
+    "status_change__begin_date",
+    "status_change__end_date",
+    "status_change__comment",
     "id",
     "certificate_id",
     "certificate_link",
-    "update_status_date",
     "previous_update_status_date",
     "previous_status",
     "date",
@@ -144,21 +152,21 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     "group",
     "certType",
     "certObjectType",
-    
+
     // Информация о заявителе
     "applicantLegalSubjectType",
     "applicantType",
     "applicantName",
     "applicantOpf",
     "applicantFilialFullNames",
-    
+
     // Информация о производителе
     "manufacterLegalSubjectType",
     "manufacterType",
     "manufacterName",
     "manufacterOpf",
     "manufacterFilialFullNames",
-    
+
     // Продукция
     "idRalCertificationAuthority",
     "certificationAuthorityAttestatRegNumber",
@@ -172,11 +180,11 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     "productIdentificationArticle",
     "productIdentificationSort",
     "productIdentificationGtin",
-    
+
     // Эксперты
     "expertFio",
     "expertSnils",
-    
+
     // Поля из ral_short_info_view
     "ral_short_info_view__link",
     "ral_short_info_view__RegNumber",
@@ -195,7 +203,7 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     "ral_short_info_view__NPstatus",
     "ral_short_info_view__NP_status_change_date",
     "ral_short_info_view__regulations",
-    
+
     // Поля из certificate_applicant
     "certificate_applicant__id",
     "certificate_applicant__certificate_id",
@@ -223,7 +231,7 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     "certificate_applicant__passportIssuedBy",
     "certificate_applicant__passportNum",
     "certificate_applicant__idPersonDoc",
-    
+
     // Поля из certification_authority
     "certification_authority__id",
     "certification_authority__certificate_id",
@@ -239,15 +247,8 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     "certification_authority__firstName",
     "certification_authority__surname",
     "certification_authority__patronymic",
-    
+
     // Поля из status_change
-    "status_change__certificate_id",
-    "status_change__status",
-    "status_change__begin_date",
-    "status_change__end_date",
-    "status_change__comment",
-    "status_change__publish_date",
-    "status_change__status_changes_by",
     "status_change__id",
     "status_change__idChangeStatus"
 ];
@@ -270,132 +271,132 @@ const DEFAULT_REQUEST = {
 
 const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
     // Основные поля сертификата (без префиксов)
-    "certificate_name": 300,
-    "certificate_status": 300,
-    "id": 300,
-    "certificate_id": 300,
-    "certificate_link": 300,
-    "update_status_date": 300,
-    "previous_update_status_date": 300,
-    "previous_status": 300,
-    "date": 300,
-    "endDate": 300,
-    "blankNumber": 300,
-    "technicalReglaments": 300,
-    "group": 300,
-    "certType": 300,
-    "certObjectType": 300,
-    
+    "certificate_name": 180,
+    "certificate_status": 180,
+    "id": 200,
+    "certificate_id": 200,
+    "certificate_link": 200,
+    "update_status_date": 200,
+    "previous_update_status_date": 200,
+    "previous_status": 200,
+    "date": 200,
+    "endDate": 200,
+    "blankNumber": 200,
+    "technicalReglaments": 200,
+    "group": 200,
+    "certType": 200,
+    "certObjectType": 200,
+
     // Поля заявителя (без префиксов)
-    "applicantLegalSubjectType": 300,
-    "applicantType": 300,
-    "applicantName": 300,
-    "applicantOpf": 300,
-    "applicantFilialFullNames": 300,
-    
+    "applicantLegalSubjectType": 200,
+    "applicantType": 200,
+    "applicantName": 200,
+    "applicantOpf": 200,
+    "applicantFilialFullNames": 200,
+
     // Поля производителя (без префиксов)
-    "manufacterLegalSubjectType": 300,
-    "manufacterType": 300,
-    "manufacterName": 300,
-    "manufacterOpf": 300,
-    "manufacterFilialFullNames": 300,
-    
+    "manufacterLegalSubjectType": 200,
+    "manufacterType": 200,
+    "manufacterName": 200,
+    "manufacterOpf": 200,
+    "manufacterFilialFullNames": 200,
+
     // Продукция (без префиксов)
-    "idRalCertificationAuthority": 300,
-    "certificationAuthorityAttestatRegNumber": 300,
-    "productOrig": 300,
-    "productFullName": 300,
-    "productBatchSize": 300,
-    "productIdentificationName": 300,
-    "productIdentificationType": 300,
-    "productIdentificationTrademark": 300,
-    "productIdentificationModel": 300,
-    "productIdentificationArticle": 300,
-    "productIdentificationSort": 300,
-    "productIdentificationGtin": 300,
-    
+    "idRalCertificationAuthority": 200,
+    "certificationAuthorityAttestatRegNumber": 200,
+    "productOrig": 200,
+    "productFullName": 200,
+    "productBatchSize": 200,
+    "productIdentificationName": 200,
+    "productIdentificationType": 200,
+    "productIdentificationTrademark": 200,
+    "productIdentificationModel": 200,
+    "productIdentificationArticle": 200,
+    "productIdentificationSort": 200,
+    "productIdentificationGtin": 200,
+
     // Эксперты (без префиксов)
-    "expertFio": 300,
-    "expertSnils": 300,
+    "expertFio": 200,
+    "expertSnils": 200,
 
     // Поля с префиксом certificate_applicant__
-    "certificate_applicant__id": 300,
-    "certificate_applicant__certificate_id": 300,
-    "certificate_applicant__idLegalSubject": 300,
-    "certificate_applicant__idEgrul": 300,
-    "certificate_applicant__idApplicantType": 300,
-    "certificate_applicant__idLegalSubjectType": 300,
-    "certificate_applicant__fullName": 300,
-    "certificate_applicant__shortName": 300,
-    "certificate_applicant__idPerson": 300,
-    "certificate_applicant__surname": 300,
-    "certificate_applicant__firstName": 300,
-    "certificate_applicant__patronymic": 300,
-    "certificate_applicant__headPosition": 300,
-    "certificate_applicant__ogrn": 300,
-    "certificate_applicant__ogrnAssignDate": 300,
-    "certificate_applicant__inn": 300,
-    "certificate_applicant__kpp": 300,
-    "certificate_applicant__idLegalForm": 300,
-    "certificate_applicant__regDate": 300,
-    "certificate_applicant__regOrganName": 300,
-    "certificate_applicant__addlRegInfo": 300,
-    "certificate_applicant__isEecRegister": 300,
-    "certificate_applicant__passportIssueDate": 300,
-    "certificate_applicant__passportIssuedBy": 300,
-    "certificate_applicant__passportNum": 300,
-    "certificate_applicant__idPersonDoc": 300,
+    "certificate_applicant__id": 200,
+    "certificate_applicant__certificate_id": 200,
+    "certificate_applicant__idLegalSubject": 200,
+    "certificate_applicant__idEgrul": 200,
+    "certificate_applicant__idApplicantType": 200,
+    "certificate_applicant__idLegalSubjectType": 200,
+    "certificate_applicant__fullName": 200,
+    "certificate_applicant__shortName": 200,
+    "certificate_applicant__idPerson": 200,
+    "certificate_applicant__surname": 200,
+    "certificate_applicant__firstName": 200,
+    "certificate_applicant__patronymic": 200,
+    "certificate_applicant__headPosition": 200,
+    "certificate_applicant__ogrn": 200,
+    "certificate_applicant__ogrnAssignDate": 200,
+    "certificate_applicant__inn": 200,
+    "certificate_applicant__kpp": 200,
+    "certificate_applicant__idLegalForm": 200,
+    "certificate_applicant__regDate": 200,
+    "certificate_applicant__regOrganName": 200,
+    "certificate_applicant__addlRegInfo": 200,
+    "certificate_applicant__isEecRegister": 200,
+    "certificate_applicant__passportIssueDate": 200,
+    "certificate_applicant__passportIssuedBy": 200,
+    "certificate_applicant__passportNum": 200,
+    "certificate_applicant__idPersonDoc": 200,
 
     // Поля с префиксом certification_authority__
-    "certification_authority__id": 300,
-    "certification_authority__certificate_id": 300,
-    "certification_authority__idCertificationAuthority": 300,
-    "certification_authority__fullName": 300,
-    "certification_authority__accredOrgName": 300,
-    "certification_authority__attestatRegNumber": 300,
-    "certification_authority__attestatRegDate": 300,
-    "certification_authority__attestatEndDate": 300,
-    "certification_authority__idRal": 300,
-    "certification_authority__ogrn": 300,
-    "certification_authority__idPerson": 300,
-    "certification_authority__firstName": 300,
-    "certification_authority__surname": 300,
-    "certification_authority__patronymic": 300,
+    "certification_authority__id": 200,
+    "certification_authority__certificate_id": 200,
+    "certification_authority__idCertificationAuthority": 200,
+    "certification_authority__fullName": 200,
+    "certification_authority__accredOrgName": 200,
+    "certification_authority__attestatRegNumber": 200,
+    "certification_authority__attestatRegDate": 200,
+    "certification_authority__attestatEndDate": 200,
+    "certification_authority__idRal": 200,
+    "certification_authority__ogrn": 200,
+    "certification_authority__idPerson": 200,
+    "certification_authority__firstName": 200,
+    "certification_authority__surname": 200,
+    "certification_authority__patronymic": 200,
 
     // Поля с префиксом ral_short_info_view__
-    "ral_short_info_view__link": 300,
-    "ral_short_info_view__RegNumber": 300,
-    "ral_short_info_view__old_status_AL": 300,
-    "ral_short_info_view__new_status_AL": 300,
-    "ral_short_info_view__status_change_date": 300,
-    "ral_short_info_view__nameType": 300,
-    "ral_short_info_view__nameTypeActivity": 300,
-    "ral_short_info_view__regDate": 300,
-    "ral_short_info_view__fullName": 300,
-    "ral_short_info_view__address": 300,
-    "ral_short_info_view__applicantINN": 300,
-    "ral_short_info_view__applicantFullName": 300,
-    "ral_short_info_view__oaDescription": 300,
-    "ral_short_info_view__id": 300,
-    "ral_short_info_view__NPstatus": 300,
-    "ral_short_info_view__NP_status_change_date": 300,
-    "ral_short_info_view__regulations": 300,
+    "ral_short_info_view__link": 200,
+    "ral_short_info_view__RegNumber": 200,
+    "ral_short_info_view__old_status_AL": 200,
+    "ral_short_info_view__new_status_AL": 200,
+    "ral_short_info_view__status_change_date": 200,
+    "ral_short_info_view__nameType": 200,
+    "ral_short_info_view__nameTypeActivity": 200,
+    "ral_short_info_view__regDate": 200,
+    "ral_short_info_view__fullName": 200,
+    "ral_short_info_view__address": 200,
+    "ral_short_info_view__applicantINN": 200,
+    "ral_short_info_view__applicantFullName": 200,
+    "ral_short_info_view__oaDescription": 200,
+    "ral_short_info_view__id": 200,
+    "ral_short_info_view__NPstatus": 200,
+    "ral_short_info_view__NP_status_change_date": 200,
+    "ral_short_info_view__regulations": 200,
 
     // Поля с префиксом status_change__
-    "status_change__certificate_id": 300,
-    "status_change__status": 300,
-    "status_change__begin_date": 300,
-    "status_change__end_date": 300,
-    "status_change__comment": 300,
-    "status_change__publish_date": 300,
-    "status_change__status_changes_by": 300,
-    "status_change__id": 300,
-    "status_change__idChangeStatus": 300
+    "status_change__certificate_id": 150,
+    "status_change__status": 150,
+    "status_change__begin_date": 150,
+    "status_change__end_date": 150,
+    "status_change__comment": 150,
+    "status_change__publish_date": 150,
+    "status_change__status_changes_by": 150,
+    "status_change__id": 150,
+    "status_change__idChangeStatus": 150
 };
 
 const ORDERABLE_CELLS: TCertificateModel[] = ["update_status_date"]
 
-const HIDDEN_COLUMNS: TCertificateModel[] = ["ral_short_info_view__link", "certificate_link", "id",]
+const HIDDEN_COLUMNS: TCertificateModel[] = ["ral_short_info_view__link", "certificate_link", "id", "status_change__certificate_id", "certificate_id"]
 
 export const config: IConfig<TCertificateModel> = {
     DICTIONARY,
