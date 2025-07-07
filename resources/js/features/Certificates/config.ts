@@ -282,7 +282,7 @@ const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
     "date": 200,
     "endDate": 200,
     "blankNumber": 200,
-    "technicalReglaments": 200,
+    "technicalReglaments": 300,
     "group": 200,
     "certType": 200,
     "certObjectType": 200,
