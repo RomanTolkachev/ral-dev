@@ -112,6 +112,21 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         )
     }
     if (
+        columnID === "technical_reglaments"
+    ) {
+
+        const splitted = context.getValue() ? (context.getValue() as string).split(";") : [];
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden flex flex-col mx-auto px-2",
+                title: context.getValue(),
+                // style: { maxWidth: '200px', },
+            },
+            splitted.map((item, key) => createElement("span", { key, className: `text-left line-clamp-2 overflow-hidden ${key !== splitted.length - 1 ? "mb-3" : ""}` }, item.replace(/\d{2}:\d{2}:\d{2}\.\d{3}/g, '')))
+        )
+    }
+    if (
         // Основные поля сертификата
         columnID === "productIdentificationName" ||
         columnID === "productIdentificationType" ||
@@ -122,7 +137,6 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         columnID === "ral_short_info_view__regulations" ||  // Было "regulations"
         columnID === "manufacterFilialFullNames" ||
         columnID === "ral_short_info_view__address" ||      // Было "address"
-        columnID === "technicalReglaments" ||
         columnID === "productFullName" ||
         columnID === "productBatchSize" ||
         columnID === "expertFio" ||                        // Было "exprtFio" (исправлена опечатка)
