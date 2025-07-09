@@ -118,11 +118,11 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     // Поля из status_change
     "status_change__certificate_id": "status_change__certificate_id",
     "status_change__status": "status_change__status / Статус",
-    "status_change__begin_date": "Дата начала",
-    "status_change__end_date": "Дата окончания",
-    "status_change__comment": "Комментарий",
+    "status_change__begin_date": "status_change__begin_date / Дата начала",
+    "status_change__end_date": "status_change__end_date / Дата окончания",
+    "status_change__comment": "status_change__comment / Комментарий",
     "status_change__publish_date": "status_change__publish_date / Дата публикации",
-    "status_change__status_changes_by": "Изменено",
+    "status_change__status_changes_by": "status_change__status_changes_by / Изменено",
     "status_change__id": "status_change__id / ID изменения",
     "status_change__idChangeStatus": "status_change__idChangeStatus / ID статуса"
 };

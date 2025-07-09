@@ -1,14 +1,13 @@
-import React, { FunctionComponent, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { FunctionComponent, useEffect, useLayoutEffect, useState } from 'react';
 import config from '../../config';
-import { keys, values } from 'lodash';
-import { Controller, FormProvider, useFormContext } from 'react-hook-form';
-import { div } from 'motion/react-client';
+import { values } from 'lodash';
 import useRalColumns from '../../api/useRalColumns';
 import { useUserInfo } from '../../hooks/useUserInfo';
 import { Reorder } from 'motion/react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { setSettings, TParams } from './api';
 import { TRalModel } from '../../model/types';
+import { useNavigate } from 'react-router';
 
 interface Props {
     className?: string;
@@ -17,21 +16,34 @@ interface Props {
 
 const RalSettings: FunctionComponent<Props> = ({ className }) => {
 
+    const navigate = useNavigate();
+
+    const queryClient = useQueryClient();
+
     const { userId, isUserChecked } = useUserInfo();
     const { columns, isColumnsFetching } = useRalColumns(userId);
-   
+
     const [fullList, setFullList] = useState([...columns, ...config.DEFAULT_COLUMNS.filter(item => !columns.includes(item))])
     const [columnsValues, setColumnsValues] = useState<TRalModel[]>(columns);
-
-    useLayoutEffect(() => {
-        setColumnsValues(columns)
-    }, [columns])
-    
-    console.log(fullList.filter(item => columnsValues.includes(item)))
 
     const onUpdate = useMutation({
         mutationFn: (params: TParams) => setSettings(params),
     });
+
+    useLayoutEffect(() => {
+        setColumnsValues(columns)
+    }, [columns])
+
+    useEffect(() => {
+        if (onUpdate.isSuccess) {
+            console.log(queryClient);
+            const timerId = setTimeout(() => navigate(-1), 1000);
+            queryClient.invalidateQueries({
+                // predicate: (query) => console.log(query)
+            });
+            return () => clearTimeout(timerId);
+        }
+    }, [onUpdate.isSuccess]);
 
     if (!isUserChecked || isColumnsFetching || !userId) {
         return <div>загрузка</div>
@@ -39,28 +51,29 @@ const RalSettings: FunctionComponent<Props> = ({ className }) => {
 
     return (
         <div className={`${className} `}>
-                <Reorder.Group axis="y" values={fullList} onReorder={setFullList}>
+            <Reorder.Group axis="y" values={fullList} onReorder={setFullList}>
                 {values(fullList).map((item, key) => {
                     return (
                         <Reorder.Item key={item} value={item}>
-                            <input 
-                                type="checkbox" 
-                                onChange={ () =>
+                            <input
+                                type="checkbox"
+                                onChange={() =>
                                     setColumnsValues(prevState => {
                                         if (prevState.includes(item)) {
                                             return prevState.filter(column => column !== item);
                                         } else {
                                             return [...prevState, item];
                                         }
-                                    })      
-                                } 
-                                checked={columnsValues.includes(item)}/>
+                                    })
+                                }
+                                checked={columnsValues.includes(item)} />
                             <span>{item}</span>
                         </Reorder.Item>
                     )
                 })}
-                </Reorder.Group>
-                <button onClick={() => onUpdate.mutate({userId, settings: fullList.filter(item => columnsValues.includes(item))})}>отправить</button>
+            </Reorder.Group>
+            <button onClick={() => onUpdate.mutate({ userId, settings: fullList.filter(item => columnsValues.includes(item)) })}>отправить</button>
+            {onUpdate.isSuccess && <div>Успешно</div>}
         </div>
     );
 };
