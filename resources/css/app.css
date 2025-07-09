@@ -203,8 +203,8 @@
 
 /* Скролбар Chrome, Edge and Safari */
 *::-webkit-scrollbar {
-    height: 8px;
-    width: 8px;
+    height: 12px;
+    width: 12px;
 }
 *::-webkit-scrollbar-track {
     border-radius: 20px;
