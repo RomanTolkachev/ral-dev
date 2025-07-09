@@ -28,22 +28,16 @@ const RalSettings: FunctionComponent<Props> = ({ className }) => {
 
     const onUpdate = useMutation({
         mutationFn: (params: TParams) => setSettings(params),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ predicate: (query) => query.queryKey[0] === "ralColumns" })
+            setTimeout(() => navigate(-1), 1000)
+        } 
     });
 
     useLayoutEffect(() => {
         setColumnsValues(columns)
     }, [columns])
 
-    useEffect(() => {
-        if (onUpdate.isSuccess) {
-            console.log(queryClient);
-            const timerId = setTimeout(() => navigate(-1), 1000);
-            queryClient.invalidateQueries({
-                // predicate: (query) => console.log(query)
-            });
-            return () => clearTimeout(timerId);
-        }
-    }, [onUpdate.isSuccess]);
 
     if (!isUserChecked || isColumnsFetching || !userId) {
         return <div>загрузка</div>
