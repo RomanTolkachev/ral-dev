@@ -112,18 +112,19 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         )
     }
     if (
-        columnID === "technical_reglaments"
+        columnID === "technicalReglaments"
     ) {
 
         const splitted = context.getValue() ? (context.getValue() as string).split(";") : [];
         return createElement(
             'span',
             {
-                className: "text-wrap overflow-hidden flex flex-col mx-auto px-2",
+                className: "!text-left text-wrap overflow-hidden flex flex-col mx-auto px-2",
                 title: context.getValue(),
+                style: {textAlign: "left"}
                 // style: { maxWidth: '200px', },
             },
-            splitted.map((item, key) => createElement("span", { key, className: `text-left line-clamp-2 overflow-hidden ${key !== splitted.length - 1 ? "mb-3" : ""}` }, item.replace(/\d{2}:\d{2}:\d{2}\.\d{3}/g, '')))
+            splitted.map((item, key) => createElement("span", { key,style: {textAlign: "left"}, className: `!text-left line-clamp-2 overflow-hidden ${key !== splitted.length - 1 ? "mb-3" : ""}` }, item.replace(/\d{2}:\d{2}:\d{2}\.\d{3}/g, '')))
         )
     }
     if (

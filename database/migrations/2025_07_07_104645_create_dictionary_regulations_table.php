@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dictionary_regulations', function (Blueprint $table) {
-            $table->int("№")->primary();
-            $table->text("values_reg");
+            $table->unsignedBigInteger("№")->primary();
+            $table->string("values_reg");
         });
     }
 

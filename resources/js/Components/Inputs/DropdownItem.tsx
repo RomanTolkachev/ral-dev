@@ -1,4 +1,4 @@
-import { FunctionComponent, memo, useContext, useEffect, useState } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
 import { DropdownFilterButton } from '@/Components/Buttons/DropdownFilterButton'
 import { motion, Variants } from 'framer-motion'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
