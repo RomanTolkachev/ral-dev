@@ -9,7 +9,7 @@ use App\Models\CertificateTestinglab;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class CertificatesShortInfo extends Model
 {
@@ -28,9 +28,9 @@ class CertificatesShortInfo extends Model
         ];
     }
 
-    public function ralShortInfoView(): HasOneThrough
+    public function ralShortInfoView(): HasManyThrough
     {
-        return $this->hasOneThrough(
+        return $this->hasManyThrough(
             RalShortInfoView::class,
             CertificateTestinglab::class,
             'id_cert',

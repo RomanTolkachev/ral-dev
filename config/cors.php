@@ -6,7 +6,7 @@ return [
 
 'allowed_methods' => ['*'],
 
-'allowed_origins' => ['http://localhost:3000', 'http://127.0.0.1', 'http://127.0.0.1:5173'], // или твой фронт (например, http://example.test)
+'allowed_origins' => ['http://localhost:3000', 'http://127.0.0.1', 'http://127.0.0.1:5173', 'http://webserver.certico.local'], // или твой фронт (например, http://example.test)
 
 'allowed_origins_patterns' => [],
 
