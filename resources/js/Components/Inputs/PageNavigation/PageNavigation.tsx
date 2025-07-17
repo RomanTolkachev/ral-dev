@@ -19,29 +19,29 @@ export const PageNavigation: FunctionComponent<IProps> = ({
     lastPage = 1,
     currentPage,
     isPending = false,
-    total
 }) => {
-    const { control, trigger, getValues } = useFormContext()
+    const { control, trigger, getValues, setValue } = useFormContext()
     const handlers = useContext(CustomSubmitHandlerContext)
     const debounceTimeoutRef = useRef<null | number>()
 
     if (!handlers) return null
     const { customSubmitHandler } = handlers
 
-    // Функция с debounce только для ручного ввода
     const debouncedSubmit = useCallback(() => {
         if (debounceTimeoutRef.current) {
             clearTimeout(debounceTimeoutRef.current)
         }
         debounceTimeoutRef.current = setTimeout(() => {
             customSubmitHandler(getValues())
-        }, 500) // Задержка только для ручного ввода
+        }, 500) 
     }, [customSubmitHandler, getValues])
 
-    // Обычная отправка для кнопок навигации
     const handlePageChange = async (newPage: number) => {
-        const isValid = await trigger()
-        isValid && customSubmitHandler({...getValues(), page: newPage})
+        setValue('page', newPage, { shouldDirty: true });
+        const isValid = await trigger();
+        if (isValid) {
+            customSubmitHandler({ ...getValues(), page: newPage });
+        }
     }
 
     useEffect(() => {
@@ -76,7 +76,7 @@ export const PageNavigation: FunctionComponent<IProps> = ({
                             className={` ${currentPage === 1 ? "text-[rgb(var(--page-nav-icon-inactive))]" : "text-[rgb(var(--page-nav-icon-active))]"}`}
                             navArrow />
                     </PageNavButton>
-                    <input 
+                    <input
                         min={1}
                         max={lastPage}
                         value={value}
@@ -98,7 +98,7 @@ export const PageNavigation: FunctionComponent<IProps> = ({
                             {error.message}
                         </div>
                     )}
-                    <span className='flex gap-2'> 
+                    <span className='flex gap-2'>
                         <span>из</span>
                         <span className='text-end min-w-[51px]'>{isPending ? "?" : lastPage}</span>
                     </span>
@@ -117,7 +117,7 @@ export const PageNavigation: FunctionComponent<IProps> = ({
                             navDoubleArrow />
                     </PageNavButton>
                 </div>
-            )}  
+            )}
         />
     )
 }

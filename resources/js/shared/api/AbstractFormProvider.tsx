@@ -1,18 +1,15 @@
 import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
-import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useMemo, useRef } from 'react'
+import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useMemo } from 'react'
 import useParamsCustom from '@/shared/query/useParamsCustom'
-import { isEmpty, isEqual, keys, method, values } from 'lodash'
+import { isEmpty, keys, values } from 'lodash'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
-import excludePaginationQueries from '@/shared/query/excludePaginationQueries'
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { fetchAbstractFilters } from './api'
 import { AuthContext } from '@/app/providers/AuthProvider'
 
-
 interface IFormValues {
     [key: string]: any
 }
-
 
 interface IProps {
     config: IConfig<string>
@@ -20,8 +17,6 @@ interface IProps {
     user?: any | undefined
     rowClickFn?: () => void
 }
-
-type QueryParams = Record<string, any>
 
 export type ICustomSubmitHandlerContext = {
     filtersData: UseQueryResult<ISearchingFormItem[]>
@@ -49,11 +44,10 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
 
     const user = useContext(AuthContext)
 
-    const { CELL_WIDTH, DEFAULT_FILTERS, DEFAULT_REQUEST, ORDERABLE_CELLS, HIDDEN_COLUMNS } = config;
+    const { CELL_WIDTH, DEFAULT_FILTERS, ORDERABLE_CELLS, HIDDEN_COLUMNS } = config;
 
     const [setQuery, getQuery] = useParamsCustom();
     const queries = getQuery();
-    const prevQueries = useRef<QueryParams | null>(null);
     const isUserChecked: boolean = user!.isFetched ? true : false // тут плохо
 
     const filtersData = useQuery({
@@ -62,7 +56,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         queryKey: ["filters", tableName, DEFAULT_FILTERS]
     })
 
-    const { data: filters = [], isPending: isFiltersPending, isFetched } = filtersData;
+    const { data: filters = [], isFetched } = filtersData;
 
     // от данной переменной зависит, нужно ли перезаписывать состояния URL. Если query пустые на момент вызова onSubmit, то в историю добавится шаг.
     const shouldReplace = useMemo<boolean>(() => {
@@ -77,44 +71,35 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     })
 
 
-    // methods.formState.dirtyFields
-    // после получения фильтров записываем их для последующего сравнения
-    useEffect(() => {
-        prevQueries.current = { ...DEFAULT_FILTERS, ...queries, user_columns: DEFAULT_REQUEST.user_columns }
-    }, [isFetched])
-
     /**
-     * Обработчик формы с проверкой сброса страницы на первую, если параметры поиска изменились. В замыкании предыдущее и текущее значение формы,
-     * а также query
+     * Обработчик сабмита формы. Смотрит в dirtyFields и в зависимости от того, что именно изменилось, применяет логику.
      * @param formData Текущее состояние формы
      * @returns void. Записывает query параметры в строку поиска
      */
     const customSubmitHandler = async (
         formData: IFormValues,
     ): Promise<void> => {
-        const isValid = await methods.trigger();
-        const { dirtyFields } = methods.formState
-        console.log("зашли в сабмит", isValid)
-        if (isEqual(prevQueries.current, formData)) {
-            console.log("одинакова", prevQueries.current, formData)
+        const { reset, getValues, trigger, formState: { dirtyFields } } = methods;
+        const isValid = await trigger();
+        console.log("зашли", methods.formState, dirtyFields)
+        if (isEmpty(dirtyFields)) {
             return;
-        } else if (!isEqual(excludePaginationQueries(prevQueries.current!), excludePaginationQueries(formData))) {
-            console.log("зашли 1 else if", isValid, methods.formState.errors)
-            console.log({ prev: excludePaginationQueries(prevQueries.current!), new: excludePaginationQueries(formData) })
-            methods.setValue('page', 1);
-            isValid && setQuery({ ...formData, page: 1 }, shouldReplace); // второй параметр true делает replace истории
-            prevQueries.current = { ...formData, page: 1, perPage: formData.perPage };
-        } else if (!isEqual(prevQueries.current!.page, formData.page)) {
-            console.log("зашли в 2 else if", isValid, formData.page)
+        }
+        else if (dirtyFields.page) {
             methods.setValue('page', formData.page);
-            prevQueries.current = { ...formData, page: formData.page };
             isValid && setQuery({ ...formData, page: formData.page }, shouldReplace)
-        } else if (!isEqual(prevQueries.current!.perPage, formData.perPage)) {
-            console.log("зашли в 3 else if", isValid)
+            reset(getValues())
+        }
+        else if (dirtyFields.perPage) {
             methods.setValue('page', 1);
             methods.setValue('perPage', formData.perPage);
             isValid && setQuery({ ...formData, page: 1, perPage: formData.perPage }, shouldReplace)
-            prevQueries.current = { ...formData, page: 1, perPage: formData.perPage };
+            reset(getValues())
+        }
+        else {
+            methods.setValue('page', 1);
+            isValid && setQuery({ ...formData, page: 1 }, shouldReplace); 
+            reset(getValues())
         }
     }
 

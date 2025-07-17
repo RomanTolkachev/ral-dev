@@ -16,6 +16,7 @@ import { config as accAreaConfig } from '@/features/AccreditationArea/config'
 import { AbstractFormProvider } from '@/shared/api/AbstractFormProvider'
 import CertificatesTable from '@/features/Certificates/CertificatesTable'
 import { config as certificatesConfig } from '@/features/Certificates/config'
+import NewRalTable from '@/features/RalTable/ui/RalTable/NewRalTable'
 
 
 
@@ -36,7 +37,8 @@ function MainLayout() {
                     <Route path="ral/*" element={
                         <>
                             <AbstractFormProvider config={ralConfig} tableName="ral">
-                                <Raltable />
+                                {/* <Raltable /> */}
+                                <NewRalTable />
                             </AbstractFormProvider>
 
                             <Routes location={location} key={location.pathname}>
