@@ -1,4 +1,4 @@
-import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
+import { FormProvider, useForm, UseFormReturn, useFormState } from 'react-hook-form'
 import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useMemo } from 'react'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import { isEmpty, keys, values } from 'lodash'
@@ -53,7 +53,8 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     const filtersData = useQuery({
         enabled: isUserChecked,
         queryFn: () => fetchAbstractFilters(tableName, { userFilters: keys(DEFAULT_FILTERS) }),
-        queryKey: ["filters", tableName, DEFAULT_FILTERS]
+        queryKey: ["filters", tableName, DEFAULT_FILTERS],
+
     })
 
     const { data: filters = [], isFetched } = filtersData;
@@ -69,59 +70,84 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         reValidateMode: 'onChange',
         defaultValues: { ...DEFAULT_FILTERS, ...filters, },
     })
-
+    const { getValues, formState: { dirtyFields, defaultValues }, handleSubmit, reset, trigger, setValue } = methods;
 
     /**
-     * Обработчик сабмита формы. Смотрит в dirtyFields и в зависимости от того, что именно изменилось, применяет логику.
-     * @param formData Текущее состояние формы
-     * @returns void. Записывает query параметры в строку поиска
-     */
-    const customSubmitHandler = async (
-        formData: IFormValues,
-    ): Promise<void> => {
-        const { reset, getValues, trigger, formState: { dirtyFields } } = methods;
+    * Обработчик сабмита формы. Смотрит в dirtyFields и в зависимости от того, что именно изменилось, применяет логику.
+    * @param formData Текущее состояние формы
+    * @returns void. Записывает query параметры в строку поиска
+    */
+    const customSubmitHandler = async (formData: IFormValues): Promise<void> => {
         const isValid = await trigger();
-        console.log("зашли", methods.formState, dirtyFields)
+
+        console.log("Form submit", { dirtyFields, formData, дефолт: defaultValues });
+
         if (isEmpty(dirtyFields)) {
+            console.log('Форма не изменилась');
             return;
         }
-        else if (dirtyFields.page) {
-            methods.setValue('page', formData.page);
-            isValid && setQuery({ ...formData, page: formData.page }, shouldReplace)
-            reset(getValues())
+
+        // Сохраняем текущие значения перед reset
+        const currentValues = getValues();
+
+        const resetHandler = () => {
+            reset(currentValues, {
+                keepDirty: false,  // Сбрасываем dirty состояние
+                keepValues: true,   // Сохраняем текущие значения
+                keepDefaultValues: true   // Сохраняем текущие значения
+            })
+        }
+
+        if (dirtyFields.page) {
+            const newQuery = { ...formData, page: formData.page };
+            isValid && setQuery(newQuery, shouldReplace);
+            console.log('Изменилась страница');
+            return resetHandler()
         }
         else if (dirtyFields.perPage) {
-            methods.setValue('page', 1);
-            methods.setValue('perPage', formData.perPage);
-            isValid && setQuery({ ...formData, page: 1, perPage: formData.perPage }, shouldReplace)
-            reset(getValues())
+            const newQuery = { ...formData, page: 1, perPage: formData.perPage };
+            isValid && setQuery(newQuery, shouldReplace);
+            console.log('Изменился perPage');
+            return resetHandler()
         }
         else {
-            methods.setValue('page', 1);
-            isValid && setQuery({ ...formData, page: 1 }, shouldReplace); 
-            reset(getValues())
+            const newQuery = { ...formData, page: 1 };
+            isValid && setQuery(newQuery, shouldReplace);
+            console.log('Изменились другие поля');
+            return resetHandler()
         }
-    }
+
+    };
 
     /**
      * Сброс формы до дефолтного состояния и сабмит дефолтных значений
      */
     async function customResetHandler(): Promise<void> {
-        const perPage = await methods.getValues().perPage
-        methods.reset();
-        methods.setValue('perPage', perPage);
-        methods.handleSubmit(data => customSubmitHandler(data))()
+        const perPage = await getValues().perPage
+        reset({}, { keepDefaultValues: true });
+        setQuery(getValues())
     }
 
     /**
      * Сброс формы до дефолтного состояние и сабмит дефолтных значений
      */
     function customResetField(fieldName: keyof IFormValues): void {
-        methods.reset({ ...methods.getValues(), [fieldName]: methods.formState.defaultValues![fieldName] }, { keepDefaultValues: true });
-        methods.handleSubmit(data => {
+        reset({ ...getValues(), [fieldName]: defaultValues![fieldName] }, { keepDefaultValues: true });
+        handleSubmit(data => {
             customSubmitHandler(data)
         })()
     }
+
+    /* Если в URL имеются queries, то после reset заново устанавливаются значения этих полей. 
+    В компонентах фильтра происходит сверка defaultValue и currentValue, если они разнятся то
+    у кнопки рисуется значек */
+    useEffect(() => {
+        if (!isEmpty(queries)) {
+            keys(queries).forEach(query => {
+                setValue(query, queries[query])
+            })
+        }
+    }, [])
 
     // установка значений инпутов при обновлении или переходе по ссылке, если в query что-то есть
     useEffect(() => {
@@ -132,18 +158,10 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
                 return acc;
             }, {});
             // когда фильтры пришли, мы задаем defaultValues через reset, первый аргумент которого будут новые defaultValues
-            methods.reset({ ...newQueries, ...DEFAULT_FILTERS }, { keepDefaultValues: false })
-            methods.trigger()
+            reset({ ...newQueries, ...DEFAULT_FILTERS }, { keepDefaultValues: false })
+            trigger()
         }
-        /* Если в URL имеются queries, то после reset заново устанавливаются значения этих полей. 
-        В компонентах фильтра происходит сверка defaultValue и currentValue, если они разнятся то
-        у кнопки рисуется значек */
-        if (!isEmpty(queries)) {
-            keys(queries).forEach(query => {
-                methods.setValue(query, queries[query])
-            })
-        }
-    }, [isFetched]);
+    }, [JSON.stringify(filters)]);
 
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData }}>

@@ -13,62 +13,59 @@ interface IProps {
 
 export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
     const handlers = useContext<ICustomSubmitHandlerContext>(CustomSubmitHandlerContext);
-    const { control, getValues, setValue, setError, clearErrors, formState: { errors }, trigger } = useFormContext();
+    const { 
+        control, 
+        watch, 
+        setValue, 
+        setError, 
+        clearErrors, 
+        formState: { errors }, 
+        handleSubmit 
+    } = useFormContext();
+    
     const inputName = inputData.header;
     const error = errors[inputName];
     const [inputText, setInputText] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
+    const formValues = watch();
 
     if (!handlers) return null;
     const { customSubmitHandler } = handlers;
 
     const isValidInput = inputText.length >= 2;
+    const currentValues = formValues[inputName] || [];
 
     const handleAdd = async (value: string) => {
         if (!value) return;
 
-        const currentValues = getValues()[inputName] || [];
-
         if (currentValues.includes(value)) {
-            setError(inputName, {
-                type: 'duplicate',
-                message: 'Такое уже есть'
-            });
+            setError(inputName, { type: 'duplicate', message: 'Такое уже есть' });
             return;
         }
 
         const newValues = [...currentValues, value];
         setValue(inputName, newValues, { shouldDirty: true });
         setInputText('');
-        
-        const isValid = await trigger(inputName);
-        if (isValid) {
-            await customSubmitHandler(getValues());
-        }
-        
+        clearErrors(inputName);
         inputRef.current?.focus();
+
+        // Используем handleSubmit для правильного времени выполнения
+        handleSubmit(customSubmitHandler)();
     };
 
     const handleRemove = async (valueToRemove: string) => {
-        const currentValues = getValues()[inputName] || [];
         const newValues = currentValues.filter((val: string) => val !== valueToRemove);
-        
         setValue(inputName, newValues, { shouldDirty: true });
         
-        const isValid = await trigger(inputName);
-        if (isValid) {
-            await customSubmitHandler(getValues());
-        }
+        // Используем handleSubmit для правильного времени выполнения
+        handleSubmit(customSubmitHandler)();
     };
 
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             e.preventDefault();
             if (!isValidInput) {
-                setError(inputName, {
-                    type: 'minLength',
-                    message: 'Минимум 2 символа'
-                });
+                setError(inputName, { type: 'minLength', message: 'Минимум 2 символа' });
                 return;
             }
             handleAdd(inputText);
@@ -77,10 +74,7 @@ export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
 
     const handleSubmitClick = () => {
         if (!isValidInput) {
-            setError(inputName, {
-                type: 'minLength',
-                message: 'Минимум 2 символа'
-            });
+            setError(inputName, { type: 'minLength', message: 'Минимум 2 символа' });
             return;
         }
         handleAdd(inputText);
@@ -88,9 +82,7 @@ export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputText(e.target.value);
-        if (error) {
-            clearErrors(inputName);
-        }
+        if (error) clearErrors(inputName);
     };
 
     return (
@@ -106,14 +98,14 @@ export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
                         onKeyDown={handleKeyDown}
                         id={`${inputName}-multi-select`}
                         className={`
-                            ${error && 'ring-2 !ring-error border-transparent '}
+                            ${error && 'ring-2 !ring-error border-transparent'}
                             ring-transparent
                             appearance-none placeholder-transparent
                             focus:ring-2 focus:ring-button-violet
                             rounded-full w-full shadow-input-search border-black/10
                             peer bg-input-primary text-input-text
                             autofill:bg-red-200 focus:autofill:bg-red-200
-                        pr-10`}
+                            pr-10`}
                     />
                     <label
                         htmlFor={`${inputName}-multi-select`}
