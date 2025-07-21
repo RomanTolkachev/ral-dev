@@ -1,5 +1,4 @@
 import AbstractSearchingForm from "@/Components/Table/AbstractSearchingForm";
-import { DevTool } from "@hookform/devtools";
 import { FunctionComponent, ReactNode, useContext } from "react";
 import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from "@/shared/api/AbstractFormProvider";
 import config from "../../config";
@@ -9,6 +8,7 @@ import useUserColumns from "@/Components/Table/useUserColumns";
 import { useFormContext } from "react-hook-form";
 import CenteredLoader from "./CenteredLoader";
 import { AbstractTable } from "@/Components/Table";
+import { DevTool } from "@hookform/devtools";
 
 
 interface Props {
@@ -72,7 +72,7 @@ const NewRalTable: FunctionComponent<Props> = ({ className }) => {
             <section className={'shrink grow flex flex-col'}>
                 {content()}
             </section>
-            <DevTool control={control} />
+            {/* <DevTool control={control} /> */}
         </div>
     )
 };

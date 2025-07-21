@@ -1,4 +1,4 @@
-import { FormProvider, useForm, UseFormReturn, useFormState } from 'react-hook-form'
+import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
 import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useMemo } from 'react'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import { isEmpty, keys, values } from 'lodash'
@@ -48,16 +48,15 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
 
     const [setQuery, getQuery] = useParamsCustom();
     const queries = getQuery();
-    const isUserChecked: boolean = user!.isFetched ? true : false // тут плохо
+    const isUserChecked: boolean = user!.isFetched ? true : false
 
     const filtersData = useQuery({
         enabled: isUserChecked,
         queryFn: () => fetchAbstractFilters(tableName, { userFilters: keys(DEFAULT_FILTERS) }),
         queryKey: ["filters", tableName, DEFAULT_FILTERS],
-
     })
 
-    const { data: filters = [], isFetched } = filtersData;
+    const { data: filters = [] } = filtersData;
 
     // от данной переменной зависит, нужно ли перезаписывать состояния URL. Если query пустые на момент вызова onSubmit, то в историю добавится шаг.
     const shouldReplace = useMemo<boolean>(() => {
@@ -79,44 +78,29 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     */
     const customSubmitHandler = async (formData: IFormValues): Promise<void> => {
         const isValid = await trigger();
-
-        console.log("Form submit", { dirtyFields, formData, дефолт: defaultValues });
-
+        console.log(dirtyFields)
         if (isEmpty(dirtyFields)) {
-            console.log('Форма не изменилась');
+            console.log("не изменилась", {текущая: formData, дефолт: defaultValues})
             return;
         }
-
-        // Сохраняем текущие значения перед reset
-        const currentValues = getValues();
-
-        const resetHandler = () => {
-            reset(currentValues, {
-                keepDirty: false,  // Сбрасываем dirty состояние
-                keepValues: true,   // Сохраняем текущие значения
-                keepDefaultValues: true   // Сохраняем текущие значения
-            })
-        }
-
         if (dirtyFields.page) {
+            console.log("изменилась страничка", {текущая: formData, дефолт: defaultValues})
             const newQuery = { ...formData, page: formData.page };
             isValid && setQuery(newQuery, shouldReplace);
-            console.log('Изменилась страница');
-            return resetHandler()
+            return reset(newQuery)
         }
         else if (dirtyFields.perPage) {
+            console.log("изменился perPage", {текущая: formData, дефолт: defaultValues})
             const newQuery = { ...formData, page: 1, perPage: formData.perPage };
             isValid && setQuery(newQuery, shouldReplace);
-            console.log('Изменился perPage');
-            return resetHandler()
+            return reset(newQuery)
         }
         else {
+            console.log("изменились фильтры", {текущая: formData, дефолт: defaultValues})
             const newQuery = { ...formData, page: 1 };
             isValid && setQuery(newQuery, shouldReplace);
-            console.log('Изменились другие поля');
-            return resetHandler()
+            return reset(newQuery)
         }
-
     };
 
     /**
@@ -124,7 +108,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
      */
     async function customResetHandler(): Promise<void> {
         const perPage = await getValues().perPage
-        reset({}, { keepDefaultValues: true });
+        reset({...DEFAULT_FILTERS, ...perPage});
         setQuery(getValues())
     }
 
@@ -132,10 +116,8 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
      * Сброс формы до дефолтного состояние и сабмит дефолтных значений
      */
     function customResetField(fieldName: keyof IFormValues): void {
-        reset({ ...getValues(), [fieldName]: defaultValues![fieldName] }, { keepDefaultValues: true });
-        handleSubmit(data => {
-            customSubmitHandler(data)
-        })()
+        setValue(String(fieldName), DEFAULT_FILTERS[fieldName], {shouldDirty: true})
+        customSubmitHandler({ ...getValues(), [fieldName]: DEFAULT_FILTERS[fieldName] })
     }
 
     /* Если в URL имеются queries, то после reset заново устанавливаются значения этих полей. 
@@ -144,7 +126,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     useEffect(() => {
         if (!isEmpty(queries)) {
             keys(queries).forEach(query => {
-                setValue(query, queries[query])
+                setValue(query, queries[query], {shouldDirty: true})
             })
         }
     }, [])
