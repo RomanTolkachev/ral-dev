@@ -33,15 +33,12 @@ export const PageNavigation: FunctionComponent<IProps> = ({
         }
         debounceTimeoutRef.current = setTimeout(() => {
             customSubmitHandler(getValues())
-        }, 500) 
+        }, 500)
     }, [customSubmitHandler, getValues])
 
     const handlePageChange = async (newPage: number) => {
         setValue('page', newPage, { shouldDirty: true });
-        const isValid = await trigger();
-        if (isValid) {
-            customSubmitHandler({ ...getValues(), page: newPage });
-        }
+        customSubmitHandler({ ...getValues(), page: newPage });
     }
 
     useEffect(() => {

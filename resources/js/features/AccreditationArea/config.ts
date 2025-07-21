@@ -40,6 +40,7 @@ const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
 
 const DEFAULT_FILTERS: Partial<Record<TAccreditationAreaModel, string[]>> & TDefaultPaginationRequest = {
     tn_ved: [], 
+    full_gost: [],
     gost_object: [],
     id_ral: [],
     source_file_label: [],    

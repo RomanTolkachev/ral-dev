@@ -1,14 +1,13 @@
-import { DevTool } from '@hookform/devtools';
 import { FunctionComponent, ReactNode, useContext } from 'react';
 import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider';
 import config from './config';
 import { AuthContext } from '@/app/providers/AuthProvider';
 import useTableDataQuery from '@/Components/Table/useTableDataQuery';
-import CenteredLoader from '../ralTable/ui/RalTable/CenteredLoader';
 import useUserColumns from '@/Components/Table/useUserColumns';
 import { useFormContext } from 'react-hook-form';
 import { AbstractTable } from '@/Components/Table';
 import { FiltersWidget } from '@/Components/Table/ui/FiltersWidget';
+import CenteredLoader from '@/Components/utils/CenteredLoader';
 
 interface Props {
     className?: string;
@@ -70,7 +69,6 @@ const AccreditationAreaTable: FunctionComponent<Props> = ({ className }) => {
             <section className={'shrink grow flex flex-col'}>
                 {content()}
             </section>
-            {/* <DevTool control={control} /> */}
         </div>
     )
 };

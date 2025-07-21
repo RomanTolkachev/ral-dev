@@ -78,7 +78,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     */
     const customSubmitHandler = async (formData: IFormValues): Promise<void> => {
         const isValid = await trigger();
-        console.log("грязные поля в customSubmitHandler", dirtyFields)
+        console.log("грязные поля в customSubmitHandler", {дефолт: defaultValues})
         if (isEmpty(dirtyFields)) {
             console.log("не изменилась", { текущая: formData, дефолт: defaultValues })
             return;
@@ -125,12 +125,13 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         if (!isEmpty(queries)) {
             reset({
                 ...DEFAULT_FILTERS,
-                ...queries, // Применяем значения из URL
+                ...queries, 
             }, {
-                keepDirty: true, // Сохраняем текущие "грязные" поля, если они есть
+                keepDirty: true, 
             })
         }
-    }, [])
+        trigger() // зачем-то нужно ее встряхнуть, чтобы на старте начала нормально работать
+    }, [JSON.stringify(filters)])
 
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData }}>
