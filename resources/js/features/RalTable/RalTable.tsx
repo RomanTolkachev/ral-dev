@@ -1,25 +1,25 @@
-import AbstractSearchingForm from "@/Components/Table/AbstractSearchingForm";
-import { FunctionComponent, ReactNode, useContext } from "react";
-import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from "@/shared/api/AbstractFormProvider";
-import config from "../../config";
 import { AuthContext } from "@/app/providers/AuthProvider";
-import useTableDataQuery from "@/Components/Table/useTableDataQuery";
 import useUserColumns from "@/Components/Table/useUserColumns";
+import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from "@/shared/api/AbstractFormProvider";
+import { FunctionComponent, ReactNode, useContext } from "react";
 import { useFormContext } from "react-hook-form";
-import CenteredLoader from "./CenteredLoader";
+import { config } from "./config";
+import useTableDataQuery from "@/Components/Table/useTableDataQuery";
+import CenteredLoader from "@/Components/utils/CenteredLoader";
 import { AbstractTable } from "@/Components/Table";
-import { DevTool } from "@hookform/devtools";
-
+import { FiltersWidget } from "@/Components/Table/ui/FiltersWidget";
 
 interface Props {
     className?: string;
 }
 
-const NewRalTable: FunctionComponent<Props> = ({ className }) => {
+const RalTable: FunctionComponent<Props> = ({ className }) => {
 
     const tableName = 'ral';
 
-    const {control} = useFormContext();
+    const { control } = useFormContext();
+
+    const methods = useFormContext();
 
     const user = useContext(AuthContext);
     const userId = user?.userInfo?.id
@@ -53,7 +53,6 @@ const NewRalTable: FunctionComponent<Props> = ({ className }) => {
                 : <AbstractTable paginatedData={data} loading={isPending} dictionary={config.DICTIONARY} />
     }
 
-
     return (
         <div className='flex grow shrink min-h-0'>
             <section
@@ -62,7 +61,7 @@ const NewRalTable: FunctionComponent<Props> = ({ className }) => {
                 }>
                 <div className={'p-2 flex flex-col grow shrink overflow-hidden'}>
                     <div className={'my-block bg-background-block pt-6 flex grow overflow-hidden'}>
-                        <AbstractSearchingForm
+                        <FiltersWidget
                             className={'w-full'}
                             filters={filters}
                             dictionary={config.DICTIONARY} />
@@ -72,9 +71,8 @@ const NewRalTable: FunctionComponent<Props> = ({ className }) => {
             <section className={'shrink grow flex flex-col'}>
                 {content()}
             </section>
-            {/* <DevTool control={control} /> */}
         </div>
     )
 };
 
-export default NewRalTable;
+export default RalTable;

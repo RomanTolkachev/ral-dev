@@ -1,4 +1,3 @@
-import AbstractSearchingForm from '@/Components/Table/AbstractSearchingForm';
 import { DevTool } from '@hookform/devtools';
 import { FunctionComponent, ReactNode, useContext } from 'react';
 import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider';
@@ -9,6 +8,7 @@ import CenteredLoader from '../ralTable/ui/RalTable/CenteredLoader';
 import useUserColumns from '@/Components/Table/useUserColumns';
 import { useFormContext } from 'react-hook-form';
 import { AbstractTable } from '@/Components/Table';
+import { FiltersWidget } from '@/Components/Table/ui/FiltersWidget';
 
 interface Props {
     className?: string;
@@ -18,7 +18,7 @@ const AccreditationAreaTable: FunctionComponent<Props> = ({ className }) => {
 
     const tableName = 'accreditation_area';
 
-    const {control} = useFormContext();
+    const { control } = useFormContext();
 
     const user = useContext(AuthContext);
     const userId = user?.userInfo?.id
@@ -60,7 +60,7 @@ const AccreditationAreaTable: FunctionComponent<Props> = ({ className }) => {
                 }>
                 <div className={'p-2 flex flex-col grow shrink overflow-hidden'}>
                     <div className={'my-block bg-background-block pt-6 flex grow overflow-hidden'}>
-                        <AbstractSearchingForm
+                        <FiltersWidget
                             className={'w-full'}
                             filters={filters}
                             dictionary={config.DICTIONARY} />
@@ -70,7 +70,7 @@ const AccreditationAreaTable: FunctionComponent<Props> = ({ className }) => {
             <section className={'shrink grow flex flex-col'}>
                 {content()}
             </section>
-            <DevTool control={control} />
+            {/* <DevTool control={control} /> */}
         </div>
     )
 };

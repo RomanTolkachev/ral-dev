@@ -1,10 +1,10 @@
 import { createContext, FunctionComponent, useContext } from 'react'
 import { Preloader } from '@/Components/utils/Preloader'
-import { DropdownItem } from '@/Components/Inputs/DropdownItem'
 import { MainButton } from '@/Components/Buttons/MainButton'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
-import createTranslateFn from './lib/translate'
+import createTranslateFn from '../../lib/translate'
+import { DropdownItem } from './DropdownItem'
 
 export const TranslateContext = createContext<ReturnType<typeof createTranslateFn> | null>(null);
 
@@ -14,7 +14,7 @@ interface IProps {
     dictionary?: Record<string, string>
 }
 
-const AbstractSearchingForm: FunctionComponent<IProps> = ({ className, filters, dictionary }) => {
+export const FiltersWidget: FunctionComponent<IProps> = ({ className, filters, dictionary }) => {
 
     const submitContext = useContext<ICustomSubmitHandlerContext>(CustomSubmitHandlerContext)
     const translateFn = dictionary ? createTranslateFn(dictionary) : null
@@ -54,5 +54,3 @@ const AbstractSearchingForm: FunctionComponent<IProps> = ({ className, filters, 
         </form >
     );
 }
-
-export default AbstractSearchingForm;

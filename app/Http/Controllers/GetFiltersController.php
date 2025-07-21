@@ -14,13 +14,13 @@ class GetFiltersController
     {
         $filters = $tableFilterService->getFiltersFor(RalShortInfoView::class, $request->userFilters ?? []);
 
-        $filters = [[
-            "header" => 'nameType',
-            "sortValues" => [
-                'type' => "checkBox",
-                'checkboxValues' => ["ОС по СМ", "ОС органического производства", "ОИ типа B"]
-            ]
-        ]];
+        // $filters = [[
+        //     "header" => 'nameType',
+        //     "sortValues" => [
+        //         'type' => "checkBox",
+        //         'checkboxValues' => ["ОС по СМ", "ОС органического производства", "ОИ типа B"]
+        //     ]
+        // ]];
         return new JsonResponse($filters);
     }
 }

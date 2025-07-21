@@ -3,7 +3,7 @@ import { SVG } from '@/Components/utils/SVG'
 import { translateHeaderName } from '@/Components/Table/lib/translateHeaderName'
 import { AnimatePresence, motion } from 'motion/react'
 import { CustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
-import { TranslateContext } from '../Table/AbstractSearchingForm'
+import { TranslateContext } from '../Table/ui/FiltersWidget/FiltersWidget'
 
 interface IProps {
     className?: string

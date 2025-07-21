@@ -1,7 +1,6 @@
 import Header from '@/Components/Header'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { TableLayout } from './TableLayout'
-import { Raltable } from '@/features/ralTable/ui/RalTable/RalTable'
 import { NotFound } from '@/Components/utils/404'
 import Modal from '@/Components/modal/Modal'
 import { RalModal } from '@/features/ralModal/ui/RalModal'
@@ -16,7 +15,7 @@ import { config as accAreaConfig } from '@/features/AccreditationArea/config'
 import { AbstractFormProvider } from '@/shared/api/AbstractFormProvider'
 import CertificatesTable from '@/features/Certificates/CertificatesTable'
 import { config as certificatesConfig } from '@/features/Certificates/config'
-import NewRalTable from '@/features/RalTable/ui/RalTable/NewRalTable'
+import NewRalTable from '@/features/RalTable/RalTable'
 
 
 
@@ -37,7 +36,6 @@ function MainLayout() {
                     <Route path="ral/*" element={
                         <>
                             <AbstractFormProvider config={ralConfig} tableName="ral">
-                                {/* <Raltable /> */}
                                 <NewRalTable />
                             </AbstractFormProvider>
 
