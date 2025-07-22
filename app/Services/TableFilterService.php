@@ -27,7 +27,7 @@ class TableFilterService
                 $uniqValues = $modelClass::distinct()->pluck($columnName);
                 $isUniqValuesHuge = count($uniqValues) > 20;
                 if ($isUniqValuesHuge) {
-                    $headerItemObject->sortValues->type = "multi";
+                    $headerItemObject->sortValues->type = "singleText";
                 } else {
                     $headerItemObject->sortValues->type = "checkBox";
                     $headerItemObject->sortValues->checkboxValues = $uniqValues;
@@ -42,7 +42,7 @@ class TableFilterService
         $fullText = new \stdClass();
         $fullText->header = "fullText";
         $fullText->sortValues = new \stdClass();
-        $fullText->sortValues->type = "multi";
+        $fullText->sortValues->type = "singleText";
 
         // добавление поиска для регуляций
         $regulations = new \stdClass();

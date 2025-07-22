@@ -15,7 +15,7 @@ class RalShortInfoViewFactory extends Factory
         $credentials = $this->generateCredentials();
         $statusOldValueOrNull = $this->generateOldStatusOrNull();
         $statusChangeDateOrNull = is_null($statusOldValueOrNull)
-            ? null : Carbon::parse($this->faker->dateTimeBetween('-3 years'))->toIso8601ZuluString();
+            ? null : Carbon::parse($this->faker->dateTimeBetween('-3 years'))->format('Y-m-d H:i:s');
         return [
             'link' => $credentials['link'],
             'RegNumber' => $credentials['regNumber'],
@@ -24,7 +24,7 @@ class RalShortInfoViewFactory extends Factory
             'status_change_date' => $statusChangeDateOrNull,
             'nameType' => $this->generateNameTypeOrNull(),
             'nameTypeActivity' => $this->generateNameTypeActivityOrNull(),
-            'regDate' => Carbon::parse($this->faker->dateTimeBetween('-10 years'))->toIso8601ZuluString(),
+            'regDate' => Carbon::parse($this->faker->dateTimeBetween('-10 years'))->format('Y-m-d H:i:s'),
             'fullName' => $credentials['fullName'],
             'address' => $this->faker->address(),
             'applicantINN' => $this->generateApplicantINN(),

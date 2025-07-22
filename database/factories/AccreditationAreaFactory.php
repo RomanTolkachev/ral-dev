@@ -27,7 +27,7 @@ class AccreditationAreaFactory extends Factory
     {
         return [
             "source_row" => $this->faker->numberBetween(1, 20),
-            "gost" => $this->getRandomGost(),
+            "full_gost" => $this->getRandomGost(),
             "gost_object" => "описание госта",
             "okpd" => $this->faker->numberBetween(100, 120) . $this->faker->numberBetween(1, 20),
             "tn_ved" => $this->faker->randomElement($this->predefinedTNVEDS),
