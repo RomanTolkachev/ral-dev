@@ -18,6 +18,8 @@ interface IProps {
     rowClickFn?: () => void
 }
 
+interface QueryParams extends Record<string | "page" | "perPage", number | string | string[] | undefined> {}
+
 export type ICustomSubmitHandlerContext = {
     filtersData: UseQueryResult<ISearchingFormItem[]>
     customSubmitHandler: (formData: Record<string, unknown>) => void
@@ -78,28 +80,26 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     */
     const customSubmitHandler = async (formData: IFormValues): Promise<void> => {
         const isValid = await trigger();
-        console.log("грязные поля в customSubmitHandler", {дефолт: defaultValues})
+
+        function handler(newQuery: QueryParams) {
+            isValid && setQuery(newQuery, shouldReplace);
+            return reset(newQuery)
+        }
+
         if (isEmpty(dirtyFields)) {
-            console.log("не изменилась", { текущая: formData, дефолт: defaultValues })
             return;
         }
         if (dirtyFields.page) {
-            console.log("изменилась страничка", { текущая: formData, дефолт: defaultValues })
             const newQuery = { ...formData, page: formData.page };
-            isValid && setQuery(newQuery, shouldReplace);
-            return reset(newQuery)
+            handler(newQuery)
         }
         else if (dirtyFields.perPage) {
-            console.log("изменился perPage", { текущая: formData, дефолт: defaultValues })
             const newQuery = { ...formData, page: 1, perPage: formData.perPage };
-            isValid && setQuery(newQuery, shouldReplace);
-            return reset(newQuery)
+            handler(newQuery)
         }
         else {
-            console.log("изменились фильтры", { текущая: formData, дефолт: defaultValues })
             const newQuery = { ...formData, page: 1 };
-            isValid && setQuery(newQuery, shouldReplace);
-            return reset(newQuery)
+            handler(newQuery)
         }
     };
 
@@ -125,9 +125,9 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         if (!isEmpty(queries)) {
             reset({
                 ...DEFAULT_FILTERS,
-                ...queries, 
+                ...queries,
             }, {
-                keepDirty: true, 
+                keepDirty: true,
             })
         }
         trigger() // зачем-то нужно ее встряхнуть, чтобы на старте начала нормально работать

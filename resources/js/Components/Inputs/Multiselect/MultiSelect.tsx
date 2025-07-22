@@ -129,8 +129,8 @@ export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
                             rounded-full
                             ${isValidInput ?
                                 'bg-button-violet text-white cursor-pointer' :
-                                'bg-gray-300 text-gray-500 cursor-not-allowed'}
-                            transition-colors duration-200
+                                'bg-gray-500 text-gray-200 cursor-not-allowed'}
+                            transition-colors duration-200 
                             focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-button-violet`}
                     >
                         <svg
