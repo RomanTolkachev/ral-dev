@@ -129,6 +129,8 @@ const DICTIONARY: Record<TCertificateModel, string> = {
 
 const DEFAULT_COLUMNS: TCertificateModel[] = [
     // Основные поля сертификата
+    "date",
+    "endDate",
     "certificate_name",
     "certificate_status",
     // Поля из status_change
@@ -145,8 +147,6 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
     "certificate_link",
     "previous_update_status_date",
     "previous_status",
-    "date",
-    "endDate",
     "blankNumber",
     "technicalReglaments",
     "group",
