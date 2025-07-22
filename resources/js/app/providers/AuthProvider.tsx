@@ -22,7 +22,7 @@ export interface IAuthContext {
         error: AxiosError | null;
         resetError: () => void
     },
-    methods: UseFormReturn<ILoginForm, any, undefined>
+    methods: UseFormReturn<ILoginForm, any, ILoginForm>
 }
 
 

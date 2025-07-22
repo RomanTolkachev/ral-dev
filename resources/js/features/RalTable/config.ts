@@ -30,7 +30,7 @@ const DEFAULT_COLUMNS: TRalModel[] = [
     'regulations',
 ];
 
-const DEFAULT_FILTERS: Partial<Record<TRalModel | "fullText" , string[]>> & TDefaultPaginationRequest = {
+const DEFAULT_FILTERS: Partial<Record<TRalModel | "fullText", string[]>> & TDefaultPaginationRequest = {
     ["regDate"]: ["", ""],
     ["status_change_date"]: ["", ""],
     ["nameType"]: [],
@@ -46,7 +46,7 @@ const DEFAULT_FILTERS: Partial<Record<TRalModel | "fullText" , string[]>> & TDef
 };
 
 const DICTIONARY: Record<TRalModel, string> = {
-    ["ral_short_info_view.link"]: 'Ссылка',
+    ["link"]: 'Ссылка',
     RegNumber: 'Рег. номер',
     old_status_AL: 'Предыдущий статус',
     new_status_AL: 'Акт. статус',
@@ -60,7 +60,9 @@ const DICTIONARY: Record<TRalModel, string> = {
     applicantINN: 'ИНН',
     oaDescription: 'Описание',
     NPstatus: 'Статус НЧ',
+    ["id"]: 'id',
     ["ral_short_info_view.id"]: 'id',
+    ["ral_short_info_view.link"]: 'link',
     NP_status_change_date: 'Дата изм. статуса НЧ',
     fullText: 'Поиск',
     tnved: 'ТН ВЭД (НЧ)',

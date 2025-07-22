@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom"
 import { axiosApi } from "@/shared/api/api";
 import { Preloader } from "@/Components/utils/Preloader";
 import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import RalCell from "@/features/RalTable/ui/RalTable/Cell/ui/RalCell";
 import transpondInTwoCols from "../lib/transpondInTwoCols";
 import RalModalCell from "./RalModalCell";
 

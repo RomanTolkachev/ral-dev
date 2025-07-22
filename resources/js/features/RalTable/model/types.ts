@@ -4,14 +4,16 @@ import { TDefaultPaginationRequest } from "@/shared/types/pagination";
 
 
 const RAL_MODEL = [
-    'ral_short_info_view.link',
+    'ral_short_info_view.link', // это для join
     'nameType',
     'nameTypeActivity',
     'fullName',
     'address',
     'oaDescription',
     'NPstatus',
-    'ral_short_info_view.id',
+    'ral_short_info_view.id', // это для join
+    'id', // это для перевода
+    'link', // это для перевода
     'regDate',
     'NP_status_change_date',
     'applicantFullName',
