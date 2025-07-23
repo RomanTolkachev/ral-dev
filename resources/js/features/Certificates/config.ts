@@ -396,7 +396,7 @@ const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
     "status_change__idChangeStatus": 150
 };
 
-const ORDERABLE_CELLS: TCertificateModel[] = ["update_status_date"]
+const ORDERABLE_CELLS: TCertificateModel[] = ["update_status_date", "date", "endDate"]
 
 const HIDDEN_COLUMNS: TCertificateModel[] = ["ral_short_info_view__link", "certificate_link", "id", "status_change__certificate_id", "certificate_id"]
 

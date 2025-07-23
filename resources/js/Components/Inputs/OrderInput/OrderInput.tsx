@@ -16,7 +16,7 @@ export const OrderInput: FC<Props> = ({ columnName, hookFormName }) => {
     const [scope, animate] = useAnimate()
 
     if (!handlers) return null
-    const { customSubmitHandler } = handlers
+    const { customSubmitHandler } = handlers;
 
     return (
         <Controller
@@ -48,7 +48,7 @@ export const OrderInput: FC<Props> = ({ columnName, hookFormName }) => {
                         })
                     }
 
-                    setValue('order', newOrder)
+                    setValue('order', newOrder, {shouldDirty: true})
                     const isValid = await trigger()
                     const formData = { ...getValues(), order: newOrder }
 

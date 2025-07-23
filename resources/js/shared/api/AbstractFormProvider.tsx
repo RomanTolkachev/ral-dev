@@ -81,25 +81,33 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     const customSubmitHandler = async (formData: IFormValues): Promise<void> => {
         const isValid = await trigger();
 
+        console.log({
+            текущие: formData
+        })
+
         function handler(newQuery: QueryParams) {
             isValid && setQuery(newQuery, shouldReplace);
             return reset(newQuery)
         }
 
         if (isEmpty(dirtyFields)) {
+            console.log("форма не изменилась")
             return;
         }
-        if (dirtyFields.page) {
+        else if (dirtyFields.page) {
             const newQuery = { ...formData, page: formData.page };
             handler(newQuery)
+            console.log("изменилась страница")
         }
         else if (dirtyFields.perPage) {
             const newQuery = { ...formData, page: 1, perPage: formData.perPage };
             handler(newQuery)
+            console.log("изменился perPage")
         }
         else {
             const newQuery = { ...formData, page: 1 };
             handler(newQuery)
+            console.log("Изменилась форма")
         }
     };
 
