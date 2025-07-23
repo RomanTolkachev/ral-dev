@@ -13,6 +13,13 @@ class GetCertificatesFiltersController
     {
         $filters = [
             [
+                'header' => "technicalReglaments",
+                'headerType' => 'nvarchar',
+                'sortValues' => [
+                    'type' => 'multi',
+                ],
+            ],
+            [
                 'header' => "certificate_name",
                 'headerType' => 'nvarchar',
                 'sortValues' => [
@@ -33,7 +40,7 @@ class GetCertificatesFiltersController
                 'sortValues' => [
                     'type' => 'checkBox',
                     'checkboxValues' => [
-                        "По решению органа по сертификации", 
+                        "По решению органа по сертификации",
                         "По решению национального органа по аккредитации",
                         "None"
                     ]
@@ -60,6 +67,7 @@ class GetCertificatesFiltersController
                     'type' => 'date',
                 ],
             ],
+
             // [
             //     'header' => "ralShortInfoView__RegNumber",
             //     'headerType' => 'varchar',

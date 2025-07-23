@@ -2,11 +2,13 @@
 
 namespace App\UseCases\Certificates\GetCertificatesList;
 
+use App\Models\DictionaryRegulation;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Filters\AbstractFilter;
 use App\Models\CertificatesShortInfo;
 use Illuminate\Support\Facades\DB;
 use App\Models\StatusChange;
+use App\Models\CertificateTechReglamentsLink;
 
 
 class GetCertificatesListFilter extends AbstractFilter
@@ -42,7 +44,7 @@ class GetCertificatesListFilter extends AbstractFilter
         // $query = $this->builder;
         $formattedColumn = preg_replace('/_desc$/', "", $value);
         $query = $this->builder->whereNotNull($formattedColumn);
-        if(str_ends_with($value, 'desc')) {
+        if (str_ends_with($value, 'desc')) {
             $query = $query->orderByDesc($formattedColumn);
             return $query;
         } else {
@@ -130,11 +132,11 @@ class GetCertificatesListFilter extends AbstractFilter
             case empty($values[0]) && empty($values[1]):
                 return $this->builder;
             case (empty($values[0]) && !empty($values[1])):
-                return $this->builder->where('update_status_date', '<', $values[1]);
+                return $this->builder->where('date', '<', $values[1]);
             case (!empty($values[0]) && empty($values[1])):
-                return $this->builder->where('update_status_date', '>', $values[0]);
+                return $this->builder->where('date', '>', $values[0]);
             default:
-                return $this->builder->whereBetween('update_status_date', $values);
+                return $this->builder->whereBetween('date', $values);
         }
     }
     protected function endDate(array $values): Builder
@@ -143,11 +145,22 @@ class GetCertificatesListFilter extends AbstractFilter
             case empty($values[0]) && empty($values[1]):
                 return $this->builder;
             case (empty($values[0]) && !empty($values[1])):
-                return $this->builder->where('update_status_date', '<', $values[1]);
+                return $this->builder->where('endDate', '<', $values[1]);
             case (!empty($values[0]) && empty($values[1])):
-                return $this->builder->where('update_status_date', '>', $values[0]);
+                return $this->builder->where('endDate', '>', $values[0]);
             default:
-                return $this->builder->whereBetween('update_status_date', $values);
+                return $this->builder->whereBetween('endDate', $values);
         }
+    }
+
+    protected function technicalReglaments(array $values): Builder
+    {
+        return $this->builder->whereHas('techReglaments', function ($query) use ($values) {
+            $query->where(function ($q) use ($values) {
+                foreach ($values as $value) {
+                    $q->orWhere('tech_reg_code', 'like', "%{$value}%");
+                }
+            });
+        });
     }
 }

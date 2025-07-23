@@ -28,6 +28,18 @@ class CertificatesShortInfo extends Model
         ];
     }
 
+    public function techReglaments()
+    {
+        return $this->belongsToMany(
+            DictionaryRegulation::class,
+            'certificate_tech_reglaments_link',
+            'certificate_id',  // FK в промежуточной таблице для сертификата
+            'tech_reg_id'      // FK в промежуточной таблице для регламента
+        );
+    }
+
+
+
     public function ralShortInfoView(): HasManyThrough
     {
         return $this->hasManyThrough(

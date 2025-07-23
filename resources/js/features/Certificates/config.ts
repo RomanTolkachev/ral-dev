@@ -263,7 +263,8 @@ const DEFAULT_FILTERS: Partial<Record<TCertificateModel, string[]>> & TDefaultPa
     certificate_name: [],
     certificate_status: [],
     date: ["", ""],
-    endDate: ["", ""]
+    endDate: ["", ""],
+    technicalReglaments: []
 }
 
 const DEFAULT_REQUEST = {
