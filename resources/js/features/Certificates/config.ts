@@ -261,7 +261,9 @@ const DEFAULT_FILTERS: Partial<Record<TCertificateModel, string[]>> & TDefaultPa
     status_change__status_changes_by: [],
     update_status_date: ["", ""],
     certificate_name: [],
-    certificate_status: []
+    certificate_status: [],
+    date: ["", ""],
+    endDate: ["", ""]
 }
 
 const DEFAULT_REQUEST = {

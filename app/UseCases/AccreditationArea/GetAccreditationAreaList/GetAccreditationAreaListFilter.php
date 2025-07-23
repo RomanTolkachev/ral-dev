@@ -110,6 +110,6 @@ class GetAccreditationAreaListFilter extends AbstractFilter
         }
 
         // Выполняем один объединённый JOIN
-        return $query->join(DB::raw("{$tempTable} tmp_combined"), 'acreditation_area.id_ral', '=', 'tmp_combined.id');
+        return $query->join(DB::raw("{$tempTable} tmp_combined"), 'acсreditation_area.id_ral', '=', 'tmp_combined.id');
     }
 }

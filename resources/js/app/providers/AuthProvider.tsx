@@ -22,7 +22,7 @@ export interface IAuthContext {
         error: AxiosError | null;
         resetError: () => void
     },
-    methods: UseFormReturn<ILoginForm, any, ILoginForm>
+    methods: UseFormReturn<ILoginForm>
 }
 
 
@@ -51,7 +51,7 @@ const AuthProvider: FunctionComponent<PropsWithChildren<Props>> = ({ className, 
 
     const useLogin = useMutation<IUser, AxiosError, { email: string; password: string }>({
         mutationFn: login,
-        retry: (errCount, err: AxiosError) => [422].includes(err.status!) ? false : true,
+        retry: (_errCount, err: AxiosError) => [422].includes(err.status!) ? false : true,
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['user'] }),
     })
 

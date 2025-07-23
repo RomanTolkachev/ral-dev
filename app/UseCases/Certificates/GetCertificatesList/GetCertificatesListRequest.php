@@ -17,7 +17,7 @@ class GetCertificatesListRequest extends FormRequest
         return true;
     }
 
-    protected array $columnsToFormatDates = ['update_status_date'];
+    protected array $columnsToFormatDates = ['update_status_date', 'date', 'endDate'];
     protected function formatToIsoZolo($rawDate): string | null
     {
         return  $rawDate === null ? null : Carbon::parse($rawDate)->toIso8601ZuluString();

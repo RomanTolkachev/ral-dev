@@ -46,13 +46,20 @@ class GetCertificatesFiltersController
                     'type' => 'date',
                 ],
             ],
-            // [
-            //     'header' => "ralShortInfoView__fullName",
-            //     'headerType' => 'varchar',
-            //     'sortValues' => [
-            //         'type' => 'huge',
-            //     ],
-            // ],
+            [
+                'header' => "date",
+                'headerType' => 'datetime',
+                'sortValues' => [
+                    'type' => 'date',
+                ],
+            ],
+            [
+                'header' => "endDate",
+                'headerType' => 'datetime',
+                'sortValues' => [
+                    'type' => 'date',
+                ],
+            ],
             // [
             //     'header' => "ralShortInfoView__RegNumber",
             //     'headerType' => 'varchar',

@@ -123,4 +123,31 @@ class GetCertificatesListFilter extends AbstractFilter
                 return $this->builder->whereBetween('update_status_date', $values);
         }
     }
+
+    protected function date(array $values): Builder
+    {
+        switch (true) {
+            case empty($values[0]) && empty($values[1]):
+                return $this->builder;
+            case (empty($values[0]) && !empty($values[1])):
+                return $this->builder->where('update_status_date', '<', $values[1]);
+            case (!empty($values[0]) && empty($values[1])):
+                return $this->builder->where('update_status_date', '>', $values[0]);
+            default:
+                return $this->builder->whereBetween('update_status_date', $values);
+        }
+    }
+    protected function endDate(array $values): Builder
+    {
+        switch (true) {
+            case empty($values[0]) && empty($values[1]):
+                return $this->builder;
+            case (empty($values[0]) && !empty($values[1])):
+                return $this->builder->where('update_status_date', '<', $values[1]);
+            case (!empty($values[0]) && empty($values[1])):
+                return $this->builder->where('update_status_date', '>', $values[0]);
+            default:
+                return $this->builder->whereBetween('update_status_date', $values);
+        }
+    }
 }
