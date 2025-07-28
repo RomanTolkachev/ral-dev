@@ -118,9 +118,9 @@ class GetCertificatesListFilter extends AbstractFilter
             case empty($values[0]) && empty($values[1]):
                 return $this->builder;
             case (empty($values[0]) && !empty($values[1])):
-                return $this->builder->where('update_status_date', '<', $values[1]);
+                return $this->builder->where('update_status_date', '<=', $values[1]);
             case (!empty($values[0]) && empty($values[1])):
-                return $this->builder->where('update_status_date', '>', $values[0]);
+                return $this->builder->where('update_status_date', '>=', $values[0]);
             default:
                 return $this->builder->whereBetween('update_status_date', $values);
         }
@@ -132,9 +132,9 @@ class GetCertificatesListFilter extends AbstractFilter
             case empty($values[0]) && empty($values[1]):
                 return $this->builder;
             case (empty($values[0]) && !empty($values[1])):
-                return $this->builder->where('date', '<', $values[1]);
+                return $this->builder->where('date', '<=', $values[1]);
             case (!empty($values[0]) && empty($values[1])):
-                return $this->builder->where('date', '>', $values[0]);
+                return $this->builder->where('date', '>=', $values[0]);
             default:
                 return $this->builder->whereBetween('date', $values);
         }
@@ -161,6 +161,13 @@ class GetCertificatesListFilter extends AbstractFilter
                     $q->orWhere('tech_reg_code', 'like', "%{$value}%");
                 }
             });
+        });
+    }
+
+    protected function ralShartInfoViewRegNumber(array $values): Builder
+    {
+        return $this->builder->whereHas('ralShortInfoView', function ($query) use ($values) {
+            $query->whereAny(['RegNumber', 'applicantFullName'], "LIKE", "%$values[0]%");
         });
     }
 }

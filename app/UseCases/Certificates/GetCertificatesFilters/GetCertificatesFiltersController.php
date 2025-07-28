@@ -13,6 +13,13 @@ class GetCertificatesFiltersController
     {
         $filters = [
             [
+                'header' => "ral_shart_info_view__regNumber",
+                'headerType' => 'nvarchar',
+                'sortValues' => [
+                    'type' => 'singleText',
+                ],
+            ],
+            [
                 'header' => "technicalReglaments",
                 'headerType' => 'nvarchar',
                 'sortValues' => [
@@ -68,13 +75,6 @@ class GetCertificatesFiltersController
                 ],
             ],
 
-            // [
-            //     'header' => "ralShortInfoView__RegNumber",
-            //     'headerType' => 'varchar',
-            //     'sortValues' => [
-            //         'type' => 'huge',
-            //     ],
-            // ],
         ];
         return new JsonResponse($filters);
     }
