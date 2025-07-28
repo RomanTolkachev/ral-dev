@@ -54,7 +54,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
 
     // Поля из ral_short_info_view
     "ral_short_info_view__link": "ral_short_info_view__ link / Ссылка на РАЛ",
-    "ral_short_info_view__RegNumber": "ral_short_info_view__ RegNumber / Рег. номер",
+    "ral_short_info_view__RegNumber": "Рег. номер",
     "ral_short_info_view__old_status_AL": "ral_short_info_view__ old_status_AL",
     "ral_short_info_view__new_status_AL": "ral_short_info_view__ new_status_AL",
     "ral_short_info_view__status_change_date": "ral_short_info_view__ status_change_date",
@@ -105,7 +105,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "certification_authority__idCertificationAuthority": "certification_authority__idCertificationAuthority / ID органа",
     "certification_authority__fullName": "certification_authority__ fullName / Полное наименование",
     "certification_authority__accredOrgName": "certification_authority__ accredOrgName / Аккредитующий орган",
-    "certification_authority__attestatRegNumber": "certification_authority__ attestatRegNumber / Номер аттестата",
+    "certification_authority__attestatRegNumber": "Рег. номер ОС",
     "certification_authority__attestatRegDate": "certification_authority__ attestatRegDate / Дата регистрации аттестата",
     "certification_authority__attestatEndDate": "certification_authority__ attestatEndDate / Дата окончания аттестата",
     "certification_authority__idRal": "certification_authority__ idRal / ID в РАЛ",
@@ -264,7 +264,8 @@ const DEFAULT_FILTERS: Partial<Record<TCertificateModel, string[]>> & TDefaultPa
     certificate_status: [],
     date: ["", ""],
     endDate: ["", ""],
-    technicalReglaments: []
+    technicalReglaments: [],
+    ral_short_info_view__RegNumber: []
 }
 
 const DEFAULT_REQUEST = {

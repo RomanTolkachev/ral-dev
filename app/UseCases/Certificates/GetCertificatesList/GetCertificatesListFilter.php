@@ -164,7 +164,7 @@ class GetCertificatesListFilter extends AbstractFilter
         });
     }
 
-    protected function ralShartInfoViewRegNumber(array $values): Builder
+    protected function ralShortInfoViewRegNumber(array $values): Builder
     {
         return $this->builder->whereHas('ralShortInfoView', function ($query) use ($values) {
             $query->whereAny(['RegNumber', 'applicantFullName'], "LIKE", "%$values[0]%");

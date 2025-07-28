@@ -257,7 +257,7 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         )
     }
 
-    if (columnID === "ralShortInfoView__RegNumber") {
+    if (columnID === "ral_short_info_view__RegNumber") {
         let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
         return createElement(
             'span',
@@ -265,10 +265,21 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
                 className: "text-wrap overflow-hidden mx-auto",
                 style: { maxWidth: '200px', },
             },
-            highlight(cellValue, currentQuery.ralShortInfoView__RegNumber),
+            highlight(cellValue, currentQuery.ral_short_info_view__RegNumber),
         )
+    }
 
-
+    if (columnID === "ral_short_info_view__applicantFullName") {
+        let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto",
+                style: { maxWidth: '200px', },
+                title: context.getValue(),
+            },
+            highlight(cellValue, currentQuery.ral_short_info_view__RegNumber),
+        )
     }
 
     if (

@@ -13,7 +13,7 @@ class GetCertificatesFiltersController
     {
         $filters = [
             [
-                'header' => "ral_shart_info_view__regNumber",
+                'header' => "ral_short_info_view__RegNumber",
                 'headerType' => 'nvarchar',
                 'sortValues' => [
                     'type' => 'singleText',
