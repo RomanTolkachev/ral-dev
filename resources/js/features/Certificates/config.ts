@@ -54,7 +54,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
 
     // Поля из ral_short_info_view
     "ral_short_info_view__link": "ral_short_info_view__ link / Ссылка на РАЛ",
-    "ral_short_info_view__RegNumber": "Рег. номер",
+    "ral_short_info_view__RegNumber": "Рег. номер ИЛ",
     "ral_short_info_view__old_status_AL": "ral_short_info_view__ old_status_AL",
     "ral_short_info_view__new_status_AL": "ral_short_info_view__ new_status_AL",
     "ral_short_info_view__status_change_date": "ral_short_info_view__ status_change_date",
@@ -256,7 +256,7 @@ const DEFAULT_COLUMNS: TCertificateModel[] = [
 
 const DEFAULT_FILTERS: Partial<Record<TCertificateModel, string[]>> & TDefaultPaginationRequest = {
     page: 1,
-    perPage: "10",
+    perPage: "25",
     order: "",
     status_change__status_changes_by: [],
     update_status_date: ["", ""],
@@ -270,7 +270,7 @@ const DEFAULT_FILTERS: Partial<Record<TCertificateModel, string[]>> & TDefaultPa
 
 const DEFAULT_REQUEST = {
     page: 1,
-    perPage: '10',
+    perPage: '25',
     order: "",
     user_columns: DEFAULT_COLUMNS
 }

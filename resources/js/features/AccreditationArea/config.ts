@@ -45,14 +45,14 @@ const DEFAULT_FILTERS: Partial<Record<TAccreditationAreaModel, string[]>> & TDef
     id_ral: [],
     source_file_label: [],    
     page: 1,
-    perPage: "10",
+    perPage: "25",
     ralShortInfoView__RegNumber: [],
     ralShortInfoView__fullName: []
 }
 
 const DEFAULT_REQUEST: IAccreditationAreaDefaultRequest = {
     page: 1,
-    perPage: '10',
+    perPage: '25',
     user_columns: DEFAULT_COLUMNS
 }
 

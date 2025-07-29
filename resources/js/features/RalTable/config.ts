@@ -40,7 +40,7 @@ const DEFAULT_FILTERS: Partial<Record<TRalModel | "fullText", string[]>> & TDefa
     ["tnved"]: [],
     ["regulation"]: [],
     page: 1,
-    perPage: "10",
+    perPage: "25",
     order: "",
     fullText: [],
 };
@@ -72,7 +72,7 @@ const DICTIONARY: Record<TRalModel, string> = {
 
 const DEFAULT_REQUEST: TDefaultRalRequest = {
     page: 1,
-    perPage: "10",
+    perPage: "25",
     status_change_date: [
         "", ""
     ],

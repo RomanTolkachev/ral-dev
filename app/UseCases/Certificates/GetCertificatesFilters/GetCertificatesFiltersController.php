@@ -16,7 +16,7 @@ class GetCertificatesFiltersController
                 'header' => "ral_short_info_view__RegNumber",
                 'headerType' => 'nvarchar',
                 'sortValues' => [
-                    'type' => 'singleText',
+                    'type' => 'multi',
                 ],
             ],
             [
