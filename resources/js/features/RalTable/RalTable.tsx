@@ -8,6 +8,7 @@ import useTableDataQuery from "@/Components/Table/useTableDataQuery";
 import CenteredLoader from "@/Components/utils/CenteredLoader";
 import { AbstractTable } from "@/Components/Table";
 import { FiltersWidget } from "@/Components/Table/ui/FiltersWidget";
+import { DevTool } from "@hookform/devtools";
 
 interface Props {
     className?: string;
@@ -71,6 +72,7 @@ const RalTable: FunctionComponent<Props> = ({ className }) => {
             <section className={'shrink grow flex flex-col'}>
                 {content()}
             </section>
+            <DevTool control={control}/>
         </div>
     )
 };
