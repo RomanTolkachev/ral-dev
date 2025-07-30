@@ -23,7 +23,7 @@ class GetCertificatesFiltersController
                 'header' => "technicalReglaments",
                 'headerType' => 'nvarchar',
                 'sortValues' => [
-                    'type' => 'multi',
+                    'type' => 'multiVariants',
                 ],
             ],
             [

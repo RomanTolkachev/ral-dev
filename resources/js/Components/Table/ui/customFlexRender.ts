@@ -269,7 +269,7 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
         )
     }
 
-    if (columnID === "ral_short_info_view__applicantFullName") {
+    if (columnID === "ral_short_info_view__fullName") {
         let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
         return createElement(
             'span',

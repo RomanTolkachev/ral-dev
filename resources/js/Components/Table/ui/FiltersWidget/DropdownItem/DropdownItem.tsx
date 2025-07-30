@@ -2,13 +2,13 @@ import { FunctionComponent, useState, useMemo } from 'react'
 import { DropdownFilterButton } from '@/Components/Buttons/DropdownFilterButton'
 import { motion, Variants } from 'framer-motion'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
-import { InputCustom } from '@/Components/Inputs/InputCustom/InputCustom'
 import { CalendarInput } from '@/Components/Inputs/CalendarInput/CalendarInput'
 import { CheckBoxCustom } from '@/Components/Inputs/CheckBoxCustom'
 import { useFormContext } from 'react-hook-form'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import { MultiSelect } from '../../../../Inputs/Multiselect/MultiSelect'
 import { SingleText } from '../../../../Inputs/SingleText'
+import { MultiSelectVariants } from '@/Components/Inputs/MultiSelectVariants/MultiSelectVariants'
 
 interface IProps {
     className?: string
@@ -77,14 +77,14 @@ export const DropdownItem: FunctionComponent<IProps> = ({ inputData, className }
 
     const renderInput = () => {
         switch (inputData.sortValues.type) {
-            case 'huge':
-                return <InputCustom inputData={inputData} />;
             case 'date':
                 return <CalendarInput inputData={inputData} />;
             case 'checkBox':
                 return <CheckBoxCustom inputData={inputData} />;
             case 'multi':
                 return <MultiSelect inputData={inputData} />;
+            case 'multiVariants':
+                return <MultiSelectVariants inputData={inputData} />;
             case 'singleText':
                 return <SingleText inputData={inputData} />;
             default:
