@@ -116,8 +116,8 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
      */
     async function customResetHandler(): Promise<void> {
         const perPage = await getValues().perPage
-        reset({ ...DEFAULT_FILTERS, ...perPage });
-        setQuery(getValues())
+        reset({ ...DEFAULT_FILTERS, perPage });
+        setQuery({...getValues()})
     }
 
     /**

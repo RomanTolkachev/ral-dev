@@ -124,7 +124,7 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
                 style: {textAlign: "left"}
                 // style: { maxWidth: '200px', },
             },
-            splitted.map((item, key) => createElement("span", { key,style: {textAlign: "left"}, className: `!text-left line-clamp-2 overflow-hidden ${key !== splitted.length - 1 ? "mb-3" : ""}` }, item.replace(/\d{2}:\d{2}:\d{2}\.\d{3}/g, '')))
+            splitted.map((item, key) => createElement("span", { key,style: {textAlign: "left"}, className: `!text-left line-clamp-2 overflow-hidden ${key !== splitted.length - 1 ? "mb-3" : ""}` }, highlight(item.replace(/\d{2}:\d{2}:\d{2}\.\d{3}/g, ''), currentQuery.technicalReglaments)))
         )
     }
     if (

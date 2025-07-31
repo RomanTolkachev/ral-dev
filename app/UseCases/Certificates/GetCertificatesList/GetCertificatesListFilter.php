@@ -161,8 +161,31 @@ class GetCertificatesListFilter extends AbstractFilter
                     $q->orWhere('tech_reg_code', 'like', "%{$value}%");
                 }
             });
-        });
+        }, '>=', count($values)); // третий параметр ищет количество связей. На самом деле, если поставить = 2, то все равно будет искать >=
     }
+
+    // проверить, если будут косяки
+    // protected function technicalReglaments(array $values): Builder
+    // {
+    //     // 1. Находим ID техрегламентов, соответствующих любому из условий
+    //     $techRegIds = DB::table('dictionary_regulations')
+    //         ->where(function ($query) use ($values) {
+    //             foreach ($values as $value) {
+    //                 $query->orWhere('tech_reg_code', 'like', "%{$value}%");
+    //             }
+    //         })
+    //         ->pluck('id')
+    //         ->toArray();
+
+    //     // 2. Ищем сертификаты, связанные со ВСЕМИ найденными техрегламентами
+    //     return $this->builder->where(function ($query) use ($techRegIds) {
+    //         foreach ($techRegIds as $regId) {
+    //             $query->whereHas('techReglaments', function ($q) use ($regId) {
+    //                 $q->where('dictionary_regulations.id', $regId);
+    //             });
+    //         }
+    //     });
+    // }
 
     protected function ralShortInfoViewRegNumber(array $values): Builder
     {

@@ -54,6 +54,8 @@
     --input-primary-shadow: 224, 224, 230;
     --input-primary-text: 137, 137, 137;
     --input-border-active: 119, 93, 166;
+    --input-list-bg: linear-gradient(135deg, #fff 70%, #f3f3f3 100%);
+    --input-list-border: linear-gradient(to bottom, #e8ebf0 0%, transparent 100%);
 
     /* Page navigation*/
     --page-nav-bg-active: 250, 250, 250;
@@ -135,6 +137,8 @@
     --input-primary-shadow: 19, 27, 46;
     --input-primary-text: 143, 157, 221;
     --input-border-active: 119, 93, 166;
+    --input-list-bg: linear-gradient(135deg, #212b44 0%, #433856 100%);
+    --input-list-border: linear-gradient(to bottom, #748ebb 0%, transparent 100%);
 
     /* Page navigation*/
     --page-nav-bg-active: 30, 41, 59;
