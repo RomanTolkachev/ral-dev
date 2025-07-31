@@ -153,12 +153,12 @@ export const MultiSelectVariants: FC<IProps> = ({ className, inputData }) => {
                                         style={{ scrollbarGutter: "stable" }}
                                         className="w-full relative overflow-hidden rounded-md max-h-32 overflow-y-auto px-3 bg-background-block"
                                     >
-                                        {showDropdown && <div className="sticky top-0 text-center px-2 pt-2 pb-4 bg-background-block z-[2] text-header-text">варианты:</div>}
+                                        {showDropdown && <div className="sticky top-0 text-center px-2 pt-2 pb-4 bg-background-block z-[2] scale-105 text-header-text">варианты:</div>}
                                         {filteredOptions.length > 0 ? (
                                             filteredOptions.map((option) => (
                                                 <div
                                                     key={option}
-                                                    className="pr-4 py-2 hover:scale-x-105 cursor-pointer transition-all text-header-text line-clamp-1 "
+                                                    className="pr-4 py-2 hover:scale-x-105 cursor-pointer transition-all text-header-text "
                                                     onMouseDown={(e) => e.preventDefault()}
                                                     onClick={() => handleOptionSelect(option, currentValues)}
                                                 >
