@@ -49,10 +49,7 @@ class GetAccreditationAreaListFilter extends AbstractFilter
 
     protected function sourceFileLabel(array $value): Builder
     {
-        foreach ($value as $item) {
-            $this->builder = $this->builder->orWhere('source_file_label', '=', $item);
-        }
-        return $this->builder;
+        return $this->builder->whereIn('source_file_label', $value);
     }
 
     protected function ralShortInfoViewFullName(array $value): Builder
