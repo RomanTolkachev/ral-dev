@@ -20,12 +20,8 @@ const CustomCell: FunctionComponent<IProps> = ({ cellData }) => {
     return (
         <td
             key={cellData.id}
-            className={`overflow-hidden text-center`}>
-            {/* w-[${cellData.column.getSize()}px]  добавить для resize*/}
-
-            <span className={'text-table-base p-1'}>
-                {customFlexRender(renderFn, getContext(), getQuery(), location)}
-            </span>
+            className={`overflow-hidden text-center relative text-table-base p-1`}>
+            {customFlexRender(renderFn, getContext(), getQuery(), location)}
         </td>
     );
 }

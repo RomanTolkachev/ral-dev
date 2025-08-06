@@ -121,12 +121,57 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             {
                 className: "!text-left text-wrap overflow-hidden flex flex-col mx-auto px-2",
                 title: context.getValue(),
-                style: {textAlign: "left"}
+                style: { textAlign: "left" }
                 // style: { maxWidth: '200px', },
             },
-            splitted.map((item, key) => createElement("span", { key,style: {textAlign: "left"}, className: `!text-left line-clamp-2 overflow-hidden ${key !== splitted.length - 1 ? "mb-3" : ""}` }, highlight(item.replace(/\d{2}:\d{2}:\d{2}\.\d{3}/g, ''), currentQuery.technicalReglaments)))
+            splitted.map((item, key) => createElement("span", { key, style: { textAlign: "left" }, className: `!text-left line-clamp-2 overflow-hidden ${key !== splitted.length - 1 ? "mb-3" : ""}` }, highlight(item.replace(/\d{2}:\d{2}:\d{2}\.\d{3}/g, ''), currentQuery.technicalReglaments)))
         )
     }
+    if (
+        columnID === "source_file_label"
+    ) {
+        let value = context.getValue()
+        switch (value) {
+            case ("АО"): {
+                return value
+            }
+            case ("РОА"): {
+                console.log("есть РОА")
+                return createElement(
+                    'span',
+                    {
+                        className: "h-full w-full absolute text-center align-middle flex items-center justify-center",
+                        style: {
+                            backgroundColor: `var(--full-cell-active)`,
+                            top: "1px",
+                            bottom: "1px",
+                            left: "1px",
+                            right: "1px",
+                        }
+                    },
+                    value || "пусто"
+                )
+            }
+            case ("СОА"): {
+                return createElement(
+                    'span',
+                    {
+                        className: "h-full w-full absolute text-center align-middle flex items-center justify-center",
+                        style: {
+                            backgroundColor: `var(--full-cell-terminated)`,
+                            top: "1px",
+                            bottom: "1px",
+                            left: "1px",
+                            right: "1px",
+                        }
+
+                    },
+                    value || "пусто"
+                )
+            }
+        }
+    }
+
     if (
         // Основные поля сертификата
         columnID === "productIdentificationName" ||

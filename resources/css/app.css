@@ -82,6 +82,8 @@
     --cell-suspended: rgb(241, 98, 63);
     --cell-part-suspended: rgb(119, 93, 166);
     --cell-terminated: rgb(212, 81, 81);
+    --full-cell-active: rgb(184, 250, 198);
+    --full-cell-terminated: rgb(247, 159, 133);
 
     /* Text */
     --header-text: 137, 137, 137;
@@ -159,6 +161,8 @@
     --cell-suspended: rgb(241, 98, 63);
     --cell-part-suspended: rgb(119, 93, 166);
     --cell-terminated: rgb(212, 81, 81);
+    --full-cell-active: rgb(23, 70, 31);
+    --full-cell-terminated: rgb(83, 26, 26);
 
 
     /* Scroll */
