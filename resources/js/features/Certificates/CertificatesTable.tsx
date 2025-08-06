@@ -71,7 +71,7 @@ const CertificatesTable: FunctionComponent<Props> = ({ className }) => {
             <section className={'shrink grow flex flex-col'}>
                 {content()}
             </section>
-            <DevTool control={control} />
+            {/* <DevTool control={control} /> */}
         </div>
     )
 };

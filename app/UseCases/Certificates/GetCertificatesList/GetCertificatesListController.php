@@ -2,7 +2,6 @@
 
 namespace App\UseCases\Certificates\GetCertificatesList;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -14,6 +13,7 @@ class GetCertificatesListController
             $request->page,
             $request->perPage,
             $request->user_columns,
+            $request
         );
 
         return new JsonResponse($result, Response::HTTP_OK);
