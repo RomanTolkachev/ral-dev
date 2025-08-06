@@ -51,7 +51,6 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             {
                 className: "text-wrap overflow-hidden mx-auto",
                 title: context.getValue(),
-                // style: { maxWidth: '200px', },
             },
             highlight(cellValue, currentQuery.full_gost),
         )
@@ -77,6 +76,65 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             },
             highlight(cellValue, currentQuery.ralShortInfoView__fullName),
         )
+    }
+
+    // квадратик
+    if (columnID === "ralShortInfoView__RegNumber") {
+        const cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
+        const ralStatus = context.row.original.ralShortInfoView__NPStatus || "Не применимо"
+        const status = context.row.original.ralShortInfoView__new_status_AL
+
+        console.log(status);
+        return createElement(
+            'span',
+            {
+                className: "flex items-center justify-between w-full"
+            },
+            [
+                createElement(
+                    'span',
+                    { key: 'text', className: "text-wrap overflow-hidden" },
+                    highlight(cellValue, currentQuery.ralShortInfoView__fullName)
+                ),
+                createElement(
+                    'svg',
+                    {
+                        key: 'square-svg',
+                        width: "20",
+                        height: "20",
+                        viewBox: "0 0 20 20"
+                    },
+                    [
+                        // Внешняя рамка с скруглением (2px stroke)
+                        createElement('rect', {
+                            x: "1",
+                            y: "1",
+                            width: "18",
+                            height: "18",
+                            rx: "4", // Радиус скругления углов
+                            fill: "none",
+                            stroke: ralStatus === "Да" ? "var(--cell-active)" : ralStatus === "Нет" ? "var(--error)" : "transparent",
+                            strokeWidth: "2"
+                        }),
+                        // Внутренний квадрат с скруглением
+                        createElement('rect', {
+                            x: "6",
+                            y: "6",
+                            width: "8",
+                            height: "8",
+                            rx: "2", // Радиус скругления внутреннего квадрата
+                            fill: status === "Действует"
+                                ? "var(--cell-active)"
+                                : status === "Прекращен" ? "var(--error)"
+                                    : status === "Приостановлен" ? "var(--cell-suspended)"
+                                        : status === "Частично приостановлен" ? "var(--thumb-secondary)"
+                                            : status === "Архивный" ? "var(rgb(39 42 49))"
+                                            : "transparent"
+                        })
+                    ]
+                )
+            ]
+        );
     }
     if (columnID === "oaDescription") {
         return createElement(

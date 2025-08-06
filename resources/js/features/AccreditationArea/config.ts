@@ -18,13 +18,17 @@ const DICTIONARY: Record<TAccreditationAreaModel, string> ={
     RegDate: "Рег. номер",
     ralShortInfoView__fullName: "Лаборатория",
     ralShortInfoView__RegNumber: "Рег. номер",
-    full_gost: "ГОСТ"
+    full_gost: "ГОСТ",
+    ralShortInfoView__NPStatus: "Статус НЧ",
+    ralShortInfoView__new_status_AL: "Текущий статус"
 }
 
 const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
     // "id", 
     "ralShortInfoView__fullName", // двойное подчеркивание
     "ralShortInfoView__RegNumber", 
+    "ralShortInfoView__NPStatus", 
+    "ralShortInfoView__new_status_AL", 
     "id_ral",
     "source_file_label",
     "source_file", 

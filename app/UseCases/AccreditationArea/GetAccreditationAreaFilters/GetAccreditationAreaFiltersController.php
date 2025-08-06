@@ -31,7 +31,7 @@ class GetAccreditationAreaFiltersController
                 'headerType' => 'varchar',
                 'sortValues' => [
                     'type' => 'checkBox',
-                    'checkboxValues' => ["ОА", "РОА", "СОА"]
+                    'checkboxValues' => ["УОА", "РОА", "СОА"]
                 ],
             ],
             [

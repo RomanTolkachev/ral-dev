@@ -1,22 +1,24 @@
 import { TDefaultPaginationRequest } from "@/shared/types/pagination";
 
 const AccreditationAreaModel = [
-    'id', 
+    'id',
     "RegDate",
     'source_file_label',
-    'source_row', 
-    'source_page', 
-    'source_file', 
-    'gost_object', 
-    'okpd', 
-    'tn_ved', 
-    'characteristic', 
+    'source_row',
+    'source_page',
+    'source_file',
+    'gost_object',
+    'okpd',
+    'tn_ved',
+    'characteristic',
     'characteristic_range',
     'id_ral',
     'match_status',
     "full_gost",
     "ralShortInfoView__RegNumber",
     "ralShortInfoView__fullName",
+    "ralShortInfoView__NPStatus",
+    "ralShortInfoView__new_status_AL",
 ] as const;
 
 export type TAccreditationAreaModel = typeof AccreditationAreaModel[number];
