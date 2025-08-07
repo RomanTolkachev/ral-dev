@@ -87,9 +87,10 @@ const DEFAULT_REQUEST: TDefaultRalRequest = {
 
 const ORDERABLE_CELLS: TRalModel[] = ['regDate', 'status_change_date', 'NP_status_change_date']
 const HIDDEN_COLUMNS: TRalModel[] = ['id', 'link']
+const CELL_WIDTH: Partial<Record<TRalModel, number>> = {RegNumber: 210}
 
 export const config: IConfig<TRalModel> = {
-    CELL_WIDTH: {},
+    CELL_WIDTH,
     DEFAULT_COLUMNS,
     DEFAULT_FILTERS,
     DEFAULT_REQUEST,
@@ -99,4 +100,4 @@ export const config: IConfig<TRalModel> = {
 }
 
 
-export default { DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY, DEFAULT_FILTERS, ORDERABLE_CELLS, HIDDEN_COLUMNS }
+export default { DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY, DEFAULT_FILTERS, ORDERABLE_CELLS, HIDDEN_COLUMNS, CELL_WIDTH }

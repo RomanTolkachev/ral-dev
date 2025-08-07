@@ -73,6 +73,7 @@ const CELL_WIDTH: Partial<Record<TAccreditationAreaModel, number>> = {
 }
 
 const ORDERABLE_CELLS:TAccreditationAreaModel[] = [];
+const HIDDEN_COLUMNS:TAccreditationAreaModel[] = ["ralShortInfoView__NPStatus", "ralShortInfoView__new_status_AL"];
 
 export const config: IConfig<TAccreditationAreaModel> = {
     DICTIONARY,
@@ -81,7 +82,7 @@ export const config: IConfig<TAccreditationAreaModel> = {
     DEFAULT_REQUEST,
     CELL_WIDTH,
     ORDERABLE_CELLS,
-    HIDDEN_COLUMNS: []
+    HIDDEN_COLUMNS
 }
 
 export default {DEFAULT_FILTERS, DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY, CELL_WIDTH, ORDERABLE_CELLS}

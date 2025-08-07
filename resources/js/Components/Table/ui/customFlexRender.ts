@@ -16,7 +16,7 @@ const linkMotionProps = {
  * Параметры анимации библиотеки framer-motion
  */
 const motionProperties = {
-    style: { scale: 1.01, zIndex: -10 },
+    style: { scale: 1.01 },
     initial: { scale: 1.01 },
     whileHover: { scale: 1.05 }
 }
@@ -55,6 +55,38 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             highlight(cellValue, currentQuery.full_gost),
         )
     }
+    if (columnID === "regulations") {
+        let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto line-clamp-3",
+                title: context.getValue(),
+                style: {
+                    display: '-webkit-box',
+                    WebkitBoxOrient: 'vertical',
+                    WebkitLineClamp: 3,
+                }
+            },
+            highlight(cellValue, currentQuery.regulations),
+        )
+    }
+    if (columnID === "tnved") {
+        let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
+        return createElement(
+            'span',
+            {
+                className: "text-wrap overflow-hidden mx-auto line-clamp-3",
+                title: context.getValue(),
+                style: {
+                    display: '-webkit-box',
+                    WebkitBoxOrient: 'vertical',
+                    WebkitLineClamp: 3,
+                }
+            },
+            highlight(cellValue, currentQuery.tnved),
+        )
+    }
     if (columnID === "tn_ved") {
         let cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
         return createElement(
@@ -80,11 +112,10 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
 
     // квадратик
     if (columnID === "ralShortInfoView__RegNumber") {
-        const cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2')
-        const ralStatus = context.row.original.ralShortInfoView__NPStatus || "Не применимо"
-        const status = context.row.original.ralShortInfoView__new_status_AL
+        const cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2');
+        const ralStatus = context.row.original.ralShortInfoView__NPStatus || "Не применимо";
+        const status = context.row.original.ralShortInfoView__new_status_AL;
 
-        console.log(status);
         return createElement(
             'span',
             {
@@ -93,49 +124,62 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
             [
                 createElement(
                     'span',
-                    { key: 'text', className: "text-wrap overflow-hidden" },
+                    {
+                        key: 'text',
+                        className: "text-wrap overflow-hidden px-2 text-left"
+                    },
                     highlight(cellValue, currentQuery.ralShortInfoView__fullName)
                 ),
+                // Фиксированный контейнер для квадрата 45x45px
                 createElement(
-                    'svg',
+                    'span',
                     {
-                        key: 'square-svg',
-                        width: "20",
-                        height: "20",
-                        viewBox: "0 0 20 20"
+                        className: "w-[45px] h-[45px] flex-shrink-0 flex items-center justify-center ml-2",
+                        style: { minWidth: '45px' }
                     },
-                    [
-                        // Внешняя рамка с скруглением (2px stroke)
-                        createElement('rect', {
-                            x: "1",
-                            y: "1",
-                            width: "18",
-                            height: "18",
-                            rx: "4", // Радиус скругления углов
-                            fill: "none",
-                            stroke: ralStatus === "Да" ? "var(--cell-active)" : ralStatus === "Нет" ? "var(--error)" : "transparent",
-                            strokeWidth: "2"
-                        }),
-                        // Внутренний квадрат с скруглением
-                        createElement('rect', {
-                            x: "6",
-                            y: "6",
-                            width: "8",
-                            height: "8",
-                            rx: "2", // Радиус скругления внутреннего квадрата
-                            fill: status === "Действует"
-                                ? "var(--cell-active)"
-                                : status === "Прекращен" ? "var(--error)"
-                                    : status === "Приостановлен" ? "var(--cell-suspended)"
-                                        : status === "Частично приостановлен" ? "var(--thumb-secondary)"
-                                            : status === "Архивный" ? "var(rgb(39 42 49))"
-                                            : "transparent"
-                        })
-                    ]
+                    createElement(
+                        'svg',
+                        {
+                            key: 'square-svg',
+                            width: "45",
+                            height: "45",
+                            viewBox: "0 0 45 45"
+                        },
+                        [
+                            // Внешняя рамка (6px stroke)
+                            createElement('rect', {
+                                x: "3",
+                                y: "3",
+                                width: "39",
+                                height: "39",
+                                rx: "9",
+                                fill: "none",
+                                stroke: ralStatus === "Да" ? "var(--cell-active)" :
+                                    ralStatus === "Нет" ? "var(--cell-terminated)" : "transparent",
+                                strokeWidth: "6"
+                            }),
+                            // Внутренний квадрат
+                            createElement('rect', {
+                                x: "14",
+                                y: "14",
+                                width: "17",
+                                height: "17",
+                                rx: "5",
+                                fill: status === "Действует"
+                                    ? "var(--cell-active)"
+                                    : status === "Прекращен" ? "var(--error)"
+                                        : status === "Приостановлен" ? "var(--cell-suspended)"
+                                            : status === "Частично приостановлен" ? "var(--thumb-secondary)"
+                                                : status === "Архивный" ? "rgb(39 42 49)"
+                                                    : "transparent"
+                            })
+                        ]
+                    )
                 )
             ]
         );
     }
+
     if (columnID === "oaDescription") {
         return createElement(
             'span',
@@ -312,27 +356,87 @@ function customFlexRender(renderFn: Renderable<CellContext<any, unknown>>, conte
     }
 
     if (columnID === "RegNumber") {
+        const cellValue = String(context.getValue()).replace(/([,;])([^ ])/g, '$1 $2');
+        const ralStatus = context.row.original.NPstatus || "Не применимо";
+        const status = context.row.original.new_status_AL;
+
         return createElement(
-            motion.span,
+            'span',
             {
-                className: "inline-block",
-                ...motionProperties,
+                className: "flex items-center justify-between w-full"
             },
-            createElement(
-                "a",
-                {
-                    className: "underline",
-                    state: {
-                        background: location,
+            [
+                createElement(
+                    motion.span,
+                    {
+                        className: "inline-block px-2 text-left",
+                        ...motionProperties,
                     },
-                    href: `${context.row.original.link}`,
-                    target: "_blank",
-                    rel: "noopener noreferrer",
-                    onClick: (e: MouseEvent) => e.stopPropagation()
-                },
-                highlight(context.getValue() as string | null, currentQuery.fullText)
-            )
-        )
+                    createElement(
+                        "a",
+                        {
+                            className: "underline text-current",
+                            style: {
+                                color: 'inherit',
+                                textDecoration: 'underline'
+                            },
+                            state: { background: location },
+                            href: context.row.original.link,
+                            target: "_blank",
+                            rel: "noopener noreferrer",
+                            onClick: (e: MouseEvent) => e.stopPropagation()
+                        },
+                        highlight(cellValue, currentQuery.fullText)
+                    )
+                ),
+                // Фиксированный контейнер для квадрата 45x45px
+                createElement(
+                    'span',
+                    {
+                        className: "w-[45px] h-[45px] flex-shrink-0 flex items-center justify-center ml-2",
+                        style: { minWidth: '45px' }
+                    },
+                    createElement(
+                        'svg',
+                        {
+                            key: 'square-svg',
+                            width: "45",
+                            height: "45",
+                            viewBox: "0 0 45 45"
+                        },
+                        [
+                            // Внешняя рамка (6px stroke)
+                            createElement('rect', {
+                                x: "3",
+                                y: "3",
+                                width: "39", // 45 - 3*2
+                                height: "39",
+                                rx: "9",    // Скругление
+                                fill: "none",
+                                stroke: ralStatus === "Да" ? "var(--cell-active)" :
+                                    ralStatus === "Нет" ? "var(--cell-terminated)" : "transparent",
+                                strokeWidth: "6"
+                            }),
+                            // Внутренний квадрат
+                            createElement('rect', {
+                                x: "14",   // Позиция
+                                y: "14",
+                                width: "17", // Размер
+                                height: "17",
+                                rx: "5",    // Скругление
+                                fill: status === "Действует"
+                                    ? "var(--cell-active)"
+                                    : status === "Прекращен" ? "var(--cell-terminated)"
+                                        : status === "Приостановлен" ? "var(--cell-suspended)"
+                                            : status === "Частично приостановлен" ? "var(--cell-part-suspended)"
+                                                : status === "Архивный" ? "black"
+                                                    : "transparent"
+                            })
+                        ]
+                    )
+                )
+            ]
+        );
     }
 
     if (columnID === "certificate_name") {
