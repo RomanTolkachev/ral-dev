@@ -3,7 +3,7 @@ import useParamsCustom from "@/shared/query/useParamsCustom"
 import { Cell, } from "@tanstack/react-table"
 import { FunctionComponent } from "react"
 import { useLocation } from "react-router-dom"
-import customFlexRender from "./customFlexRender"
+import { CustomFlexRender } from "./СustomFlexRender"
 
 export interface IProps {
     className?: string
@@ -21,9 +21,11 @@ const CustomCell: FunctionComponent<IProps> = ({ cellData }) => {
         <td
             key={cellData.id}
             className={`overflow-hidden text-center relative text-table-base p-1`}>
-            {customFlexRender(renderFn, getContext(), getQuery(), location)}
+            <CustomFlexRender renderFn={renderFn} context={getContext()} currentQuery={getQuery()} />
         </td>
     );
 }
 
 export default CustomCell;
+
+/**renderFn, getContext(), getQuery())}  */
