@@ -5,25 +5,32 @@ namespace App\UseCases\Certificates\GetCertificatesList;
 use App\Models\CertificatesShortInfo;
 use App\Models\DictionaryRegulation;
 use App\Services\ConfirmRelationsService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\UseCases\Certificates\shared\GetCertificatesFilter;
 
 
 class GetCertificatesListHandler
 {
-    public function __construct(protected GetCertificatesListFilter $filter, protected ConfirmRelationsService $relations)
+
+    protected $filter;
+
+    public function __construct(GetCertificatesListRequest $request)
     {
+        $this->filter = new GetCertificatesFilter(
+            new CertificatesShortInfo,
+            $request
+        );
     }
 
-    public function execute(int $page, int $itemsPerPage, array $columns): GetCertificatesListResource
+    public function execute(int $page, int $itemsPerPage, array $columns, Request $request): GetCertificatesListResource
     {
 
-        $query = CertificatesShortInfo::with(["ralShortInfoView", "certificateApplicant", 'certificationAuthority', "statusChange"]);
+        $model = CertificatesShortInfo::with(["ralShortInfoView", "certificateApplicant", 'certificationAuthority', "statusChange"]);
 
         $regulationsMap = DictionaryRegulation::pluck('values_reg')->toArray();
 
-        // dd($regulationsMap);
-
-        $result = $query->filter(
+        $result = $model->filter(
             $this->filter
         )
             ->paginate(
@@ -57,7 +64,6 @@ class GetCertificatesListHandler
             return mb_strtolower(preg_replace('/\s+/u', '', $str));
         };
 
-        // Подготовка карты для поиска
         $searchMap = [];
         foreach ($regulationsMap as $fullText) {
             // Основной вариант (полный текст)

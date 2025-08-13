@@ -1,22 +1,19 @@
 <?php
 
-namespace App\UseCases\Certificates\GetCertificatesList;
+namespace App\UseCases\Certificates\shared;
 
-use App\Models\DictionaryRegulation;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Filters\AbstractFilter;
 use App\Models\CertificatesShortInfo;
 use Illuminate\Support\Facades\DB;
 use App\Models\StatusChange;
-use App\Models\CertificateTechReglamentsLink;
 
-
-class GetCertificatesListFilter extends AbstractFilter
+class GetCertificatesFilter extends AbstractFilter
 {
 
     protected $model;
     // protected $request;
-    public function __construct(CertificatesShortInfo $model, GetCertificatesListRequest $request)
+    public function __construct(CertificatesShortInfo $model, $request)
     {
         $this->model = $model;
         parent::__construct($request);

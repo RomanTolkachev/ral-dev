@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCases\Certificates\GetCertificatesList;
+namespace App\UseCases\Certificates\GetCertificatesExcel;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Carbon\Carbon;
@@ -10,7 +10,7 @@ use Carbon\Carbon;
  * @property-read integer $perPage
  * @property-read array $user_columns
  */
-class GetCertificatesListRequest extends FormRequest
+class GetCertificatesExcelRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -30,10 +30,8 @@ class GetCertificatesListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'page' => ['required', 'integer', 'between:1,100000'],
-            'perPage' => ['required', 'integer', 'between:1,500'],
-            'user_columns' => ['required', 'array', 'min:1'],
-            'user_columns.*' => ['required', 'string']
+            // 'user_columns' => ['required', 'array', 'min:1'],
+            // 'user_columns.*' => ['required', 'string']
         ];
     }
 
