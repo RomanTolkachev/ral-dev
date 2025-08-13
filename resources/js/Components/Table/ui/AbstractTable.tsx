@@ -12,8 +12,8 @@ import FoundedResults from '@/Components/Inputs/PageNavigation/Pagination'
 import PerPageController from '@/Components/Inputs/PerPageController/PerPageController'
 import { Preloader } from '@/Components/utils/Preloader'
 import createTranslateFn from '../lib/translate'
-import CustomCell from './CustomCell'
 import { CustomHeader } from './CustomHeader'
+import { CustomCell } from './СustomCell'
 
 
 interface IProps {
@@ -145,7 +145,12 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
                                             >
                                                 {row.getVisibleCells().map((cell) => {
                                                     return (
-                                                        <CustomCell key={cell.id} cellData={cell} />
+                                                        <td
+                                                            key={cell.id}
+                                                            className={`overflow-hidden text-center relative text-table-base p-1`}>
+                                                            <CustomCell cellData={cell} />
+                                                        </td>
+
                                                     )
                                                 })}
                                             </motion.tr>

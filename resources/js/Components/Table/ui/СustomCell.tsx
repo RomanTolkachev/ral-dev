@@ -1,14 +1,11 @@
 import highlight from "@/Components/Table/lib/highlightText";
-import { Renderable, CellContext, flexRender } from "@tanstack/react-table";
+import useParamsCustom from "@/shared/query/useParamsCustom";
+import { flexRender, Cell } from "@tanstack/react-table";
 import { motion } from "framer-motion";
 import { FC, ReactNode } from "react";
 
-type QueryParams = Record<string, any>;
-
 type Props = {
-    renderFn: Renderable<CellContext<any, unknown>>,
-    context: CellContext<any, unknown>,
-    currentQuery: QueryParams,
+    cellData: Cell<any, unknown>
 }
 
 const linkMotionProps = {
@@ -49,9 +46,14 @@ const StatusSquare = ({ status, npStatus }: { status?: string; npStatus?: string
     </svg>
 );
 
-export const CustomFlexRender: FC<Props> = (
-    { renderFn, context, currentQuery }
+export const CustomCell: FC<Props> = (
+    { cellData }
 ): ReactNode => {
+    const [_, getQuery] = useParamsCustom();
+    const currentQuery = getQuery();
+    const renderFn = cellData.column.columnDef.cell
+    const {getContext} = cellData
+    const context = getContext()
     const JSX = flexRender(renderFn, context);
     const columnID = context.column.id;
     const value = context.getValue();
