@@ -1,8 +1,10 @@
 import highlight from "@/Components/Table/lib/highlightText";
 import useParamsCustom from "@/shared/query/useParamsCustom";
 import { flexRender, Cell } from "@tanstack/react-table";
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import { FC, ReactNode } from "react";
+import { Circle } from "./Circle";
+import { getNPStatusColor, getStatusColor } from "./getColor";
 
 type Props = {
     cellData: Cell<any, unknown>
@@ -24,35 +26,13 @@ const motionProperties = {
 const formatCellValue = (value: unknown) =>
     String(value).replace(/([,;])([^ ])/g, '$1 $2');
 
-const StatusSquare = ({ status, npStatus }: { status?: string; npStatus?: string }) => (
-    <svg width="45" height="45" viewBox="0 0 45 45">
-        <rect
-            x="3" y="3" width="39" height="39" rx="9"
-            fill="none"
-            stroke={npStatus === "Да" ? "var(--cell-active)" :
-                npStatus === "Нет" ? "var(--cell-terminated)" : "transparent"}
-            strokeWidth="6"
-        />
-        <rect
-            x="14" y="14" width="17" height="17" rx="5"
-            fill={
-                status === "Действует" ? "var(--cell-active)" :
-                    status === "Прекращен" ? "var(--error)" :
-                        status === "Приостановлен" ? "var(--cell-suspended)" :
-                            status === "Частично приостановлен" ? "var(--thumb-secondary)" :
-                                status === "Архивный" ? "rgb(39 42 49)" : "transparent"
-            }
-        />
-    </svg>
-);
-
 export const CustomCell: FC<Props> = (
     { cellData }
 ): ReactNode => {
     const [_, getQuery] = useParamsCustom();
     const currentQuery = getQuery();
     const renderFn = cellData.column.columnDef.cell
-    const {getContext} = cellData
+    const { getContext } = cellData
     const context = getContext()
     const JSX = flexRender(renderFn, context);
     const columnID = context.column.id;
@@ -105,26 +85,53 @@ export const CustomCell: FC<Props> = (
                 </span>
             );
 
+        case "new_status_AL":
+            return (
+                <span
+                    className="text-wrap overflow-hidden mx-auto line-clamp-3"
+                    title={stringValue}
+                    style={{
+                        color: `${getStatusColor(stringValue)}`,
+                        display: '-webkit-box',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: 3
+                    }}
+                >
+                    {highlight(stringValue, currentQuery.new_status_AL)}
+                </span>
+            );
+
         case "ralShortInfoView__RegNumber":
+            const status = context.row.original.ralShortInfoView__new_status_AL
+            const NPStatus = context.row.original.ralShortInfoView__NPStatus
+            const link = row.ralShortInfoView__link
             return (
                 <span className="flex items-center justify-between w-full">
-                    <span className="text-wrap overflow-hidden px-2 text-left">
-                        {highlight(stringValue, currentQuery.ralShortInfoView__fullName)}
+                    <span className="flex-shrink-0 flex items-center justify-center">
+                        <Circle outerColor={getNPStatusColor(NPStatus)} innerColor={getStatusColor(status)} />
                     </span>
-                    <span className="w-[45px] h-[45px] flex-shrink-0 flex items-center justify-center ml-2"
-                        style={{ minWidth: '45px' }}>
-                        <StatusSquare
-                            status={row.ralShortInfoView__new_status_AL}
-                            npStatus={row.ralShortInfoView__NPStatus}
-                        />
-                    </span>
+                    <motion.span className="text-wrap overflow-hidden px-2 text-left" {...motionProperties}>
+                        <a
+                            className="underline text-current"
+                            style={{ color: 'inherit', textDecoration: 'underline' }}
+                            href={link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                        >{highlight(stringValue, currentQuery.ralShortInfoView__fullName)}</a>
+                    </motion.span>
                 </span>
             );
 
         case "RegNumber":
+            const status1 = context.row.original.new_status_AL
+            const NPStatus1 = context.row.original.NPstatus
             return (
                 <span className="flex items-center justify-between w-full">
-                    <motion.span className="inline-block px-2 text-left" {...motionProperties}>
+                    <span className="flex-shrink-0 flex items-center justify-center">
+                        <Circle outerColor={getNPStatusColor(NPStatus1)} innerColor={getStatusColor(status1)} />
+                    </span>
+                    <motion.span className="inline-block px-2 text-right" {...motionProperties}>
                         <a
                             className="underline text-current"
                             style={{ color: 'inherit', textDecoration: 'underline' }}
@@ -136,13 +143,44 @@ export const CustomCell: FC<Props> = (
                             {highlight(stringValue, currentQuery.fullText)}
                         </a>
                     </motion.span>
-                    <span className="w-[45px] h-[45px] flex-shrink-0 flex items-center justify-center ml-2"
-                        style={{ minWidth: '45px' }}>
-                        <StatusSquare
-                            status={row.new_status_AL}
-                            npStatus={row.NPstatus}
-                        />
-                    </span>
+                </span>
+            );
+
+        case "ral_short_info_view__RegNumber":
+            const status2 = context.row.original.ral_short_info_view__new_status_AL
+            const NPStatus2 = context.row.original.ral_short_info_view__NPstatus
+            console.log({status2, NPStatus2})
+            return (
+                <span className="flex items-center justify-between w-full">
+                    {status2 && NPStatus2 && <span className="flex-shrink-0 flex items-center justify-center">
+                          <Circle outerColor={getNPStatusColor(NPStatus2)} innerColor={getStatusColor(status2)} />
+                    </span>}
+                    <motion.span className="inline-block px-2 text-right" {...motionProperties}>
+                        <a
+                            className="underline text-current"
+                            style={{ color: 'inherit', textDecoration: 'underline' }}
+                            href={row.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {highlight(stringValue, currentQuery.fullText)}
+                        </a>
+                    </motion.span>
+                </span>
+            );
+
+        case "technicalReglaments":
+            const splitted = context.getValue() ? (context.getValue() as string).split(";") : [];
+            return (
+                <span
+                    className={"text-left text-wrap overflow-hidden flex flex-col mx-auto px-2"}
+                    title={context.getValue() as string | undefined}>
+                    {splitted.map((item, key) => (
+                        <span key={key} className="text-left line-clamp-2 overflow-hidden mb-2">
+                            {highlight(item.replace(/\d{2}:\d{2}:\d{2}\.\d{3}/g, ''), currentQuery.technicalReglaments)}
+                        </span>
+                    ))}
                 </span>
             );
 
@@ -154,6 +192,8 @@ export const CustomCell: FC<Props> = (
         case "group":
         case "certType":
         case "productIdentificationGtin":
+        case "productIdentificationName":
+        case "productIdentificationArticle":
         case "update_status_date":
         case "previous_update_status_date":
         case "previous_status":
@@ -161,6 +201,7 @@ export const CustomCell: FC<Props> = (
         case "applicantFilialFullNames":
         case "applicantName":
         case "manufacterName":
+        case "manufacterFilialFullNames":
         // Поля certificate_applicant
         case "certificate_applicant__id":
         case "certificate_applicant__certificate_id":
@@ -203,6 +244,9 @@ export const CustomCell: FC<Props> = (
         case "certification_authority__firstName":
         case "certification_authority__surname":
         case "certification_authority__patronymic":
+        // Поля ral_short_info_view
+        case "ral_short_info_view__address":
+        case "ral_short_info_view__regulations":
             return (
                 <span
                     className="text-wrap overflow-hidden mx-auto line-clamp-2"

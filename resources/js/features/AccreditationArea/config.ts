@@ -20,15 +20,16 @@ const DICTIONARY: Record<TAccreditationAreaModel, string> ={
     ralShortInfoView__RegNumber: "Рег. номер",
     full_gost: "ГОСТ",
     ralShortInfoView__NPStatus: "Статус НЧ",
-    ralShortInfoView__new_status_AL: "Текущий статус"
+    ralShortInfoView__new_status_AL: "Текущий статус",
+    ralShortInfoView__link: "ссылка"
 }
 
 const DEFAULT_COLUMNS: TAccreditationAreaModel[] = [
-    // "id", 
     "ralShortInfoView__fullName", // двойное подчеркивание
     "ralShortInfoView__RegNumber", 
     "ralShortInfoView__NPStatus", 
-    "ralShortInfoView__new_status_AL", 
+    "ralShortInfoView__new_status_AL",
+    "ralShortInfoView__link", 
     "id_ral",
     "source_file_label",
     "source_file", 
@@ -73,7 +74,7 @@ const CELL_WIDTH: Partial<Record<TAccreditationAreaModel, number>> = {
 }
 
 const ORDERABLE_CELLS:TAccreditationAreaModel[] = [];
-const HIDDEN_COLUMNS:TAccreditationAreaModel[] = ["ralShortInfoView__NPStatus", "ralShortInfoView__new_status_AL"];
+const HIDDEN_COLUMNS:TAccreditationAreaModel[] = ["ralShortInfoView__NPStatus", "ralShortInfoView__new_status_AL", "ralShortInfoView__link",];
 
 export const config: IConfig<TAccreditationAreaModel> = {
     DICTIONARY,
