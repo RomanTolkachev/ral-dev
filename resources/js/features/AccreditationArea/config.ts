@@ -62,6 +62,7 @@ const DEFAULT_REQUEST: IAccreditationAreaDefaultRequest = {
 }
 
 const CELL_WIDTH: Partial<Record<TAccreditationAreaModel, number>> = {
+    ralShortInfoView__RegNumber: 180,
     source_file_label: 60,
     characteristic_range: 120,
     source_row: 90,

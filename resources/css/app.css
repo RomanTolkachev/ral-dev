@@ -79,10 +79,12 @@
 
     /*Cell*/
     --cell-active: rgb(68, 147, 97);
+    --cell-extended: rgb(68, 147, 97);
     --cell-suspended: rgb(234, 128, 71);
     --cell-part-suspended: rgb(100, 140, 192);
     --cell-terminated: rgb(210, 87, 87);
     --cell-archive: rgb(174, 113, 201);
+    --cell-void: rgb(174, 113, 201);
     --full-cell-active: rgb(184, 250, 198);
     --full-cell-terminated: rgb(247, 159, 133);
 
@@ -159,10 +161,12 @@
 
     /*Cell*/
     --cell-active: rgb(68, 147, 97);
+    --cell-extended: rgb(68, 147, 97);
     --cell-suspended: rgb(234, 128, 71);
     --cell-part-suspended: rgb(100, 140, 192);
     --cell-terminated: rgb(210, 87, 87);
     --cell-archive: rgb(174, 113, 201);
+    --cell-void: rgb(174, 113, 201);
     --full-cell-active: rgb(23, 70, 31);
     --full-cell-terminated: rgb(83, 26, 26);
 

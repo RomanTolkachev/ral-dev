@@ -96,22 +96,26 @@ export const CustomCell: FC<Props> = (
                         WebkitLineClamp: 3
                     }}
                 >
-                    {highlight(stringValue, currentQuery.new_status_AL)}
+                    {stringValue}
                 </span>
             );
 
         case "ralShortInfoView__RegNumber":
+            console.log(context.row.original)
             return (
                 <LinkWithCircle
                     link={row.link}
-                    npStatus={context.row.original.NPstatus}
+                    npStatus={context.row.original.ralShortInfoView__NPStatus}
                     queryValue={currentQuery.ralShortInfoView__fullName}
-                    status={context.row.original.new_status_AL}
+                    status={context.row.original.ralShortInfoView__new_status_AL}
                     value={stringValue}
                 />
             )
         case "NPstatus":
-            return <span style={{ color: getNPStatusColor(stringValue) }}>{stringValue}</span>
+            return <span style={{ color: value === "Не применимо" ? value : getNPStatusColor(stringValue) }}>{value as ReactNode}</span>
+
+        case "NP_status_change_date":
+            return value ? <span>{value as ReactNode}</span> : <span className="w-full text-center">нет данных</span>;
 
         case "RegNumber":
             return (
@@ -149,6 +153,9 @@ export const CustomCell: FC<Props> = (
                 </span>
             );
 
+        case "certificate_status":
+            return <span style={{ color: getStatusColor(stringValue)}}>{value as ReactNode}</span>
+
         // Все стандартные колонки продукта
         case "productFullName":
         case "productBatchSize":
@@ -167,6 +174,7 @@ export const CustomCell: FC<Props> = (
         case "applicantName":
         case "manufacterName":
         case "manufacterFilialFullNames":
+        case "productIdentificationType":
         // Поля certificate_applicant
         case "certificate_applicant__id":
         case "certificate_applicant__certificate_id":
@@ -212,6 +220,8 @@ export const CustomCell: FC<Props> = (
         // Поля ral_short_info_view
         case "ral_short_info_view__address":
         case "ral_short_info_view__regulations":
+        // Поля status_change
+        case "status_change__comment":
             return (
                 <span
                     className="text-wrap overflow-hidden mx-auto line-clamp-2"
