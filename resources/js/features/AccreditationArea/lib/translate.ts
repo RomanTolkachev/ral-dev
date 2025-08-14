@@ -19,7 +19,8 @@ function translate(raw: TAccreditationAreaModel): string {
         RegDate: 'Рег. дата',
         full_gost: "ГОСТ",
         ralShortInfoView__new_status_AL: "текущий статус АЛ",
-        ralShortInfoView__NPStatus: "статус НЧ"
+        ralShortInfoView__NPStatus: "статус НЧ",
+        ralShortInfoView__link: "ссылка"
     }
     return dictionary[raw] ?? raw as string
 }
