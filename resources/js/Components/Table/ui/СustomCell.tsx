@@ -5,6 +5,7 @@ import { color, motion } from "framer-motion";
 import { FC, ReactNode } from "react";
 import { Circle } from "./Circle";
 import { getNPStatusColor, getStatusColor } from "./getColor";
+import { LinkWithCircle } from "./LinkWithCircle";
 
 type Props = {
     cellData: Cell<any, unknown>
@@ -31,10 +32,8 @@ export const CustomCell: FC<Props> = (
 ): ReactNode => {
     const [_, getQuery] = useParamsCustom();
     const currentQuery = getQuery();
-    const renderFn = cellData.column.columnDef.cell
     const { getContext } = cellData
     const context = getContext()
-    const JSX = flexRender(renderFn, context);
     const columnID = context.column.id;
     const value = context.getValue();
     const stringValue = formatCellValue(value);
@@ -102,73 +101,39 @@ export const CustomCell: FC<Props> = (
             );
 
         case "ralShortInfoView__RegNumber":
-            const status = context.row.original.ralShortInfoView__new_status_AL
-            const NPStatus = context.row.original.ralShortInfoView__NPStatus
-            const link = row.ralShortInfoView__link
             return (
-                <span className="flex items-center justify-between w-full">
-                    <span className="flex-shrink-0 flex items-center justify-center">
-                        <Circle outerColor={getNPStatusColor(NPStatus)} innerColor={getStatusColor(status)} />
-                    </span>
-                    <motion.span className="text-wrap overflow-hidden px-2 text-left" {...motionProperties}>
-                        <a
-                            className="underline text-current"
-                            style={{ color: 'inherit', textDecoration: 'underline' }}
-                            href={link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                        >{highlight(stringValue, currentQuery.ralShortInfoView__fullName)}</a>
-                    </motion.span>
-                </span>
-            );
+                <LinkWithCircle
+                    link={row.link}
+                    npStatus={context.row.original.NPstatus}
+                    queryValue={currentQuery.ralShortInfoView__fullName}
+                    status={context.row.original.new_status_AL}
+                    value={stringValue}
+                />
+            )
+        case "NPstatus":
+            return <span style={{ color: getNPStatusColor(stringValue) }}>{stringValue}</span>
 
         case "RegNumber":
-            const status1 = context.row.original.new_status_AL
-            const NPStatus1 = context.row.original.NPstatus
             return (
-                <span className="flex items-center justify-between w-full">
-                    <span className="flex-shrink-0 flex items-center justify-center">
-                        <Circle outerColor={getNPStatusColor(NPStatus1)} innerColor={getStatusColor(status1)} />
-                    </span>
-                    <motion.span className="inline-block px-2 text-right" {...motionProperties}>
-                        <a
-                            className="underline text-current"
-                            style={{ color: 'inherit', textDecoration: 'underline' }}
-                            href={row.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            {highlight(stringValue, currentQuery.fullText)}
-                        </a>
-                    </motion.span>
-                </span>
-            );
+                <LinkWithCircle
+                    link={row.link}
+                    npStatus={context.row.original.NPstatus}
+                    queryValue={currentQuery.fullText}
+                    status={context.row.original.new_status_AL}
+                    value={stringValue}
+                />
+            )
 
         case "ral_short_info_view__RegNumber":
-            const status2 = context.row.original.ral_short_info_view__new_status_AL
-            const NPStatus2 = context.row.original.ral_short_info_view__NPstatus
-            console.log({status2, NPStatus2})
             return (
-                <span className="flex items-center justify-between w-full">
-                    {status2 && NPStatus2 && <span className="flex-shrink-0 flex items-center justify-center">
-                          <Circle outerColor={getNPStatusColor(NPStatus2)} innerColor={getStatusColor(status2)} />
-                    </span>}
-                    <motion.span className="inline-block px-2 text-right" {...motionProperties}>
-                        <a
-                            className="underline text-current"
-                            style={{ color: 'inherit', textDecoration: 'underline' }}
-                            href={row.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            {highlight(stringValue, currentQuery.fullText)}
-                        </a>
-                    </motion.span>
-                </span>
-            );
+                <LinkWithCircle
+                    link={row.link}
+                    npStatus={context.row.original.ral_short_info_view__NPstatus}
+                    queryValue={currentQuery.fullText}
+                    status={context.row.original.ral_short_info_view__new_status_AL}
+                    value={stringValue}
+                />
+            )
 
         case "technicalReglaments":
             const splitted = context.getValue() ? (context.getValue() as string).split(";") : [];
@@ -258,31 +223,6 @@ export const CustomCell: FC<Props> = (
             );
 
         default:
-            if (!JSX || typeof JSX === 'string' || typeof JSX === 'number' || typeof JSX === 'boolean') {
-                if (typeof JSX === 'string') {
-                    if (JSX.includes('http')) {
-                        return (
-                            <motion.a href={JSX} {...linkMotionProps} target="_blank" rel="noopener noreferrer"
-                                onClick={e => e.stopPropagation()}>
-                                {JSX}
-                            </motion.a>
-                        );
-                    }
-                    if (JSX === "Действует") {
-                        return <span style={{ color: "var(--cell-active)", fontWeight: 800 }}>{JSX}</span>;
-                    }
-                    if (JSX === "Прекращен") {
-                        return <span style={{ color: "var(--cell-terminated)", fontWeight: 800 }}>{JSX}</span>;
-                    }
-                    if (JSX === "Приостановлен") {
-                        return <span style={{ color: "var(--cell-suspended)", fontWeight: 800 }}>{JSX}</span>;
-                    }
-                    if (JSX === "Частично приостановлен") {
-                        return <span style={{ color: "var(--cell-part-suspended)", fontWeight: 800 }}>{JSX}</span>;
-                    }
-                }
-                return JSX;
-            }
             return highlight(stringValue, currentQuery.fullText);
     }
 }
