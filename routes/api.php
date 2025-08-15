@@ -27,7 +27,8 @@ Route::get("accreditation_area/filters", GetAccreditationAreaFiltersController::
 
 Route::get("certificates", GetCertificatesListController::class);
 Route::get("certificates/filters", GetCertificatesFiltersController::class);
-Route::get("certificates/export", GetCertificatesExcelController::class);
+
+Route::get("certificates/export",  GetCertificatesExcelController::class);
 
 Route::get("input_values", GetInputValuesController::class);
 Route::middleware('auth:sanctum')->get("user", GetUserController::class);

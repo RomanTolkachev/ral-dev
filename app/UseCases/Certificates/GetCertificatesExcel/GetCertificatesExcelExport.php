@@ -18,9 +18,4 @@ class GetCertificatesExcelExport implements FromCollection
     {
         return $this->data;
     }
-
-    // public function chunkSize(): int
-    // {
-    //     return 100; // Чанкование для оптимизации
-    // }
 }

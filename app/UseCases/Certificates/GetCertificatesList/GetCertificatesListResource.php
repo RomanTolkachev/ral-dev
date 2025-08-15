@@ -15,8 +15,6 @@ class GetCertificatesListResource extends JsonResource
 
         $result["data"] = collect($result["data"])->customToFlat()->sortByTemplate($userCols)->toArray();
 
-        // dd($result);
-
         unset($result['links']);
         unset($result['path']);
         unset($result['first_page_url']);

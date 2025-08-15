@@ -21,11 +21,8 @@ class GetCertificatesExcelHandler
     {
         $query = CertificatesShortInfo::with(["ralShortInfoView", "certificateApplicant", 'certificationAuthority', "statusChange"]);
 
-        
         $result = $query->filter(
             $this->filter
-        )->limit(1000)->get();
-
-        return new GetCertificatesExcelExport($result);
+        );
     }
 }
