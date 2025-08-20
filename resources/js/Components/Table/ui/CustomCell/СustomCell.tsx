@@ -3,9 +3,9 @@ import useParamsCustom from "@/shared/query/useParamsCustom";
 import { flexRender, Cell } from "@tanstack/react-table";
 import { color, motion } from "framer-motion";
 import { FC, ReactNode } from "react";
-import { Circle } from "./Circle";
-import { getNPStatusColor, getStatusColor } from "./getColor";
-import { LinkWithCircle } from "./LinkWithCircle";
+import { Circle } from "./LinkWithCircle/Circle";
+import { getNPStatusColor, getStatusColor } from "./lib/getColor";
+import { LinkWithCircle } from "./LinkWithCircle/LinkWithCircle";
 
 type Props = {
     cellData: Cell<any, unknown>
@@ -154,7 +154,7 @@ export const CustomCell: FC<Props> = (
             );
 
         case "certificate_status":
-            return <span style={{ color: getStatusColor(stringValue)}}>{value as ReactNode}</span>
+            return <span style={{ color: getStatusColor(stringValue) }}>{value as ReactNode}</span>
 
         // Все стандартные колонки продукта
         case "productFullName":

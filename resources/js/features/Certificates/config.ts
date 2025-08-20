@@ -123,7 +123,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "status_change__comment": "status_change__ comment / Комментарий",
     "status_change__publish_date": "status_change__ publish_date / Дата публикации",
     "status_change__status_changes_by": "status_change__ status_changes_by / Изменено",
-    "status_change__id": "status_change__ id / ID изменения",
+    "status_change__id": "status_change__id / ID изменения",
     "status_change__idChangeStatus": "status_change__ idChangeStatus / ID статуса"
 };
 
@@ -412,6 +412,7 @@ export const config: IConfig<TCertificateModel> = {
     CELL_WIDTH,
     ORDERABLE_CELLS,
     HIDDEN_COLUMNS,
+    TABLE_NAME: "certificate_short_info"
 }
 
 export default {

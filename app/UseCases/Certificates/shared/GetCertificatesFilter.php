@@ -7,13 +7,14 @@ use App\Http\Filters\AbstractFilter;
 use App\Models\CertificatesShortInfo;
 use Illuminate\Support\Facades\DB;
 use App\Models\StatusChange;
+use Illuminate\Http\Request;
 
 class GetCertificatesFilter extends AbstractFilter
 {
 
     protected $model;
     // protected $request;
-    public function __construct(CertificatesShortInfo $model, $request)
+    public function __construct(CertificatesShortInfo $model, Request $request)
     {
         $this->model = $model;
         parent::__construct($request);

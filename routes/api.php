@@ -30,6 +30,8 @@ Route::get("certificates/filters", GetCertificatesFiltersController::class);
 
 Route::get("certificates/export",  GetCertificatesExcelController::class);
 
+Route::get("available_columns", GetCertificatesExcelController::class);
+
 Route::get("input_values", GetInputValuesController::class);
 Route::middleware('auth:sanctum')->get("user", GetUserController::class);
 Route::middleware('auth:sanctum')->get("settings", GetTableSettingsController::class);

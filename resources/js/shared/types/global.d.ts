@@ -24,6 +24,7 @@ declare global {
         CELL_WIDTH?: Partial<Record<T, number>>;
         ORDERABLE_CELLS: T[]
         HIDDEN_COLUMNS: T[]
+        TABLE_NAME: string
     }
 }
 

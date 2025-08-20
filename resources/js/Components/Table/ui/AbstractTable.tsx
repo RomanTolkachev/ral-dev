@@ -13,7 +13,7 @@ import PerPageController from '@/Components/Inputs/PerPageController/PerPageCont
 import { Preloader } from '@/Components/utils/Preloader'
 import createTranslateFn from '../lib/translate'
 import { CustomHeader } from './CustomHeader'
-import { CustomCell } from './СustomCell'
+import { CustomCell } from './CustomCell'
 
 
 interface IProps {
@@ -40,7 +40,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
 
     const translateFn = dictionary ? createTranslateFn(dictionary) : null
 
-    const { rowClickFn, OrderableCells, cellWidths, HiddenColumns } = useContext(CustomCellContext) ?? {};
+    const { rowClickFn, orderableCells: OrderableCells, cellWidths, hiddenColumns: HiddenColumns } = useContext(CustomCellContext) ?? {};
 
 
     const headers = useMemo(() => {

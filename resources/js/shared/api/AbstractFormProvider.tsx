@@ -18,7 +18,7 @@ interface IProps {
     rowClickFn?: () => void
 }
 
-interface QueryParams extends Record<string | "page" | "perPage", number | string | string[] | undefined> {}
+interface QueryParams extends Record<string | "page" | "perPage", number | string | string[] | undefined> { }
 
 export type ICustomSubmitHandlerContext = {
     filtersData: UseQueryResult<ISearchingFormItem[]>
@@ -29,9 +29,10 @@ export type ICustomSubmitHandlerContext = {
 
 export const CustomSubmitHandlerContext = createContext<ICustomSubmitHandlerContext>(undefined); // TODO: ANY!!
 
-type CustomisationContext = {
-    OrderableCells: string[]
-    HiddenColumns: string[]
+export type CustomisationContext = {
+    config: IConfig<string>
+    orderableCells: string[]
+    hiddenColumns: string[]
     rowClickFn?: () => void
     cellWidths?: Partial<Record<string, number>>
 }
@@ -117,7 +118,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     async function customResetHandler(): Promise<void> {
         const perPage = await getValues().perPage
         reset({ ...DEFAULT_FILTERS, perPage });
-        setQuery({...getValues()})
+        setQuery({ ...getValues() })
     }
 
     /**
@@ -145,9 +146,10 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData }}>
             <FormProvider {...methods}>
                 <CustomCellContext.Provider value={{
-                    OrderableCells: ORDERABLE_CELLS,
+                    config,
+                    orderableCells: ORDERABLE_CELLS,
                     rowClickFn,
-                    HiddenColumns: HIDDEN_COLUMNS,
+                    hiddenColumns: HIDDEN_COLUMNS,
                     cellWidths: CELL_WIDTH
                 }}>
                     {children}

@@ -1,9 +1,8 @@
-import { FC, ReactNode } from "react"
+import { FC } from "react"
 import { Circle } from "./Circle"
-import { getNPStatusColor, getStatusColor } from "./getColor"
 import { motion } from "motion/react"
-import highlight from "../lib/highlightText"
-import { span } from "motion/react-client"
+import highlight from "../../../lib/highlightText"
+import { getNPStatusColor, getStatusColor } from "../lib"
 
 type Props = {
     npStatus: string
@@ -22,7 +21,7 @@ const motionProperties = {
 export const LinkWithCircle: FC<Props> = ({ npStatus = "", status = "", link = "", value = "", queryValue }) => {
     return (
         <span className="flex items-center w-full">
-            { status && npStatus ? (
+            {status && npStatus ? (
                 <>
                     <span className="mx-4 w-fit">
                         <Circle outerColor={getNPStatusColor(npStatus)} innerColor={getStatusColor(status)} />

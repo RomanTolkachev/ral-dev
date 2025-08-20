@@ -1,16 +1,16 @@
 import { TRalModel } from "@/features/RalTable/model/types"
 import useParamsCustom from "@/shared/query/useParamsCustom"
-import { Cell, } from "@tanstack/react-table"
+import { flexRender, Cell as TCell } from "@tanstack/react-table"
 import { FunctionComponent } from "react"
 import { useLocation } from "react-router-dom"
-import customFlexRender from "./Cell"
+
 
 export interface IProps {
     className?: string
-    cellData: Cell<TRalModel, unknown>
+    cellData: TCell<TRalModel, unknown>
 }
 
-const RalModalCell: FunctionComponent<IProps> = ({ cellData }) => {
+export const Cell: FunctionComponent<IProps> = ({ cellData }) => {
     const [, getQuery] = useParamsCustom();
     const location: any = useLocation();
     const { getContext, column, row } = cellData;
@@ -25,9 +25,8 @@ const RalModalCell: FunctionComponent<IProps> = ({ cellData }) => {
             key={cellData.id}
             className={`overflow-hidden text-center text-table-base p-1 [&_li]:leading-[1]`}>
             {/* w-[${cellData.column.getSize()}px]  добавить для resize*/}
-                {customModalCell(renderFn, getContext(), getQuery(), location)}
+                {flexRender(cellData.column.columnDef.cell, cellData.getContext())}
+                {/* {customModalCell(renderFn, getContext(), getQuery(), location)} */}
         </td>
     );
 }
-
-export default RalModalCell;

@@ -1,0 +1,1 @@
+export { CustomCell } from "./СustomCell"

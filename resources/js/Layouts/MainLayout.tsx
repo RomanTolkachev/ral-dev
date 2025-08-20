@@ -57,17 +57,23 @@ function MainLayout() {
                         <AbstractFormProvider
                             config={accAreaConfig}
                             tableName="accreditation_area"
-                            rowClickFn={() => { }}>    
+                            rowClickFn={() => { }}>
                             <AccreditationAreaTable />
                         </AbstractFormProvider>
                     } />
 
-                    <Route path='certificates' element={
+                    <Route path='certificates/*' element={
                         <AbstractFormProvider
                             config={certificatesConfig}
-                            tableName='certificates' 
-                            rowClickFn={() => { }}>
+                            tableName='certificates'
+                            rowClickFn={() => {}}>
                             <CertificatesTable />
+                            <Routes>
+                                <Route
+                                    path='settings'
+                                    element={<Modal closeModal={() => navigate(-1)} children={"настроечки"} />}
+                                />
+                            </Routes>
                         </AbstractFormProvider>
                     } />
 
