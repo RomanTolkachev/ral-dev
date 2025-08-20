@@ -7,6 +7,7 @@ use App\UseCases\GetRalShortInfoList\GetRalShortInfoListController;
 use App\UseCases\Certificates\GetCertificatesList\GetCertificatesListController;
 use App\UseCases\Certificates\GetCertificatesFilters\GetCertificatesFiltersController;
 use App\UseCases\Certificates\GetCertificatesExcel\GetCertificatesExcelController;
+use App\UseCases\GetAvailableColumns\GetAvailableColumnsController;
 use App\Http\Controllers\TestController;
 use App\UseCases\GetCertificationBody\GetCertificationBodyController;
 use App\UseCases\User\GetUser\GetUserController;
@@ -30,7 +31,7 @@ Route::get("certificates/filters", GetCertificatesFiltersController::class);
 
 Route::get("certificates/export",  GetCertificatesExcelController::class);
 
-Route::get("available_columns", GetCertificatesExcelController::class);
+Route::get("available_columns", GetAvailableColumnsController::class);
 
 Route::get("input_values", GetInputValuesController::class);
 Route::middleware('auth:sanctum')->get("user", GetUserController::class);
