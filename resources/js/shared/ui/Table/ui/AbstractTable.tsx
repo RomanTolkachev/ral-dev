@@ -1,12 +1,12 @@
 import { FunctionComponent, useContext, useLayoutEffect, useMemo, useState } from 'react'
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { SVG } from '@/Components/utils/SVG'
-import { getHeaders } from '@/Components/Table/lib/getHeaders'
+import { getHeaders } from '@/shared/ui/Table/lib/getHeaders'
 import { IRalItem } from '@/shared/types/ral'
 import IPagination from '@/shared/types/pagination'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router'
-import { CustomCellContext } from '@/shared/api/AbstractFormProvider'
+import { CustomCellContext } from '@/shared/ui/Table/providers/AbstractFormProvider'
 import { PageNavigation } from '@/Components/Inputs/PageNavigation/PageNavigation'
 import FoundedResults from '@/Components/Inputs/PageNavigation/Pagination'
 import PerPageController from '@/Components/Inputs/PerPageController/PerPageController'
@@ -41,7 +41,6 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
     const translateFn = dictionary ? createTranslateFn(dictionary) : null
 
     const { rowClickFn, orderableCells: OrderableCells, cellWidths, hiddenColumns: HiddenColumns } = useContext(CustomCellContext) ?? {};
-
 
     const headers = useMemo(() => {
         const data = paginatedData?.data as IRalItem[]

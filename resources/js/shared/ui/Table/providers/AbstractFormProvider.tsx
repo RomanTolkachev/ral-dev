@@ -1,11 +1,11 @@
 import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
 import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useMemo } from 'react'
 import useParamsCustom from '@/shared/query/useParamsCustom'
-import { isEmpty, keys } from 'lodash'
-import { ISearchingFormItem } from '@/shared/types/searchingFilters'
-import { useQuery, UseQueryResult } from '@tanstack/react-query'
-import { fetchAbstractFilters } from './api'
+import { isEmpty } from 'lodash'
+import { useQuery } from '@tanstack/react-query'
+import { fetchAbstractFilters } from '../../../api/api'
 import { AuthContext } from '@/app/providers/AuthProvider'
+import { CustomisationContext, ICustomSubmitHandlerContext } from '../model'
 
 interface IFormValues {
     [key: string]: any
@@ -20,22 +20,8 @@ interface IProps {
 
 interface QueryParams extends Record<string | "page" | "perPage", number | string | string[] | undefined> { }
 
-export type ICustomSubmitHandlerContext = {
-    filtersData: UseQueryResult<ISearchingFormItem[]>
-    customSubmitHandler: (formData: Record<string, unknown>) => void
-    customResetHandler: () => void
-    customResetField: (fieldName: string) => void
-} | undefined
+export const CustomSubmitHandlerContext = createContext<ICustomSubmitHandlerContext>(undefined);
 
-export const CustomSubmitHandlerContext = createContext<ICustomSubmitHandlerContext>(undefined); // TODO: ANY!!
-
-export type CustomisationContext = {
-    config: IConfig<string>
-    orderableCells: string[]
-    hiddenColumns: string[]
-    rowClickFn?: () => void
-    cellWidths?: Partial<Record<string, number>>
-}
 export const CustomCellContext = createContext<null | CustomisationContext>(null)
 
 export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> = ({
@@ -47,7 +33,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
 
     const user = useContext(AuthContext)
 
-    const { CELL_WIDTH, DEFAULT_FILTERS, ORDERABLE_CELLS, HIDDEN_COLUMNS } = config;
+    const { CELL_WIDTH, ORDERABLE_CELLS, HIDDEN_COLUMNS } = config;
 
     const [setQuery, getQuery] = useParamsCustom();
     const queries = getQuery();
@@ -55,11 +41,13 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
 
     const filtersData = useQuery({
         enabled: isUserChecked,
-        queryFn: () => fetchAbstractFilters(tableName, { userFilters: keys(DEFAULT_FILTERS) }),
-        queryKey: ["filters", tableName, DEFAULT_FILTERS],
+        queryFn: () => fetchAbstractFilters(tableName),
+        queryKey: ["filters", tableName],
     })
 
     const { data: filters = [] } = filtersData;
+
+   const default_filters: Record<string, string | number | string[]> = filters.reduce((acc, item) => ({...acc, [item.headerLabel]: item.defaultValue}), { page: 1, perPage: 25, order: "" });
 
     // от данной переменной зависит, нужно ли перезаписывать состояния URL. Если query пустые на момент вызова onSubmit, то в историю добавится шаг.
     const shouldReplace = useMemo<boolean>(() => {
@@ -67,10 +55,10 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     }, [JSON.stringify(queries)]);
 
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
-        disabled: !filtersData.isFetched,
+        disabled: !filtersData.isFetched && !filters.length,
         mode: "onChange",
         reValidateMode: 'onChange',
-        defaultValues: { ...DEFAULT_FILTERS, ...filters, },
+        defaultValues: { ...default_filters, ...filters, },
     })
     const { getValues, formState: { dirtyFields, defaultValues }, reset, trigger, setValue } = methods;
 
@@ -81,10 +69,6 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     */
     const customSubmitHandler = async (formData: IFormValues): Promise<void> => {
         const isValid = await trigger();
-
-        console.log({
-            текущие: formData
-        })
 
         function handler(newQuery: QueryParams) {
             isValid && setQuery(newQuery, shouldReplace);
@@ -117,7 +101,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
      */
     async function customResetHandler(): Promise<void> {
         const perPage = await getValues().perPage
-        reset({ ...DEFAULT_FILTERS, perPage });
+        reset({ ...default_filters, perPage });
         setQuery({ ...getValues() })
     }
 
@@ -126,21 +110,21 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
      */
     function customResetField(fieldName: keyof IFormValues): void {
         console.log("зашли в resetField", { дефолт: defaultValues, dirtyFields })
-        setValue(String(fieldName), DEFAULT_FILTERS[fieldName], { shouldDirty: true })
-        customSubmitHandler({ ...getValues(), [fieldName]: DEFAULT_FILTERS[fieldName] })
+        setValue(String(fieldName), default_filters[fieldName], { shouldDirty: true })
+        customSubmitHandler({ ...getValues(), [fieldName]: default_filters[fieldName] })
     }
 
     useEffect(() => {
         if (!isEmpty(queries)) {
             reset({
-                ...DEFAULT_FILTERS,
+                ...default_filters,
                 ...queries,
             }, {
                 keepDirty: true,
             })
         }
         trigger() // зачем-то нужно ее встряхнуть, чтобы на старте начала нормально работать
-    }, [JSON.stringify(filters)])
+    }, [JSON.stringify(default_filters)])
 
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData }}>

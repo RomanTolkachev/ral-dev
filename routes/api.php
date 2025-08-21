@@ -26,16 +26,16 @@ Route::get("ral/certification_body", GetCertificationBodyController::class);
 Route::get("accreditation_area", GetAccreditationAreaListController::class);
 Route::get("accreditation_area/filters", GetAccreditationAreaFiltersController::class);
 
-Route::get("certificates", GetCertificatesListController::class);
-Route::get("certificates/filters", GetCertificatesFiltersController::class);
+Route::get("certificates_short_info", GetCertificatesListController::class);
+Route::get("certificates_short_info/filters", GetCertificatesFiltersController::class);
 
-Route::get("certificates/export",  GetCertificatesExcelController::class);
+Route::get("certificates_short_info/export",  GetCertificatesExcelController::class);
 
 Route::get("available_columns", GetAvailableColumnsController::class);
 
 Route::get("input_values", GetInputValuesController::class);
 Route::middleware('auth:sanctum')->get("user", GetUserController::class);
-Route::middleware('auth:sanctum')->get("settings", GetTableSettingsController::class);
+Route::middleware('auth:sanctum')->get("user_columns", GetTableSettingsController::class);
 Route::middleware('auth:sanctum')->post("set_settings", SetTableSettingsController::class);
 Route::middleware('auth:sanctum')->post("log_out", LogOutController::class);
 Route::middleware('web')->post("login", LoginController::class);

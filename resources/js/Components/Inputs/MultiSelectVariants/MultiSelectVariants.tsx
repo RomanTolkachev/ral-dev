@@ -2,9 +2,9 @@ import { FC, useState, useRef, useEffect, KeyboardEvent, ReactNode, useContext, 
 import { Controller, useFormContext } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { SVG } from "@/Components/utils/SVG";
-import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from "@/shared/api/AbstractFormProvider";
+import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from "@/shared/ui/Table/providers/AbstractFormProvider";
 import { ISearchingFormItem } from "@/shared/types/searchingFilters";
-import highlight from "@/Components/Table/lib/highlightText";
+import highlight from "@/shared/ui/Table/lib/highlightText";
 
 interface IProps {
     className?: string;
@@ -25,8 +25,8 @@ export const MultiSelectVariants: FC<IProps> = ({ className, inputData }) => {
     if (!handlers) return null;
     const { customSubmitHandler } = handlers;
 
-    const inputName = inputData.header;
-    const options = inputData.sortValues.checkboxValues;
+    const options = inputData.values!.checkboxValues;
+    const {headerLabel: inputName} = inputData
     const error = errors[inputName];
     const [inputText, setInputText] = useState('');
     const [showDropdown, setShowDropdown] = useState(false);

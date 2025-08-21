@@ -1,14 +1,14 @@
 import { FunctionComponent, useState, useMemo } from 'react'
-import { DropdownFilterButton } from '@/Components/Buttons/DropdownFilterButton'
 import { motion, Variants } from 'framer-motion'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import { CalendarInput } from '@/Components/Inputs/CalendarInput/CalendarInput'
 import { CheckBoxCustom } from '@/Components/Inputs/CheckBoxCustom'
 import { useFormContext } from 'react-hook-form'
 import useParamsCustom from '@/shared/query/useParamsCustom'
-import { MultiSelect } from '../../../../Inputs/Multiselect/MultiSelect'
-import { SingleText } from '../../../../Inputs/SingleText'
+import { MultiSelect } from '../../../../../../Components/Inputs/Multiselect/MultiSelect'
+import { SingleText } from '../../../../../../Components/Inputs/SingleText'
 import { MultiSelectVariants } from '@/Components/Inputs/MultiSelectVariants/MultiSelectVariants'
+import { DropdownFilterButton } from '../../../../Buttons/DropdownFilterButton'
 
 interface IProps {
     className?: string
@@ -40,18 +40,18 @@ const itemVariants: Variants = {
 
 export const DropdownItem: FunctionComponent<IProps> = ({ inputData, className }) => {
     const { watch } = useFormContext();
-    const inputName = inputData.header;
+    const { headerLabel } = inputData;
     const [_, getQuery] = useParamsCustom();
     const queries = getQuery();
 
     const [isOpen, setIsOpen] = useState(() => {
-        const queryValue = queries[inputName];
+        const queryValue = queries[headerLabel];
         return !!queryValue && (Array.isArray(queryValue))
             ? queryValue.some(item => !!item)
             : !!queryValue;
     });
 
-    const fieldValue = watch(inputName);
+    const fieldValue = watch(headerLabel);
 
     const isDirty = useMemo(() => {
         if (fieldValue === undefined || fieldValue === null) return false;
@@ -70,13 +70,13 @@ export const DropdownItem: FunctionComponent<IProps> = ({ inputData, className }
     }, [fieldValue]);
 
     const checkedCount = useMemo(() => {
-        return inputData.sortValues.type === 'checkBox'
+        return inputData.type === 'checkBox'
             ? (Array.isArray(fieldValue) ? fieldValue.length : 0)
             : 0;
-    }, [fieldValue, inputData.sortValues.type]);
+    }, [fieldValue, inputData.type]);
 
     const renderInput = () => {
-        switch (inputData.sortValues.type) {
+        switch (inputData.type) {
             case 'date':
                 return <CalendarInput inputData={inputData} />;
             case 'checkBox':
@@ -102,10 +102,10 @@ export const DropdownItem: FunctionComponent<IProps> = ({ inputData, className }
             <DropdownFilterButton
                 clickHandler={() => setIsOpen(!isOpen)}
                 className={'mb-2 relative'}
-                inputName={inputName}
+                inputName={headerLabel}
                 isOpen={isOpen}
                 hasAlert={isDirty}
-                children={inputName}
+                children={headerLabel}
                 checkedCount={checkedCount}
             />
             <motion.div className={'overflow-hidden'} variants={listVariants}>

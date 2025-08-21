@@ -1,13 +1,12 @@
 import { AuthContext } from "@/app/providers/AuthProvider";
-import useUserColumns from "@/Components/Table/useUserColumns";
-import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from "@/shared/api/AbstractFormProvider";
+import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from "@/shared/ui/Table/providers/AbstractFormProvider";
 import { FunctionComponent, ReactNode, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import { config } from "./config";
-import useTableDataQuery from "@/Components/Table/useTableDataQuery";
+import useTableDataQuery from "@/shared/ui/Table/useTableDataQuery";
 import CenteredLoader from "@/Components/utils/CenteredLoader";
-import { AbstractTable } from "@/Components/Table";
-import { FiltersWidget } from "@/Components/Table/ui/FiltersWidget";
+import { AbstractTable } from "@/shared/ui/Table";
+import { FiltersWidget } from "@/shared/ui/Table/ui/FiltersWidget";
 import { DevTool } from "@hookform/devtools";
 
 interface Props {
@@ -31,17 +30,11 @@ const RalTable: FunctionComponent<Props> = ({ className }) => {
         return null
     }
 
-    const { columns: userColumns, isColumnsLoading } = useUserColumns({
-        userId: userId,
-        defaultColumns: config.DEFAULT_COLUMNS,
-        tableName
-    })
     const { filtersData: { data: filters, isFetched: isFiltersFetched } } = filtersContext
-    const shouldFetchTableData = isUserChecked && (!userId || isFiltersFetched && !isColumnsLoading);
+    const shouldFetchTableData = isUserChecked && (!userId || isFiltersFetched);
     const { data, fetchStatus, isPending } = useTableDataQuery({
         enabled: isFiltersFetched,
         tableName,
-        columns: userColumns ? userColumns : config.DEFAULT_COLUMNS,
         userId: user?.userInfo?.id,
         defaultRequest: config.DEFAULT_REQUEST
     })

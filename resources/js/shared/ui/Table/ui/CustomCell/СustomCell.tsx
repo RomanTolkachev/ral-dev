@@ -1,4 +1,4 @@
-import highlight from "@/Components/Table/lib/highlightText";
+import highlight from "@/shared/ui/Table/lib/highlightText";
 import useParamsCustom from "@/shared/query/useParamsCustom";
 import { flexRender, Cell } from "@tanstack/react-table";
 import { color, motion } from "framer-motion";

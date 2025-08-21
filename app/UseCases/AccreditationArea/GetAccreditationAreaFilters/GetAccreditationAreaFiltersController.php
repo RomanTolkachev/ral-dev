@@ -2,10 +2,7 @@
 
 namespace App\UseCases\AccreditationArea\GetAccreditationAreaFilters;
 
-use Illuminate\Http\Request;
-use App\Services\TableFilterService;
 use Illuminate\Http\JsonResponse;
-use App\Models\AccreditationArea;
 
 class GetAccreditationAreaFiltersController
 {
@@ -13,42 +10,35 @@ class GetAccreditationAreaFiltersController
     {
         $filters = [
             [
-                'header' => "full_gost",
-                'headerType' => 'nvarchar',
-                'sortValues' => [
-                    'type' => 'singleText'
-                ],
+                'headerLabel' => 'full_gost',
+                'type' => 'singleText',
+                'defaultValue' => ''
             ],
             [
-                'header' => "tn_ved",
-                'headerType' => 'nvarchar',
-                'sortValues' => [
-                    'type' => 'singleText'
-                ],
+                'headerLabel' => 'tn_ved',
+                'type' => 'singleText',
+                'defaultValue' => ''
             ],
             [
-                'header' => "source_file_label",
-                'headerType' => 'varchar',
-                'sortValues' => [
-                    'type' => 'checkBox',
-                    'checkboxValues' => ["УОА", "РОА", "СОА"]
-                ],
+                'headerLabel' => 'source_file_label',
+                'type' => 'checkBox',
+                'defaultValue' => [],
+                'values' => [
+                    'checkboxValues' => ['УОА', 'РОА', 'СОА']
+                ]
             ],
             [
-                'header' => "ralShortInfoView__fullName",
-                'headerType' => 'varchar',
-                'sortValues' => [
-                    'type' => 'multi',
-                ],
+                'headerLabel' => 'ralShortInfoView__fullName',
+                'type' => 'multiVariants',
+                'defaultValue' => []
             ],
             [
-                'header' => "ralShortInfoView__RegNumber",
-                'headerType' => 'varchar',
-                'sortValues' => [
-                    'type' => 'multi',
-                ],
-            ],
+                'headerLabel' => 'ralShortInfoView__RegNumber',
+                'type' => 'multiVariants',
+                'defaultValue' => []
+            ]
         ];
+        
         return new JsonResponse($filters);
     }
 }

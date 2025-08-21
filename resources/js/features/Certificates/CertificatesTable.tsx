@@ -1,14 +1,13 @@
 import { DevTool } from '@hookform/devtools';
 import { FunctionComponent, ReactNode, useContext } from 'react';
-import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider';
+import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/ui/Table/providers/AbstractFormProvider';
 import config from './config';
 import { AuthContext } from '@/app/providers/AuthProvider';
-import useTableDataQuery from '@/Components/Table/useTableDataQuery';
-import useUserColumns from '@/Components/Table/useUserColumns';
+import useTableDataQuery from '@/shared/ui/Table/useTableDataQuery';
 import { useFormContext } from 'react-hook-form';
-import { AbstractTable } from '@/Components/Table';
+import { AbstractTable } from '@/shared/ui/Table';
 import CenteredLoader from '@/Components/utils/CenteredLoader';
-import { FiltersWidget } from '@/Components/Table/ui/FiltersWidget';
+import { FiltersWidget } from '@/shared/ui/Table/ui/FiltersWidget';
 
 interface Props {
     className?: string;
@@ -16,7 +15,7 @@ interface Props {
 
 const CertificatesTable: FunctionComponent<Props> = ({ className }) => {
 
-    const tableName = 'certificates';
+    const tableName = 'certificates_short_info';
 
     const { control } = useFormContext();
 
@@ -29,17 +28,11 @@ const CertificatesTable: FunctionComponent<Props> = ({ className }) => {
         return null
     }
 
-    const { columns: userColumns, isColumnsLoading } = useUserColumns({
-        userId: userId,
-        defaultColumns: config.DEFAULT_COLUMNS,
-        tableName
-    })
     const { filtersData: { data: filters, isFetched: isFiltersFetched } } = filtersContext
-    const shouldFetchTableData = isUserChecked && (!userId || isFiltersFetched && !isColumnsLoading);
+    const shouldFetchTableData = isUserChecked && (!userId || isFiltersFetched);
     const { data, fetchStatus, isPending } = useTableDataQuery({
         enabled: isFiltersFetched,
         tableName,
-        columns: userColumns ? userColumns : config.DEFAULT_COLUMNS,
         userId: user?.userInfo?.id,
         defaultRequest: config.DEFAULT_REQUEST
     })
@@ -71,7 +64,7 @@ const CertificatesTable: FunctionComponent<Props> = ({ className }) => {
             <section className={'shrink grow flex flex-col'}>
                 {content()}
             </section>
-            {/* <DevTool control={control} /> */}
+            <DevTool control={control} />
         </div>
     )
 };

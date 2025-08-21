@@ -1,4 +1,4 @@
-import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from "@/shared/api/AbstractFormProvider";
+import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from "@/shared/ui/Table/providers/AbstractFormProvider";
 import { ISearchingFormItem } from "@/shared/types/searchingFilters";
 import { FC, useContext, useState, KeyboardEvent, useRef, ReactNode } from "react";
 import { Controller, useFormContext } from "react-hook-form";
@@ -23,7 +23,7 @@ export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
         handleSubmit 
     } = useFormContext();
     
-    const inputName = inputData.header;
+    const {headerLabel: inputName} = inputData;
     const error = errors[inputName];
     const [inputText, setInputText] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);

@@ -12,10 +12,11 @@ import PersonalPage from '@/features/Login/PersonalPage'
 import AccreditationAreaTable from '@/features/AccreditationArea/AccreditationAreaTable'
 import ralConfig from '@/features/ralTable/config'
 import { config as accAreaConfig } from '@/features/AccreditationArea/config'
-import { AbstractFormProvider } from '@/shared/api/AbstractFormProvider'
+import { AbstractFormProvider } from '@/shared/ui/Table/providers/AbstractFormProvider'
 import CertificatesTable from '@/features/Certificates/CertificatesTable'
 import { config as certificatesConfig } from '@/features/Certificates/config'
 import NewRalTable from '@/features/RalTable/RalTable'
+import { Settings } from '@/shared/ui/Table/ui/settings/ui/Settings'
 
 
 
@@ -65,13 +66,13 @@ function MainLayout() {
                     <Route path='certificates/*' element={
                         <AbstractFormProvider
                             config={certificatesConfig}
-                            tableName='certificates'
+                            tableName='certificates_short_info'
                             rowClickFn={() => {}}>
                             <CertificatesTable />
                             <Routes>
                                 <Route
                                     path='settings'
-                                    element={<Modal closeModal={() => navigate(-1)} children={"настроечки"} />}
+                                    element={<Modal closeModal={() => navigate(-1)} children={<Settings />} />}
                                 />
                             </Routes>
                         </AbstractFormProvider>

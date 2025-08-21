@@ -1,8 +1,8 @@
 import { FunctionComponent, useContext, useRef, useCallback, useEffect } from 'react'
 import { useFormContext, Controller } from 'react-hook-form'
-import PageNavButton from '@/Components/Buttons/PageNaVButton'
 import { SVG } from '@/Components/utils/SVG'
-import { CustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
+import { CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/AbstractFormProvider'
+import PageNavButton from '@/shared/ui/Buttons/PageNaVButton'
 
 interface IProps {
     className?: string

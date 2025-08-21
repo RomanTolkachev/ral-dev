@@ -272,7 +272,6 @@ const DEFAULT_REQUEST = {
     page: 1,
     perPage: '25',
     order: "",
-    user_columns: DEFAULT_COLUMNS
 }
 
 const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
@@ -406,19 +405,19 @@ const HIDDEN_COLUMNS: TCertificateModel[] = ["ral_short_info_view__link", "certi
 
 export const config: IConfig<TCertificateModel> = {
     DICTIONARY,
-    DEFAULT_COLUMNS,
+    // DEFAULT_COLUMNS,
     DEFAULT_FILTERS,
     DEFAULT_REQUEST,
     CELL_WIDTH,
     ORDERABLE_CELLS,
     HIDDEN_COLUMNS,
-    TABLE_NAME: "certificate_short_info"
+    TABLE_NAME: "certificates_short_info"
 }
 
 export default {
     DEFAULT_FILTERS,
     DEFAULT_REQUEST,
-    DEFAULT_COLUMNS,
+    // DEFAULT_COLUMNS,
     DICTIONARY,
     CELL_WIDTH,
     ORDERABLE_CELLS,

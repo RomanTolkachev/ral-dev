@@ -6,10 +6,9 @@ import { isEmpty } from "lodash";
 type TParams = {
     userId: string | undefined,
     tableName: string,
-    defaultColumns: string[]
 }
 
-const useUserColumns = ({ userId, tableName, defaultColumns }: TParams) => {
+const useUserColumns = ({ userId, tableName }: TParams) => {
     const { data: fetchedColumns = [], isFetching: isColumnsFetching, isLoading: isColumnsLoading, error: columnsError } = useQuery<string[], AxiosError>({
         enabled: !!userId,
         queryKey: ["ralColumns"],
@@ -18,10 +17,7 @@ const useUserColumns = ({ userId, tableName, defaultColumns }: TParams) => {
             return userId ? getTableSettings(userId, tableName) : Promise.reject("User ID is undefined");
         },
     })
-
-    const columns: string[] = !isEmpty(fetchedColumns) ? fetchedColumns : defaultColumns;
-
-    return { columns, isColumnsFetching, isColumnsLoading, columnsError }
+    return { isColumnsFetching, isColumnsLoading, columnsError }
 }
 
 export default useUserColumns;

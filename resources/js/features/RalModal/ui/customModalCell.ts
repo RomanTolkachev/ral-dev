@@ -1,4 +1,4 @@
-import highlight from "@/Components/Table/lib/highlightText";
+import highlight from "@/shared/ui/Table/lib/highlightText";
 import { TRalModel } from "@/features/RalTable/model/types";
 import { Renderable, CellContext, flexRender } from "@tanstack/react-table";
 import { isEmpty } from "lodash";

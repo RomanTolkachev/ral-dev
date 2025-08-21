@@ -4,7 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { SVG } from '@/Components/utils/SVG.tsx'
 import { AnimatePresence, motion } from 'motion/react'
 import { enterExitAnimation as animationParams } from '@/shared/framer-motion/enter-exit-animation.ts'
-import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider.tsx'
+import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/ui/Table/providers/AbstractFormProvider'
 import { isEmpty } from 'lodash'
 
 interface IProps {
@@ -23,7 +23,7 @@ export const SingleText: FunctionComponent<IProps> = ({ className, inputData }) 
     if (!handlers) return null
     
     const { customSubmitHandler } = handlers
-    const inputName = inputData.header
+    const {headerLabel: inputName} = inputData
     const { control, trigger, getValues, setValue } = useFormContext()
 
     const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {

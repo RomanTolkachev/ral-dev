@@ -2,10 +2,7 @@
 
 namespace App\UseCases\Certificates\GetCertificatesFilters;
 
-use Illuminate\Http\Request;
-use App\Services\TableFilterService;
 use Illuminate\Http\JsonResponse;
-use App\Models\AccreditationArea;
 
 class GetCertificatesFiltersController
 {
@@ -13,17 +10,15 @@ class GetCertificatesFiltersController
     {
         $filters = [
             [
-                'header' => "ral_short_info_view__RegNumber",
-                'headerType' => 'nvarchar',
-                'sortValues' => [
-                    'type' => 'multi',
-                ],
+                'headerLabel' => "ral_short_info_view__RegNumber",
+                'type' => 'multi',
+                'defaultValue' => [],
             ],
             [
-                'header' => "technicalReglaments",
-                'headerType' => 'nvarchar',
-                'sortValues' => [
-                    'type' => 'multiVariants',
+                'headerLabel' => "technicalReglaments",
+                'type' => 'multiVariants',
+                'defaultValue' => [],
+                'values' => [
                     'checkboxValues' => [
                         "ТР ТС 001/2011",
                         "ТР ТС 025/2012",
@@ -79,25 +74,23 @@ class GetCertificatesFiltersController
                 ],
             ],
             [
-                'header' => "certificate_name",
-                'headerType' => 'nvarchar',
-                'sortValues' => [
-                    'type' => 'multi'
-                ],
+                'headerLabel' => "certificate_name",
+                'type' => 'multi',
+                'defaultValue' => [],
             ],
             [
-                'header' => "certificate_status",
-                'headerType' => 'nvarchar',
-                'sortValues' => [
-                    'type' => 'checkBox',
+                'headerLabel' => "certificate_status",
+                'type' => 'checkBox',
+                'defaultValue' => [],
+                'values' => [
                     'checkboxValues' => ["Приостановлен", "Прекращён", "Действует", "Продлен", "Недействителен", "Архивный"]
                 ],
             ],
             [
-                'header' => "status_change__status_changes_by",
-                'headerType' => 'nvarchar',
-                'sortValues' => [
-                    'type' => 'checkBox',
+                'headerLabel' => "status_change__status_changes_by",
+                'type' => 'checkBox',
+                'defaultValue' => [],
+                'values' => [
                     'checkboxValues' => [
                         "По решению органа по сертификации",
                         "По решению национального органа по аккредитации",
@@ -106,27 +99,20 @@ class GetCertificatesFiltersController
                 ],
             ],
             [
-                'header' => "update_status_date",
-                'headerType' => 'varchar',
-                'sortValues' => [
-                    'type' => 'date',
-                ],
+                'headerLabel' => "update_status_date",
+                'type' => 'date',
+                'defaultValue' => ["", ""],
             ],
             [
-                'header' => "date",
-                'headerType' => 'datetime',
-                'sortValues' => [
-                    'type' => 'date',
-                ],
+                'headerLabel' => "date",
+                'type' => 'date',
+                'defaultValue' => ["", ""],
             ],
             [
-                'header' => "endDate",
-                'headerType' => 'datetime',
-                'sortValues' => [
-                    'type' => 'date',
-                ],
+                'headerLabel' => "endDate",
+                'type' => 'date',
+                'defaultValue' => ["", ""],
             ],
-
         ];
         return new JsonResponse($filters);
     }

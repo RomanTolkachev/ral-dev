@@ -1,10 +1,10 @@
 import { FunctionComponent, memo, useContext } from 'react';
-import { Toggle } from './Buttons/Toggle';
 import { SVG } from './utils/SVG';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '@/app/providers/AuthProvider';
 import { Preloader } from './utils/Preloader';
 import { motion } from 'motion/react';
+import { Toggle } from '@/shared/ui/Buttons/Toggle';
 
 interface IProps {
     className?: string

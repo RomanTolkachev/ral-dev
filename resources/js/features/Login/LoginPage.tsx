@@ -3,7 +3,7 @@ import React, { FunctionComponent, useContext } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { AuthContext, ILoginForm } from '@/app/providers/AuthProvider';
 import { classes } from './inputClasses';
-import { MainButton } from '@/Components/Buttons/MainButton';
+import { MainButton } from '@/shared/ui/Buttons/MainButton';
 
 interface Props {
     className?: string

@@ -18,7 +18,13 @@ export const store = configureStore({
 })
 
 const root: ReactDOM.Root = ReactDOM.createRoot(document.getElementById('app') as HTMLElement);
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      structuralSharing: false, // Отключаем структурное сравнение
+    },
+  },
+});
 
 root.render(
     <QueryClientProvider client={queryClient}>

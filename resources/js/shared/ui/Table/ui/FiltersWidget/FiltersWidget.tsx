@@ -1,10 +1,11 @@
 import { createContext, FunctionComponent, useContext } from 'react'
 import { Preloader } from '@/Components/utils/Preloader'
-import { MainButton } from '@/Components/Buttons/MainButton'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
-import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
+import { CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/AbstractFormProvider'
 import createTranslateFn from '../../lib/translate'
 import { DropdownItem } from './DropdownItem'
+import { MainButton } from '../../../Buttons/MainButton'
+import { ICustomSubmitHandlerContext } from '../../model'
 
 export const TranslateContext = createContext<ReturnType<typeof createTranslateFn> | null>(null);
 

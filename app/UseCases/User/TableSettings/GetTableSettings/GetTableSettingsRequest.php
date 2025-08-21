@@ -14,8 +14,7 @@ class GetTableSettingsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userId' => ['required', 'string'],
-            'tableName' => ['required', 'string'],
+            'for' => ['required', 'string'],
         ];
     }
 }

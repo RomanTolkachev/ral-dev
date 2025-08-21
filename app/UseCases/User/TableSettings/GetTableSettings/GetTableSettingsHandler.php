@@ -3,12 +3,15 @@
 namespace App\UseCases\User\TableSettings\GetTableSettings;
 
 use App\Models\UserSetting;
+use Illuminate\Http\Request;
 
 class GetTableSettingsHandler
 {
-    public function __invoke(array $params)
+    public function __invoke(Request $request)
     {
-        $jsonRes = UserSetting::where('user_id', $params["userId"])->where('settings_for_table', $params["tableName"])->value('settings');
+        $userID = $request->user()->id;
+        $table = $request->validated()["for"];
+        $jsonRes = UserSetting::where('user_id', $userID)->where('settings_for_table', $table)->value('settings');
         
         if (!$jsonRes) {
             return null;
