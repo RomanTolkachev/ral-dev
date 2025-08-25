@@ -45,9 +45,9 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         queryKey: ["filters", tableName],
     })
 
-    const { data: filters = [] } = filtersData;
+    const { data: filters = [], isFetched } = filtersData;
 
-   const default_filters: Record<string, string | number | string[]> = filters.reduce((acc, item) => ({...acc, [item.headerLabel]: item.defaultValue}), { page: 1, perPage: 25, order: "" });
+    const default_filters: Record<string, string | number | string[]> = filters.reduce((acc, item) => ({ ...acc, [item.headerLabel]: item.defaultValue }), { page: 1, perPage: 25, order: "" });
 
     // от данной переменной зависит, нужно ли перезаписывать состояния URL. Если query пустые на момент вызова onSubmit, то в историю добавится шаг.
     const shouldReplace = useMemo<boolean>(() => {
@@ -55,7 +55,7 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     }, [JSON.stringify(queries)]);
 
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
-        disabled: !filtersData.isFetched && !filters.length,
+        disabled: !filtersData.isFetched,
         mode: "onChange",
         reValidateMode: 'onChange',
         defaultValues: { ...default_filters, ...filters, },
@@ -115,16 +115,35 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     }
 
     useEffect(() => {
-        if (!isEmpty(queries)) {
-            reset({
-                ...default_filters,
-                ...queries,
-            }, {
-                keepDirty: true,
-            })
-        }
-        trigger() // зачем-то нужно ее встряхнуть, чтобы на старте начала нормально работать
-    }, [JSON.stringify(default_filters)])
+        console.log("сработал эффект", { default_filters });
+
+        const updateFormValues = async () => {
+            if (!isEmpty(queries)) {
+                await reset({
+                    ...default_filters,
+                    ...queries,
+                }, {
+                    keepDirty: true,
+                    keepDefaultValues: false,
+                });
+
+                // Теперь trigger выполнится только после завершения reset
+                await trigger();
+            } else if (!isEmpty(default_filters)) {
+                // Обработка случая, когда queries пустые, но default_filters есть
+                await reset(default_filters, {
+                    keepDirty: true,
+                    keepDefaultValues: false,
+                });
+
+                await trigger();
+            }
+        };
+
+        updateFormValues();
+    }, [JSON.stringify(default_filters)]);
+
+    console.log({дефолт: methods.formState.defaultValues})
 
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData }}>

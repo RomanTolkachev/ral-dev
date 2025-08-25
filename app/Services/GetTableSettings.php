@@ -29,7 +29,7 @@ class GetTableSettings
         };
 
         $userSettings = $getSettings($user);
-        $defaultSettings = $getSettings($defaultUser);
+        $defaultSettings = $getSettings($defaultUser) ?? [];
 
         return !empty($userSettings) ? $userSettings : $defaultSettings;
     }

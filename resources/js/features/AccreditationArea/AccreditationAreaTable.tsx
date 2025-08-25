@@ -1,5 +1,5 @@
 import { FunctionComponent, ReactNode, useContext } from 'react';
-import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/ui/Table/providers/AbstractFormProvider';
+import { CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/AbstractFormProvider';
 import config from './config';
 import { AuthContext } from '@/app/providers/AuthProvider';
 import useTableDataQuery from '@/shared/ui/Table/useTableDataQuery';
@@ -7,6 +7,7 @@ import { useFormContext } from 'react-hook-form';
 import { AbstractTable } from '@/shared/ui/Table';
 import { FiltersWidget } from '@/shared/ui/Table/ui/FiltersWidget';
 import CenteredLoader from '@/Components/utils/CenteredLoader';
+import { ICustomSubmitHandlerContext } from '@/shared/ui/Table/model';
 
 interface Props {
     className?: string;
