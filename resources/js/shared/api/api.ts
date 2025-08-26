@@ -42,10 +42,11 @@ export const fetchAbstractFilters = (tableName:string, queries?: Record<string, 
         },
     }).then(res => res.data)
 
-export const fetchAbstractTable = (tableName: string, queries: Record<string, any>) =>
+export const fetchAbstractTable = (tableName: string, queries: Record<string, any>, signal?: AbortSignal) =>
     axiosApi.get<IPagination>(`${tableName}`, {
         params: queries,
         withCredentials: true,
+        signal,
         paramsSerializer: function (params) {
             return decodeURIComponent(qs.stringify(params, { arrayFormat: 'brackets' }))
         },

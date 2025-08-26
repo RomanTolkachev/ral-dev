@@ -17,6 +17,7 @@ import CertificatesTable from '@/features/Certificates/CertificatesTable'
 import { config as certificatesConfig } from '@/features/Certificates/config'
 import NewRalTable from '@/features/RalTable/RalTable'
 import { Settings } from '@/shared/ui/Table/ui/settings/ui/Settings'
+import { TablePage } from '@/Components/pages/TablePage'
 
 
 
@@ -54,29 +55,10 @@ function MainLayout() {
                         </>
                     } />
 
-                    <Route path='accreditation_area' element={
-                        <AbstractFormProvider
-                            config={accAreaConfig}
-                            tableName="accreditation_area"
-                            rowClickFn={() => { }}>
-                            <AccreditationAreaTable />
-                        </AbstractFormProvider>
-                    } />
-
-                    <Route path='certificates/*' element={
-                        <AbstractFormProvider
-                            config={certificatesConfig}
-                            tableName='certificates_short_info'
-                            rowClickFn={() => {}}>
-                            <CertificatesTable />
-                            <Routes>
-                                <Route
-                                    path='settings'
-                                    element={<Modal closeModal={() => navigate(-1)} children={<Settings />} />}
-                                />
-                            </Routes>
-                        </AbstractFormProvider>
-                    } />
+                    <Route path='accreditation_area' element={<TablePage config={accAreaConfig} />} />
+                    <Route path='certificates' element={<TablePage config={certificatesConfig} />}>
+                        <Route path='settings' element={<Modal closeModal={() => navigate(-1)} children={<Settings />} />} />
+                    </Route>
 
                 </Route>
                 <Route path='/login' element={<OnlyUnAuth component={<LoginPage />} />} />

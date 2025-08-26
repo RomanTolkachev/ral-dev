@@ -23,6 +23,7 @@ declare global {
         ORDERABLE_CELLS: T[]
         HIDDEN_COLUMNS: T[]
         TABLE_NAME: string
+        ROW_CLICK_FN: () => void
     }
 }
 

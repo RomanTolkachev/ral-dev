@@ -29,12 +29,12 @@ class GetAccreditationAreaFiltersController
             ],
             [
                 'headerLabel' => 'ralShortInfoView__fullName',
-                'type' => 'multiVariants',
+                'type' => 'multi',
                 'defaultValue' => []
             ],
             [
                 'headerLabel' => 'ralShortInfoView__RegNumber',
-                'type' => 'multiVariants',
+                'type' => 'multi',
                 'defaultValue' => []
             ]
         ];

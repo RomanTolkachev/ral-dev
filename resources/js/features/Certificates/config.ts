@@ -405,8 +405,7 @@ const HIDDEN_COLUMNS: TCertificateModel[] = ["ral_short_info_view__link", "certi
 
 export const config: IConfig<TCertificateModel> = {
     DICTIONARY,
-    // DEFAULT_COLUMNS,
-    DEFAULT_FILTERS,
+    ROW_CLICK_FN: () => {},
     DEFAULT_REQUEST,
     CELL_WIDTH,
     ORDERABLE_CELLS,
@@ -417,7 +416,6 @@ export const config: IConfig<TCertificateModel> = {
 export default {
     DEFAULT_FILTERS,
     DEFAULT_REQUEST,
-    // DEFAULT_COLUMNS,
     DICTIONARY,
     CELL_WIDTH,
     ORDERABLE_CELLS,

@@ -14,14 +14,20 @@ import { Preloader } from '@/Components/utils/Preloader'
 import createTranslateFn from '../lib/translate'
 import { CustomHeader } from './CustomHeader'
 import { CustomCell } from './CustomCell'
-
+import { CustomisationContext } from '../model'
+import { enterExitAnimation } from '@/shared/framer-motion/enter-exit-animation'
+import { getErrorMessage } from '../lib'
+import { AxiosError } from 'axios'
+import { NoData } from './notFound'
 
 interface IProps {
     className?: string
     paginatedData: IPagination | undefined
-    loading: boolean
     dictionary?: Record<string, any>
     customCellrender?: any
+    isUplating?: boolean
+    failureCount?: number
+    error?: string
 }
 
 // параметры анимации
@@ -34,17 +40,23 @@ const childrenVariants = {
     end: { opacity: 1 }
 }
 
-export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedData, loading, dictionary }) => {
+export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedData, dictionary, isUplating: isUpdating = false, failureCount = 0, error }) => {
 
     const navigate = useNavigate();
 
     const translateFn = dictionary ? createTranslateFn(dictionary) : null
 
-    const { rowClickFn, orderableCells: OrderableCells, cellWidths, hiddenColumns: HiddenColumns } = useContext(CustomCellContext) ?? {};
+    const configContext = useContext<CustomisationContext | null>(CustomCellContext);
+
+    if (!configContext?.config) {
+        return null
+    }
+
+    const { HIDDEN_COLUMNS, ORDERABLE_CELLS, CELL_WIDTH, ROW_CLICK_FN } = configContext.config
 
     const headers = useMemo(() => {
         const data = paginatedData?.data as IRalItem[]
-        return paginatedData ? getHeaders(data, HiddenColumns) : []
+        return paginatedData ? getHeaders(data, HIDDEN_COLUMNS) : []
     }, [paginatedData])
 
     const columns: ColumnDef<any>[] = useMemo(() => {
@@ -56,7 +68,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
                     header: translateFn ? translateFn(header) : header,
                     cell: (props: any) => { return <>{props.getValue()}</>; },
                     enableResizing: true,
-                    size: cellWidths?.[header] ?? 150
+                    size: CELL_WIDTH?.[header] ?? 150
                 }
             })
         }
@@ -81,8 +93,8 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
      * функция для перехода по ссылке при клике на row
      */
     function handleRowClick(to: string): void {
-        if (rowClickFn) {
-            rowClickFn()
+        if (ROW_CLICK_FN) {
+            ROW_CLICK_FN()
         } else {
             navigate(to)
         }
@@ -100,85 +112,90 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
     return (
         <div className={`${className} h-full grow grid grid-rows-[1fr_auto] grid-cols-[1fr] overflow-hidden`}>
             <div className={'p-2 w-full h-full grow flex overflow-hidden'}>
-                <div className={'my-block min-w-full h-full bg-background-block'}>
+                <div className={'my-block min-w-full h-full bg-background-block relative'}>
+                    {/* Оверлей с прелоудером */}
+                    {isUpdating && (
+                        <motion.div
+                            {...enterExitAnimation}
+                            className="absolute inset-0 bg-background-block/70 z-50 flex justify-center items-center rounded-xl"
+                        >
+                            <div className="flex flex-col items-center">
+                                <Preloader widthStyles='w-10' />
+                                <span className="mt-3 text-table-base">{getErrorMessage(failureCount)}</span>
+                            </div>
+                        </motion.div>
+                    )}
+
                     <div
                         className={
                             'text-base grow max-w-full h-full min-h-full max-h-full overflow-x-auto overflow-y-auto bg-background-block'
                         }>
-                        {loading ? (
-                            <Preloader className={'h-full flex items-center'} widthStyles={'w-16'} />
-                        ) : Object.keys(tableData).length ? (
-                            <table
-                                style={{ width: table.getTotalSize() }}
-                                className={`min-h-full min-w-full max-h-full text-sm table-fixed rounded-t-md [&_td]:border-r [&_td]:border-r-filter-dropdown-button`}>
-                                <thead className={'select-none relative text-header-text font-medium'}>
-                                    <tr className={'text-header-text'}>
-                                        {table.getHeaderGroups()[0].headers.map((header) => {
+                        {error ?
+                            <div className='w-full h-full grid place-items-center text-table-base'>{getErrorMessage(null, error)}</div> :
+                            Object.keys(tableData).length ? (
+                                <table
+                                    style={{ width: table.getTotalSize() }}
+                                    className={`min-h-full min-w-full max-h-full text-sm table-fixed rounded-t-md [&_td]:border-r [&_td]:border-r-filter-dropdown-button`}>
+                                    <thead className={'select-none relative text-header-text font-medium'}>
+                                        <tr className={'text-header-text'}>
+                                            {table.getHeaderGroups()[0].headers.map((header) => {
+                                                return (
+                                                    <th
+                                                        style={{
+                                                            width: header.getSize(),
+                                                        }}
+                                                        className={`sticky z-[1] bg-row-even top-0 p-2 overflow-hidden`}
+                                                        key={header.id}>
+                                                        <CustomHeader orderable={ORDERABLE_CELLS ?? []} headerData={header} />
+                                                    </th>
+                                                )
+                                            })}
+                                        </tr>
+                                    </thead>
+                                    <motion.tbody
+                                        key={animationKey}
+                                        variants={parentVariants}
+                                        initial="start"
+                                        animate="end"
+                                        className={'font-medium'}
+                                    >
+                                        {table.getRowModel().rows.map((row) => {
                                             return (
-                                                <th
-                                                    style={{
-                                                        width: header.getSize(),
+                                                <motion.tr
+                                                    variants={childrenVariants}
+                                                    whileHover={{
+                                                        y: -1,
+                                                        cursor: "pointer",
+                                                        transition: { duration: 0.2 },
+                                                        boxShadow: "var(--row-hover)"
                                                     }}
-                                                    className={`sticky z-[1] bg-row-even top-0 p-2 overflow-hidden`}
-                                                    key={header.id}>
-                                                    <CustomHeader orderable={OrderableCells ?? []} headerData={header} />
-                                                </th>
+                                                    className={'even:bg-row-even odd:bg-row-odd h-20 z-10'}
+                                                    key={row.id}
+                                                    onClick={() => handleRowClick(`${row.original.id}${location.search}`)}
+                                                >
+                                                    {row.getVisibleCells().map((cell) => {
+                                                        return (
+                                                            <td
+                                                                key={cell.id}
+                                                                className={`overflow-hidden text-center relative text-table-base p-1`}>
+                                                                <CustomCell cellData={cell} />
+                                                            </td>
+                                                        )
+                                                    })}
+                                                </motion.tr>
                                             )
                                         })}
-                                    </tr>
-                                </thead>
-                                <motion.tbody key={animationKey} variants={parentVariants} initial="start" animate="end" className={'font-medium'}>
-                                    {table.getRowModel().rows.map((row) => {
-                                        return (
-                                            <motion.tr
-                                                variants={childrenVariants}
-                                                whileHover={{
-                                                    y: -1,
-                                                    cursor: "pointer",
-                                                    transition: { duration: 0.2 },
-                                                    boxShadow: "var(--row-hover)"
-                                                }}
-                                                className={'even:bg-row-even odd:bg-row-odd h-20 z-10'}
-                                                key={row.id}
-                                                onClick={() => handleRowClick(`${row.original.id}${location.search}`)}
-                                            >
-                                                {row.getVisibleCells().map((cell) => {
-                                                    return (
-                                                        <td
-                                                            key={cell.id}
-                                                            className={`overflow-hidden text-center relative text-table-base p-1`}>
-                                                            <CustomCell cellData={cell} />
-                                                        </td>
-
-                                                    )
+                                        <motion.tr className={'even:bg-row-even odd:bg-row-odd'}>
+                                            {table
+                                                .getRowModel()
+                                                .rows[0]?.getVisibleCells()
+                                                .map((item, key) => {
+                                                    return <td key={`last-row${key}`}></td>
                                                 })}
-                                            </motion.tr>
-                                        )
-                                    })}
-                                    <motion.tr className={'even:bg-row-even odd:bg-row-odd'}>
-                                        {table
-                                            .getRowModel()
-                                            .rows[0].getVisibleCells()
-                                            .map((item, key) => {
-                                                return <td key={`last-row${key}`}></td>
-                                            })}
-                                    </motion.tr>
-                                </motion.tbody>
-                            </table>
-                        ) : (
-                            <div className={' w-full h-full grid place-items-center'}>
-                                <div className='w-[300px]'>
-                                    <SVG className={' mb-2'} notFound />
-                                    <p
-                                        className={
-                                            'text-3xl text-nowrap tracking-tight font-black text-text-primary ' +
-                                            'first-letter:capitalize text-center'
-                                        }>
-                                        данные не найдены
-                                    </p>
-                                </div>
-                            </div>
-                        )}
+                                        </motion.tr>
+                                    </motion.tbody>
+                                </table>
+                            ) : <NoData className='w-full h-full grid place-items-center' />}
                     </div>
                 </div>
             </div>
@@ -192,8 +209,8 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
                 />
                 <PerPageController />
                 <PageNavigation
+                    isPending={isUpdating}
                     total={paginatedData?.total}
-                    isPending={loading}
                     currentPage={paginatedData?.current_page}
                     lastPage={paginatedData?.last_page}
                 />

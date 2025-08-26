@@ -79,8 +79,8 @@ const HIDDEN_COLUMNS:TAccreditationAreaModel[] = ["ralShortInfoView__NPStatus", 
 
 export const config: IConfig<TAccreditationAreaModel> = {
     DICTIONARY,
-    DEFAULT_COLUMNS,
-    DEFAULT_FILTERS,
+    ROW_CLICK_FN: () => {},
+    TABLE_NAME: "accreditation_area",
     DEFAULT_REQUEST,
     CELL_WIDTH,
     ORDERABLE_CELLS,

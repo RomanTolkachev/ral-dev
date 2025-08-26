@@ -2,10 +2,8 @@ import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
 import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useMemo } from 'react'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import { isEmpty } from 'lodash'
-import { useQuery } from '@tanstack/react-query'
-import { fetchAbstractFilters } from '../../../api/api'
-import { AuthContext } from '@/app/providers/AuthProvider'
 import { CustomisationContext, ICustomSubmitHandlerContext } from '../model'
+import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 
 interface IFormValues {
     [key: string]: any
@@ -13,9 +11,7 @@ interface IFormValues {
 
 interface IProps {
     config: IConfig<string>
-    tableName: string
-    user?: any | undefined
-    rowClickFn?: () => void
+    filters: ISearchingFormItem[]
 }
 
 interface QueryParams extends Record<string | "page" | "perPage", number | string | string[] | undefined> { }
@@ -26,26 +22,12 @@ export const CustomCellContext = createContext<null | CustomisationContext>(null
 
 export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> = ({
     config,
-    tableName,
     children,
-    rowClickFn,
+    filters
 }) => {
-
-    const user = useContext(AuthContext)
-
-    const { CELL_WIDTH, ORDERABLE_CELLS, HIDDEN_COLUMNS } = config;
 
     const [setQuery, getQuery] = useParamsCustom();
     const queries = getQuery();
-    const isUserChecked: boolean = user!.isFetched ? true : false
-
-    const filtersData = useQuery({
-        enabled: isUserChecked,
-        queryFn: () => fetchAbstractFilters(tableName),
-        queryKey: ["filters", tableName],
-    })
-
-    const { data: filters = [], isFetched } = filtersData;
 
     const default_filters: Record<string, string | number | string[]> = filters.reduce((acc, item) => ({ ...acc, [item.headerLabel]: item.defaultValue }), { page: 1, perPage: 25, order: "" });
 
@@ -55,7 +37,6 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     }, [JSON.stringify(queries)]);
 
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
-        disabled: !filtersData.isFetched,
         mode: "onChange",
         reValidateMode: 'onChange',
         defaultValues: { ...default_filters, ...filters, },
@@ -119,23 +100,19 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
 
         const updateFormValues = async () => {
             if (!isEmpty(queries)) {
-                await reset({
+                reset({
                     ...default_filters,
                     ...queries,
                 }, {
                     keepDirty: true,
                     keepDefaultValues: false,
                 });
-
-                // Теперь trigger выполнится только после завершения reset
                 await trigger();
             } else if (!isEmpty(default_filters)) {
-                // Обработка случая, когда queries пустые, но default_filters есть
-                await reset(default_filters, {
+                reset(default_filters, {
                     keepDirty: true,
                     keepDefaultValues: false,
                 });
-
                 await trigger();
             }
         };
@@ -143,18 +120,10 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
         updateFormValues();
     }, [JSON.stringify(default_filters)]);
 
-    console.log({дефолт: methods.formState.defaultValues})
-
     return (
-        <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData }}>
+        <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData: filters }}>
             <FormProvider {...methods}>
-                <CustomCellContext.Provider value={{
-                    config,
-                    orderableCells: ORDERABLE_CELLS,
-                    rowClickFn,
-                    hiddenColumns: HIDDEN_COLUMNS,
-                    cellWidths: CELL_WIDTH
-                }}>
+                <CustomCellContext.Provider value={{config}}>
                     {children}
                 </CustomCellContext.Provider>
             </FormProvider>

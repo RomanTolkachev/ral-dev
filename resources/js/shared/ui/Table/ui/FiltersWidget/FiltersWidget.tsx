@@ -1,34 +1,32 @@
 import { createContext, FunctionComponent, useContext } from 'react'
 import { Preloader } from '@/Components/utils/Preloader'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
-import { CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/AbstractFormProvider'
+import { CustomCellContext, CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/AbstractFormProvider'
 import createTranslateFn from '../../lib/translate'
 import { DropdownItem } from './DropdownItem'
 import { MainButton } from '../../../Buttons/MainButton'
-import { ICustomSubmitHandlerContext } from '../../model'
+import { CustomisationContext, ICustomSubmitHandlerContext } from '../../model'
 
 export const TranslateContext = createContext<ReturnType<typeof createTranslateFn> | null>(null);
 
-interface IProps {
-    className?: string
-    filters?: ISearchingFormItem[]
-    dictionary?: Record<string, string>
-}
-
-export const FiltersWidget: FunctionComponent<IProps> = ({ className, filters, dictionary }) => {
+export const FiltersWidget: FunctionComponent = () => {
 
     const submitContext = useContext<ICustomSubmitHandlerContext>(CustomSubmitHandlerContext)
-    const translateFn = dictionary ? createTranslateFn(dictionary) : null
+    const customContext = useContext<CustomisationContext | null>(CustomCellContext)
+    
 
-    if (!submitContext) {
+    if (!submitContext || !customContext) {
         return null
     }
 
-    const { customResetHandler } = submitContext;
+    const { customResetHandler, filtersData: filters } = submitContext;
+    const {DICTIONARY} = customContext.config
+    
+    const translateFn = DICTIONARY ? createTranslateFn(DICTIONARY) : null
 
     return (
         <form
-            className={`${className} flex-col overflow-hidden flex`}>
+            className={`flex-col overflow-hidden flex w-full`}>
             <div className={'px-6 pt-6 w-full grow shrink overflow-y-scroll space-y-4'}>
                 {!filters ? (
                     <Preloader widthStyles={'w-16'} />

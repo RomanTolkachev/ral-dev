@@ -1,10 +1,10 @@
-import { fetchAbstractTable, fetchRalQuery } from "@/shared/api/api"
+import { fetchAbstractTable } from "@/shared/api/api"
 import useParamsCustom from "@/shared/query/useParamsCustom"
 import IPagination, { TDefaultPaginationRequest } from "@/shared/types/pagination"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { isEmpty } from "lodash"
-import { useEffect, useMemo } from "react"
+import { useMemo } from "react"
 
 type TParams = {
     tableName: string,
@@ -14,30 +14,29 @@ type TParams = {
 }
 
 const useTableDataQuery = ({ tableName, defaultRequest }: TParams) => {
-
     const [, getQuery] = useParamsCustom();
     const rawQuery = getQuery();
-    const currentQueries = useMemo(() => rawQuery, [JSON.stringify(rawQuery)]);
 
-    const computedQueries = useMemo(() => {
-        const base = !isEmpty(currentQueries) ? currentQueries : defaultRequest;
-        return { ...base }
-    }, [currentQueries])
+    // Правильное глубокое сравнение
+    const currentQueries = useMemo(() => {
+        return !isEmpty(rawQuery) ? rawQuery : defaultRequest;
+    }, [rawQuery, defaultRequest]); // Исправлено!
 
     const queryKey = useMemo(() => {
-        return [tableName, computedQueries];
-    }, [tableName, JSON.stringify(computedQueries)]); // Сериализуем для стабильности
+        return [tableName, currentQueries];
+    }, [tableName, currentQueries]);
 
-    const { data, isPending, fetchStatus } = useQuery<IPagination, AxiosError>({
+    const useTableReturn = useQuery<IPagination, AxiosError>({
         queryKey: queryKey,
-        queryFn: () => {
-            return fetchAbstractTable(tableName, computedQueries).then(res => res.data)
-        }
+        queryFn: ({ signal }) => {
+            return fetchAbstractTable(tableName, currentQueries, signal).then(res => res.data)
+        },
+        retry: (fails, err) => fails < 2,
+        placeholderData: keepPreviousData, // пока мы фетчим, у нас будет старая data
+        staleTime: 1000 * 60 * 5, // 5 минут - данные считаются свежими
     })
 
-    return { data, isPending, fetchStatus }
+    return useTableReturn
 }
 
 export default useTableDataQuery;
-
-
