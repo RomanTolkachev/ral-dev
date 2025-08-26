@@ -2,23 +2,24 @@
 
 namespace App\UseCases\AccreditationArea\GetAccreditationAreaList;
 
+use App\Models\AccreditationArea;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use App\models\User;
 
 class GetAccreditationAreaListController extends Controller
 {
     public function __invoke(GetAccrediTationAreaListHandler $handler, GetAccreditationAreaListRequest $request): JsonResponse
     {
 
-        // dd($request);
         $result = $handler->execute(
-            $request->page, 
-            $request->perPage, 
-            $request->user_columns, 
-            $request->gost ?? [], 
-            $request->tn_ved ?? []
+            page: $request->page,
+            itemsPerPage: $request->perPage,
+            user: $request->user(),
+            defaultUser: User::getDefaultUser(),
+            filter: new GetAccreditationAreaListFilter(new AccreditationArea(), $request)
         );
         
         return new JsonResponse($result, Response::HTTP_OK);

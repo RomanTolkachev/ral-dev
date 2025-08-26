@@ -19,9 +19,10 @@ const motionProperties = {
 };
 
 export const LinkWithCircle: FC<Props> = ({ npStatus = "", status = "", link = "", value = "", queryValue }) => {
+    console.log({status, npStatus})
     return (
         <span className="flex items-center w-full">
-            {status && npStatus ? (
+            {status || npStatus ? (
                 <>
                     <span className="mx-4 w-fit">
                         <Circle outerColor={getNPStatusColor(npStatus)} innerColor={getStatusColor(status)} />

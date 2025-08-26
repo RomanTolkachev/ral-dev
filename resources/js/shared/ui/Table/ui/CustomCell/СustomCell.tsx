@@ -1,9 +1,7 @@
 import highlight from "@/shared/ui/Table/lib/highlightText";
 import useParamsCustom from "@/shared/query/useParamsCustom";
-import { flexRender, Cell } from "@tanstack/react-table";
-import { color, motion } from "framer-motion";
+import { Cell } from "@tanstack/react-table";
 import { FC, ReactNode } from "react";
-import { Circle } from "./LinkWithCircle/Circle";
 import { getNPStatusColor, getStatusColor } from "./lib/getColor";
 import { LinkWithCircle } from "./LinkWithCircle/LinkWithCircle";
 
@@ -100,14 +98,14 @@ export const CustomCell: FC<Props> = (
                 </span>
             );
 
-        case "ralShortInfoView__RegNumber":
+        case "ral_short_info_view__RegNumber":
             console.log(context.row.original)
             return (
                 <LinkWithCircle
                     link={row.link}
-                    npStatus={context.row.original.ralShortInfoView__NPStatus}
-                    queryValue={currentQuery.ralShortInfoView__fullName}
-                    status={context.row.original.ralShortInfoView__new_status_AL}
+                    npStatus={context.row.original.ral_short_info_view__NPstatus}
+                    queryValue={currentQuery.ral_short_info_view__fullName}
+                    status={context.row.original.ral_short_info_view__new_status_AL}
                     value={stringValue}
                 />
             )

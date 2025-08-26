@@ -9,6 +9,9 @@ use Carbon\Carbon;
  * @property-read integer $page
  * @property-read integer $perPage
  * @property-read array $user_columns
+ * @method array query() Получить все query параметры
+ * @method void merge(array $attributes) Объединить данные с запросом
+ * @method mixed user() Получить пользователя
  */
 class GetCertificatesListRequest extends FormRequest
 {
@@ -17,7 +20,7 @@ class GetCertificatesListRequest extends FormRequest
         return true;
     }
 
-   protected array $columnsToFormatDates = ['update_status_date', 'date', 'endDate'];
+    protected array $columnsToFormatDates = ['update_status_date', 'date', 'endDate'];
     protected function formatToIsoZolo($rawDate): string | null
     {
         return  $rawDate === null ? null : Carbon::parse($rawDate)->toIso8601ZuluString();
@@ -35,7 +38,7 @@ class GetCertificatesListRequest extends FormRequest
         ];
     }
 
-        public function after(): array
+    public function after(): array
     {
         return [
             function () {

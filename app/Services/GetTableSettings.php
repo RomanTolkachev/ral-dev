@@ -11,9 +11,9 @@ class GetTableSettings
      * @param User $user текущий пользователь
      * @param User $defaultUser Пользователь с настройками по умолчанию
      */
-    public static function for(User | null $user, User $defaultUser): array
+    public static function for(User | null $user, User $defaultUser, string $for ): array
     {
-        $getSettings = function (User | null $person) {
+        $getSettings = function (User | null $person) use ($for) {
             if ($person === null) {
                 return [];
             }
@@ -23,7 +23,7 @@ class GetTableSettings
                 return [];
             }
             $settings = $person->userSettings
-                ->firstWhere('settings_for_table', 'certificates_short_info');
+                ->firstWhere('settings_for_table', $for);
 
             return $settings ? json_decode(($settings->toArray()['settings'] ?? []), true) : [];
         };

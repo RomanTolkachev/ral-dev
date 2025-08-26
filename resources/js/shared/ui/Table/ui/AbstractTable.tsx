@@ -1,6 +1,5 @@
 import { FunctionComponent, useContext, useLayoutEffect, useMemo, useState } from 'react'
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { SVG } from '@/Components/utils/SVG'
 import { getHeaders } from '@/shared/ui/Table/lib/getHeaders'
 import { IRalItem } from '@/shared/types/ral'
 import IPagination from '@/shared/types/pagination'
@@ -17,7 +16,6 @@ import { CustomCell } from './CustomCell'
 import { CustomisationContext } from '../model'
 import { enterExitAnimation } from '@/shared/framer-motion/enter-exit-animation'
 import { getErrorMessage } from '../lib'
-import { AxiosError } from 'axios'
 import { NoData } from './notFound'
 
 interface IProps {

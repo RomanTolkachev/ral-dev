@@ -23,7 +23,7 @@ readonly class GetCertificatesListHandler
 
         $model = CertificatesShortInfo::with(["ralShortInfoView", "certificateApplicant", 'certificationAuthority', "statusChange"]);
 
-        $columns = GetTableSettings::for($user, $defaultUser);
+        $columns = GetTableSettings::for($user, $defaultUser, "certificates_short_info");
 
         $regulationsMap = DictionaryRegulation::pluck('values_reg')->toArray();
 
