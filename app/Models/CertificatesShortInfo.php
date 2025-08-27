@@ -18,6 +18,8 @@ class CertificatesShortInfo extends Model
     protected $table = "certificates_short_info";
     public $timestamps = false;
 
+    protected $with = ["ralShortInfoView", "certificateApplicant", 'certificationAuthority', "statusChange"];
+
     protected function casts(): array
     {
         return [
