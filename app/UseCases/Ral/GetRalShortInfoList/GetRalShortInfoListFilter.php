@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCases\GetRalShortInfoList;
+namespace App\UseCases\Ral\GetRalShortInfoList;
 
 use App\Models\RalShortInfoView;
 use Illuminate\Database\Eloquent\Builder;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCases\GetRalShortInfoList;
+namespace App\UseCases\Ral\GetRalShortInfoList;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

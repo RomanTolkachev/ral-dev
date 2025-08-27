@@ -1,42 +1,56 @@
 <?php
 
-use App\UseCases\AccreditationArea\GetAccreditationAreaFilters\GetAccreditationAreaFiltersController;
-use App\UseCases\AccreditationArea\GetAccreditationAreaList\GetAccreditationAreaListController;
-use App\Http\Controllers\GetFiltersController;
-use App\UseCases\GetRalShortInfoList\GetRalShortInfoListController;
-use App\UseCases\Certificates\GetCertificatesList\GetCertificatesListController;
-use App\UseCases\Certificates\GetCertificatesFilters\GetCertificatesFiltersController;
-use App\UseCases\Certificates\GetCertificatesExcel\GetCertificatesExcelController;
-use App\UseCases\GetAvailableColumns\GetAvailableColumnsController;
-use App\Http\Controllers\TestController;
-use App\UseCases\GetCertificationBody\GetCertificationBodyController;
-use App\UseCases\User\GetUser\GetUserController;
-use App\UseCases\User\Login\LoginController;
-use App\UseCases\User\LogOut\LogOutController;
-use App\UseCases\User\TableSettings\GetTableSettings\GetTableSettingsController;
-use App\UseCases\User\TableSettings\SetTableSettings\SetTableSettingsController;
-use App\UseCases\GetInputValues\GetInputValuesController;
+use App\UseCases\AccreditationArea\{
+    GetAccreditationAreaFilters\GetAccreditationAreaFiltersController,
+    GetAccreditationAreaList\GetAccreditationAreaListController
+};
+use App\UseCases\Ral\{
+    GetRalShortInfoFilters\GetRalShortInfoFiltersController,
+    GetRalShortInfoList\GetRalShortInfoListController
+};
+use App\UseCases\Certificates\{
+    GetCertificatesList\GetCertificatesListController,
+    GetCertificatesFilters\GetCertificatesFiltersController,
+    GetCertificatesExcel\GetCertificatesExcelController
+};
+use App\UseCases\User\{
+    GetUser\GetUserController,
+    Login\LoginController,
+    LogOut\LogOutController,
+    TableSettings\GetTableSettings\GetTableSettingsController,
+    TableSettings\SetTableSettings\SetTableSettingsController
+};
+use App\UseCases\{
+    GetAvailableColumns\GetAvailableColumnsController,
+    GetCertificationBody\GetCertificationBodyController,
+    GetInputValues\GetInputValuesController
+};
 use Illuminate\Support\Facades\Route;
 
+Route::prefix('ral')->group(function () {
+    Route::get("", GetRalShortInfoListController::class);
+    Route::get("filters", GetRalShortInfoFiltersController::class);
+    Route::get("certification_body", GetCertificationBodyController::class);
+});
 
-Route::get("test", TestController::class);
-Route::get("ral", GetRalShortInfoListController::class);
-Route::get("ral/filters", GetFiltersController::class);
-Route::get("ral/certification_body", GetCertificationBodyController::class);
-Route::get("accreditation_area", GetAccreditationAreaListController::class);
-Route::get("accreditation_area/filters", GetAccreditationAreaFiltersController::class);
+Route::prefix('accreditation_area')->group(function () {
+    Route::get("", GetAccreditationAreaListController::class);
+    Route::get("filters", GetAccreditationAreaFiltersController::class);
+});
 
-Route::get("certificates_short_info", GetCertificatesListController::class);
-Route::get("certificates_short_info/filters", GetCertificatesFiltersController::class);
+Route::prefix('certificates_short_info')->group(function () {
+    Route::get("", GetCertificatesListController::class);
+    Route::get("filters", GetCertificatesFiltersController::class);
+    Route::get("export", GetCertificatesExcelController::class);
+});
 
-Route::get("certificates_short_info/export",  GetCertificatesExcelController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get("user", GetUserController::class);
+    Route::get("user_columns", GetTableSettingsController::class);
+    Route::post("set_settings", SetTableSettingsController::class);
+    Route::post("log_out", LogOutController::class);
+    Route::get("available_columns", GetAvailableColumnsController::class);
+    Route::get("input_values", GetInputValuesController::class);
+});
 
-Route::get("available_columns", GetAvailableColumnsController::class);
-
-Route::get("input_values", GetInputValuesController::class);
-Route::middleware('auth:sanctum')->get("user", GetUserController::class);
-Route::middleware('auth:sanctum')->get("user_columns", GetTableSettingsController::class);
-Route::middleware('auth:sanctum')->post("set_settings", SetTableSettingsController::class);
-Route::middleware('auth:sanctum')->post("log_out", LogOutController::class);
 Route::middleware('web')->post("login", LoginController::class);
-

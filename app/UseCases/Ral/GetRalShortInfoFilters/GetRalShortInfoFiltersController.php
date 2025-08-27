@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\UseCases\Ral\GetRalShortInfoFilters;
 
 use Illuminate\Http\JsonResponse;
 
-class GetFiltersController
+class GetRalShortInfoFiltersController
 {
 
     public function __invoke(): JsonResponse
