@@ -1,7 +1,7 @@
 import { FunctionComponent, useContext, useEffect, useLayoutEffect } from 'react'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import { Controller, useFormContext } from 'react-hook-form'
-import { CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/AbstractFormProvider'
+import { CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/CustomFormProvider'
 
 
 interface IProps {

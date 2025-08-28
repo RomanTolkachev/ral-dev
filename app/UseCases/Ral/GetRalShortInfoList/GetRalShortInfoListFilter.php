@@ -4,10 +4,7 @@ namespace App\UseCases\Ral\GetRalShortInfoList;
 
 use App\Models\RalShortInfoView;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\DB;
 use App\Http\Filters\AbstractFilter;
-
 
 class GetRalShortInfoListFilter extends AbstractFilter
 {

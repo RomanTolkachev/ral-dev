@@ -1,7 +1,7 @@
-import { FunctionComponent, useContext, useLayoutEffect, useState } from 'react';
+import { FunctionComponent, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { Reorder } from 'motion/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CustomCellContext } from '@/shared/ui/Table/providers/AbstractFormProvider';
+import { CustomCellContext } from '@/shared/ui/Table/providers/CustomFormProvider';
 import { fetchAwailableColumns, fetchSelectedColumns, setColumns } from '../lib';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,8 +17,10 @@ export const Settings: FunctionComponent<Props> = ({ className }) => {
         return null;
     }
 
-    const { config: { HIDDEN_COLUMNS, TABLE_NAME } } = cellContext;
+    const { config: { HIDDEN_COLUMNS, TABLE_NAME, DICTIONARY } } = cellContext;
     const queryClient = useQueryClient();
+
+    console.log(DICTIONARY)
 
     const { availableColumns, isAvailableColumnsFetching } = fetchAwailableColumns(TABLE_NAME);
     const { selectedColumns, isSelectedColumnsFetching } = fetchSelectedColumns(TABLE_NAME);
@@ -26,18 +28,18 @@ export const Settings: FunctionComponent<Props> = ({ className }) => {
     const [fullList, setFullList] = useState<string[]>([]);
     const [columnsValues, setColumnsValues] = useState<string[]>([]);
 
-    useLayoutEffect(() => {
-        if (availableColumns.length > 0 && selectedColumns.length > 0) {
+    useEffect(() => {
+        if (availableColumns.length > 0 ) {
             const uniqueColumns = [...new Set([...selectedColumns, ...availableColumns])].filter(item => !HIDDEN_COLUMNS.includes(item));
             setFullList(uniqueColumns);
         }
-    }, [availableColumns, selectedColumns]);
+    }, [isAvailableColumnsFetching]);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (selectedColumns.length > 0) {
             setColumnsValues(selectedColumns);
         }
-    }, [selectedColumns]);
+    }, [isSelectedColumnsFetching]);
 
     const onUpdate = useMutation({
         mutationFn: (params: { settings: string[] }) => setColumns(params, TABLE_NAME),
@@ -61,7 +63,7 @@ export const Settings: FunctionComponent<Props> = ({ className }) => {
     }
 
     return (
-        <div className={`${className} `}>
+        <div className={`${className}`}>
             <Reorder.Group axis="y" values={fullList} onReorder={setFullList}>
                 {fullList.map((item) => {
                     return (
@@ -79,7 +81,7 @@ export const Settings: FunctionComponent<Props> = ({ className }) => {
                                 }
                                 checked={columnsValues.includes(item)}
                             />
-                            <span>{item}</span>
+                            <span>{DICTIONARY[item] ?? item}</span>
                         </Reorder.Item>
                     )
                 })}

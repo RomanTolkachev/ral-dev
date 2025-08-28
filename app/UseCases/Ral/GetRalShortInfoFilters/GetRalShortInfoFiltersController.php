@@ -18,7 +18,7 @@ class GetRalShortInfoFiltersController
             [
                 'headerLabel' => 'new_status_AL',
                 'type' => 'checkBox',
-                'defaultValue' => ["", ""],
+                'defaultValue' => [],
                 'values' => [
                     'checkboxValues' => [
                         'Частично приостановлен',
@@ -104,21 +104,6 @@ class GetRalShortInfoFiltersController
                 'type' => 'multi',
                 'defaultValue' => [],
             ],
-            [
-                'headerLabel' => 'fullText',
-                'type' => 'singleText',
-                'defaultValue' => '',
-            ],
-            [
-                'headerLabel' => 'regulation',
-                'type' => 'multi',
-                'defaultValue' => [],
-            ],
-            [
-                'headerLabel' => 'tnved',
-                'type' => 'multi',
-                'defaultValue' => [],
-            ]
         ];
 
         return new JsonResponse($filters);

@@ -10,7 +10,7 @@ class SetTableSettingsHandler
     {
 // dd($query);
         $res = UserSetting::updateOrInsert(
-            ['user_id' => $query['user_id']],
+            ['user_id' => $query['user_id'], 'settings_for_table' => $query['table_name']],
             ['settings_for_table' => $query['table_name'], 'settings' => json_encode($query['settings'])]
         );
         

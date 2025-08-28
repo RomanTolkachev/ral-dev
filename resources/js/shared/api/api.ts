@@ -6,8 +6,8 @@ import { IUser } from '../types/user'
 import { TRalModel } from '@/features/ralTable/model/types'
 
 // export const LOCAL_URL: 'http://127.0.0.1:8000/api' = 'http://127.0.0.1:8000/api'
-export const LOCAL_URL: "/api" = "/api"
-export const WEB_URL: "/" = "/"
+export const LOCAL_URL = "/api"
+export const WEB_URL = "/"
 
 export const axiosApi = axios.create({
     baseURL: LOCAL_URL,

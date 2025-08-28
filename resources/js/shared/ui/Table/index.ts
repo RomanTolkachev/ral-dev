@@ -1,1 +1,1 @@
-export {AbstractTable} from "./ui/AbstractTable"
+export {Table as AbstractTable} from "./ui/Table"

@@ -42,8 +42,8 @@ class RalShortInfoView extends Model
         ];
     }
 
-    public function regulationaAndTnved()
+    public function regulationAndTnved()
     {
-        return $this->hasOne(NpRegulationsTnved::class, 'link');
+        return $this->hasOne(NpRegulationsTnved::class, 'link', 'link');
     }
 }

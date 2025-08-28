@@ -27,7 +27,7 @@ use App\UseCases\{
 };
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('ral')->group(function () {
+Route::prefix('ral_short_info')->group(function () {
     Route::get("", GetRalShortInfoListController::class);
     Route::get("filters", GetRalShortInfoFiltersController::class);
     Route::get("certification_body", GetCertificationBodyController::class);

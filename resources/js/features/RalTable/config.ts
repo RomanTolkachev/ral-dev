@@ -91,14 +91,10 @@ const CELL_WIDTH: Partial<Record<TRalModel, number>> = {RegNumber: 210}
 
 export const config: IConfig<TRalModel> = {
     CELL_WIDTH,
-    DEFAULT_COLUMNS,
-    DEFAULT_FILTERS,
+    ROW_CLICK_FN: "navigate",
     DEFAULT_REQUEST,
     DICTIONARY,
     ORDERABLE_CELLS,
     HIDDEN_COLUMNS,
     TABLE_NAME: "ral_short_info"
 }
-
-
-export default { DEFAULT_REQUEST, DEFAULT_COLUMNS, DICTIONARY, DEFAULT_FILTERS, ORDERABLE_CELLS, HIDDEN_COLUMNS, CELL_WIDTH, TABLE_NAME: "ral_short_info" }

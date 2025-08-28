@@ -1,4 +1,4 @@
-import { CustomSubmitHandlerContext } from "@/shared/ui/Table/providers/AbstractFormProvider";
+import { CustomSubmitHandlerContext } from "@/shared/ui/Table/providers/CustomFormProvider";
 import useParamsCustom from "@/shared/query/useParamsCustom";
 import { motion } from "motion/react";
 import { FunctionComponent, useContext, useEffect, useRef, useState } from "react";

@@ -4,7 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { SVG } from '@/Components/utils/SVG.tsx'
 import { AnimatePresence, motion } from 'motion/react'
 import { enterExitAnimation as animationParams } from '@/shared/framer-motion/enter-exit-animation.ts'
-import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/ui/Table/providers/AbstractFormProvider'
+import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from '@/shared/ui/Table/providers/CustomFormProvider'
 import { isEmpty } from 'lodash'
 
 interface IProps {

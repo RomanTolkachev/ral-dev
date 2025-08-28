@@ -1,7 +1,7 @@
 import { createContext, FunctionComponent, useContext } from 'react'
 import { Preloader } from '@/Components/utils/Preloader'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
-import { CustomCellContext, CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/AbstractFormProvider'
+import { CustomCellContext, CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/CustomFormProvider'
 import createTranslateFn from '../../lib/translate'
 import { DropdownItem } from './DropdownItem'
 import { MainButton } from '../../../Buttons/MainButton'

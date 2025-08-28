@@ -2,7 +2,7 @@ import { FunctionComponent, PropsWithChildren, useContext } from 'react'
 import { SVG } from '@/Components/utils/SVG'
 import { translateHeaderName } from '@/shared/ui/Table/lib/translateHeaderName'
 import { AnimatePresence, motion } from 'motion/react'
-import { CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/AbstractFormProvider'
+import { CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/CustomFormProvider'
 import { TranslateContext } from '../Table/ui/FiltersWidget/FiltersWidget'
 
 interface IProps {

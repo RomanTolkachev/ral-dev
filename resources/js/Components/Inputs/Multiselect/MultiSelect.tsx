@@ -1,4 +1,4 @@
-import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from "@/shared/ui/Table/providers/AbstractFormProvider";
+import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from "@/shared/ui/Table/providers/CustomFormProvider";
 import { ISearchingFormItem } from "@/shared/types/searchingFilters";
 import { FC, useContext, useState, KeyboardEvent, useRef, ReactNode } from "react";
 import { Controller, useFormContext } from "react-hook-form";

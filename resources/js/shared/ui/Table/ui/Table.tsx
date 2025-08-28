@@ -5,7 +5,7 @@ import { IRalItem } from '@/shared/types/ral'
 import IPagination from '@/shared/types/pagination'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router'
-import { CustomCellContext } from '@/shared/ui/Table/providers/AbstractFormProvider'
+import { CustomCellContext } from '@/shared/ui/Table/providers/CustomFormProvider'
 import { PageNavigation } from '@/Components/Inputs/PageNavigation/PageNavigation'
 import FoundedResults from '@/Components/Inputs/PageNavigation/Pagination'
 import PerPageController from '@/Components/Inputs/PerPageController/PerPageController'
@@ -38,7 +38,7 @@ const childrenVariants = {
     end: { opacity: 1 }
 }
 
-export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedData, dictionary, isUplating: isUpdating = false, failureCount = 0, error }) => {
+export const Table: FunctionComponent<IProps> = ({ className, paginatedData, dictionary, isUplating: isUpdating = false, failureCount = 0, error }) => {
 
     const navigate = useNavigate();
 
@@ -87,21 +87,19 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
         },
     })
 
-    /**
-     * функция для перехода по ссылке при клике на row
-     */
-    function handleRowClick(to: string): void {
-        if (ROW_CLICK_FN) {
-            ROW_CLICK_FN()
-        } else {
-            navigate(to)
+    function handleClick(action: "navigate" | "none", to: string): void {
+        switch (action) {
+            case "navigate": {
+                navigate(to)
+            }
+            case "none": {
+                return
+            }
         }
     }
 
-    /**
-     * принудительно вызываем рендер tbody каждое изменение ralData, чтобы менять ключ анимации.
-     * Ключ подставлен в key у tbody
-     */
+    // принудительно вызываем рендер tbody каждое изменение ralData, чтобы менять ключ анимации.
+    // Ключ подставлен в key у tbody
     const [animationKey, setAnimationKey] = useState<number>(0);
     useLayoutEffect(() => {
         paginatedData && setAnimationKey(prev => prev + 1)
@@ -124,10 +122,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
                         </motion.div>
                     )}
 
-                    <div
-                        className={
-                            'text-base grow max-w-full h-full min-h-full max-h-full overflow-x-auto overflow-y-auto bg-background-block'
-                        }>
+                    <div className='text-base grow max-w-full h-full min-h-full max-h-full overflow-x-auto overflow-y-auto bg-background-block'>
                         {error ?
                             <div className='w-full h-full grid place-items-center text-table-base'>{getErrorMessage(null, error)}</div> :
                             Object.keys(tableData).length ? (
@@ -169,7 +164,7 @@ export const AbstractTable: FunctionComponent<IProps> = ({ className, paginatedD
                                                     }}
                                                     className={'even:bg-row-even odd:bg-row-odd h-20 z-10'}
                                                     key={row.id}
-                                                    onClick={() => handleRowClick(`${row.original.id}${location.search}`)}
+                                                    onClick={() => handleClick(ROW_CLICK_FN, `${row.original.id}${location.search}`)}
                                                 >
                                                     {row.getVisibleCells().map((cell) => {
                                                         return (

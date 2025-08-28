@@ -7,7 +7,7 @@ import { enterExitAnimation as animationParams } from '@/shared/framer-motion/en
 import { SVG } from '@/Components/utils/SVG'
 import openCalendarPicker from './lib/openCalendarPicker'
 import dateRangeValidation from './lib/dateRangeValidation'
-import { CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/AbstractFormProvider'
+import { CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/CustomFormProvider'
 import { MainButton } from '@/shared/ui/Buttons/MainButton'
 
 interface IProps {

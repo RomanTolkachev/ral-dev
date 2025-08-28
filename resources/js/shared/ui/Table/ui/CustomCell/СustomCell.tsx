@@ -44,6 +44,12 @@ export const CustomCell: FC<Props> = (
                     {highlight(stringValue, currentQuery.gost)}
                 </span>
             );
+        case "ral_short_info_view__fullName":
+            return (
+                <span className="text-wrap overflow-hidden mx-auto">
+                    {highlight(stringValue, currentQuery.ral_short_info_view__fullName)}
+                </span>
+            );
 
         case "full_gost":
             return (
@@ -81,6 +87,21 @@ export const CustomCell: FC<Props> = (
                     {highlight(stringValue, currentQuery.tnved)}
                 </span>
             );
+            
+        case "tn_ved":
+            return (
+                <span
+                    className="text-wrap overflow-hidden mx-auto line-clamp-3"
+                    title={stringValue}
+                    style={{
+                        display: '-webkit-box',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: 3
+                    }}
+                >
+                    {highlight(stringValue, currentQuery.tn_ved)}
+                </span>
+            );
 
         case "new_status_AL":
             return (
@@ -99,14 +120,13 @@ export const CustomCell: FC<Props> = (
             );
 
         case "ral_short_info_view__RegNumber":
-            console.log(context.row.original)
             return (
                 <LinkWithCircle
                     link={row.link}
                     npStatus={context.row.original.ral_short_info_view__NPstatus}
                     queryValue={currentQuery.ral_short_info_view__fullName}
                     status={context.row.original.ral_short_info_view__new_status_AL}
-                    value={stringValue}
+                    value={highlight(stringValue, currentQuery.ral_short_info_view__RegNumber) as string | null}
                 />
             )
         case "NPstatus":

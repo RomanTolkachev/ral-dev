@@ -4,7 +4,8 @@ import { axiosApi } from "@/shared/api/api";
 import { Preloader } from "@/Components/utils/Preloader";
 import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import transpondInTwoCols from "../lib/transpondInTwoCols";
-import RalModalCell from "./RalModalCell";
+import { CustomCell } from "@/shared/ui/Table/ui/CustomCell";
+import styles from "./styles.module.css"
 
 
 interface IProps {
@@ -18,11 +19,10 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
     const [certificationBodyData, setCertificationbodyData] = useState<ICertData | undefined>(undefined)
     const { ralId } = useParams();
 
-    /** 
-    *    модалка всегда запрашивает подробную информацию
-    */
+
+    // модалка всегда запрашивает подробную информацию
     useEffect(() => { // TODO: или тут тоже через react query нужно?
-        axiosApi.get<Record<string, any>>('/ral/certification_body', {
+        axiosApi.get<Record<string, any>>('/ral_short_info/certification_body', {
             params: { cert_id: ralId }
         }).then(res => res ? (setCertificationbodyData(res.data)) : null); // TODO: нужно продумать тут catch и правильно ли указывать null в тернарнике
     }, [ralId])
@@ -31,16 +31,16 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
         {
             accessorKey: "param",
             header: 'параметр',
-            cell: (props: any) => { return <>{props.getValue()}</> },
+            cell: (props: any) => props.getValue() ,
         },
         {
             accessorKey: "value",
             header: 'значение',
-            cell: (props: any) => { return <>{props.getValue()}</> },
+            cell: (props: any) => props.getValue(),
         }
     ];
 
-    let tableData = useMemo<Record<string, any>[] | []>(() => {
+    const tableData = useMemo<Record<string, any>[] | []>(() => {
         return certificationBodyData ? transpondInTwoCols(certificationBodyData, "param", "value") : []
     }, [certificationBodyData])
 
@@ -60,12 +60,8 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
                         <tbody className={'font-medium text-table-base'}>
                             {table.getRowModel().rows.map((row) => {
                                 return (
-                                    <tr className={'even:bg-row-modal-even odd:bg-row-modal-odd [&_td:first-child]:text-nowrap [&_td]:text-start [&_ul]'} key={row.id}>
-                                        {row.getVisibleCells().map((cell) => {
-                                            return (
-                                                <RalModalCell key={cell.id} cellData={cell} />
-                                            )
-                                        })}
+                                    <tr key={row.id} className={'even:bg-row-modal-even odd:bg-row-modal-odd [&_td:first-child]:text-nowrap [&_td]:text-start [&_ul]'}>
+                                        {row.getVisibleCells().map(cell => <td key={cell.id}><CustomCell cellData={cell} /></td>)}
                                     </tr>
                                 )
                             })}

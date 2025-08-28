@@ -1,5 +1,5 @@
 import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
-import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useMemo } from 'react'
+import { createContext, FunctionComponent, PropsWithChildren, useEffect, useMemo } from 'react'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import { isEmpty } from 'lodash'
 import { CustomisationContext, ICustomSubmitHandlerContext } from '../model'
@@ -20,7 +20,7 @@ export const CustomSubmitHandlerContext = createContext<ICustomSubmitHandlerCont
 
 export const CustomCellContext = createContext<null | CustomisationContext>(null)
 
-export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> = ({
+export const CustomFormProvider: FunctionComponent<PropsWithChildren<IProps>> = ({
     config,
     children,
     filters
@@ -96,8 +96,6 @@ export const AbstractFormProvider: FunctionComponent<PropsWithChildren<IProps>> 
     }
 
     useEffect(() => {
-        console.log("сработал эффект", { default_filters });
-
         const updateFormValues = async () => {
             if (!isEmpty(queries)) {
                 reset({
