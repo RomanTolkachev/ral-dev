@@ -17,10 +17,9 @@ const useTableDataQuery = ({ tableName, defaultRequest }: TParams) => {
     const [, getQuery] = useParamsCustom();
     const rawQuery = getQuery();
 
-    // Правильное глубокое сравнение
     const currentQueries = useMemo(() => {
         return !isEmpty(rawQuery) ? rawQuery : defaultRequest;
-    }, [rawQuery, defaultRequest]); // Исправлено!
+    }, [rawQuery, defaultRequest])
 
     const queryKey = useMemo(() => {
         return [tableName, currentQueries];

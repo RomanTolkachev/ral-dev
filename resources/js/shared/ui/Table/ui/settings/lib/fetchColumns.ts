@@ -2,7 +2,7 @@ import { axiosApi } from "@/shared/api/api";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-const getAvailableColumns = (tableName: string): Promise<string[]> => {
+export const getAvailableColumns = (tableName: string): Promise<string[]> => {
     return axiosApi.get<string[]>(`/available_columns`, {
         params: { for: tableName },
         headers: {
@@ -13,7 +13,7 @@ const getAvailableColumns = (tableName: string): Promise<string[]> => {
     }).then(res => res.data)
 }
 
-const getUserColumns = (tableName: string): Promise<string[]> => {
+export const getUserColumns = (tableName: string): Promise<string[]> => {
     return axiosApi.get<string[]>(`/user_columns`, {
         params: { for: tableName },
         withCredentials: true,

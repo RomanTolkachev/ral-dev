@@ -238,6 +238,8 @@ export const CustomCell: FC<Props> = (
         // Поля ral_short_info_view
         case "ral_short_info_view__address":
         case "ral_short_info_view__regulations":
+        case "oaDescription":
+        case "address":
         // Поля status_change
         case "status_change__comment":
             return (
