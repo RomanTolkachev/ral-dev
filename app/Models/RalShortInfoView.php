@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\HasColumnsHelp;
 use App\Models\Traits\HasQueryFilters;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
@@ -26,6 +27,19 @@ class RalShortInfoView extends Model
             'regDate' => 'datetime:d.m.Y',
         ];
     }
+
+    protected $hidden = ["laravel_through_key"];
+    protected $appends = ['custom_number'];
+
+    protected function customNumber(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->NPstatus . "*" . $this->new_status_AL . "*" . $this->RegNumber . "*" . $this->link;
+            }
+        );
+    }
+
 
     /**
      * реализация полнотекстового поиска по 3 колонкам 

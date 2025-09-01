@@ -1,4 +1,7 @@
-export function getStatusColor(status: string): string {
+import { TNPStatus, TStatus } from "../model";
+
+
+export function getStatusColor(status: TStatus): string {
 
     const normalizedStatus = status.toLowerCase()
         .replace(/ё/g, 'е'); // Приводим "ё" к "е" для унификации
@@ -34,16 +37,26 @@ export function getStatusColor(status: string): string {
     }
 }
 
-export function getNPStatusColor(status: string): string {
+export function getNPStatusColor(status: TNPStatus): string {
+    console.log("getNPStatusColor received:", status, "type:", typeof status);
+
     if (!status) {
+        console.log("Status is empty, returning empty string");
         return "";
     }
-    switch (status.toLowerCase()) {
+
+    const lowerStatus = status.toLowerCase().trim();
+    console.log("Lowercase status:", lowerStatus);
+
+    switch (lowerStatus) {
         case 'да':
-            return 'var(--cell-active)'; // Зеленый
+            console.log("Returning green color");
+            return 'var(--cell-active)';
         case 'нет':
-            return 'var(--cell-terminated)'; // Красный
+            console.log("Returning red color");
+            return 'var(--cell-terminated)';
         default:
-            return 'transparent'; // Прозрачный
+            console.log("Returning transparent");
+            return 'transparent';
     }
 }

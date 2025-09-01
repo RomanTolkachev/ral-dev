@@ -6,7 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use App\UseCases\Certificates\shared\GetCertificatesFilter;
 use App\Models\CertificatesShortInfo;
-use App\models\User;
+use App\Models\User;
 
 class GetCertificatesListController
 {

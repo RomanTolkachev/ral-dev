@@ -1,10 +1,11 @@
-import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from "@/shared/ui/Table/providers/CustomFormProvider";
+import { CustomSubmitHandlerContext } from "@/shared/ui/Table/providers/CustomFormProvider";
 import { ISearchingFormItem } from "@/shared/types/searchingFilters";
 import { FC, useContext, useState, KeyboardEvent, useRef, ReactNode } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { enterExitAnimation as animationParams } from "@/shared/framer-motion/enter-exit-animation";
 import { SVG } from "@/Components/utils/SVG";
+import { ICustomSubmitHandlerContext } from "@/shared/ui/Table/model";
 
 interface IProps {
     className?: string;

@@ -66,6 +66,7 @@ const CertificateModel = [
     "ral_short_info_view__NPstatus",
     "ral_short_info_view__NP_status_change_date",
     "ral_short_info_view__regulations",
+    "ral_short_info_view__custom_number",
     
     // Поля из certificate_applicant (с префиксами)
     "certificate_applicant__certificate_id",

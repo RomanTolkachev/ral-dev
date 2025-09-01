@@ -68,7 +68,6 @@ export const Settings: FunctionComponent<Props> = ({ className }) => {
     const selectedColumnsString = useMemo(() => JSON.stringify(selectedColumns), [selectedColumns]);
 
     useEffect(() => {
-        console.log("зашли в эффект")
         if (availableColumns.length > 0 && Array.isArray(selectedColumns)) {
             setFullList(createUniqueWithId({arrays: [selectedColumns, availableColumns], exclude: HIDDEN_COLUMNS}));
         }

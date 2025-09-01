@@ -113,7 +113,7 @@ export const Table: FunctionComponent<IProps> = ({ className, paginatedData, dic
                     {isUpdating && (
                         <motion.div
                             {...enterExitAnimation}
-                            className="absolute inset-0 bg-background-block/70 z-50 flex justify-center items-center rounded-xl"
+                            className="absolute inset-0 bg-background-block/70 z-10 flex justify-center items-center rounded-xl"
                         >
                             <div className="flex flex-col items-center">
                                 <Preloader widthStyles='w-10' />

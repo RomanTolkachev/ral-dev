@@ -17,6 +17,7 @@ const DICTIONARY: Record<TAccreditationAreaModel, string> = {
     source_file_label: 'Тип области',
     ral_short_info_view__fullName: "Лаборатория",
     ral_short_info_view__RegNumber: "Рег. номер",
+    ral_short_info_view__custom_number: "Рег. номер (расш.)",
     full_gost: "ГОСТ",
     ral_short_info_view__NPstatus: "Статус НЧ",
     ral_short_info_view__new_status_AL: "Текущий статус",
@@ -63,7 +64,8 @@ const CELL_WIDTH: Partial<Record<TAccreditationAreaModel, number>> = {
     okpd: 70,
     id_ral: 120,
     gost_object: 300,
-    full_gost: 300
+    full_gost: 300,
+    ral_short_info_view__custom_number: 210
 }
 
 const ORDERABLE_CELLS: TAccreditationAreaModel[] = [];
@@ -71,7 +73,7 @@ const HIDDEN_COLUMNS: TAccreditationAreaModel[] = ["ral_short_info_view__NPstatu
 
 export const config: IConfig<TAccreditationAreaModel> = {
     DICTIONARY,
-    ROW_CLICK_FN: () => { },
+    ROW_CLICK_FN: "none",
     TABLE_NAME: "accreditation_area",
     DEFAULT_REQUEST,
     CELL_WIDTH,

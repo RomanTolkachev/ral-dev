@@ -30,7 +30,9 @@ const AccreditationAreaModel = [
     "ral_short_info_view__id", 
     "ral_short_info_view__NPstatus", 
     "ral_short_info_view__NP_status_change_date", 
-    "ral_short_info_view__regulations"] as const ;
+    "ral_short_info_view__regulations",
+    "ral_short_info_view__custom_number"
+] as const ;
 
 export type TAccreditationAreaModel = typeof AccreditationAreaModel[number];
 

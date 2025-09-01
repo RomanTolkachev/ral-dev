@@ -70,6 +70,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "ral_short_info_view__NPstatus": "ral_short_info_view__ NPstatus",
     "ral_short_info_view__NP_status_change_date": "ral_short_info_view__ NP_status_change_date / Дата изм. статуса НЧ",
     "ral_short_info_view__regulations": "ral_short_info_view__ regulations",
+    "ral_short_info_view__custom_number": "Рег. номер (расш.)",
 
     // Поля из certificate_applicant
     "certificate_applicant__id": "certificate_applicant__ id / ID заявителя",
@@ -396,7 +397,8 @@ const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
     "status_change__publish_date": 150,
     "status_change__status_changes_by": 150,
     "status_change__id": 150,
-    "status_change__idChangeStatus": 150
+    "status_change__idChangeStatus": 150,
+    ral_short_info_view__custom_number: 210
 };
 
 const ORDERABLE_CELLS: TCertificateModel[] = ["update_status_date", "date", "endDate"]
@@ -405,7 +407,7 @@ const HIDDEN_COLUMNS: TCertificateModel[] = ["ral_short_info_view__link", "certi
 
 export const config: IConfig<TCertificateModel> = {
     DICTIONARY,
-    ROW_CLICK_FN: () => {},
+    ROW_CLICK_FN: "none",
     DEFAULT_REQUEST,
     CELL_WIDTH,
     ORDERABLE_CELLS,

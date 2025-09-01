@@ -1,4 +1,3 @@
-import { TDefaultPaginationRequest } from "@/shared/types/pagination";
 import { TDefaultRalRequest, TRalModel } from "./model/types"
 
 const PERIOD: number = 2
@@ -30,21 +29,6 @@ const DEFAULT_COLUMNS: TRalModel[] = [
     'regulations',
 ];
 
-const DEFAULT_FILTERS: Partial<Record<TRalModel | "fullText", string[]>> & TDefaultPaginationRequest = {
-    ["regDate"]: ["", ""],
-    ["status_change_date"]: ["", ""],
-    ["nameType"]: [],
-    ["new_status_AL"]: [],
-    ["NPstatus"]: [],
-    ["NP_status_change_date"]: ["", ""],
-    ["tnved"]: [],
-    ["regulation"]: [],
-    page: 1,
-    perPage: "25",
-    order: "",
-    fullText: [],
-};
-
 const DICTIONARY: Record<TRalModel, string> = {
     ["link"]: 'Ссылка',
     RegNumber: 'Рег. номер',
@@ -68,6 +52,7 @@ const DICTIONARY: Record<TRalModel, string> = {
     tnved: 'ТН ВЭД (НЧ)',
     regulation: 'ТР ТС/ЕАЭС (НЧ)',
     regulations: 'ТР ТС/ЕАЭС (НЧ)',
+    custom_number: "Рег. номер (расш.)"
 }
 
 const DEFAULT_REQUEST: TDefaultRalRequest = {
@@ -87,7 +72,7 @@ const DEFAULT_REQUEST: TDefaultRalRequest = {
 
 const ORDERABLE_CELLS: TRalModel[] = ['regDate', 'status_change_date', 'NP_status_change_date']
 const HIDDEN_COLUMNS: TRalModel[] = ['id', 'link']
-const CELL_WIDTH: Partial<Record<TRalModel, number>> = {RegNumber: 210}
+const CELL_WIDTH: Partial<Record<TRalModel, number>> = { RegNumber: 210, custom_number: 210 }
 
 export const config: IConfig<TRalModel> = {
     CELL_WIDTH,

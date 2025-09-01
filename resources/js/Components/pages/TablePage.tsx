@@ -7,6 +7,7 @@ import { fetchAbstractFilters } from '@/shared/api/api';
 import { Outlet } from 'react-router-dom';
 import { getErrorMessage } from '@/shared/ui/Table/lib';
 import { Table } from '@/shared/ui/Table/ui/Table';
+import { Tooltip } from '../toolTip/ToolTip';
 
 interface Props {
     config: IConfig<any>
@@ -36,6 +37,7 @@ export const TablePage: FunctionComponent<Props> = ({ config }) => {
 
     return (
         <div className='flex grow shrink min-h-0'>
+            <Tooltip content={"наведи"}>Подсказка</Tooltip>
             {firstLoad || error?.code ?
                 <div className='w-full h-full grid place-items-center text-table-base'>{getErrorMessage(failureCount, error?.code)}</div>
                 :

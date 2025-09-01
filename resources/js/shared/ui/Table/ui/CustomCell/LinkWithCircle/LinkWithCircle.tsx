@@ -3,10 +3,11 @@ import { Circle } from "./Circle"
 import { motion } from "motion/react"
 import highlight from "../../../lib/highlightText"
 import { getNPStatusColor, getStatusColor } from "../lib"
+import { TNPStatus, TStatus } from "../model"
 
 type Props = {
-    npStatus: string
-    status: string
+    npStatus: TNPStatus
+    status: TStatus
     link: string
     value: string | null
     queryValue: string | string[]
@@ -19,6 +20,7 @@ const motionProperties = {
 };
 
 export const LinkWithCircle: FC<Props> = ({ npStatus = "", status = "", link = "", value = "", queryValue }) => {
+    console.log(npStatus, status, link, value)
     return (
         <span className="flex items-center w-full">
             {status || npStatus ? (

@@ -2,9 +2,10 @@ import { FC, useState, useRef, useEffect, KeyboardEvent, ReactNode, useContext, 
 import { Controller, useFormContext } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { SVG } from "@/Components/utils/SVG";
-import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from "@/shared/ui/Table/providers/CustomFormProvider";
+import { CustomSubmitHandlerContext } from "@/shared/ui/Table/providers/CustomFormProvider";
 import { ISearchingFormItem } from "@/shared/types/searchingFilters";
 import highlight from "@/shared/ui/Table/lib/highlightText";
+import { ICustomSubmitHandlerContext } from "@/shared/ui/Table/model";
 
 interface IProps {
     className?: string;

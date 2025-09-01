@@ -1,4 +1,3 @@
-import ralConfig from '@/features/ralTable/config'
 import { TDefaultPaginationRequest } from "@/shared/types/pagination";
 
 
@@ -26,7 +25,8 @@ const RAL_MODEL = [
     'regulations',
     'tnved',
     'regulation',
-    "fullText"
+    "fullText",
+    "custom_number"
 ] as const
 
 export type TRalModel = typeof RAL_MODEL[number];

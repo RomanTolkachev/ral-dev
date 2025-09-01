@@ -4,27 +4,15 @@ import { Cell } from "@tanstack/react-table";
 import { FC, ReactNode } from "react";
 import { getNPStatusColor, getStatusColor } from "./lib/getColor";
 import { LinkWithCircle } from "./LinkWithCircle/LinkWithCircle";
+import { TNPStatus, TStatus } from "./model";
+import { TColumnAccessors } from "@/features";
 
 type Props = {
     cellData: Cell<any, unknown>
 }
 
-const linkMotionProps = {
-    className: "inline-block underline",
-    style: { scale: 1.01, zIndex: -10 },
-    initial: { scale: 1.01 },
-    whileHover: { scale: 1.02 },
-};
-
-const motionProperties = {
-    style: { scale: 1.01 },
-    initial: { scale: 1.01 },
-    whileHover: { scale: 1.05 }
-};
-
-const formatCellValue = (value: unknown) =>
-    String(value).replace(/([,;])([^ ])/g, '$1 $2');
-
+const formatCellValue = (value: unknown) => String(value).replace(/([,;])([^ ])/g, '$1 $2');
+    
 export const CustomCell: FC<Props> = (
     { cellData }
 ): ReactNode => {
@@ -32,29 +20,21 @@ export const CustomCell: FC<Props> = (
     const currentQuery = getQuery();
     const { getContext } = cellData
     const context = getContext()
-    const columnID = context.column.id;
+    const columnID = context.column.id as Partial<TColumnAccessors>;
     const value = context.getValue();
     const stringValue = formatCellValue(value);
-    const row = context.row.original;
 
     switch (columnID) {
-        case "gost":
+        case "full_gost":
             return (
-                <span className="text-wrap overflow-hidden mx-auto" style={{ maxWidth: '200px' }}>
-                    {highlight(stringValue, currentQuery.gost)}
+                <span className="text-wrap overflow-hidden mx-auto">
+                    {highlight(stringValue, currentQuery.full_gost)}
                 </span>
             );
         case "ral_short_info_view__fullName":
             return (
                 <span className="text-wrap overflow-hidden mx-auto">
                     {highlight(stringValue, currentQuery.ral_short_info_view__fullName)}
-                </span>
-            );
-
-        case "full_gost":
-            return (
-                <span className="text-wrap overflow-hidden mx-auto" title={stringValue}>
-                    {highlight(stringValue, currentQuery.full_gost)}
                 </span>
             );
 
@@ -87,7 +67,7 @@ export const CustomCell: FC<Props> = (
                     {highlight(stringValue, currentQuery.tnved)}
                 </span>
             );
-            
+
         case "tn_ved":
             return (
                 <span
@@ -109,7 +89,7 @@ export const CustomCell: FC<Props> = (
                     className="text-wrap overflow-hidden mx-auto line-clamp-3"
                     title={stringValue}
                     style={{
-                        color: `${getStatusColor(stringValue)}`,
+                        color: `${getStatusColor(stringValue as TStatus)}`,
                         display: '-webkit-box',
                         WebkitBoxOrient: 'vertical',
                         WebkitLineClamp: 3
@@ -119,43 +99,14 @@ export const CustomCell: FC<Props> = (
                 </span>
             );
 
+        case "RegNumber":
         case "ral_short_info_view__RegNumber":
-            return (
-                <LinkWithCircle
-                    link={row.link}
-                    npStatus={context.row.original.ral_short_info_view__NPstatus}
-                    queryValue={currentQuery.ral_short_info_view__fullName}
-                    status={context.row.original.ral_short_info_view__new_status_AL}
-                    value={highlight(stringValue, currentQuery.ral_short_info_view__RegNumber) as string | null}
-                />
-            )
+            return highlight(stringValue, currentQuery.ral_short_info_view__RegNumber) as string | null
         case "NPstatus":
-            return <span style={{ color: value === "Не применимо" ? value : getNPStatusColor(stringValue) }}>{value as ReactNode}</span>
+            return <span style={{ color: value === "Не применимо" ? value : getNPStatusColor(stringValue as TNPStatus) }}>{value as ReactNode}</span>
 
         case "NP_status_change_date":
             return value ? <span>{value as ReactNode}</span> : <span className="w-full text-center">нет данных</span>;
-
-        case "RegNumber":
-            return (
-                <LinkWithCircle
-                    link={row.link}
-                    npStatus={context.row.original.NPstatus}
-                    queryValue={currentQuery.fullText}
-                    status={context.row.original.new_status_AL}
-                    value={stringValue}
-                />
-            )
-
-        case "ral_short_info_view__RegNumber":
-            return (
-                <LinkWithCircle
-                    link={row.link}
-                    npStatus={context.row.original.ral_short_info_view__NPstatus}
-                    queryValue={currentQuery.fullText}
-                    status={context.row.original.ral_short_info_view__new_status_AL}
-                    value={stringValue}
-                />
-            )
 
         case "technicalReglaments":
             const splitted = context.getValue() ? (context.getValue() as string).split(";") : [];
@@ -172,7 +123,38 @@ export const CustomCell: FC<Props> = (
             );
 
         case "certificate_status":
-            return <span style={{ color: getStatusColor(stringValue) }}>{value as ReactNode}</span>
+            return <span style={{ color: getStatusColor(stringValue as TStatus) }}>{value as ReactNode}</span>
+
+        case "custom_number":
+        case "ral_short_info_view__custom_number":
+            const splittedRals = stringValue.split(/(?<!https:)\/\//);
+            console.log({ stringValue, splittedRals });
+
+            if (!stringValue || stringValue === "") {
+                return "нет данных";
+            }
+
+            return splittedRals.map((ralString, index) => {
+                if (!ralString || ralString === "null") {
+                    return <div key={index}>нет данных</div>;
+                }
+
+                const [NPstatus = "", status = "", numberValue = "", link = ""] = ralString.split("*") as [TNPStatus, TStatus, string, string];
+                const shouldAddMargin = splittedRals.length > 1 && index !== splittedRals.length - 1;
+                const containerClassName = shouldAddMargin ? "mb-2" : "";
+
+                return (
+                    <div key={index} className={containerClassName}>
+                        <LinkWithCircle
+                            npStatus={NPstatus}
+                            status={status}
+                            link={link}
+                            value={highlight(numberValue, currentQuery.ral_short_info_view__RegNumber) as string | null}
+                            queryValue={""}
+                        />
+                    </div>
+                );
+            });
 
         // Все стандартные колонки продукта
         case "productFullName":
@@ -238,14 +220,15 @@ export const CustomCell: FC<Props> = (
         // Поля ral_short_info_view
         case "ral_short_info_view__address":
         case "ral_short_info_view__regulations":
+        case "ral_short_info_view__oaDescription":
         case "oaDescription":
+        case "productIdentificationModel":
         case "address":
         // Поля status_change
         case "status_change__comment":
             return (
                 <span
                     className="text-wrap overflow-hidden mx-auto line-clamp-2"
-                    style={{ maxWidth: '200px' }}
                     title={stringValue}
                 >
                     {highlight(stringValue, currentQuery[columnID] || '')}
