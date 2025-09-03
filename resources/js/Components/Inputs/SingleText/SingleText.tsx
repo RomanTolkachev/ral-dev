@@ -35,7 +35,7 @@ export const SingleText: FunctionComponent<IProps> = ({ className, inputData }) 
         
         const isValid = await trigger(inputName)
         if (isValid) {
-            customSubmitHandler(getValues())
+            customSubmitHandler(getValues(), 500)
         }
     }
 

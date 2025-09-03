@@ -37,7 +37,6 @@ export const TablePage: FunctionComponent<Props> = ({ config }) => {
 
     return (
         <div className='flex grow shrink min-h-0'>
-            <Tooltip content={"наведи"}>Подсказка</Tooltip>
             {firstLoad || error?.code ?
                 <div className='w-full h-full grid place-items-center text-table-base'>{getErrorMessage(failureCount, error?.code)}</div>
                 :

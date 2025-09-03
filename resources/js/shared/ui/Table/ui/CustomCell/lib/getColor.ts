@@ -38,25 +38,19 @@ export function getStatusColor(status: TStatus): string {
 }
 
 export function getNPStatusColor(status: TNPStatus): string {
-    console.log("getNPStatusColor received:", status, "type:", typeof status);
 
     if (!status) {
-        console.log("Status is empty, returning empty string");
         return "";
     }
 
     const lowerStatus = status.toLowerCase().trim();
-    console.log("Lowercase status:", lowerStatus);
 
     switch (lowerStatus) {
         case 'да':
-            console.log("Returning green color");
             return 'var(--cell-active)';
         case 'нет':
-            console.log("Returning red color");
             return 'var(--cell-terminated)';
         default:
-            console.log("Returning transparent");
             return 'transparent';
     }
 }

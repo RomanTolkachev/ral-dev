@@ -1,5 +1,5 @@
 import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
-import { createContext, FunctionComponent, PropsWithChildren, useEffect, useMemo } from 'react'
+import { createContext, FunctionComponent, PropsWithChildren, useEffect, useMemo, useRef } from 'react'
 import useParamsCustom from '@/shared/query/useParamsCustom'
 import { isEmpty } from 'lodash'
 import { CustomisationContext, ICustomSubmitHandlerContext } from '../model'
@@ -28,6 +28,7 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren<IProps>> = 
 
     const [setQuery, getQuery] = useParamsCustom();
     const queries = getQuery();
+    const debounceTimeoutRef = useRef<number | null>(null);
 
     const default_filters: Record<string, string | number | string[]> = filters.reduce((acc, item) => ({ ...acc, [item.headerLabel]: item.defaultValue }), { page: 1, perPage: 25, order: "" });
 
@@ -46,34 +47,49 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren<IProps>> = 
     /**
     * Обработчик сабмита формы. Смотрит в dirtyFields и в зависимости от того, что именно изменилось, применяет логику.
     * @param formData Текущее состояние формы
-    * @returns void. Записывает query параметры в строку поиска
+    * @debounceTime number время задержки перед отправкой (ms)
+    * @returns Promise<void>. Записывает query параметры в строку поиска
     */
-    const customSubmitHandler = async (formData: IFormValues): Promise<void> => {
-        const isValid = await trigger();
-
-        function handler(newQuery: QueryParams) {
-            isValid && setQuery(newQuery, shouldReplace);
-            return reset(newQuery)
+    const customSubmitHandler = async (formData: IFormValues, debounceTime?: number): Promise<void> => {
+        
+        if (debounceTimeoutRef.current) {
+            clearTimeout(debounceTimeoutRef.current);
+            debounceTimeoutRef.current = null;
         }
 
-        if (isEmpty(dirtyFields)) {
-            console.log("форма не изменилась")
-            return;
-        }
-        else if (dirtyFields.page) {
-            const newQuery = { ...formData, page: formData.page };
-            handler(newQuery)
-            console.log("изменилась страница")
-        }
-        else if (dirtyFields.perPage) {
-            const newQuery = { ...formData, page: 1, perPage: formData.perPage };
-            handler(newQuery)
-            console.log("изменился perPage")
-        }
-        else {
-            const newQuery = { ...formData, page: 1 };
-            handler(newQuery)
-            console.log("Изменилась форма")
+        const submitFunction = async () => {
+            const isValid = await trigger();
+
+            function handler(newQuery: QueryParams) {
+                isValid && setQuery(newQuery, shouldReplace);
+                return reset(newQuery)
+            }
+
+            if (isEmpty(dirtyFields)) {
+                // console.log("форма не изменилась")
+                return;
+            }
+            else if (dirtyFields.page) {
+                const newQuery = { ...formData, page: formData.page };
+                handler(newQuery)
+                // console.log("изменилась страница")
+            }
+            else if (dirtyFields.perPage) {
+                const newQuery = { ...formData, page: 1, perPage: formData.perPage };
+                handler(newQuery)
+                // console.log("изменился perPage")
+            }
+            else {
+                const newQuery = { ...formData, page: 1 };
+                handler(newQuery)
+                // console.log("Изменилась форма")
+            }
+        };
+
+        if (debounceTime && debounceTime > 0) {
+            debounceTimeoutRef.current = setTimeout(submitFunction, debounceTime) as unknown as number;
+        } else {
+            submitFunction();
         }
     };
 
@@ -88,13 +104,15 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren<IProps>> = 
 
     /**
      * Сброс формы до дефолтного состояние и сабмит дефолтных значений
+     * @param string fieldName имя инпута в react-hook-form
      */
     function customResetField(fieldName: keyof IFormValues): void {
-        console.log("зашли в resetField", { дефолт: defaultValues, dirtyFields })
+        // console.log("зашли в resetField", { дефолт: defaultValues, dirtyFields })
         setValue(String(fieldName), default_filters[fieldName], { shouldDirty: true })
         customSubmitHandler({ ...getValues(), [fieldName]: default_filters[fieldName] })
     }
 
+    // задаем дефолтные значения фильтров, когда они пришли с БЭКа, также нужно "встряхнуть" форму через reset, иначе дефолт применится после первого input
     useEffect(() => {
         const updateFormValues = async () => {
             if (!isEmpty(queries)) {
@@ -116,12 +134,18 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren<IProps>> = 
         };
 
         updateFormValues();
+ 
+        return () => {
+            if (debounceTimeoutRef.current) {
+                clearTimeout(debounceTimeoutRef.current);
+            }
+        };
     }, [JSON.stringify(default_filters)]);
 
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData: filters }}>
             <FormProvider {...methods}>
-                <CustomCellContext.Provider value={{config}}>
+                <CustomCellContext.Provider value={{ config }}>
                     {children}
                 </CustomCellContext.Provider>
             </FormProvider>

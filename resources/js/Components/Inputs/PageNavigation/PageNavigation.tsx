@@ -1,4 +1,4 @@
-import { FunctionComponent, useContext, useRef, useCallback, useEffect } from 'react'
+import { FunctionComponent, useContext } from 'react'
 import { useFormContext, Controller } from 'react-hook-form'
 import { SVG } from '@/Components/utils/SVG'
 import { CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/CustomFormProvider'
@@ -22,75 +22,52 @@ export const PageNavigation: FunctionComponent<IProps> = ({
 }) => {
     const { control, trigger, getValues, setValue } = useFormContext()
     const handlers = useContext(CustomSubmitHandlerContext)
-    const debounceTimeoutRef = useRef<null | number>()
 
     if (!handlers) return null
     const { customSubmitHandler } = handlers
-
-    const debouncedSubmit = useCallback(() => {
-        if (debounceTimeoutRef.current) {
-            clearTimeout(debounceTimeoutRef.current)
-        }
-        debounceTimeoutRef.current = setTimeout(() => {
-            customSubmitHandler(getValues())
-        }, 500)
-    }, [customSubmitHandler, getValues])
 
     const handlePageChange = async (newPage: number) => {
         setValue('page', newPage, { shouldDirty: true });
         customSubmitHandler({ ...getValues(), page: newPage });
     }
 
-    // Функция для валидации числа
     const validateNumber = (value: string): number | null => {
-        // Удаляем все нечисловые символы, кроме минуса в начале
         const numericValue = value.replace(/[^0-9]/g, '');
         return numericValue ? parseInt(numericValue, 10) : null;
     }
 
-    // Обработчик изменения input
     const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>, updateForm: (value: any) => void) => {
         const rawValue = e.target.value;
         
-        // Если поле пустое, позволяем очистку
         if (rawValue === '') {
             updateForm('');
             return;
         }
 
-        // Валидируем и преобразуем в число
         const numericValue = validateNumber(rawValue);
         
         if (numericValue !== null) {
             updateForm(numericValue);
             
-            // Проверяем валидность и отправляем если валидно
             const isValid = await trigger();
             if (isValid) {
-                debouncedSubmit();
+                customSubmitHandler(getValues(), 500);
             }
         }
     }
 
-    // Обработчик потери фокуса - гарантируем валидное значение
     const handleBlur = (value: any, updateForm: (value: any) => void) => {
         if (value === '' || value === null || value === undefined) {
-            updateForm(1); // Устанавливаем минимальное значение по умолчанию
-            debouncedSubmit();
+            updateForm(1);
+            customSubmitHandler({ ...getValues(), page: 1 });
         } else if (value > lastPage) {
-            updateForm(lastPage); // Ограничиваем максимумом
-            debouncedSubmit();
+            updateForm(lastPage);
+            customSubmitHandler({ ...getValues(), page: lastPage });
         } else if (value < 1) {
-            updateForm(1); // Ограничиваем минимумом
-            debouncedSubmit();
+            updateForm(1);
+            customSubmitHandler({ ...getValues(), page: 1 });
         }
     }
-
-    useEffect(() => {
-        return () => {
-            debounceTimeoutRef.current && clearTimeout(debounceTimeoutRef.current)
-        }
-    }, [])
 
     return (
         <Controller
@@ -104,7 +81,7 @@ export const PageNavigation: FunctionComponent<IProps> = ({
                     isNumber: (value) => !isNaN(value) || 'должно быть числом'
                 }
             }}
-            render={({ field: { onChange: updateForm, value = 1, onBlur }, fieldState: { error } }) => (
+            render={({ field: { onChange: updateForm, value = 1 }, fieldState: { error } }) => (
                 <div className='flex items-center gap-2'>
                     <span>Страница</span>
                     <PageNavButton
@@ -133,12 +110,11 @@ export const PageNavigation: FunctionComponent<IProps> = ({
                                 ` ${className} bg-input-primary w-20 text-input-text text-sm text-center h-8 shadow-input-page border-black/10 rounded-full focus:border-transparent ` +
                                 'focus:ring-2 focus:ring-input-border-active'
                             }
-                            type="text" // Меняем на text для лучшего контроля
-                            inputMode="numeric" // Мобильная числовая клавиатура
-                            pattern="[0-9]*" // Паттерн для числового ввода
+                            type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
                         />
                         
-                        {/* Маска для disabled состояния */}
                         {isPending && (
                             <div className="absolute inset-0 bg-background-block/50 rounded-full cursor-not-allowed z-10" />
                         )}

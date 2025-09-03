@@ -170,7 +170,7 @@ export const Table: FunctionComponent<IProps> = ({ className, paginatedData, dic
                                                         return (
                                                             <td
                                                                 key={cell.id}
-                                                                className={`overflow-hidden text-center relative text-table-base p-1`}>
+                                                                className={` text-center relative text-table-base p-1 `}>
                                                                 <CustomCell cellData={cell} />
                                                             </td>
                                                         )

@@ -6,13 +6,14 @@ import { getNPStatusColor, getStatusColor } from "./lib/getColor";
 import { LinkWithCircle } from "./LinkWithCircle/LinkWithCircle";
 import { TNPStatus, TStatus } from "./model";
 import { TColumnAccessors } from "@/features";
+import { Tooltip } from "@/Components/toolTip/ToolTip";
 
 type Props = {
     cellData: Cell<any, unknown>
 }
 
 const formatCellValue = (value: unknown) => String(value).replace(/([,;])([^ ])/g, '$1 $2');
-    
+
 export const CustomCell: FC<Props> = (
     { cellData }
 ): ReactNode => {
@@ -70,17 +71,21 @@ export const CustomCell: FC<Props> = (
 
         case "tn_ved":
             return (
-                <span
-                    className="text-wrap overflow-hidden mx-auto line-clamp-3"
-                    title={stringValue}
-                    style={{
-                        display: '-webkit-box',
-                        WebkitBoxOrient: 'vertical',
-                        WebkitLineClamp: 3
-                    }}
-                >
-                    {highlight(stringValue, currentQuery.tn_ved)}
-                </span>
+                <Tooltip content={highlight(stringValue, currentQuery.tn_ved)}>
+                    <span
+                        className="text-wrap overflow-hidden w-full mx-auto line-clamp-3"
+                        title={stringValue}
+                        style={{
+                            display: '-webkit-box',
+                            WebkitBoxOrient: 'vertical',
+                            WebkitLineClamp: 3,
+                            wordBreak: 'break-word',
+                        }}
+                    >
+                        {highlight(stringValue, currentQuery.tn_ved)}
+                    </span>
+                </Tooltip>
+
             );
 
         case "new_status_AL":
@@ -128,7 +133,6 @@ export const CustomCell: FC<Props> = (
         case "custom_number":
         case "ral_short_info_view__custom_number":
             const splittedRals = stringValue.split(/(?<!https:)\/\//);
-            console.log({ stringValue, splittedRals });
 
             if (!stringValue || stringValue === "") {
                 return "нет данных";
