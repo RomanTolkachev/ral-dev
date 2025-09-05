@@ -49,13 +49,13 @@ export const MultiSelectVariants: FC<IProps> = ({ className, inputData }) => {
         setInputText('');
         clearErrors(inputName);
         inputRef.current?.focus();
-        handleSubmit(customSubmitHandler)();
+        handleSubmit((data) => customSubmitHandler(data))();
     }, [inputName, setValue, clearErrors, setError, handleSubmit, customSubmitHandler]);
 
     const handleRemove = useCallback((valueToRemove: string, currentValues: string[]) => {
         const newValues = currentValues.filter(val => val !== valueToRemove);
         setValue(inputName, newValues, { shouldDirty: true });
-        handleSubmit(customSubmitHandler)();
+        handleSubmit((data) => customSubmitHandler(data))();
     }, [inputName, setValue, handleSubmit, customSubmitHandler]);
 
     const handleKeyDown = useCallback((e: KeyboardEvent<HTMLInputElement>, currentValues: string[]) => {

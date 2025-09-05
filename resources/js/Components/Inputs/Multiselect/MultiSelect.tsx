@@ -51,7 +51,7 @@ export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
         inputRef.current?.focus();
 
         // Используем handleSubmit для правильного времени выполнения
-        handleSubmit(customSubmitHandler)();
+        handleSubmit((data) => customSubmitHandler(data))();
     };
 
     const handleRemove = async (valueToRemove: string) => {
@@ -59,7 +59,7 @@ export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
         setValue(inputName, newValues, { shouldDirty: true });
         
         // Используем handleSubmit для правильного времени выполнения
-        handleSubmit(customSubmitHandler)();
+        handleSubmit((data) => customSubmitHandler(data))();
     };
 
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {

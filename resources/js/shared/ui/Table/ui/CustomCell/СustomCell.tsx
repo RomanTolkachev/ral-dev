@@ -7,6 +7,7 @@ import { LinkWithCircle } from "./LinkWithCircle/LinkWithCircle";
 import { TNPStatus, TStatus } from "./model";
 import { TColumnAccessors } from "@/features";
 import { Tooltip } from "@/Components/toolTip/ToolTip";
+import { makeClamp, makeList } from "./lib";
 
 type Props = {
     cellData: Cell<any, unknown>
@@ -26,12 +27,74 @@ export const CustomCell: FC<Props> = (
     const stringValue = formatCellValue(value);
 
     switch (columnID) {
+        // accreditation_area
+        case "characteristic":
+            return (
+                <Tooltip hideDelay={350} distanceFromTrigger={-25} content={makeList(stringValue, { delimiter: ";", showBullets: true })}>
+                    <span
+                        className="text-wrap overflow-hidden w-full mx-auto line-clamp-3 break-all"
+                        style={makeClamp(3)}
+                    >
+                        {highlight(stringValue, currentQuery.tn_ved)}
+                    </span>
+                </Tooltip>
+            );
+        case "characteristic_range":
+            return (
+                <Tooltip hideDelay={350} distanceFromTrigger={-25} content={makeList(stringValue, { delimiter: ";", showBullets: true })}>
+                    <span
+                        className="text-wrap overflow-hidden w-full mx-auto line-clamp-3 break-all"
+                        style={makeClamp(3)}
+                    >
+                        {makeList(stringValue, { liClassName: "line-clamp-1", maxLiItems: 3 })}
+                    </span>
+                </Tooltip>
+            );
+        case "tn_ved":
+            return (
+                <Tooltip hideDelay={350} distanceFromTrigger={-25} content={highlight(stringValue, currentQuery.tn_ved)}>
+                    <span
+                        className="text-wrap overflow-hidden w-full mx-auto line-clamp-3 break-all"
+                        style={makeClamp(3)}
+                    >
+                        {highlight(stringValue, currentQuery.tn_ved)}
+                    </span>
+                </Tooltip>
+            );
         case "full_gost":
             return (
-                <span className="text-wrap overflow-hidden mx-auto">
-                    {highlight(stringValue, currentQuery.full_gost)}
-                </span>
+                <Tooltip hideDelay={350} distanceFromTrigger={-25} content={highlight(stringValue, currentQuery.full_gost)}>
+                    <span
+                        className="text-wrap overflow-hidden w-full mx-auto line-clamp-3 break-all"
+                    >
+                        {highlight(stringValue, currentQuery.tn_ved)}
+                    </span>
+                </Tooltip>
             );
+        case "okpd":
+            return (
+                <Tooltip alwaysShow hideDelay={350} distanceFromTrigger={-25} content={stringValue}>
+                    <div
+                        className="text-wrap overflow-hidden w-full mx-auto break-all"
+                        // style={makeClamp(3)}
+                    >
+                        {makeList(stringValue, { maxLiItems: 3, showMoreText: "howMany" })}
+
+                    </div>
+                </Tooltip>
+            );
+        case "gost_object":
+            return (
+                <Tooltip alwaysShow hideDelay={350} distanceFromTrigger={-25} content={makeList(stringValue, {showBullets: true})}>
+                    <span
+                        className="text-wrap overflow-hidden w-full mx-auto break-all text-start"
+                    // style={makeClamp(3)}
+                    >
+                        {makeList(stringValue, { highlightPattern: currentQuery.gost_object, maxLiItems: 3, showMoreText: "howMany", showBullets: true, liClassName: "line-clamp-1" })}
+                    </span>
+                </Tooltip>
+            );
+
         case "ral_short_info_view__fullName":
             return (
                 <span className="text-wrap overflow-hidden mx-auto">
@@ -44,11 +107,7 @@ export const CustomCell: FC<Props> = (
                 <span
                     className="text-wrap overflow-hidden mx-auto line-clamp-3"
                     title={stringValue}
-                    style={{
-                        display: '-webkit-box',
-                        WebkitBoxOrient: 'vertical',
-                        WebkitLineClamp: 3
-                    }}
+                    style={makeClamp(3)}
                 >
                     {highlight(stringValue, currentQuery.regulations)}
                 </span>
@@ -59,46 +118,19 @@ export const CustomCell: FC<Props> = (
                 <span
                     className="text-wrap overflow-hidden mx-auto line-clamp-3"
                     title={stringValue}
-                    style={{
-                        display: '-webkit-box',
-                        WebkitBoxOrient: 'vertical',
-                        WebkitLineClamp: 3
-                    }}
+                    style={makeClamp(3)}
                 >
                     {highlight(stringValue, currentQuery.tnved)}
                 </span>
             );
 
-        case "tn_ved":
-            return (
-                <Tooltip content={highlight(stringValue, currentQuery.tn_ved)}>
-                    <span
-                        className="text-wrap overflow-hidden w-full mx-auto line-clamp-3"
-                        title={stringValue}
-                        style={{
-                            display: '-webkit-box',
-                            WebkitBoxOrient: 'vertical',
-                            WebkitLineClamp: 3,
-                            wordBreak: 'break-word',
-                        }}
-                    >
-                        {highlight(stringValue, currentQuery.tn_ved)}
-                    </span>
-                </Tooltip>
-
-            );
 
         case "new_status_AL":
             return (
                 <span
                     className="text-wrap overflow-hidden mx-auto line-clamp-3"
                     title={stringValue}
-                    style={{
-                        color: `${getStatusColor(stringValue as TStatus)}`,
-                        display: '-webkit-box',
-                        WebkitBoxOrient: 'vertical',
-                        WebkitLineClamp: 3
-                    }}
+                    style={makeClamp(3)}
                 >
                     {stringValue}
                 </span>
@@ -230,13 +262,16 @@ export const CustomCell: FC<Props> = (
         case "address":
         // Поля status_change
         case "status_change__comment":
+        case "source_file":
             return (
-                <span
-                    className="text-wrap overflow-hidden mx-auto line-clamp-2"
-                    title={stringValue}
-                >
-                    {highlight(stringValue, currentQuery[columnID] || '')}
-                </span>
+                <Tooltip hideDelay={350} distanceFromTrigger={-25} content={stringValue}>
+                    <span
+                        className="text-wrap mx-auto line-clamp-2 break-all"
+                    // title={stringValue}
+                    >
+                        {stringValue}
+                    </span>
+                </Tooltip>
             );
 
         default:

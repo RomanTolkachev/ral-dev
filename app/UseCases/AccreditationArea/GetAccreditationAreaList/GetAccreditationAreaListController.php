@@ -13,7 +13,6 @@ class GetAccreditationAreaListController extends Controller
 {
     public function __invoke(GetAccrediTationAreaListHandler $handler, GetAccreditationAreaListRequest $request): JsonResponse
     {
-
         $result = $handler->execute(
             page: $request->page,
             itemsPerPage: $request->perPage,
@@ -21,7 +20,7 @@ class GetAccreditationAreaListController extends Controller
             defaultUser: User::getDefaultUser(),
             filter: new GetAccreditationAreaListFilter(new AccreditationArea(), $request)
         );
-        
+
         return new JsonResponse($result, Response::HTTP_OK);
     }
 }
