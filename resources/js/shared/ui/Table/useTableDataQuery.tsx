@@ -9,12 +9,11 @@ import { useMemo } from "react"
 type TParams = {
     tableName: string,
     enabled: boolean,
-    userId: string | undefined,
     defaultRequest: TDefaultPaginationRequest
 }
 
 const useTableDataQuery = ({ tableName, defaultRequest }: TParams) => {
-    const [, getQuery] = useParamsCustom();
+    const [_, getQuery] = useParamsCustom();
     const rawQuery = getQuery();
 
     const currentQueries = useMemo(() => {

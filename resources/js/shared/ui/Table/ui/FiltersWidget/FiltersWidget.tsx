@@ -13,15 +13,15 @@ export const FiltersWidget: FunctionComponent = () => {
 
     const submitContext = useContext<ICustomSubmitHandlerContext>(CustomSubmitHandlerContext)
     const customContext = useContext<CustomisationContext | null>(CustomCellContext)
-    
+
 
     if (!submitContext || !customContext) {
         return null
     }
 
     const { customResetHandler, filtersData: filters } = submitContext;
-    const {DICTIONARY} = customContext.config
-    
+    const { DICTIONARY } = customContext.config
+
     const translateFn = DICTIONARY ? createTranslateFn(DICTIONARY) : null
 
     return (

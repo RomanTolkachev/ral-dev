@@ -23,7 +23,7 @@ interface IProps {
     paginatedData: IPagination | undefined
     dictionary?: Record<string, any>
     customCellrender?: any
-    isUplating?: boolean
+    isUpdating?: boolean
     failureCount?: number
     error?: string
 }
@@ -38,7 +38,7 @@ const childrenVariants = {
     end: { opacity: 1 }
 }
 
-export const Table: FunctionComponent<IProps> = ({ className, paginatedData, dictionary, isUplating: isUpdating = false, failureCount = 0, error }) => {
+export const Table: FunctionComponent<IProps> = ({ className, paginatedData, dictionary, isUpdating: isUpdating = false, failureCount = 0, error }) => {
 
     const navigate = useNavigate();
 

@@ -8,11 +8,10 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use App\UseCases\Certificates\shared\GetCertificatesFilter;
 use App\Services\GetTableSettings;
-
+use Illuminate\Support\Facades\Cache;
 
 readonly class GetCertificatesListHandler
 {
-
     public function execute(
         int $page,
         int $itemsPerPage,
@@ -25,7 +24,7 @@ readonly class GetCertificatesListHandler
 
         $columns = GetTableSettings::for($user, $defaultUser, "certificates_short_info");
 
-        $regulationsMap = DictionaryRegulation::pluck('values_reg')->toArray();
+        $regulationsMap = Cache::remember("dictionaryRegulations", 3600, fn() => DictionaryRegulation::pluck('values_reg')->toArray());
 
         $result = $model->filter(
             $filter

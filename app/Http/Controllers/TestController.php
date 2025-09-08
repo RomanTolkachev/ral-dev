@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AccreditationArea;
-use App\Services\ConfirmRelationsService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 class TestController
 {
     public function __invoke()
     {
-        $service = new ConfirmRelationsService();
-        dump($service->prepareRalations([], AccreditationArea::class));
+        // $res = Cache::forget("defaultUser");
+        $res = Cache::get("defaultUser");
+        return new JsonResponse($res);
     }
 }

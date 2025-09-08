@@ -55,7 +55,7 @@ const Header: FunctionComponent<IProps> = ({ className }) => {
 
                         </div>
                         {user &&
-                            <Link to={`${location.pathname}/settings`} state={{ from: location.pathname }} className={`${location.pathname === '/' ? "hidden" : ""}`}>
+                            <Link to={`${location.pathname}/settings/${location.search}`} state={{ from: location.pathname }} className={`${location.pathname === '/' ? "hidden" : ""}`}>
                                 <motion.div whileHover={{ scale: 1.05, cursor: "pointer" }}><SVG gear className='size-6' /></motion.div>
                             </Link>
                         }

@@ -4,6 +4,7 @@ import useParamsCustom from '@/shared/query/useParamsCustom'
 import { isEmpty } from 'lodash'
 import { CustomisationContext, ICustomSubmitHandlerContext } from '../model'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
+import { filterEmptyValues } from './lib'
 
 interface IFormValues {
     [key: string]: any
@@ -51,7 +52,9 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren<IProps>> = 
     * @returns Promise<void>. Записывает query параметры в строку поиска
     */
     const customSubmitHandler = async (formData: IFormValues, debounceTime?: number): Promise<void> => {
-        
+
+        formData = filterEmptyValues(formData)
+
         if (debounceTimeoutRef.current) {
             clearTimeout(debounceTimeoutRef.current);
             debounceTimeoutRef.current = null;
@@ -61,6 +64,7 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren<IProps>> = 
             const isValid = await trigger();
 
             function handler(newQuery: QueryParams) {
+
                 isValid && setQuery(newQuery, shouldReplace);
                 return reset(newQuery)
             }
@@ -99,7 +103,7 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren<IProps>> = 
     async function customResetHandler(): Promise<void> {
         const perPage = await getValues().perPage
         reset({ ...default_filters, perPage });
-        setQuery({ ...getValues() })
+        setQuery({ ...filterEmptyValues(getValues()) })
     }
 
     /**
@@ -109,7 +113,7 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren<IProps>> = 
     function customResetField(fieldName: keyof IFormValues): void {
         // console.log("зашли в resetField", { дефолт: defaultValues, dirtyFields })
         setValue(String(fieldName), default_filters[fieldName], { shouldDirty: true })
-        customSubmitHandler({ ...getValues(), [fieldName]: default_filters[fieldName] })
+        customSubmitHandler({ ...filterEmptyValues(getValues()), [fieldName]: default_filters[fieldName] })
     }
 
     // задаем дефолтные значения фильтров, когда они пришли с БЭКа, также нужно "встряхнуть" форму через reset, иначе дефолт применится после первого input
@@ -134,7 +138,7 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren<IProps>> = 
         };
 
         updateFormValues();
- 
+
         return () => {
             if (debounceTimeoutRef.current) {
                 clearTimeout(debounceTimeoutRef.current);

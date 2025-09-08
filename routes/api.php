@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\TestController;
+
 use App\UseCases\AccreditationArea\{
     GetAccreditationAreaFilters\GetAccreditationAreaFiltersController,
     GetAccreditationAreaList\GetAccreditationAreaListController
@@ -54,3 +56,5 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware('web')->post("login", LoginController::class);
+
+Route::get("cache", TestController::class);
