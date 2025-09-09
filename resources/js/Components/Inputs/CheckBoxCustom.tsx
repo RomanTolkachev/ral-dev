@@ -28,9 +28,20 @@ export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData
     }
 
     return (
-        <div className={`${className} flex flex-col pl-3 pr-3 pt-3 max-h-32 overflow-y-auto thumb-secondary space-y-1`}>
+        <div className='flex flex-col pl-3 pr-3 pt-3 max-h-32 overflow-y-auto thumb-secondary space-y-1'>
+            <Controller
+                name={headerLabel}
+                control={control}
+                defaultValue={[]}
+                render={({ field }) => (
+                    <input
+                        type="hidden"
+                        {...field}
+                        value={JSON.stringify(field.value || [])}
+                    />
+                )}
+            />
             {inputData.values!.checkboxValues!.map((item, key) => {
-
                 if (!item) {
                     item = "Пустые"
                 }
@@ -70,6 +81,7 @@ export const CheckBoxCustom: FunctionComponent<IProps> = ({ className, inputData
                     </Controller>
                 )
             })}
+            {!inputData.values!.checkboxValues!.length && <div className='text-gray-light-gray'>Значения отсутствуют</div>}
         </div>
     )
 }

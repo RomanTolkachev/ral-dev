@@ -91,6 +91,9 @@ export const Settings: FunctionComponent<Props> = ({ className }) => {
             queryClient.invalidateQueries({
                 predicate: (query) => query.queryKey[0] === "available",
             });
+            queryClient.invalidateQueries({
+                predicate: (query) => query.queryKey[0] === "filters",
+            });
             setTimeout(() => navigate(-1), 1000);
         }
     });

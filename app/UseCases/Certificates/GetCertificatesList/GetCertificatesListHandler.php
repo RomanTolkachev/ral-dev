@@ -29,6 +29,8 @@ readonly class GetCertificatesListHandler
         $result = $model->filter(
             $filter
         )
+
+        // dd($result->toSql(), $model->filter($filter)->getBindings());
             ->paginate(
                 page: $page,
                 perPage: $itemsPerPage

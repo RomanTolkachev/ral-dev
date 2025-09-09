@@ -13,11 +13,11 @@ class GetCertificatesFilter extends AbstractFilter
 {
 
     protected $model;
-    // protected $request;
+
     public function __construct(CertificatesShortInfo $model, Request $request)
     {
         $this->model = $model;
-        parent::__construct($request);
+        parent::__construct($request->input());
     }
 
     protected function certificateName(array $values): Builder
@@ -39,7 +39,6 @@ class GetCertificatesFilter extends AbstractFilter
 
     protected function order(string $value): Builder
     {
-        // $query = $this->builder;
         $formattedColumn = preg_replace('/_desc$/', "", $value);
         $query = $this->builder->whereNotNull($formattedColumn);
         if (str_ends_with($value, 'desc')) {
@@ -49,42 +48,8 @@ class GetCertificatesFilter extends AbstractFilter
             $query = $query->orderBy($formattedColumn);
             return $query;
         }
-        // ->where(preg_replace('/_(asc|desc)$/i', '', $value), '<>', '');
-        // $formattedColumn = preg_replace('/_desc$/', "", $value);
-        // dd("зашли");
-        // if (str_ends_with($value, 'desc')) {
-        //     $query = $query->orderByRaw("
-        //     CASE 
-        //         WHEN {$formattedColumn} IS NULL THEN 1
-        //         ELSE 0
-        //     END,
-        //     CASE 
-        //         WHEN {$formattedColumn} IS NULL THEN 
-        //             CASE 
-        //                 WHEN ISDATE({$formattedColumn}) = 1 THEN '1800-12-31'
-        //                 ELSE '~'
-        //             END
-        //         ELSE {$formattedColumn}
-        //     END DESC
-        // ");
-        // } else {
-        //     $query = $query->orderByRaw("
-        //     CASE 
-        //         WHEN {$formattedColumn} IS NULL THEN 1
-        //         ELSE 0
-        //     END,
-        //     CASE 
-        //         WHEN {$formattedColumn} IS NULL THEN 
-        //             CASE 
-        //                 WHEN ISDATE({$formattedColumn}) = 1 THEN '9999-12-31'
-        //                 ELSE '~~'
-        //             END
-        //         ELSE {$formattedColumn}
-        //     END ASC
-        // ");
-        // }
-        // return $query;
     }
+
     protected function statusChangeStatusChangesBy(array $values): Builder
     {
         $query = $this->builder;
@@ -161,29 +126,6 @@ class GetCertificatesFilter extends AbstractFilter
             });
         }, '>=', count($values)); // третий параметр ищет количество связей. На самом деле, если поставить = 2, то все равно будет искать >=
     }
-
-    // проверить, если будут косяки
-    // protected function technicalReglaments(array $values): Builder
-    // {
-    //     // 1. Находим ID техрегламентов, соответствующих любому из условий
-    //     $techRegIds = DB::table('dictionary_regulations')
-    //         ->where(function ($query) use ($values) {
-    //             foreach ($values as $value) {
-    //                 $query->orWhere('tech_reg_code', 'like', "%{$value}%");
-    //             }
-    //         })
-    //         ->pluck('id')
-    //         ->toArray();
-
-    //     // 2. Ищем сертификаты, связанные со ВСЕМИ найденными техрегламентами
-    //     return $this->builder->where(function ($query) use ($techRegIds) {
-    //         foreach ($techRegIds as $regId) {
-    //             $query->whereHas('techReglaments', function ($q) use ($regId) {
-    //                 $q->where('dictionary_regulations.id', $regId);
-    //             });
-    //         }
-    //     });
-    // }
 
     protected function ralShortInfoViewRegNumber(array $values): Builder
     {

@@ -13,7 +13,7 @@ class GetAccreditationAreaListFilter extends AbstractFilter
     public function __construct(AccreditationArea $model, GetAccreditationAreaListRequest $request)
     {
         $this->model = $model;
-        parent::__construct($request);
+        parent::__construct($request->input());
     }
 
     protected function fullGost(array $values): Builder
@@ -41,7 +41,7 @@ class GetAccreditationAreaListFilter extends AbstractFilter
 
     protected function ralShortInfoViewFullName(array $values): Builder
     {
-        return $this->builder->whereHas("ralShortInfoView", function($query) use($values) {
+        return $this->builder->whereHas("ralShortInfoView", function ($query) use ($values) {
             $query->where(function ($q) use ($values) {
                 foreach ($values as $value) {
                     $q->orWhere('applicantFullName', 'like', "%{$value}%");
@@ -52,7 +52,7 @@ class GetAccreditationAreaListFilter extends AbstractFilter
 
     protected function ralShortInfoViewRegNumber(array $values): Builder
     {
-        return $this->builder->whereHas("ralShortInfoView", function($query) use($values) {
+        return $this->builder->whereHas("ralShortInfoView", function ($query) use ($values) {
             $query->where(function ($q) use ($values) {
                 foreach ($values as $value) {
                     $q->orWhere('RegNumber', 'like', "%{$value}%");

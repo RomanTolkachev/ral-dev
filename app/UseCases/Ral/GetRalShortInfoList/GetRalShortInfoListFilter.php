@@ -10,12 +10,11 @@ class GetRalShortInfoListFilter extends AbstractFilter
 {
 
     protected $model;
-    // protected $request;
-    public function __construct(RalShortInfoView $model, GetRalShortInfoListRequest $request)
+
+      public function __construct(RalShortInfoView $model, GetRalShortInfoListRequest $request)
     {
         $this->model = $model;
-        parent::__construct($request);
-        // $this->request = $request;
+        parent::__construct($request->input());
     }
 
     /**

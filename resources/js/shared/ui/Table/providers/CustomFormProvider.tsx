@@ -144,7 +144,7 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren<IProps>> = 
                 clearTimeout(debounceTimeoutRef.current);
             }
         };
-    }, [JSON.stringify(default_filters)]);
+    }, [JSON.stringify(default_filters,), JSON.stringify(queries)]);
 
     return (
         <CustomSubmitHandlerContext.Provider value={{ customSubmitHandler, customResetHandler, customResetField, filtersData: filters }}>

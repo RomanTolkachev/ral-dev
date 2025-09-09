@@ -17,6 +17,8 @@ import { CustomisationContext } from '../model'
 import { enterExitAnimation } from '@/shared/framer-motion/enter-exit-animation'
 import { getErrorMessage } from '../lib'
 import { NoData } from './notFound'
+import { DevTool } from '@hookform/devtools'
+import { useFormContext } from 'react-hook-form'
 
 interface IProps {
     className?: string
@@ -39,6 +41,8 @@ const childrenVariants = {
 }
 
 export const Table: FunctionComponent<IProps> = ({ className, paginatedData, dictionary, isUpdating: isUpdating = false, failureCount = 0, error }) => {
+
+    const { control } = useFormContext()
 
     const navigate = useNavigate();
 
@@ -105,8 +109,11 @@ export const Table: FunctionComponent<IProps> = ({ className, paginatedData, dic
         paginatedData && setAnimationKey(prev => prev + 1)
     }, [paginatedData])
 
+    console.log("рендер")
+
     return (
         <div className={`${className} h-full grow grid grid-rows-[1fr_auto] grid-cols-[1fr] overflow-hidden`}>
+            <DevTool control={control} />
             <div className={'p-2 w-full h-full grow flex overflow-hidden'}>
                 <div className={'my-block min-w-full h-full bg-background-block relative'}>
                     {/* Оверлей с прелоудером */}

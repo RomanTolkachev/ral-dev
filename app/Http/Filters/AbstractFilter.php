@@ -16,15 +16,11 @@ abstract class AbstractFilter
     public const KEYS_TO_ARRAY = [];
 
     protected Builder $builder;
-    protected FormRequest $request;
 
     /**
-     * @param FormRequest $request
+     * @param array $inputs
      */
-    public function __construct(FormRequest $request)
-    {
-        $this->request = $request;
-    }
+    public function __construct(protected array $inputs) {}
 
     /**
      * Применение фильтров к запросу
@@ -32,11 +28,15 @@ abstract class AbstractFilter
      * @param Builder $builder
      * @return Builder
      */
-    public function apply(Builder $builder): Builder
+    public function apply(Builder $builder, array $exclude): Builder
     {
         $this->builder = $builder;
 
-        foreach ($this->request->input() as $method => $value) {
+        if (count($exclude)) {
+            $this->inputs = array_diff_key($this->inputs, array_flip($exclude));
+        }
+
+        foreach ($this->inputs as $method => $value) {
             $methodName = Str::camel($method);
 
             if (null === $value) {

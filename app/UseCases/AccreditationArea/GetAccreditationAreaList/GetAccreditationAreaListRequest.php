@@ -9,6 +9,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property-read integer $perPage
  * @property-read array $user_columns
  * @method array query() Получить все query параметры
+ * @method array input() Получить все query
  * @method void merge(array $attributes) Объединить данные с запросом
  * @method mixed user() Получить пользователя
  */ 
