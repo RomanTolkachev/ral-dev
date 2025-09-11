@@ -12,7 +12,7 @@ export const WEB_URL = "/"
 export const axiosApi = axios.create({
     baseURL: LOCAL_URL,
     withCredentials: true,
-    timeout: 10000,
+    timeout: 15000,
 })
 
 const webApi = axios.create({

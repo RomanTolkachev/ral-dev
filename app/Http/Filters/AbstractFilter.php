@@ -16,11 +16,15 @@ abstract class AbstractFilter
     public const KEYS_TO_ARRAY = [];
 
     protected Builder $builder;
+    protected array $originalInputs;
 
     /**
      * @param array $inputs
      */
-    public function __construct(protected array $inputs) {}
+    public function __construct(protected array $inputs)
+    {
+        $this->originalInputs = $inputs;
+    }
 
     /**
      * Применение фильтров к запросу
@@ -69,5 +73,10 @@ abstract class AbstractFilter
         }
 
         return $this->builder;
+    }
+
+    public function getInputs(): array
+    {
+        return $this->originalInputs;
     }
 }

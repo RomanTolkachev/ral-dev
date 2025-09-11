@@ -27,7 +27,7 @@ export const MultiSelectVariants: FC<IProps> = ({ className, inputData }) => {
     const { customSubmitHandler } = handlers;
 
     const options = inputData.values!.checkboxValues;
-    const {headerLabel: inputName} = inputData
+    const { headerLabel: inputName } = inputData
     const error = errors[inputName];
     const [inputText, setInputText] = useState('');
     const [showDropdown, setShowDropdown] = useState(false);
@@ -145,33 +145,42 @@ export const MultiSelectVariants: FC<IProps> = ({ className, inputData }) => {
 
                         <AnimatePresence>
                             {showDropdown && (
-                                <div style={{ scrollbarGutter: "stable" }} className="p-2 ">
+                                <div className="">
                                     <motion.div
-                                        initial={{ opacity: 0, height: 0.1 }}
-                                        animate={{ opacity: 1, height: "auto" }}
-                                        exit={{ opacity: 0, height: 0.1 }}
+                                        layout
+                                        initial={{ opacity: 0, height: 0, paddingTop: 0 }}
+                                        animate={{ opacity: 1, height: "auto", paddingTop: 2 }}
+                                        exit={{ opacity: 0, height: 0, paddingTop: 0 }}
                                         transition={{ duration: 0.2 }}
-                                        style={{ scrollbarGutter: "stable" }}
-                                        className="w-full relative overflow-hidden rounded-md max-h-32 overflow-y-auto px-3 bg-background-block"
+                                        className="w-full relative rounded-md px-3 bg-background-block"
                                     >
-                                        {showDropdown && <div className="sticky top-0 text-center px-2 pt-2 pb-4 bg-background-block z-[2] scale-105 text-header-text">варианты:</div>}
-                                        {filteredOptions.length > 0 ? (
-                                            filteredOptions.map((option) => (
-                                                <div
-                                                    key={option}
-                                                    className="pr-4 py-2 hover:scale-x-105 cursor-pointer transition-all text-header-text "
-                                                    onMouseDown={(e) => e.preventDefault()}
-                                                    onClick={() => handleOptionSelect(option, currentValues)}
-                                                >
-                                                    {/* Применяем highlight здесь */}
-                                                    {highlight(option, inputText)}
-                                                </div>
-                                            ))
-                                        ) : (
-                                            <div className="px-4 py-2 text-gray-500">
-                                                {inputText.length > 0 ? "Совпадений не найдено" : "Начните вводить текст"}
+                                        {/* Контент со скроллом */}
+                                        {showDropdown && (
+                                            <div className="sticky top-0 text-center px-2 pt-2 pb-4 bg-background-block z-[2] scale-105 text-header-text">
+                                                варианты:
                                             </div>
                                         )}
+                                        <div
+                                            style={{ scrollbarGutter: "stable" }}
+                                            className="overflow-y-auto max-h-32 pl-2 overflow-x-hidden"
+                                        >
+                                            {filteredOptions.length > 0 ? (
+                                                filteredOptions.map((option) => (
+                                                    <div
+                                                        key={option}
+                                                        className="pr-4 py-2 hover:scale-105 cursor-pointer transition-all text-header-text"
+                                                        onMouseDown={(e) => e.preventDefault()}
+                                                        onClick={() => handleOptionSelect(option, currentValues)}
+                                                    >
+                                                        {highlight(option, inputText)}
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <div className="px-4 py-2 text-gray-500">
+                                                    {inputText.length > 0 ? "Совпадений не найдено" : "Начните вводить текст"}
+                                                </div>
+                                            )}
+                                        </div>
                                     </motion.div>
                                 </div>
                             )}
@@ -180,7 +189,7 @@ export const MultiSelectVariants: FC<IProps> = ({ className, inputData }) => {
                         {showDropdown && <div className="sticky top-0 text-center p-2 bg-background-block z-[2] text-header-text">выбрано:</div>}
 
                         {currentValues.length > 0 && (
-                            <div style={{backgroundImage: 'var(--input-list-border)'}} className="relative rounded-2xl p-[1px] bg-[linear-gradient(to_bottom,#748ebb_0%,transparent_100%)]">
+                            <div style={{ backgroundImage: 'var(--input-list-border)' }} className="relative rounded-2xl p-[1px] bg-[linear-gradient(to_bottom,#748ebb_0%,transparent_100%)]">
                                 <div style={{ backgroundImage: 'var(--input-list-bg)' }} className=" rounded-2xl p-2 shadow-inner">
                                     <div
                                         style={{ scrollbarGutter: "stable" }}

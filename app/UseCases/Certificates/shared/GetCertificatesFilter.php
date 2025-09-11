@@ -5,8 +5,6 @@ namespace App\UseCases\Certificates\shared;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Filters\AbstractFilter;
 use App\Models\CertificatesShortInfo;
-use Illuminate\Support\Facades\DB;
-use App\Models\StatusChange;
 use Illuminate\Http\Request;
 
 class GetCertificatesFilter extends AbstractFilter
@@ -53,26 +51,10 @@ class GetCertificatesFilter extends AbstractFilter
     protected function statusChangeStatusChangesBy(array $values): Builder
     {
         $query = $this->builder;
-        $ids = StatusChange::where(function ($q) use ($values) {
-            foreach ($values as $value) {
-                $q->orWhere('status_changes_by', $value);
-            }
-        })->distinct()->pluck('certificate_id')->toArray();
 
-        if (empty($ids)) {
-            return $query->whereRaw('1 = 0');
-        }
-
-        $tempTable = '##temp_ids_' . uniqid();
-        DB::statement("CREATE TABLE {$tempTable} (certificate_id INT PRIMARY KEY)");
-
-        foreach (array_chunk($ids, 1000) as $chunk) {
-            DB::table($tempTable)->insert(
-                array_map(fn($id) => ['certificate_id' => $id], $chunk)
-            );
-        }
-
-        return $query->join(DB::raw("{$tempTable} tmp2"), 'certificates_short_info.id', '=', 'tmp2.certificate_id');
+        return $query->whereHas("statusChange", function ($q) use ($values) {
+            $q->whereIn("status_changes_by", $values);
+        });
     }
 
     protected function updateStatusDate(array $values): Builder
@@ -120,9 +102,7 @@ class GetCertificatesFilter extends AbstractFilter
     {
         return $this->builder->whereHas('techReglaments', function ($query) use ($values) {
             $query->where(function ($q) use ($values) {
-                foreach ($values as $value) {
-                    $q->orWhere('tech_reg_code', 'like', "%{$value}%");
-                }
+                    $q->whereIn('tech_reg_code',  $values);
             });
         }, '>=', count($values)); // третий параметр ищет количество связей. На самом деле, если поставить = 2, то все равно будет искать >=
     }
