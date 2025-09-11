@@ -76,7 +76,7 @@ export const CustomCell: FC<Props> = (
                 <Tooltip alwaysShow hideDelay={350} distanceFromTrigger={-25} content={stringValue}>
                     <div
                         className="text-wrap overflow-hidden w-full mx-auto break-all"
-                        // style={makeClamp(3)}
+                    // style={makeClamp(3)}
                     >
                         {makeList(stringValue, { maxLiItems: 3, showMoreText: "howMany" })}
 
@@ -85,7 +85,7 @@ export const CustomCell: FC<Props> = (
             );
         case "gost_object":
             return (
-                <Tooltip alwaysShow hideDelay={350} distanceFromTrigger={-25} content={makeList(stringValue, {showBullets: true})}>
+                <Tooltip alwaysShow hideDelay={350} distanceFromTrigger={-25} content={makeList(stringValue, { showBullets: true })}>
                     <span
                         className="text-wrap overflow-hidden w-full mx-auto break-all text-start"
                     // style={makeClamp(3)}
@@ -185,7 +185,7 @@ export const CustomCell: FC<Props> = (
                             npStatus={NPstatus}
                             status={status}
                             link={link}
-                            value={highlight(numberValue, currentQuery.ral_short_info_view__RegNumber) as string | null}
+                            value={highlight(numberValue, currentQuery.ral_short_info_view__RegNumber ?? currentQuery.ral_short_info_view__custom_number) as string | null}
                             queryValue={""}
                         />
                     </div>

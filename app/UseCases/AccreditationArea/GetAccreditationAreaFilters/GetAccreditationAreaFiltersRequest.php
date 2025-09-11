@@ -2,9 +2,15 @@
 
 namespace App\UseCases\AccreditationArea\GetAccreditationAreaFilters;
 
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
-class GetAccreditationAreaFiltersRequest
+/**
+ * @method array all() Получить все query параметры
+ * @method mixed user() Получить пользователя
+ * @method mixed query() Получить пользователя
+ * @method mixed merge() Получить пользователя
+ */
+class GetAccreditationAreaFiltersRequest extends FormRequest
 {
     public function rules(): array
     {

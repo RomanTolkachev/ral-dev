@@ -53,7 +53,6 @@ class GetCertificatesFiltersRequest extends FormRequest
                                 continue;
                             }
 
-                            // Если значение столбца находится в $this->columnsToFormatDates
                             if (in_array($key, $this->columnsToFormatDates)) {
                                 if ($index === 1) {
                                     $query[$index] = $this->formatToIsoZoloEnd($item);
