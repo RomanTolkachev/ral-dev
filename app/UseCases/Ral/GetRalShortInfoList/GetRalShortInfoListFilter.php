@@ -5,13 +5,14 @@ namespace App\UseCases\Ral\GetRalShortInfoList;
 use App\Models\RalShortInfoView;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Filters\AbstractFilter;
+use Illuminate\Http\Request;
 
 class GetRalShortInfoListFilter extends AbstractFilter
 {
 
     protected $model;
 
-      public function __construct(RalShortInfoView $model, GetRalShortInfoListRequest $request)
+      public function __construct(RalShortInfoView $model, Request $request)
     {
         $this->model = $model;
         parent::__construct($request->input());

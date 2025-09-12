@@ -16,8 +16,6 @@ class GetAccreditationAreaFiltersHandler
 
         $filters = $this->availableFilters;
 
-        // dd($requestedColumns);
-
         // Фильтруем доступные фильтры по пользовательским настройкам
         $handledColumns = array_filter($filters, function ($value) use ($requestedColumns) {
             return in_array($value["headerLabel"], $requestedColumns);
