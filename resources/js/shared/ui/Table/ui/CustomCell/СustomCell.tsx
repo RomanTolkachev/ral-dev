@@ -163,6 +163,7 @@ export const CustomCell: FC<Props> = (
             return <span style={{ color: getStatusColor(stringValue as TStatus) }}>{value as ReactNode}</span>
 
         case "custom_number":
+        case "laboratory":
         case "ral_short_info_view__custom_number":
             const splittedRals = stringValue.split(/(?<!https:)\/\//);
 

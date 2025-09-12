@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class CertificatesShortInfo extends Model
 {
@@ -19,6 +20,8 @@ class CertificatesShortInfo extends Model
     public $timestamps = false;
 
     protected $with = ["ralShortInfoView", "certificateApplicant", 'certificationAuthority', "statusChange"];
+
+    protected $appends = ['laboratory'];
 
     protected function casts(): array
     {
@@ -39,7 +42,6 @@ class CertificatesShortInfo extends Model
             'tech_reg_id'      // FK в промежуточной таблице для регламента
         );
     }
-
 
 
     public function ralShortInfoView(): HasManyThrough
@@ -76,6 +78,26 @@ class CertificatesShortInfo extends Model
             StatusChange::class,
             "certificate_id",
             "id",
+        );
+    }
+
+    public function getRalShortInfoByRegNumber()
+    {
+        // dd(RalShortInfoView::where('RegNumber', $this->certificationAuthorityAttestatRegNumber)->get());
+        return RalShortInfoView::where('RegNumber', $this->certificationAuthorityAttestatRegNumber)->get();
+    }
+
+    protected function laboratory(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $ral = $this->getRalShortInfoByRegNumber()->first();
+                if (!$ral) {
+                    return "Нет данных";
+                }
+
+                return $ral->NPstatus . "*" . $ral->new_status_AL . "*" . $ral->RegNumber . "*" . $ral->link;
+            }
         );
     }
 }

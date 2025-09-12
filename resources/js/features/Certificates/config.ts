@@ -19,6 +19,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "group": "group / Группа продукции ЕАЭС",
     "certType": "certType / Тип сертификата",
     "certObjectType": "certObjectType / Тип объекта сертификации",
+    "laboratory": "лаборатория",
 
     // Информация о заявителе
     "applicantLegalSubjectType": "applicantLegalSubjectType / Тип заявителя",
@@ -292,6 +293,7 @@ const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
     "group": 200,
     "certType": 200,
     "certObjectType": 200,
+    "laboratory": 210,
 
     // Поля заявителя (без префиксов)
     "applicantLegalSubjectType": 200,
