@@ -106,6 +106,14 @@ class GetCertificatesFilter extends AbstractFilter
             });
         }, '>=', count($values)); // третий параметр ищет количество связей. На самом деле, если поставить = 2, то все равно будет искать >=
     }
+    protected function expertFio(array $value): Builder
+    {
+        $query = $this->builder;
+        foreach ($value as $item) {
+            $query->Where('expertFio', 'like', "%$item%");
+        } 
+        return $query;
+    }
 
     protected function ralShortInfoViewRegNumber(array $values): Builder
     {

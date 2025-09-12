@@ -76,6 +76,8 @@ export const makeList = (
 
     if (trimItems) {
         parts = parts.map(part => part.trim());
+    } {
+        parts = parts.map(part => part.replace(/^\s+/, '')); // удаляю пробелы в начале строки, чтобы список был ровным
     }
 
     if (filterEmpty) {
@@ -116,7 +118,7 @@ export const makeList = (
                 );
             })}
 
-            {/* Показываем сообщение о скрытых элементах ТОЛЬКО если явно указан showMoreText */}
+            {/* покажу сообщение о скрытых элементах если явно указан проп showMoreText */}
             {hiddenItemsCount > 0 && showMoreText && (
                 <li className={`${liClassName} line-clamp-1`}>
                     {showMoreText === 'howMany'

@@ -134,6 +134,11 @@ class GetCertificatesFilterHandler
             'type' => 'date',
             'defaultValue' => ["", ""],
         ],
+        [
+            'headerLabel' => "expertFio",
+            'type' => 'singleText',
+            'defaultValue' => "",
+        ],
     ];
 
     private $techicalReglamentsCheckboxValues = [

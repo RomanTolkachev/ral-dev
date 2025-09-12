@@ -109,8 +109,6 @@ export const Table: FunctionComponent<IProps> = ({ className, paginatedData, dic
         paginatedData && setAnimationKey(prev => prev + 1)
     }, [paginatedData])
 
-    console.log("рендер")
-
     return (
         <div className={`${className} h-full grow grid grid-rows-[1fr_auto] grid-cols-[1fr] overflow-hidden`}>
             <DevTool control={control} />

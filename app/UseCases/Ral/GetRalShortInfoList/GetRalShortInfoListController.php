@@ -19,7 +19,7 @@ class GetRalShortInfoListController extends Controller
             defaultUser: User::getDefaultUser(),
             filter: new GetRalShortInfoListFilter(new RalShortInfoView(), $request)
         );
-
+// dd(RalShortInfoView::find(33926));
         return new JsonResponse($result, Response::HTTP_OK);
     }
 }

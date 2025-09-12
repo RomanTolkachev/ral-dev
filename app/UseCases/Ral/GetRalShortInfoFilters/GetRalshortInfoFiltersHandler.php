@@ -107,7 +107,7 @@ class GetRalShortInfoFiltersHandler
             ]
         ],
         [
-            'headerLabel' => 'regulation',
+            'headerLabel' => 'regulations',
             'type' => 'multi',
             'defaultValue' => [],
         ],

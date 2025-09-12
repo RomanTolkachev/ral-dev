@@ -83,7 +83,6 @@ class CertificatesShortInfo extends Model
 
     public function getRalShortInfoByRegNumber()
     {
-        // dd(RalShortInfoView::where('RegNumber', $this->certificationAuthorityAttestatRegNumber)->get());
         return RalShortInfoView::where('RegNumber', $this->certificationAuthorityAttestatRegNumber)->get();
     }
 

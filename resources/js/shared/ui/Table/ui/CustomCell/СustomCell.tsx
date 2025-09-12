@@ -22,7 +22,15 @@ export const CustomCell: FC<Props> = (
     const currentQuery = getQuery();
     const { getContext } = cellData
     const context = getContext()
-    const columnID = context.column.id as Partial<TColumnAccessors>;
+    const rowData = context.row.original;
+
+    // аксессор для колонки. через него меняем стоку на кастомное значение в ячейках
+    const columnID = (
+        context.column.id === "param" ? "param" : // это нужно для таблички из 2 колонок, где слева заголовок, а справа значение. У левой колонки будет ключ "param"
+            rowData.__meta?.originalKey || // тоже для таблички из 2 колонок, только вытаскиваем оригинальный ключ, чтобы менять правую колонку
+            context.column.id // для обычной таблички
+    ) as Partial<TColumnAccessors>
+
     const value = context.getValue();
     const stringValue = formatCellValue(value);
 
@@ -103,15 +111,42 @@ export const CustomCell: FC<Props> = (
             );
 
         case "regulations":
-            return (
-                <span
-                    className="text-wrap overflow-hidden mx-auto line-clamp-3"
-                    title={stringValue}
-                    style={makeClamp(3)}
-                >
-                    {highlight(stringValue, currentQuery.regulations)}
-                </span>
-            );
+            const transposed = !!rowData.__meta?.isTransposed;
+            if (transposed) {
+                // в модалке
+                return (
+                    <span
+                        className="text-wrap overflow-hidden mx-auto line-clamp-3"
+                        style={makeClamp(3)}
+                    >
+                        {makeList(stringValue, {
+                            highlightPattern: currentQuery.regulations,
+                            maxLiItems: undefined,
+                            showMoreText: "howMany",
+                            showBullets: true,
+                            liClassName: "line-clamp-1"
+                        })}
+                    </span>
+                );
+            } else {
+                // в табличка
+                return (
+                    <Tooltip hideDelay={350} distanceFromTrigger={-25} content={makeList(stringValue, { delimiter: ";", showBullets: true, highlightPattern: currentQuery.regulations })}>
+                        <span
+                            className="text-wrap overflow-hidden mx-auto line-clamp-3"
+                            style={makeClamp(3)}
+                        >
+                            {makeList(stringValue, {
+                                highlightPattern: currentQuery.regulations,
+                                maxLiItems: 3,
+                                showMoreText: "howMany",
+                                showBullets: true,
+                                liClassName: "line-clamp-1"
+                            })}
+                        </span>
+                    </Tooltip>
+                );
+            }
 
         case "tnved":
             return (
@@ -124,13 +159,13 @@ export const CustomCell: FC<Props> = (
                 </span>
             );
 
-
+        case "old_status_AL":
         case "new_status_AL":
             return (
                 <span
                     className="text-wrap overflow-hidden mx-auto line-clamp-3"
                     title={stringValue}
-                    style={makeClamp(3)}
+                    style={{ ...makeClamp(3), color: getStatusColor(stringValue as TStatus) }}
                 >
                     {stringValue}
                 </span>
@@ -158,10 +193,10 @@ export const CustomCell: FC<Props> = (
                     ))}
                 </span>
             );
-
+        case "expertFio":
+            return highlight(stringValue, currentQuery.expertFio) as string | null
         case "certificate_status":
             return <span style={{ color: getStatusColor(stringValue as TStatus) }}>{value as ReactNode}</span>
-
         case "custom_number":
         case "laboratory":
         case "ral_short_info_view__custom_number":

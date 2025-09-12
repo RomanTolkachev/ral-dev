@@ -24,7 +24,7 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
     useEffect(() => { // TODO: или тут тоже через react query нужно?
         axiosApi.get<Record<string, any>>('/ral_short_info/certification_body', {
             params: { cert_id: ralId }
-        }).then(res => res ? (setCertificationbodyData(res.data)) : null); // TODO: нужно продумать тут catch и правильно ли указывать null в тернарнике
+        }).then(res => res ? (setCertificationbodyData(res.data)) : null); 
     }, [ralId])
 
     let cols: ColumnDef<any>[] = [
@@ -44,12 +44,13 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
         return certificationBodyData ? transpondInTwoCols(certificationBodyData, "param", "value") : []
     }, [certificationBodyData])
 
+    console.log(tableData)
+
     const table = useReactTable({
         data: tableData,
         columns: cols,
         getCoreRowModel: getCoreRowModel(),
     })
-
 
     return (
         <div className="w-full h-full px-2">
