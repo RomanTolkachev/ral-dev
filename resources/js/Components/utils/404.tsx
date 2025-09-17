@@ -1,4 +1,3 @@
-import { div } from "motion/react-client"
 import { SVG } from "./SVG"
 
 export const NotFound = () => {

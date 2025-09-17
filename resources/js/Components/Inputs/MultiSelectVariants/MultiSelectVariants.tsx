@@ -147,7 +147,7 @@ export const MultiSelectVariants: FC<IProps> = ({ className, inputData }) => {
                             {showDropdown && (
                                 <div className="">
                                     <motion.div
-                                        layout
+                                        // layout
                                         initial={{ opacity: 0, height: 0, paddingTop: 0 }}
                                         animate={{ opacity: 1, height: "auto", paddingTop: 2 }}
                                         exit={{ opacity: 0, height: 0, paddingTop: 0 }}
