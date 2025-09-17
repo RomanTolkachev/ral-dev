@@ -1,7 +1,7 @@
 import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
 import { createContext, FunctionComponent, PropsWithChildren, useEffect, useMemo, useRef } from 'react'
 import useParamsCustom from '@/shared/query/useParamsCustom'
-import isEmpty from "lodash/isEmpty"
+import isEmpty from "lodash-es/isEmpty"
 import { CustomisationContext, ICustomSubmitHandlerContext } from '../model'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import { filterEmptyValues } from './lib'

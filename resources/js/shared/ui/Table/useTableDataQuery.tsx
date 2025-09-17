@@ -3,7 +3,7 @@ import useParamsCustom from "@/shared/query/useParamsCustom"
 import IPagination, { TDefaultPaginationRequest } from "@/shared/types/pagination"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
-import isEmpty from "lodash/isEmpty"
+import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
 
 type TParams = {

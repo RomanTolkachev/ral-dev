@@ -1,7 +1,7 @@
 import { FunctionComponent, useContext } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
-import isEqual from 'lodash/isEqual'
+import isEqual from 'lodash-es/isEqual'
 import { AnimatePresence, motion } from 'motion/react'
 import { enterExitAnimation as animationParams } from '@/shared/framer-motion/enter-exit-animation'
 import { SVG } from '@/Components/utils/SVG'

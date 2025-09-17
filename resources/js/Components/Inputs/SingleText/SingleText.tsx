@@ -5,7 +5,7 @@ import { SVG } from '@/Components/utils/SVG.tsx'
 import { AnimatePresence, motion } from 'motion/react'
 import { enterExitAnimation as animationParams } from '@/shared/framer-motion/enter-exit-animation.ts'
 import { CustomSubmitHandlerContext} from '@/shared/ui/Table/providers/CustomFormProvider'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from "lodash-es/isEmpty"
 import { ICustomSubmitHandlerContext } from '@/shared/ui/Table/model'
 
 interface IProps {

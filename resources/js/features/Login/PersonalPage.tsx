@@ -1,10 +1,9 @@
 import { AuthContext } from '@/app/providers/AuthProvider';
 import { Preloader } from '@/Components/utils/Preloader';
-import { getUser, logOut } from '@/shared/api/api';
 import { MainButton } from '@/shared/ui/Buttons/MainButton';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { FunctionComponent, useContext } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface Props {
     className?: string;

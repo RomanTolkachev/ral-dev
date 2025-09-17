@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { WritableDraft } from 'immer'
 import { FieldValues } from 'react-hook-form'
 
 export interface IFiltersSlice {
@@ -31,7 +30,7 @@ const filtersSlice = createSlice({
         updateForm: (state, action: PayloadAction<any>) => {
             state.queries = action.payload
         },
-        updateHookFormQueries: (state, action: PayloadAction<WritableDraft<FieldValues>>) => {
+        updateHookFormQueries: (state, action: PayloadAction<any>) => {
             state.currentHookFormQueries = { ...action.payload, perPage: 10 }
         },
     },
