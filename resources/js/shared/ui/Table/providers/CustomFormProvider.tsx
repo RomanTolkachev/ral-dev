@@ -39,8 +39,8 @@ export const CustomFormProvider: FunctionComponent<PropsWithChildren<IProps>> = 
     }, [JSON.stringify(queries)]);
 
     const methods: UseFormReturn<IFormValues> = useForm<IFormValues>({
-        mode: "onChange",
-        reValidateMode: 'onChange',
+        mode: "onSubmit",
+        reValidateMode: "onSubmit",
         defaultValues: { ...default_filters, ...filters, },
     })
     const { getValues, formState: { dirtyFields, defaultValues }, reset, trigger, setValue } = methods;

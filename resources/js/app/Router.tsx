@@ -1,22 +1,25 @@
-import Modal from "@/Components/modal/Modal";
+import { FC, lazy, Suspense } from "react";
 import { TablePage } from "@/Components/pages/TablePage";
 import { NotFound } from "@/Components/utils/404";
 import Home from "@/features/home/ui/Home";
 import LoginPage from "@/features/Login/LoginPage";
 import PersonalPage from "@/features/Login/PersonalPage";
-import { RalModal } from "@/features/ralModal/ui/RalModal";
 import { TableLayout } from "@/Layouts/TableLayout";
-import { Settings } from "@/shared/ui/Table/ui/settings/ui/Settings";
-import { FC } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { OnlyUnAuth, OnlyAuth } from "./ProtectedRoute";
 import { config as ralConfig } from '@/features/RalTable/config'
 import { config as accAreaConfig } from '@/features/AccreditationArea/config'
 import { config as certificatesConfig } from '@/features/Certificates/config'
+import { Preloader } from "@/Components/utils/Preloader";
+
+const Settings = lazy(() => import("@/shared/ui/Table/ui/settings/ui/Settings").then(module => ({ default: module.Settings })))
+const RalModal = lazy(() => import("@/features/ralModal/ui/RalModal").then(module => ({ default: module.RalModal })))
+const Modal = lazy(() => import("@/Components/modal/Modal"));
 
 export const Router: FC = () => {
     const navigate = useNavigate();
     return (
+        <Suspense fallback={<Preloader widthStyles='size-10'/>}>
         <Routes>
             <Route path="/" element={<Home />} />
 
@@ -39,5 +42,6 @@ export const Router: FC = () => {
             <Route path='/personal' element={<OnlyAuth component={<PersonalPage />} />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
+        </Suspense>
     )
 }

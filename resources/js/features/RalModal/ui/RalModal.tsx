@@ -1,3 +1,4 @@
+import { FC, lazy, Suspense } from "react";
 import { FunctionComponent, useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
 import { axiosApi } from "@/shared/api/api";
@@ -5,7 +6,6 @@ import { Preloader } from "@/Components/utils/Preloader";
 import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import transpondInTwoCols from "../lib/transpondInTwoCols";
 import { CustomCell } from "@/shared/ui/Table/ui/CustomCell";
-import styles from "./styles.module.css"
 
 
 interface IProps {
@@ -31,7 +31,9 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
         {
             accessorKey: "param",
             header: 'параметр',
-            cell: (props: any) => props.getValue() ,
+            cell: (props: any) => props.getValue(),
+            enableResizing: true,
+            size: 70
         },
         {
             accessorKey: "value",
@@ -53,16 +55,18 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
     })
 
     return (
+        
         <div className="w-full h-full px-2">
             <div className="h-full rounded-[20px]">
                 {tableData.length ?
                     <table
+                    style={{ width: table.getTotalSize() }}
                         className={`relative min-h-full min-w-full max-h-full text-sm table-fixed rounded-t-md [&_td]:border-r [&_td]:border-r-filter-dropdown-button`}>
                         <tbody className={'font-medium text-table-base'}>
                             {table.getRowModel().rows.map((row) => {
                                 return (
                                     <tr key={row.id} className={'even:bg-row-modal-even odd:bg-row-modal-odd [&_td:first-child]:text-nowrap [&_td]:text-start [&_ul]'}>
-                                        {row.getVisibleCells().map(cell => <td key={cell.id}><CustomCell cellData={cell} /></td>)}
+                                        {row.getVisibleCells().map(cell => <td style={{width: cell.column.getSize()}} key={cell.id}><CustomCell cellData={cell} /></td>)}
                                     </tr>
                                 )
                             })}

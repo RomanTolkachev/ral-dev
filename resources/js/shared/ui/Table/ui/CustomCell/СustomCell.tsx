@@ -214,6 +214,6 @@ export const CustomCell: FC<Props> = ({ cellData }): ReactNode => {
 
         // Простые текстовые поля
         default:
-            return wrapWithTooltip(stringValue, stringValue);
+            return stringValue;
     }
 };

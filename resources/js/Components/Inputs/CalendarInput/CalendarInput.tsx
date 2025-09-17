@@ -32,7 +32,6 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
             rules={{ validate: dateRangeValidation }}
             render={({ field: { value = ["", ""], onChange }, fieldState: { error } }) => {
 
-
                 return (
                     <div className={`${className} p-1 space-y-2 text-input-text`}>
                         <div className="custom-date w-full flex items-center gap-4">

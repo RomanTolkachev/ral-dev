@@ -4,9 +4,8 @@ import { CustomCellContext } from '@/shared/ui/Table/providers/CustomFormProvide
 import { createUniqueWithId, getAvailableColumns, getUserColumns, setColumns } from '../lib';
 import { useNavigate } from 'react-router-dom';
 import { closestCorners, DndContext, DragEndEvent, PointerSensor, UniqueIdentifier, useSensor, useSensors } from "@dnd-kit/core"
-import { arrayMove, rectSortingStrategy, rectSwappingStrategy, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import { arrayMove, rectSortingStrategy, SortableContext } from "@dnd-kit/sortable"
 import { SortableItem } from './SortableItem';
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
 import { AxiosError } from 'axios';
 
 interface Props {
