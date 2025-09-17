@@ -1,6 +1,6 @@
 import { FC, useState, useRef, useEffect, KeyboardEvent, ReactNode, useContext, useCallback, useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { SVG } from "@/Components/utils/SVG";
 import { CustomSubmitHandlerContext } from "@/shared/ui/Table/providers/CustomFormProvider";
 import { ISearchingFormItem } from "@/shared/types/searchingFilters";

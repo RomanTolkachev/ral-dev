@@ -1,5 +1,5 @@
 import '../css/app.css'
-// import './bootstrap'
+import './bootstrap'
 
 import { configureStore } from '@reduxjs/toolkit'
 import { rootReducer } from '@/features/store/root-reducer'

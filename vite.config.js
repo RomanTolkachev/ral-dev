@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
     plugins: [
@@ -9,6 +10,11 @@ export default defineConfig({
             refresh: true,
         }),
         react(),
+        visualizer({
+            filename: 'dist/stats.html',
+            open: true,
+            gzipSize: true,
+        })
     ],
     server: {
         host: '0.0.0.0', // слушать все интерфейсы
@@ -17,41 +23,5 @@ export default defineConfig({
             host: 'localhost', // HMR всегда через localhost
             protocol: 'ws'
         },
-        // Важно: укажите правильный origin для SSR
-        // origin: 'http://192.168.42.28:5173',
-        // proxy: {
-        //     '/api': {
-        //         target: 'http://192.168.42.28:8000', // Адрес вашего Laravel
-        //         changeOrigin: true,
-        //         secure: false,
-        //         headers: {
-        //             Origin: 'http://localhost:3000' // Или другой из allowed_origins
-        //         }
-        //     },
-        //     '/sanctum': {
-        //         target: 'http://192.168.42.28:8000',
-        //         changeOrigin: true,
-        //         secure: false,
-        //         headers: {
-        //             Origin: 'http://localhost:3000'
-        //         }
-        //     },
-        //     '/login': {
-        //         target: 'http://192.168.42.28:8000',
-        //         changeOrigin: true,
-        //         secure: false,
-        //         headers: {
-        //             Origin: 'http://localhost:3000'
-        //         }
-        //     },
-        //     '/logout': {
-        //         target: 'http://192.168.42.28:8000',
-        //         changeOrigin: true,
-        //         secure: false,
-        //         headers: {
-        //             Origin: 'http://localhost:3000'
-        //         }
-        //     }
-        // }
     },
 });

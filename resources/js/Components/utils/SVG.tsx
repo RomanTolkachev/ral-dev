@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 
 interface IProps {
     className?: string
@@ -18,7 +18,7 @@ interface IProps {
     gear? : boolean
 }
 
-export const SVG: FunctionComponent<IProps> = ({
+export const SVG: FC<IProps> = ({
     className,
     clickHandler,
     arrow = false,

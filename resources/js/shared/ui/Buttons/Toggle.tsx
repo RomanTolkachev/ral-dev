@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useEffect, useLayoutEffect, useState} from 'react';
 import {SVG} from "@/Components/utils/SVG";
-import { motion, useAnimation, AnimatePresence } from 'framer-motion';
+import { motion, useAnimation, AnimatePresence } from 'motion/react';
 
 interface IProps {
     className?: string

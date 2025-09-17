@@ -1,5 +1,5 @@
 import { FunctionComponent, useState, useMemo } from 'react'
-import { motion, Variants } from 'framer-motion'
+import { motion, Variants } from 'motion/react'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import { CalendarInput } from '@/Components/Inputs/CalendarInput/CalendarInput'
 import { CheckBoxCustom } from '@/Components/Inputs/CheckBoxCustom'

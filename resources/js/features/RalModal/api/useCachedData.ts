@@ -1,5 +1,5 @@
 import { QueryKey, useQueryClient } from "@tanstack/react-query";
-import { isArray } from "lodash";
+import isArray from "lodash/isArray";
 
 
 /** 

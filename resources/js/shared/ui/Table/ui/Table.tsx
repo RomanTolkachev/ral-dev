@@ -1,4 +1,4 @@
-import { FunctionComponent, useContext, useLayoutEffect, useMemo, useState } from 'react'
+import { FunctionComponent, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { getHeaders } from '@/shared/ui/Table/lib/getHeaders'
 import { IRalItem } from '@/shared/types/ral'
@@ -17,7 +17,6 @@ import { CustomisationContext } from '../model'
 import { enterExitAnimation } from '@/shared/framer-motion/enter-exit-animation'
 import { getErrorMessage } from '../lib'
 import { NoData } from './notFound'
-import { DevTool } from '@hookform/devtools'
 import { useFormContext } from 'react-hook-form'
 
 interface IProps {
@@ -53,6 +52,16 @@ export const Table: FunctionComponent<IProps> = ({ className, paginatedData, dic
     if (!configContext?.config) {
         return null
     }
+
+    // убираем девтулзы в prod
+    const [DevToolComponent, setDevToolComponent] = useState<null | React.FC<{ control: any }>>(null);
+    useEffect(() => {
+        if (import.meta.env.MODE === 'development') {
+            import('@hookform/devtools').then((mod) => {
+                setDevToolComponent(() => mod.DevTool);
+            }).catch(() => "девтулз не найден");
+        }
+    }, []);
 
     const { HIDDEN_COLUMNS, ORDERABLE_CELLS, CELL_WIDTH, ROW_CLICK_FN } = configContext.config
 
@@ -111,7 +120,7 @@ export const Table: FunctionComponent<IProps> = ({ className, paginatedData, dic
 
     return (
         <div className={`${className} h-full grow grid grid-rows-[1fr_auto] grid-cols-[1fr] overflow-hidden`}>
-            <DevTool control={control} />
+            {DevToolComponent && <DevToolComponent control={control} />}
             <div className={'p-2 w-full h-full grow flex overflow-hidden'}>
                 <div className={'my-block min-w-full h-full bg-background-block relative'}>
                     {/* Оверлей с прелоудером */}

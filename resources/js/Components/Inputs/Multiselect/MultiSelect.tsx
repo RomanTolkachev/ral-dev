@@ -2,7 +2,7 @@ import { CustomSubmitHandlerContext } from "@/shared/ui/Table/providers/CustomFo
 import { ISearchingFormItem } from "@/shared/types/searchingFilters";
 import { FC, useContext, useState, KeyboardEvent, useRef, ReactNode } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { enterExitAnimation as animationParams } from "@/shared/framer-motion/enter-exit-animation";
 import { SVG } from "@/Components/utils/SVG";
 import { ICustomSubmitHandlerContext } from "@/shared/ui/Table/model";

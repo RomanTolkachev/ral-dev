@@ -1,7 +1,6 @@
 import { getTableSettings } from "@/shared/api/api";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { isEmpty } from "lodash";
 
 type TParams = {
     userId: string | undefined,

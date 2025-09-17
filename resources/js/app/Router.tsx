@@ -19,29 +19,27 @@ const Modal = lazy(() => import("@/Components/modal/Modal"));
 export const Router: FC = () => {
     const navigate = useNavigate();
     return (
-        <Suspense fallback={<Preloader widthStyles='size-10'/>}>
-        <Routes>
-            <Route path="/" element={<Home />} />
+            <Routes>
+                <Route path="/" element={<Home />} />
 
-            <Route path="/directory" element={<TableLayout />}>
-                <Route path="ral" element={<TablePage config={ralConfig} />}>
-                    <Route path=':ralId' element={<Modal closeModal={() => navigate(-1)} children={<RalModal />} />} />
-                    <Route path='settings' element={<Modal closeModal={() => navigate(-1)} children={<Settings />} />} />
+                <Route path="/directory" element={<TableLayout />}>
+                    <Route path="ral" element={<TablePage config={ralConfig} />}>
+                        <Route path=':ralId' element={<Modal closeModal={() => navigate(-1)} children={<Suspense fallback={<Preloader widthStyles='size-10' />}><RalModal /></Suspense>} />} />
+                        <Route path='settings' element={<Modal closeModal={() => navigate(-1)} children={<Suspense fallback={<Preloader widthStyles='size-10' />}><Settings /></Suspense>} />} />
+                    </Route>
+
+                    <Route path='accreditation_area' element={<TablePage config={accAreaConfig} />}>
+                        <Route path='settings' element={<Modal closeModal={() => navigate(-1)} children={<Suspense fallback={<Preloader widthStyles='size-10' />}><Settings /></Suspense>} />} />
+                    </Route>
+
+                    <Route path='certificates' element={<TablePage config={certificatesConfig} />}>
+                        <Route path='settings' element={<Modal closeModal={() => navigate(-1)} children={<Suspense fallback={<Preloader widthStyles='size-10' />}><Settings /></Suspense>} />} />
+                    </Route>
                 </Route>
 
-                <Route path='accreditation_area' element={<TablePage config={accAreaConfig} />}>
-                    <Route path='settings' element={<Modal closeModal={() => navigate(-1)} children={<Settings />} />} />
-                </Route>
-
-                <Route path='certificates' element={<TablePage config={certificatesConfig} />}>
-                    <Route path='settings' element={<Modal closeModal={() => navigate(-1)} children={<Settings />} />} />
-                </Route>
-            </Route>
-            
-            <Route path='/login' element={<OnlyUnAuth component={<LoginPage />} />} />
-            <Route path='/personal' element={<OnlyAuth component={<PersonalPage />} />} />
-            <Route path="*" element={<NotFound />} />
-        </Routes>
-        </Suspense>
+                <Route path='/login' element={<OnlyUnAuth component={<LoginPage />} />} />
+                <Route path='/personal' element={<OnlyAuth component={<PersonalPage />} />} />
+                <Route path="*" element={<NotFound />} />
+            </Routes>
     )
 }
