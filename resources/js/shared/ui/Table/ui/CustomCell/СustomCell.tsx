@@ -74,6 +74,27 @@ export const CustomCell: FC<Props> = ({ cellData }): ReactNode => {
                 highlight(stringValue, currentQuery.tn_ved),
                 highlight(stringValue, currentQuery.full_gost)
             );
+        case "ral_short_info_view__oaDescription":
+        case "ral_short_info_view__address":
+        case "manufacterFilialFullNames":
+        case "productFullName":
+        case "productIdentificationName":
+        case "productBatchSize":
+        case "productIdentificationArticle":
+        case "productIdentificationGtin":
+        case "productIdentificationModel":
+        case "productIdentificationSort":
+        case "productIdentificationTrademark":
+        case "productIdentificationType":
+        case "productOrig":
+        case "certObjectType":
+        case "certType":
+        case "group":
+        case "status_change__comment":
+            return wrapWithTooltip(
+                <span style={makeClamp(2)}>{stringValue}</span>,
+                stringValue,
+            );
 
         case "okpd":
             return wrapWithTooltip(
@@ -100,7 +121,9 @@ export const CustomCell: FC<Props> = ({ cellData }): ReactNode => {
                 </span>
             );
 
+        case "ral_short_info_view__regulations":
         case "regulations":
+            console.log("ral_short_info_view__regulations")
             const transposed = !!rowData.__meta?.isTransposed;
             const regulationsContent = makeList(stringValue, {
                 highlightPattern: currentQuery.regulations,
