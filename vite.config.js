@@ -16,6 +16,9 @@ export default defineConfig({
             gzipSize: true,
         })
     ],
+    build: {
+        chunkSizeWarningLimit: 600,
+    },
     server: {
         host: '0.0.0.0', // слушать все интерфейсы
         port: 5173,

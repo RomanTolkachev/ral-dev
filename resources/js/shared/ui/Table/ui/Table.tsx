@@ -1,4 +1,4 @@
-import { FunctionComponent, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import { FunctionComponent, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { getHeaders } from '@/shared/ui/Table/lib/getHeaders'
 import { IRalItem } from '@/shared/types/ral'
@@ -118,6 +118,17 @@ export const Table: FunctionComponent<IProps> = ({ className, paginatedData, dic
         paginatedData && setAnimationKey(prev => prev + 1)
     }, [paginatedData])
 
+    const scrollRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (scrollRef.current && paginatedData?.data) {
+            scrollRef.current.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    }, [paginatedData])
+
     return (
         <div className={`${className} h-full grow grid grid-rows-[1fr_auto] grid-cols-[1fr] overflow-hidden`}>
             {DevToolComponent && <DevToolComponent control={control} />}
@@ -136,7 +147,7 @@ export const Table: FunctionComponent<IProps> = ({ className, paginatedData, dic
                         </motion.div>
                     )}
 
-                    <div className='text-base grow max-w-full h-full min-h-full max-h-full overflow-x-auto overflow-y-auto bg-background-block'>
+                    <div ref={scrollRef} className='text-base grow max-w-full h-full min-h-full max-h-full overflow-x-auto overflow-y-auto bg-background-block'>
                         {error ?
                             <div className='w-full h-full grid place-items-center text-table-base'>{getErrorMessage(null, error)}</div> :
                             Object.keys(tableData).length ? (

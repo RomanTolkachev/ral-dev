@@ -75,8 +75,12 @@ export const CustomCell: FC<Props> = ({ cellData }): ReactNode => {
                 highlight(stringValue, currentQuery.full_gost)
             );
         case "ral_short_info_view__oaDescription":
+        case "oaDescription":
         case "ral_short_info_view__address":
+        case "address":
         case "manufacterFilialFullNames":
+        case "fullName":
+        case "applicantFullName":
         case "productFullName":
         case "productIdentificationName":
         case "productBatchSize":
@@ -123,7 +127,6 @@ export const CustomCell: FC<Props> = ({ cellData }): ReactNode => {
 
         case "ral_short_info_view__regulations":
         case "regulations":
-            console.log("ral_short_info_view__regulations")
             const transposed = !!rowData.__meta?.isTransposed;
             const regulationsContent = makeList(stringValue, {
                 highlightPattern: currentQuery.regulations,
@@ -177,7 +180,8 @@ export const CustomCell: FC<Props> = ({ cellData }): ReactNode => {
         case "RegNumber":
         case "ral_short_info_view__RegNumber":
             return highlight(stringValue, currentQuery.ral_short_info_view__RegNumber) as string | null;
-
+        case "applicantName":
+            return highlight(stringValue, currentQuery.applicantName) as string | null;
         case "NPstatus":
             return (
                 <span
@@ -213,7 +217,7 @@ export const CustomCell: FC<Props> = ({ cellData }): ReactNode => {
             return <span style={{ color: getStatusColor(stringValue as TStatus) }}>{value as ReactNode}</span>;
 
         case "custom_number":
-        case "laboratory":
+        case "custom_certification_authority":
         case "ral_short_info_view__custom_number":
             const splittedRals = stringValue.split(/(?<!https:)\/\//);
             if (!stringValue || stringValue === "") return "нет данных";
@@ -228,7 +232,7 @@ export const CustomCell: FC<Props> = ({ cellData }): ReactNode => {
                             npStatus={NPstatus}
                             status={status}
                             link={link}
-                            value={highlight(numberValue, currentQuery.ral_short_info_view__RegNumber ?? currentQuery.ral_short_info_view__custom_number) as string | null}
+                            value={highlight(numberValue, currentQuery.ral_short_info_view__RegNumber ?? currentQuery.ral_short_info_view__custom_number ?? currentQuery.custom_certification_authority) as string | null}
                             queryValue=""
                         />
                     </div>

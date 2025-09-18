@@ -15,7 +15,7 @@ const CertificateModel = [
     "group",
     "certType",
     "certObjectType",
-    "laboratory",
+    "custom_certification_authority",
     
     // Информация о заявителе (applicant)
     "applicantLegalSubjectType",

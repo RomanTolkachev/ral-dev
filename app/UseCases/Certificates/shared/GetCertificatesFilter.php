@@ -102,17 +102,43 @@ class GetCertificatesFilter extends AbstractFilter
     {
         return $this->builder->whereHas('techReglaments', function ($query) use ($values) {
             $query->where(function ($q) use ($values) {
-                    $q->whereIn('tech_reg_code',  $values);
+                $q->whereIn('tech_reg_code',  $values);
             });
         }, '>=', count($values)); // третий параметр ищет количество связей. На самом деле, если поставить = 2, то все равно будет искать >=
     }
-    protected function expertFio(array $value): Builder
+    protected function expertFio(array $values): Builder
     {
         $query = $this->builder;
-        foreach ($value as $item) {
-            $query->Where('expertFio', 'like', "%$item%");
-        } 
+        foreach ($values as $item) {
+            $query->orWhere('expertFio', 'like', "%$item%");
+        }
         return $query;
+    }
+    protected function customCertificationAuthority(array $values): Builder
+    {
+        $query = $this->builder;
+        foreach ($values as $item) {
+            $query->orWhere('certificationAuthorityAttestatRegNumber', 'like', "%$item%");
+        }
+        return $query;
+    }
+    protected function applicantName(array $values): Builder
+    {
+        $query = $this->builder;
+        foreach ($values as $item) {
+            $query->orWhere('applicantName', 'like', "%$item%");
+        }
+        return $query;
+    }
+    protected function ralShortInfoViewCustomNumber(array $values): Builder
+    {
+        return $this->builder->where(function ($query) use ($values) {
+            foreach ($values as $value) {
+                $query->whereHas('ralShortInfoView', function ($q) use ($value) {
+                    $q->where('RegNumber', 'LIKE', "%$value%");
+                });
+            }
+        });
     }
 
     protected function ralShortInfoViewRegNumber(array $values): Builder

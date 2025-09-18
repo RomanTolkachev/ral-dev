@@ -19,7 +19,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "group": "group / Группа продукции ЕАЭС",
     "certType": "certType / Тип сертификата",
     "certObjectType": "certObjectType / Тип объекта сертификации",
-    "laboratory": "лаборатория",
+    "custom_certification_authority": "Рег. номер ОС (расш.)",
 
     // Информация о заявителе
     "applicantLegalSubjectType": "applicantLegalSubjectType / Тип заявителя",
@@ -71,7 +71,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "ral_short_info_view__NPstatus": "ral_short_info_view__ NPstatus",
     "ral_short_info_view__NP_status_change_date": "ral_short_info_view__ NP_status_change_date / Дата изм. статуса НЧ",
     "ral_short_info_view__regulations": "ral_short_info_view__ regulations",
-    "ral_short_info_view__custom_number": "Рег. номер (расш.)",
+    "ral_short_info_view__custom_number": "Рег. номер ИЛ (расш.)",
 
     // Поля из certificate_applicant
     "certificate_applicant__id": "certificate_applicant__ id / ID заявителя",
@@ -293,7 +293,7 @@ const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
     "group": 200,
     "certType": 200,
     "certObjectType": 200,
-    "laboratory": 210,
+    "custom_certification_authority": 210,
 
     // Поля заявителя (без префиксов)
     "applicantLegalSubjectType": 200,

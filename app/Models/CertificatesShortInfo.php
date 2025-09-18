@@ -21,7 +21,7 @@ class CertificatesShortInfo extends Model
 
     protected $with = ["ralShortInfoView", "certificateApplicant", 'certificationAuthority', "statusChange"];
 
-    protected $appends = ['laboratory'];
+    protected $appends = ['custom_certification_authority'];
 
     protected function casts(): array
     {
@@ -86,7 +86,7 @@ class CertificatesShortInfo extends Model
         return RalShortInfoView::where('RegNumber', $this->certificationAuthorityAttestatRegNumber)->get();
     }
 
-    protected function laboratory(): Attribute
+    protected function customCertificationAuthority(): Attribute
     {
         return Attribute::make(
             get: function () {

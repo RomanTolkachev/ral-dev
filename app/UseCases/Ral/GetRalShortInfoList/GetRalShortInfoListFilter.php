@@ -164,7 +164,7 @@ class GetRalShortInfoListFilter extends AbstractFilter
     {
         $query = $this->builder;
         foreach ($value as $item) {
-            $query = $query->Where('np_regulations_tnveds.tnved', 'like', "%$item%");
+            $query = $query->Where('regulations', 'like', "%$item%");
         }
         return $query;
     }

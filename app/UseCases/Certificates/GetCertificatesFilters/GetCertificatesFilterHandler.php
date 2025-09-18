@@ -136,8 +136,23 @@ class GetCertificatesFilterHandler
         ],
         [
             'headerLabel' => "expertFio",
-            'type' => 'singleText',
-            'defaultValue' => "",
+            'type' => 'multi',
+            'defaultValue' => [],
+        ],
+        [
+            'headerLabel' => "custom_certification_authority",
+            'type' => 'multi',
+            'defaultValue' => [],
+        ],
+        [
+            'headerLabel' => "ral_short_info_view__custom_number",
+            'type' => 'multi',
+            'defaultValue' => [],
+        ],
+        [
+            'headerLabel' => "applicantName",
+            'type' => 'multi',
+            'defaultValue' => [],
         ],
     ];
 
