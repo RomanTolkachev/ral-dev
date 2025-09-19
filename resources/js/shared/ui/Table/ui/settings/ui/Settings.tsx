@@ -1,12 +1,13 @@
-import { FunctionComponent, useContext, useEffect, useState, useMemo } from 'react';
+import { FunctionComponent, useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CustomCellContext } from '@/shared/ui/Table/providers/CustomFormProvider';
-import { createUniqueWithId, getAvailableColumns, getUserColumns, setColumns } from '../lib';
+import { createUniqueWithId, getAvailableColumns, getDefaultColumns, getUserColumns, setColumns } from '../lib';
 import { useNavigate } from 'react-router-dom';
 import { closestCorners, DndContext, DragEndEvent, PointerSensor, UniqueIdentifier, useSensor, useSensors } from "@dnd-kit/core"
 import { arrayMove, rectSortingStrategy, SortableContext } from "@dnd-kit/sortable"
 import { SortableItem } from './SortableItem';
 import { AxiosError } from 'axios';
+import highlight from '../../../lib/highlightText';
 
 interface Props {
     className?: string;
@@ -41,8 +42,20 @@ export const Settings: FunctionComponent<Props> = ({ className }) => {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
-        staleTime: Infinity, // ← Отключаем "протухание"
+        staleTime: Infinity,
+    });
 
+    const {
+        data: defaultColumns = [],
+        isFetching: isdefaultColumnsFetching
+    } = useQuery<string[], AxiosError>({
+        queryKey: ['default_columns', TABLE_NAME],
+        retry: (failureCount, error) => ([401, 404].includes(error.status!) ? false : true),
+        queryFn: () => getDefaultColumns(TABLE_NAME),
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        staleTime: Infinity,
     });
 
     const {
@@ -55,20 +68,45 @@ export const Settings: FunctionComponent<Props> = ({ className }) => {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
-        staleTime: Infinity, // ← Отключаем "протухание"
-
+        staleTime: Infinity,
     });
 
-    const [fullList, setFullList] = useState<{ value: string, id: UniqueIdentifier }[]>(availableColumns.length ? createUniqueWithId({arrays: [availableColumns], exclude: HIDDEN_COLUMNS}) : []);
+    const [fullList, setFullList] = useState<{ value: string, id: UniqueIdentifier }[]>(availableColumns.length ? createUniqueWithId({ arrays: [availableColumns], exclude: HIDDEN_COLUMNS }) : []);
     const [columnsValues, setColumnsValues] = useState<string[]>(selectedColumns.length ? selectedColumns : []);
+    const [searchQuery, setSearchQuery] = useState(''); // Состояние для поиска
 
-    // Используем useMemo для стабильных ссылок на массивы
     const availableColumnsString = useMemo(() => JSON.stringify(availableColumns), [availableColumns]);
     const selectedColumnsString = useMemo(() => JSON.stringify(selectedColumns), [selectedColumns]);
+    const defaultColumnsString = useMemo(() => JSON.stringify(defaultColumns), [defaultColumns]);
+
+    // Функция для сортировки колонок в порядке defaultColumns + остальные в конце
+    const sortColumnsByDefault = useCallback((columns: string[]) => {
+        const defaultSet = new Set(defaultColumns);
+        const defaultOrdered = columns.filter(col => defaultSet.has(col));
+        const others = columns.filter(col => !defaultSet.has(col));
+
+        // Сортируем default колонки в порядке из defaultColumns
+        const sortedDefaults = defaultColumns.filter(col => defaultOrdered.includes(col));
+
+        return [...sortedDefaults, ...others];
+    }, [defaultColumnsString]);
+
+    // Фильтрация списка по поисковому запросу
+    const filteredList = useMemo(() => {
+        if (!searchQuery.trim()) {
+            return fullList;
+        }
+
+        const query = searchQuery.toLowerCase().trim();
+        return fullList.filter(item => {
+            const displayName = DICTIONARY[item.value] ?? item.value;
+            return displayName.toLowerCase().includes(query);
+        });
+    }, [fullList, searchQuery, DICTIONARY]);
 
     useEffect(() => {
         if (availableColumns.length > 0 && Array.isArray(selectedColumns)) {
-            setFullList(createUniqueWithId({arrays: [selectedColumns, availableColumns], exclude: HIDDEN_COLUMNS}));
+            setFullList(createUniqueWithId({ arrays: [selectedColumns, availableColumns], exclude: HIDDEN_COLUMNS }));
         }
     }, [availableColumnsString, selectedColumnsString, HIDDEN_COLUMNS, createUniqueWithId]);
 
@@ -96,14 +134,6 @@ export const Settings: FunctionComponent<Props> = ({ className }) => {
             setTimeout(() => navigate(-1), 1000);
         }
     });
-
-    if (isAvailableColumnsFetching || isSelectedColumnsFetching) {
-        return <div>загрузка</div>;
-    }
-
-    if (availableColumns.length === 0) {
-        return <div>нет доступных колонок</div>;
-    }
 
     const getPos = (id: UniqueIdentifier) => fullList.findIndex(item => item.id === id);
 
@@ -133,33 +163,86 @@ export const Settings: FunctionComponent<Props> = ({ className }) => {
         );
     };
 
+    // Обработчик для "заполнить по умолчанию"
+    const handleSetDefault = () => {
+        setColumnsValues(defaultColumns);
+        setFullList(prev => {
+            const sortedValues = sortColumnsByDefault(prev.map(item => item.value));
+            const itemMap = new Map(prev.map(item => [item.value, item]));
+            return sortedValues
+                .filter(value => itemMap.has(value))
+                .map(value => itemMap.get(value)!);
+        });
+        setSearchQuery('');
+    };
+
+    // Обработчик для "выделить все" - БЕЗ изменения порядка
+    const handleSelectAll = () => {
+        setColumnsValues(availableColumns);
+        setSearchQuery('');
+        // Порядок fullList не меняем!
+    };
+
+    // Обработчик для "очистить все"
+    const handleClearAll = () => {
+        setColumnsValues([]);
+        setSearchQuery('');
+    };
+
+    if (isAvailableColumnsFetching || isSelectedColumnsFetching) {
+        return <div>загрузка</div>;
+    }
+
+    if (availableColumns.length === 0) {
+        return <div>нет доступных колонок</div>;
+    }
+
     return (
-        <div className={`${className} columns-2 overflow-x-hidden`}>
-            <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCorners} sensors={sensors} modifiers={[/* restrictToVerticalAxis */]}>
-                <SortableContext items={fullList} strategy={/* verticalListSortingStrategy */rectSortingStrategy}>
-                    {fullList.map((item) => (
-                        <SortableItem
-                            onToggle={() => handleToggle(item.value)}
-                            key={item.id}
-                            id={item.id}
-                            checked={columnsValues.includes(item.value)}
-                        >
-                            {DICTIONARY[item.value] ?? item.value}
-                        </SortableItem>
-                    ))}
-                </SortableContext>
-            </DndContext>
-            <button
-                className='text-header-text'
-                onClick={() => onUpdate.mutate({
-                    settings: [...fullList.filter(item => columnsValues.includes(item.value)).map(item => item.value), ...HIDDEN_COLUMNS]
-                })}
-                disabled={onUpdate.isPending}
-            >
-                {onUpdate.isPending ? 'Отправка...' : 'Отправить'}
-            </button>
-            {onUpdate.isSuccess && <div>Успешно</div>}
+        <div className='flex flex-col h-full'>
+            <div className='shrink-0 text-header-text flex justify-around items-center pb-10'>
+                <button
+                    onClick={() => onUpdate.mutate({
+                        settings: [...fullList.filter(item => columnsValues.includes(item.value)).map(item => item.value), ...HIDDEN_COLUMNS]
+                    })}
+                    disabled={onUpdate.isPending}
+                >
+                    {onUpdate.isPending ? 'Отправка...' : 'Отправить'}
+                </button>
+                <button onClick={handleSelectAll}>выделить все</button>
+                <button onClick={handleClearAll}>очистить все</button>
+                <button onClick={handleSetDefault}>заполнить по-умолчанию</button>
+
+                {/* Инпут для поиска */}
+                <input
+                    type='text'
+                    placeholder='Поиск...'
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className='border p-1'
+                />
+            </div>
+            <div className={`${className} flex-1 columns-2 overflow-y-auto overflow-x-hidden`}>
+                <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCorners} sensors={sensors} modifiers={[/* restrictToVerticalAxis */]}>
+                    <SortableContext items={fullList} strategy={rectSortingStrategy}>
+                        {filteredList.map((item) => {
+                            const displayName = DICTIONARY[item.value] ?? item.value;
+                            const highlightedContent = highlight(displayName, searchQuery);
+
+                            return (
+                                <SortableItem
+                                    onToggle={() => handleToggle(item.value)}
+                                    key={item.id}
+                                    id={item.id}
+                                    checked={columnsValues.includes(item.value)}
+                                >
+                                    {highlightedContent}
+                                </SortableItem>
+                            );
+                        })}
+                    </SortableContext>
+                </DndContext>
+                {onUpdate.isSuccess && <div>Успешно</div>}
+            </div>
         </div>
     );
 };
-

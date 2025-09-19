@@ -24,6 +24,7 @@ use App\UseCases\User\{
 };
 use App\UseCases\{
     GetAvailableColumns\GetAvailableColumnsController,
+    GetDefaultColumns\GetDefaultColumnsController,
     GetCertificationBody\GetCertificationBodyController,
     GetInputValues\GetInputValuesController
 };
@@ -49,6 +50,7 @@ Route::prefix('certificates_short_info')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get("user", GetUserController::class);
     Route::get("user_columns", GetTableSettingsController::class);
+    
     Route::post("set_settings", SetTableSettingsController::class);
     Route::post("log_out", LogOutController::class);
     Route::get("available_columns", GetAvailableColumnsController::class);
@@ -56,5 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware('web')->post("login", LoginController::class);
+
+Route::get("default_columns", GetDefaultColumnsController::class);
 
 Route::get("cache", TestController::class);
