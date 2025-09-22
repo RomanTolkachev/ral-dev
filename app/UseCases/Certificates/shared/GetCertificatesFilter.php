@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Http\Filters\AbstractFilter;
 use App\Models\CertificatesShortInfo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class GetCertificatesFilter extends AbstractFilter
 {
@@ -108,27 +109,29 @@ class GetCertificatesFilter extends AbstractFilter
     }
     protected function expertFio(array $values): Builder
     {
-        $query = $this->builder;
-        foreach ($values as $item) {
-            $query->orWhere('expertFio', 'like', "%$item%");
-        }
-        return $query;
+        return $this->builder->where(function ($q) use ($values) {
+            foreach ($values as $item) {
+                $q->orWhere('expertFio', 'like', "%$item%");
+            }
+        });
     }
     protected function customCertificationAuthority(array $values): Builder
     {
-        $query = $this->builder;
-        foreach ($values as $item) {
-            $query->orWhere('certificationAuthorityAttestatRegNumber', 'like', "%$item%");
-        }
-        return $query;
+        return $this->builder->where(function ($query) use ($values) {
+            foreach ($values as $value) {
+                $query->whereHas('ralShortInfoView', function ($q) use ($value) {
+                    $q->where('RegNumber', 'LIKE', "%$value%");
+                });
+            }
+        });
     }
     protected function applicantName(array $values): Builder
     {
-        $query = $this->builder;
-        foreach ($values as $item) {
-            $query->orWhere('applicantName', 'like', "%$item%");
-        }
-        return $query;
+        return $this->builder->where(function ($q) use ($values) {
+            foreach ($values as $item) {
+                $q->orWhere('applicantName', 'like', "%$item%");
+            }
+        });
     }
     protected function ralShortInfoViewCustomNumber(array $values): Builder
     {

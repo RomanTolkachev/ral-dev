@@ -1,5 +1,5 @@
 import { ReactNode, CSSProperties } from 'react';
-import highlight from '../../../lib/highlightText';
+import highlight from '../../../../../highlightText';
 import { makeClamp } from '.';
 
 interface SplitStringOptions {

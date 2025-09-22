@@ -35,7 +35,7 @@
     --red-button-text: 255, 255, 255;
 
     --white-button: 255, 255, 255;
-    --white-button-text: 137, 137, 137;
+    --white-button-text: 80, 80, 80;
 
     --filter-dropdown-button: 243, 243, 243;
     --filter-dropdown-button-border: 0, 0, 0, 0;
@@ -314,6 +314,11 @@ input[type=date]::-webkit-calendar-picker-indicator{
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+}
+
+body.dragging * {
+  cursor: grabbing !important;
+  user-select: none;
 }
 
 

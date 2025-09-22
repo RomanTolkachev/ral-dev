@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { SVG } from "@/Components/utils/SVG";
 import { CustomSubmitHandlerContext } from "@/shared/ui/Table/providers/CustomFormProvider";
 import { ISearchingFormItem } from "@/shared/types/searchingFilters";
-import highlight from "@/shared/ui/Table/lib/highlightText";
+import highlight from "@/shared/highlightText";
 import { ICustomSubmitHandlerContext } from "@/shared/ui/Table/model";
 
 interface IProps {

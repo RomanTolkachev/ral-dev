@@ -89,7 +89,8 @@ class CertificatesShortInfo extends Model
     {
         return Attribute::make(
             get: function () {
-                $ral = $this->getRalShortInfoByRegNumber()->first();
+                $ral = $this->ralShortInfoView->first();
+
                 if (!$ral) {
                     return "Нет данных";
                 }

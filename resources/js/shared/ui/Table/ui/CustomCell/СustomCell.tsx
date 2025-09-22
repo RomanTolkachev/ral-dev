@@ -1,4 +1,4 @@
-import highlight from "@/shared/ui/Table/lib/highlightText";
+import highlight from "@/shared/highlightText";
 import useParamsCustom from "@/shared/query/useParamsCustom";
 import { Cell } from "@tanstack/react-table";
 import { FC, ReactNode, useRef } from "react";
@@ -82,6 +82,7 @@ export const CustomCell: FC<Props> = ({ cellData }): ReactNode => {
         case "fullName":
         case "applicantFullName":
         case "productFullName":
+        case "applicantFilialFullNames":
         case "productIdentificationName":
         case "productBatchSize":
         case "productIdentificationArticle":

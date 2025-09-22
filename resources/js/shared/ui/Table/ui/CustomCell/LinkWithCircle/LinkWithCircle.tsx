@@ -1,7 +1,7 @@
 import { FC } from "react"
 import { Circle } from "./Circle"
 import { motion } from "motion/react"
-import highlight from "../../../lib/highlightText"
+import highlight from "../../../../../highlightText"
 import { getNPStatusColor, getStatusColor } from "../lib"
 import { TNPStatus, TStatus } from "../model"
 
