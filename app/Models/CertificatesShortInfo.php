@@ -2,23 +2,23 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasQueryFilters;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Traits\HasQueryFilters;
-use App\Models\CertificateTestinglab;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class CertificatesShortInfo extends Model
 {
     use HasFactory, HasQueryFilters;
 
-    protected $table = "certificates_short_info";
+    protected $table = 'certificates_short_info';
+
     public $timestamps = false;
 
-    protected $with = ["ralShortInfoView", "certificateApplicant", 'certificationAuthority', "statusChange"];
+    protected $with = ['ralShortInfoView', 'certificateApplicant', 'certificationAuthority', 'statusChange', 'ralByAttestatRegNumber'];
 
     protected $appends = ['custom_certification_authority'];
 
@@ -42,7 +42,6 @@ class CertificatesShortInfo extends Model
         );
     }
 
-
     public function ralShortInfoView(): HasManyThrough
     {
         return $this->hasManyThrough(
@@ -59,7 +58,7 @@ class CertificatesShortInfo extends Model
     {
         return $this->hasOne(
             CertificateApplicant::class,
-            "certificate_id"
+            'certificate_id'
         );
     }
 
@@ -67,7 +66,7 @@ class CertificatesShortInfo extends Model
     {
         return $this->hasOne(
             CertificationAuthority::class,
-            "certificate_id"
+            'certificate_id'
         );
     }
 
@@ -75,27 +74,31 @@ class CertificatesShortInfo extends Model
     {
         return $this->hasMany(
             StatusChange::class,
-            "certificate_id",
-            "id",
+            'certificate_id',
+            'id',
         );
     }
 
-    public function getRalShortInfoByRegNumber()
+    public function ralByAttestatRegNumber(): HasOne
     {
-        return RalShortInfoView::where('RegNumber', $this->certificationAuthorityAttestatRegNumber)->get();
+        return $this->hasOne(
+            RalShortInfoView::class,
+            'RegNumber',
+            'certificationAuthorityAttestatRegNumber'
+        );
     }
 
     protected function customCertificationAuthority(): Attribute
     {
         return Attribute::make(
             get: function () {
-                $ral = $this->ralShortInfoView->first();
+                $ral = $this->ralByAttestatRegNumber;
 
-                if (!$ral) {
-                    return "Нет данных";
+                if (! $ral) {
+                    return 'Нет данных';
                 }
 
-                return $ral->NPstatus . "*" . $ral->new_status_AL . "*" . $ral->RegNumber . "*" . $ral->link;
+                return $ral->NPstatus.'*'.$ral->new_status_AL.'*'.$ral->RegNumber.'*'.$ral->link;
             }
         );
     }
