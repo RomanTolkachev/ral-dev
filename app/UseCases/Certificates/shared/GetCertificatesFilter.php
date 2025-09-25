@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Http\Filters\AbstractFilter;
 use App\Models\CertificatesShortInfo;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class GetCertificatesFilter extends AbstractFilter
 {
@@ -125,11 +125,45 @@ class GetCertificatesFilter extends AbstractFilter
             }
         });
     }
-    protected function applicantName(array $values): Builder
+    protected function certificateApplicantFullName(array $values): Builder
     {
-        return $this->builder->where(function ($q) use ($values) {
-            foreach ($values as $item) {
-                $q->orWhere('applicantName', 'like', "%$item%");
+        $values = array_filter(array_map('trim', $values));
+        if (empty($values)) {
+            return $this->builder;
+        }
+
+        $valuesSql = collect($values)
+            ->map(fn($v) => "('%" . str_replace("'", "''", $v) . "%')")
+            ->implode(',');
+
+        $patterns = "(VALUES {$valuesSql})";
+
+        $mainTable = $this->builder->getModel()->getTable();
+
+        return $this->builder
+            ->join('certificate_applicant as ca', 'ca.certificate_id', '=', "{$mainTable}.id")
+            ->join(DB::raw("{$patterns} AS patterns(val)"), function ($join) {
+                $join->on('ca.fullName', 'LIKE', 'patterns.val');
+            });
+    }
+
+    protected function certificateApplicantInn(array $values): Builder
+    {
+        return $this->builder->where(function ($query) use ($values) {
+            foreach ($values as $value) {
+                $query->whereHas('certificateApplicant', function ($q) use ($value) {
+                    $q->where('inn', 'like', "%$value%");
+                });
+            }
+        });
+    }
+    protected function certificateApplicantOgrn(array $values): Builder
+    {
+        return $this->builder->where(function ($query) use ($values) {
+            foreach ($values as $value) {
+                $query->whereHas('certificateApplicant', function ($q) use ($value) {
+                    $q->where('ogrn', "like", "%$value%");
+                });
             }
         });
     }

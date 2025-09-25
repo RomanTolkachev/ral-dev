@@ -125,6 +125,24 @@ export const CustomCell: FC<Props> = ({ cellData }): ReactNode => {
                     {highlight(stringValue, currentQuery.ral_short_info_view__fullName)}
                 </span>
             );
+        case "certificate_applicant__inn":
+            return (
+                <span className="text-wrap overflow-hidden mx-auto">
+                    {highlight(stringValue, currentQuery.certificate_applicant__inn)}
+                </span>
+            );
+        case "certificate_applicant__ogrn":
+            return (
+                <span className="text-wrap overflow-hidden mx-auto">
+                    {highlight(stringValue, currentQuery.certificate_applicant__ogrn)}
+                </span>
+            );
+        case "certificate_applicant__fullName":
+            return (
+                <span className="text-wrap overflow-hidden mx-auto">
+                    {highlight(stringValue, currentQuery.certificate_applicant__fullName)}
+                </span>
+            );
 
         case "ral_short_info_view__regulations":
         case "regulations":
