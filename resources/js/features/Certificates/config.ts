@@ -19,7 +19,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "group": "group / Группа продукции ЕАЭС",
     "certType": "certType / Тип сертификата",
     "certObjectType": "certObjectType / Тип объекта сертификации",
-    "custom_certification_authority": "Рег. номер ОС (расш.)",
+    "custom_certification_authority": "Рег. номер ОС - исх. (расш.)",
 
     // Информация о заявителе
     "applicantLegalSubjectType": "applicantLegalSubjectType / Тип заявителя",
@@ -107,7 +107,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "certification_authority__idCertificationAuthority": "certification_authority__idCertificationAuthority / ID органа",
     "certification_authority__fullName": "certification_authority__ fullName / Полное наименование",
     "certification_authority__accredOrgName": "certification_authority__ accredOrgName / Аккредитующий орган",
-    "certification_authority__attestatRegNumber": "Рег. номер ОС",
+    "certification_authority__attestatRegNumber": "Рег. номер ОС - акт.",
     "certification_authority__attestatRegDate": "certification_authority__ attestatRegDate / Дата регистрации аттестата",
     "certification_authority__attestatEndDate": "certification_authority__ attestatEndDate / Дата окончания аттестата",
     "certification_authority__idRal": "certification_authority__ idRal / ID в РАЛ",

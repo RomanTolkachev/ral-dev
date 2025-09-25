@@ -115,13 +115,12 @@ class GetCertificatesFilter extends AbstractFilter
             }
         });
     }
+
     protected function customCertificationAuthority(array $values): Builder
     {
         return $this->builder->where(function ($query) use ($values) {
             foreach ($values as $value) {
-                $query->whereHas('ralShortInfoView', function ($q) use ($value) {
-                    $q->where('RegNumber', 'LIKE', "%$value%");
-                });
+                $query->orWhere('certificationAuthorityAttestatRegNumber', 'LIKE', "%$value%");
             }
         });
     }
