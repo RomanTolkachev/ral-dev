@@ -1,5 +1,4 @@
 import { FC, lazy, Suspense } from "react";
-import { TablePage } from "@/Components/pages/TablePage";
 import { NotFound } from "@/Components/utils/404";
 import Home from "@/features/home/ui/Home";
 import LoginPage from "@/features/Login/LoginPage";
@@ -11,6 +10,7 @@ import { config as ralConfig } from '@/features/RalTable/config'
 import { config as accAreaConfig } from '@/features/AccreditationArea/config'
 import { config as certificatesConfig } from '@/features/Certificates/config'
 import { Preloader } from "@/Components/utils/Preloader";
+import { TablePage } from "@/pages/TablePage";
 
 const Settings = lazy(() => import("@/shared/ui/Table/ui/settings/ui/Settings").then(module => ({ default: module.Settings })))
 const RalModal = lazy(() => import("@/features/ralModal/ui/RalModal").then(module => ({ default: module.RalModal })))

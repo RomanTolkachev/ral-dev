@@ -1,4 +1,4 @@
-import { FunctionComponent, useMemo } from 'react';
+import { FunctionComponent, lazy, Suspense, useMemo } from 'react';
 import { CustomFormProvider } from '@/shared/ui/Table/providers/CustomFormProvider';
 import useTableDataQuery from '@/shared/ui/Table/useTableDataQuery';
 import { FiltersWidget } from '@/shared/ui/Table/ui/FiltersWidget';
@@ -6,8 +6,10 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchTableFilters } from '@/shared/api/api';
 import { Outlet } from 'react-router-dom';
 import { getErrorMessage } from '@/shared/ui/Table/lib';
-import { Table } from '@/shared/ui/Table/ui/Table';
+// import { Table } from '@/shared/ui/Table/ui/Table';
 import useParamsCustom from '@/shared/query/useParamsCustom';
+import { Preloader } from '@/Components/utils/Preloader';
+const Table = lazy(() => import("@/shared/ui/Table/ui/Table").then(comp => ({default: comp.Table})))
 
 interface Props {
     config: IConfig<any>
@@ -49,17 +51,19 @@ export const TablePage: FunctionComponent<Props> = ({ config }) => {
                     <section className='bg-background shrink-0 grid grid-rows-[1fr] !grid-cols-[300px] h-full overflow-hidden'>
                         <div className='p-2 flex flex-col grow shrink overflow-hidden'>
                             <div className='my-block bg-background-block pt-6 flex grow overflow-hidden'>
-                                <FiltersWidget isFetching={filtersFetching}/>
+                                <FiltersWidget isFetching={filtersFetching} />
                             </div>
                         </div>
                     </section>
                     <section className={'shrink grow flex flex-col'}>
-                        <Table
-                            failureCount={failureCount}
-                            error={error?.code}
-                            isUpdating={isPlaceholderData || tableFetching}
-                            paginatedData={data}
-                            dictionary={config.DICTIONARY} />
+                        <Suspense fallback={<Preloader widthStyles='size-10'/>}>
+                            <Table
+                                failureCount={failureCount}
+                                error={error?.code}
+                                isUpdating={isPlaceholderData || tableFetching}
+                                paginatedData={data}
+                                dictionary={config.DICTIONARY} />
+                        </Suspense>
                         <Outlet />
                     </section>
                 </CustomFormProvider>

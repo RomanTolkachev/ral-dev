@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable
 {
+    public $connection = 'laravel_services';
+
     public function userSettings(): HasMany
     {
         return $this->hasMany(UserSetting::class, 'user_id');
@@ -15,16 +17,16 @@ class User extends Authenticatable
 
     public static function getDefaultUser()
     {
-        return Cache::remember("defaultUser", 3600, fn() => self::find(1));
+        return Cache::remember('defaultUser', 3600, fn () => self::find(1));
     }
 
     public function getTableSettingsFor(string $for): array
     {
         $cacheKey = "user_{$this->id}_settings_{$for}";
-        
-        return Cache::remember($cacheKey, 3600, function() use ($for) {
+
+        return Cache::remember($cacheKey, 3600, function () use ($for) {
             $this->loadMissing('userSettings');
-            
+
             $settings = $this->userSettings
                 ->firstWhere('settings_for_table', $for);
 
