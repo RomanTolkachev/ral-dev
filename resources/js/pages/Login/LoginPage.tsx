@@ -7,7 +7,7 @@ interface Props {
     className?: string
 }
 
-const LoginPage: FunctionComponent<Props> = ({ className }) => {
+export const LoginPage: FunctionComponent<Props> = ({ className }) => {
     const authContext = useContext(AuthContext);
     
     if (!authContext) {
@@ -68,5 +68,3 @@ const LoginPage: FunctionComponent<Props> = ({ className }) => {
         </div>
     );
 };
-
-export default LoginPage;

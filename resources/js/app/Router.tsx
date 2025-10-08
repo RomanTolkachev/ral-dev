@@ -1,8 +1,6 @@
 import { FC, lazy, Suspense } from "react";
 import { NotFound } from "@/Components/utils/404";
 import Home from "@/features/home/ui/Home";
-import LoginPage from "@/features/Login/LoginPage";
-import PersonalPage from "@/features/Login/PersonalPage";
 import { TableLayout } from "@/Layouts/TableLayout";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { OnlyUnAuth, OnlyAuth } from "./ProtectedRoute";
@@ -11,6 +9,7 @@ import { config as accAreaConfig } from '@/features/AccreditationArea/config'
 import { config as certificatesConfig } from '@/features/Certificates/config'
 import { Preloader } from "@/Components/utils/Preloader";
 import { TablePage } from "@/pages/TablePage";
+import { LoginPage, PersonalPage } from "@/pages/Login";
 
 const Settings = lazy(() => import("@/shared/ui/Table/ui/settings/ui/Settings").then(module => ({ default: module.Settings })))
 const RalModal = lazy(() => import("@/features/ralModal/ui/RalModal").then(module => ({ default: module.RalModal })))

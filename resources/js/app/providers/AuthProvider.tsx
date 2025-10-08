@@ -40,7 +40,6 @@ const AuthProvider: FunctionComponent<PropsWithChildren<Props>> = ({ className, 
     const {
         data: fetchedUser,
         isFetching,
-        refetch,
         isLoading,
         isFetched
     } = useQuery({

@@ -50,6 +50,7 @@ php artisan db:seed RalShortInfoMockSeeder
 - кэшируем конфигурацию, сбрасываем роуты..  и т.д. командой
 ```bash
 php artisan optimize
+php artisan permissions:generate - генерирует разрешения для чтения колонок моделей
 
 ```
 - запускаем серверы для БЭК и фронт командами
