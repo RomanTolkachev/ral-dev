@@ -50,7 +50,7 @@ const Header: FunctionComponent<IProps> = ({ className }) => {
                     </div>
                     <div className='flex gap-5 items-center'>
                         <div className='min-w-8'>
-                            {user ? <Link to="/personal">{user}</Link> : loading ? <Preloader widthStyles='w-6' /> :
+                            {user ? <Link to="/personal/bio">{user}</Link> : loading ? <Preloader widthStyles='w-6' /> :
                                 <Link to={`/login`} state={{ from: location.pathname }} >войти</Link>}
 
                         </div>

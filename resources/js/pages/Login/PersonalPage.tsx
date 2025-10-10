@@ -3,11 +3,7 @@ import { Preloader } from '@/Components/utils/Preloader';
 import { MainButton } from '@/shared/ui/Buttons/MainButton';
 import { FunctionComponent, useContext } from 'react';
 
-interface Props {
-    className?: string;
-}
-
-export const PersonalPage: FunctionComponent<Props> = ({ className }) => {
+export const PersonalPage: FunctionComponent = () => {
 
     const loginContext = useContext(AuthContext);
 
@@ -19,7 +15,8 @@ export const PersonalPage: FunctionComponent<Props> = ({ className }) => {
     const { reFetchUser } = loginContext
 
     return (
-        <div className={`${className} h-full w-full flex flex-col gap-5 items-center justify-center text-table-base`}>
+
+        <div className='flex flex-col gap-5 items-center justify-center text-table-base h-full'>
             <ul>
                 <li className='flex justify-between gap-6'>
                     <span>Имя</span><span>{userInfo?.name}</span>

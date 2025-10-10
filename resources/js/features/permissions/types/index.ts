@@ -1,0 +1,1 @@
+export { type TPermissionsContext } from "./permissionContext"

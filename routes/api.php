@@ -28,6 +28,11 @@ use App\UseCases\{
     GetCertificationBody\GetCertificationBodyController,
     GetInputValues\GetInputValuesController
 };
+use App\UseCases\Permissions\{
+    GetUsers\GetUsersController,
+    GetRoles\GetRolesController,
+    GetPermissions\GetPermissionsController
+};
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('ral_short_info')->group(function () {
@@ -50,15 +55,18 @@ Route::prefix('certificates_short_info')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get("user", GetUserController::class);
     Route::get("user_columns", GetTableSettingsController::class);
-    
+
     Route::post("set_settings", SetTableSettingsController::class);
     Route::post("log_out", LogOutController::class);
     Route::get("available_columns", GetAvailableColumnsController::class);
     Route::get("input_values", GetInputValuesController::class);
+    Route::get("users", GetUsersController::class);
+    Route::get("roles", GetRolesController::class);
+    Route::get("permissions", GetPermissionsController::class);
 });
 
 Route::middleware('web')->post("login", LoginController::class);
 
 Route::get("default_columns", GetDefaultColumnsController::class);
 
-Route::get("permissions", TestController::class);
+Route::get("zzzz", TestController::class);
