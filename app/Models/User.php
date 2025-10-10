@@ -17,6 +17,12 @@ class User extends Authenticatable
 
     protected $connection = 'laravel_services';
 
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
+
     public function userSettings(): HasMany
     {
         return $this->hasMany(UserSetting::class, 'user_id');

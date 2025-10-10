@@ -4,7 +4,7 @@ import { axiosApi } from '@/shared/api/api';
 interface CreateUserData {
     name: string;
     email: string;
-    new_user_password: string;
+    password: string;
 }
 
 export const useCreateUser = () => {

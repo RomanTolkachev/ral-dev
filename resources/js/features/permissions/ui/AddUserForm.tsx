@@ -12,7 +12,7 @@ import { useCreateUser, useUserValidation } from "../lib";
 type Inputs = {
     name: string
     email: string
-    new_user_password: string
+    password: string
 }
 
 export const AddUserForm: FC = () => {
@@ -43,14 +43,14 @@ export const AddUserForm: FC = () => {
         const newRussianPassword = generatePassword();
         const newEnglishPassword = convertToEnglishLayout(newRussianPassword);
 
-        setValue("new_user_password", newEnglishPassword, { shouldDirty: true, shouldTouch: true, shouldValidate: true });
+        setValue("password", newEnglishPassword, { shouldDirty: true, shouldTouch: true, shouldValidate: true });
         setRussianHint(newRussianPassword);
     };
 
     const handleManualPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (russianHint && e.target.value !== form.new_user_password) {
+        if (russianHint && e.target.value !== form.password) {
             setRussianHint("");
-            trigger("new_user_password")
+            trigger("password")
         }
     };
 
@@ -98,13 +98,13 @@ export const AddUserForm: FC = () => {
                     </ErrorWrapper>
                     <ErrorWrapper errors={errors} fieldName="new_user_password">
                         <PasswordInput
-                            {...register("new_user_password", {
+                            {...register("password", {
                                 required: true,
                                 onChange: handleManualPasswordChange,
                                 validate: validatePasswordStrength
                             })}
-                            error={errors.new_user_password as boolean | undefined}
-                            value={watch("new_user_password") || ""}
+                            error={errors.password as boolean | undefined}
+                            value={watch("password") || ""}
                             placeholder="пароль"
                         />
                     </ErrorWrapper>

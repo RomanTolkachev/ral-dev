@@ -1,7 +1,7 @@
 import { FC } from "react"
-import { Column } from "./Column"
 import { Outlet, useNavigate } from "react-router-dom"
 import { PermissionsProvider, usePermissions } from "@/features/permissions"
+import { Column } from "./column"
 
 export const PermissionsPage: FC = () => {
 
@@ -15,10 +15,10 @@ export const PermissionsPage: FC = () => {
                 <Column header="пользователь" loading={usersLoading} addFn={() => navigate("add_user")}>
                     {users.map((item, key) => <li key={key}>{item.name}</li>)}
                 </Column>
-                <Column header="роль" loading={rolesLoading}>
+                <Column addPlaceholder="" header="роль" loading={rolesLoading}>
                     {roles.map((item, key) => <li key={key}>{item.name}</li>)}
                 </Column>
-                <Column header="права" loading={permissionsLoading}>
+                <Column addPlaceholder="" header="права" loading={permissionsLoading}>
                     {permissions.map((item, key) => <li key={key}>{item.name}</li>)}
                 </Column>
                 <Outlet /> {/* для моладочки */}
