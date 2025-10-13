@@ -3,6 +3,8 @@
 namespace App\UseCases\User\CreateRole;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use App\Models\Permissions\Role;
 
 class CreateRoleRequest extends FormRequest
 {
@@ -14,7 +16,7 @@ class CreateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'unique:roles,name'],
+            'role_name' => ['required', 'string', Rule::unique(Role::class, 'name')],
         ];
     }
 }

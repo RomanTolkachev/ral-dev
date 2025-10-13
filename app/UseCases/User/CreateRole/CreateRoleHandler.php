@@ -12,7 +12,8 @@ class CreateRoleHandler
     public function __invoke(array $data): array
     {
         $role = Role::create([
-            'role' => $data['name'],
+            'name' => $data['role_name'],
+            'guard_name' => 'web'
         ]);
 
         return [

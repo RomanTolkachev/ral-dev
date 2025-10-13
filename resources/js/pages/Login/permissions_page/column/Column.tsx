@@ -1,7 +1,6 @@
-import { Input } from "@/Components/Inputs/Input"
 import { Preloader } from "@/Components/utils/Preloader"
-import { MainButton } from "@/shared/ui/Buttons/MainButton"
-import { FC, PropsWithChildren, useState } from "react"
+import { AddRoleForm } from "@/features/permissions/ui/AddRoleForm"
+import { FC, PropsWithChildren, useRef, useState } from "react"
 
 type Props = {
     loading: boolean
@@ -12,6 +11,7 @@ type Props = {
 
 export const Column: FC<PropsWithChildren<Props>> = ({ children, loading, header = "заголовок", addFn, addPlaceholder }) => {
     const [addOpen, setAddOpen] = useState(false);
+    const addButtonRef = useRef<HTMLButtonElement>(null)
 
     const handleAddClick = () => {
         if (addFn) {
@@ -34,14 +34,9 @@ export const Column: FC<PropsWithChildren<Props>> = ({ children, loading, header
                     grid transition-all duration-300 ease-in-out
                     ${addOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}
                 `}>
-                    <div className="min-h-0 overflow-hidden">
-                        <form className="flex gap-3 pb-2">
-                            <Input placeholder={addPlaceholder} />
-                            <MainButton color="violet">сохранить</MainButton>
-                        </form>
-                    </div>
+                    <AddRoleForm excludeRef={addButtonRef} placeholder="" onClose={() => setAddOpen(false)} hasExternalHandler={false} />
                 </div>
-                <button onClick={handleAddClick}>добавить</button>
+                <button ref={addButtonRef} onClick={handleAddClick}>добавить</button>
             </div>
         </div >
     )

@@ -18,6 +18,7 @@ use App\UseCases\Certificates\{
 use App\UseCases\User\{
     GetUser\GetUserController,
     CreateUser\CreateUserController,
+    CreateRole\CreateRoleController,
     Login\LoginController,
     LogOut\LogOutController,
     TableSettings\GetTableSettings\GetTableSettingsController,
@@ -56,6 +57,7 @@ Route::prefix('certificates_short_info')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('can:configure_user')->group(function () {
         Route::post("create_user", CreateUserController::class);
+        Route::post("create_role", CreateRoleController::class);
     });
     Route::get("user", GetUserController::class);
     Route::get("user_columns", GetTableSettingsController::class);

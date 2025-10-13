@@ -22,7 +22,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps & R
                     ref={ref}
                     type={showPassword ? "text" : "password"}
                     placeholder={placeholder}
-                    className={`pr-10 ${className}`}
+                    className={`${className}`}
                     {...props}
                     error={error}
                 />

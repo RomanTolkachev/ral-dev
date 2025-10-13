@@ -1,12 +1,13 @@
 import { SVG } from "@/Components/utils/SVG";
-import { ComponentPropsWithoutRef, forwardRef, useState } from "react";
+import { ComponentPropsWithoutRef, forwardRef, ReactNode, useState } from "react";
 
 type Props = ComponentPropsWithoutRef<'input'> & {
     error?: boolean
     placeholder?: string
+    icon?: ReactNode
 }
 
-export const Input = forwardRef<HTMLInputElement, Props>(({ error, className, id, placeholder = "поиск", value, onBlur, onFocus, ...props }, ref) => {
+export const Input = forwardRef<HTMLInputElement, Props>(({ error, className, id, placeholder = "поиск", value, onBlur, onFocus, icon, ...props }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = Boolean(value && value.toString().trim().length > 0);
 
@@ -23,7 +24,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(({ error, className, id
     };
 
     return (
-        <div className={`relative p-1`}>
+        <div className={`${className} relative p-1`}>
             <input
                 ref={ref}
                 id={id}
@@ -56,7 +57,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(({ error, className, id
                     transform: shouldShowLabel ? 'scale(1)' : 'scale(0.95)'
                 }}
             >
-                <SVG magnifyingGlass className="w-4 h-4 mr-2 flex-shrink-0" />
+                {icon ? icon : <SVG magnifyingGlass className="w-4 h-4 mr-2 flex-shrink-0" />}
                 <span className="first-letter:capitalize">{placeholder}</span>
             </label>
         </div>
