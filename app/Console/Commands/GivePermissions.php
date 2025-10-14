@@ -28,7 +28,7 @@ class GivePermissions extends Command
     public function handle()
     {
 
-        $role = Role::where('name', 'admin')->first();
+        $role = Role::where('name', 'super_admin')->first();
         $permissions = Permission::all();
         $role->syncPermissions($permissions);
 

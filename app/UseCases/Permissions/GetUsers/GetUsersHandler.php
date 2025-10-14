@@ -9,10 +9,12 @@ class GetUsersHandler
 {
     public function __invoke()
     {
-        $users = User::query()->select("users.id", "users.name", "users.email", "roles.name as role")
+        $users = User::query()->select('users.id', 'users.name', 'users.email', 'roles.name as role')
             ->leftJoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->leftJoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+            ->whereNull('users.deleted_at')
             ->get()->toArray();
+
         return new JsonResponse($users);
     }
 }

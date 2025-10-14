@@ -28,7 +28,7 @@ const Modal: React.FunctionComponent<IModalProps> = ({
 }) => {
 
     const params = useParams();
-    // функции для закрытия модалки
+
     const innerRef: React.RefObject<HTMLDivElement> =
         React.useRef<HTMLDivElement>(null);
 
