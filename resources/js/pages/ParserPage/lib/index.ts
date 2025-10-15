@@ -1,1 +1,1 @@
-export { extractMainParsers } from "./handleRawData"
+export { prepareTab } from "./prepareTab"

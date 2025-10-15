@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TestController;
+use App\UseCases\ParserInfo\ParserInfoController;
 
 use App\UseCases\AccreditationArea\{
     GetAccreditationAreaFilters\GetAccreditationAreaFiltersController,
@@ -80,3 +81,4 @@ Route::middleware('web')->post("login", LoginController::class);
 Route::get("default_columns", GetDefaultColumnsController::class);
 
 Route::get("zzzz", TestController::class);
+Route::get("parser", ParserInfoController::class);
