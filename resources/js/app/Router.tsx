@@ -12,6 +12,7 @@ import { TablePage } from "@/pages/TablePage";
 import { LoginPage, PermissionsPage, PersonalPage } from "@/pages/Login";
 import { PersonalLayout } from "@/Layouts/PersonalLayout";
 import { AddUserForm } from "@/features/permissions";
+import { ParserPage } from "@/pages/ParserPage/ParserPage";
 
 const Settings = lazy(() => import("@/shared/ui/Table/ui/settings/ui/Settings").then(module => ({ default: module.Settings })))
 const RalModal = lazy(() => import("@/features/ralModal/ui/RalModal").then(module => ({ default: module.RalModal })))
@@ -50,6 +51,7 @@ export const Router: FC = () => {
             </Route>
 
             <Route path='/login' element={<OnlyUnAuth component={<LoginPage />} />} />
+            <Route path="/parser" element={<ParserPage />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
     )
