@@ -8,6 +8,7 @@ import { TNPStatus, TStatus } from "./model";
 import { TColumnAccessors } from "@/features";
 import { Tooltip } from "@/Components/toolTip/ToolTip";
 import { makeClamp, makeList } from "./lib";
+import { CustomLink } from "./CustomLink";
 
 type Props = {
     cellData: Cell<any, unknown>;
@@ -234,6 +235,10 @@ export const CustomCell: FC<Props> = ({ cellData }): ReactNode => {
 
         case "certificate_status":
             return <span style={{ color: getStatusColor(stringValue as TStatus) }}>{value as ReactNode}</span>;
+
+        case "certificate_name":
+            let [val, link] = stringValue.split("*");
+            return <CustomLink value={val} link={link} queryValue={currentQuery.certificate_name}/>;
 
         case "custom_number":
         case "custom_certification_authority":

@@ -18,7 +18,7 @@ class CertificatesShortInfo extends Model
 
     public $timestamps = false;
 
-    protected $with = ['ralShortInfoView', 'certificateApplicant', 'certificationAuthority', 'statusChange', 'ralByAttestatRegNumber'];
+    protected $with = ['ralShortInfoView', 'certificateApplicant', 'certificationAuthority', 'statusChange'];
 
     protected $appends = ['custom_certification_authority'];
 
@@ -58,7 +58,7 @@ class CertificatesShortInfo extends Model
     {
         return $this->hasOne(
             CertificateApplicant::class,
-            'certificate_id'
+            'id'
         );
     }
 
@@ -99,6 +99,17 @@ class CertificatesShortInfo extends Model
                 }
 
                 return $ral->NPstatus.'*'.$ral->new_status_AL.'*'.$ral->RegNumber.'*'.$ral->link;
+            }
+        );
+    }
+
+    protected function certificateName(): Attribute
+    {
+        return Attribute::make(
+            get: function ($certificateName) {
+                $link = $this->certificate_link;
+
+                return $certificateName.'*'.$link;
             }
         );
     }
