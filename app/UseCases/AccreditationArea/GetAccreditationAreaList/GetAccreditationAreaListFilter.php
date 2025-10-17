@@ -45,13 +45,13 @@ class GetAccreditationAreaListFilter extends AbstractFilter
         return $this->builder->whereHas("ralShortInfoView", function ($query) use ($values) {
             $query->where(function ($q) use ($values) {
                 foreach ($values as $value) {
-                    $q->orWhere('applicantFullName', 'like', "%{$value}%");
+                    $q->orWhere('FullName', 'like', "%{$value}%");
                 }
             });
         });
     }
 
-    protected function ralShortInfoViewRegNumber(array $values): Builder
+    protected function ralShortInfoViewCustomNumber(array $values): Builder
     {
         return $this->builder->whereHas("ralShortInfoView", function ($query) use ($values) {
             $query->where(function ($q) use ($values) {

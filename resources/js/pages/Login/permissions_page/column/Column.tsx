@@ -22,8 +22,8 @@ export const Column: FC<PropsWithChildren<Props>> = ({ children, loading, header
     };
 
     return (
-        <div className="bg-slate-800 p-2 flex flex-col min-h-0">
-            <h3 className="mb-4 text-center">{header}</h3>
+        <div className=" p-2 flex flex-col min-h-0 bg-background-block my-block">
+            <h3 className="mb-4 text-center text-xl first-letter:capitalize py-4">{header}</h3>
             <div className="flex-1 min-h-0 overflow-y-auto">
                 <ul className="">
                     {loading ? <Preloader className="pt-20" widthStyles="size-8" /> : children}

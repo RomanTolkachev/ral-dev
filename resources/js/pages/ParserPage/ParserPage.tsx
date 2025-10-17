@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import styles from "./ParserPage.module.css";
-import { useQuery, useQueryClient } from "@tanstack/react-query"; 
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosApi } from "@/shared/api/api";
 import { prepareTab } from "./lib";
 import { CONFIG } from "./config";
@@ -69,7 +69,7 @@ export const ParserPage: FC = () => {
                     return (
                         <button
                             key={index}
-                            onClick={() => handleTabChange(index)} 
+                            onClick={() => handleTabChange(index)}
                             className={`px-6 py-4 min-h-14 rounded-t-lg rounded-b-none border-0 outline-none ring-0 overflow-visible transition-all duration-200 flex items-center justify-center relative ${isActive
                                 ? `bg-background-block ${styles.shadowActiveLight} ${extraClass}`
                                 : "my-block bg-filter-dropdown-button hover:bg-background-block"
@@ -93,8 +93,9 @@ export const ParserPage: FC = () => {
 
             {/* вкладки */}
             <div
-                className={`p-6 bg-background-block relative z-10 my-block rounded-b-lg rounded-tr-lg ${activeTab === 0 ? "rounded-tl-none" : "rounded-tl-lg"
-                    }`}
+                className={`p-6 bg-background-block relative z-10 my-block rounded-b-lg rounded-tr-lg 
+                    ${activeTab === 0 ? "rounded-tl-none" : "rounded-tl-lg"}
+                `}
             >
                 {tabs.map((tab, index) => (
                     <div key={index} className={activeTab === index ? "block" : "hidden"}>
