@@ -36,7 +36,10 @@ use App\UseCases\{
 use App\UseCases\Permissions\{
     GetUsers\GetUsersController,
     GetRoles\GetRolesController,
-    GetPermissions\GetPermissionsController
+    GetPermissions\GetPermissionsController,
+    GetModelHasRoles\GetModelHasRolesController,
+    GetRoleHasModels\GetRoleHasModelsController,
+    UpdateModelHasRoles\UpdateModelHasRolesController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -62,7 +65,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post("create_user", CreateUserController::class);
         Route::post("delete_user", DeleteUserController::class);
         Route::post("create_role", CreateRoleController::class);
+        Route::post("update_model_has_roles", UpdateModelHasRolesController::class);
         Route::delete("delete_role/{id}", DeleteRoleController::class);
+        Route::get("user_has_roles/{id}", GetModelHasRolesController::class);
+        Route::get("role_has_users/{id}", GetRoleHasModelsController::class);
     });
     Route::get("user", GetUserController::class);
     Route::get("user_columns", GetTableSettingsController::class);

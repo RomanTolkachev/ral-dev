@@ -14,8 +14,8 @@ export const PersonalLayout: FC = () => {
     const { userInfo } = loginContext;
 
     const isAdmin = useMemo<boolean>(() => {
-        return userInfo?.role === import.meta.env.VITE_SUPER_ADMIN
-    }, [userInfo?.role])
+        return userInfo?.roles?.some(item => item === import.meta.env.VITE_SUPER_ADMIN) ?? false;
+    }, [userInfo?.roles]);
 
     return (
         <div className="flex grow shrink min-h-0 text-table-base">

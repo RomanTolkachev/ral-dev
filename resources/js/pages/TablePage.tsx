@@ -6,7 +6,6 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchTableFilters } from '@/shared/api/api';
 import { Outlet } from 'react-router-dom';
 import { getErrorMessage } from '@/shared/ui/Table/lib';
-// import { Table } from '@/shared/ui/Table/ui/Table';
 import useParamsCustom from '@/shared/query/useParamsCustom';
 import { Preloader } from '@/Components/utils/Preloader';
 const Table = lazy(() => import("@/shared/ui/Table/ui/Table").then(comp => ({default: comp.Table})))

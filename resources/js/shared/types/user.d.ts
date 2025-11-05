@@ -2,7 +2,7 @@ export interface IUser {
     id: string
     email: string
     name: string
-    role?: string
+    roles?: string[]
 }
 export interface IRole {
     id: string

@@ -6,12 +6,15 @@
     .my-block {
         @apply shadow-basic rounded-xl p-2
     }
+
     .red-btn {
         @apply bg-button-red text-button-red-text
     }
+
     .violet-btn {
         @apply bg-button-violet text-button-violet-text
     }
+
     .white-btn {
         @apply bg-button-white text-button-white-text
     }
@@ -46,8 +49,8 @@
     --secondary-row: 240, 240, 243;
     --text-primary: 83, 83, 83;
 
-    --header-nav-button: 240,240,243;
-    --header-nav-text: 71,71,71;
+    --header-nav-button: 240, 240, 243;
+    --header-nav-text: 71, 71, 71;
 
     /* Inputs */
     --input-primary-bg: 250, 250, 250;
@@ -100,6 +103,7 @@
 
     /* Borders */
     --checkbox-custom-border: 30, 41, 59, 0.1;
+    --ring-pulse: 174, 113, 201;
 
     /* Modal */
     --row-modal-even: 255, 255, 255;
@@ -136,7 +140,7 @@
     --text-primary: 100, 113, 133;
 
     --header-nav-button: 72, 54, 63;
-    --header-nav-text: 255,255,255;
+    --header-nav-text: 255, 255, 255;
 
     /* Inputs */
     --input-primary-bg: 30, 41, 59;
@@ -190,6 +194,7 @@
 
     /* Borders */
     --checkbox-custom-border: 30, 41, 59, 1;
+    --ring-pulse: 209, 213, 219;
 
     /* Modal */
     --row-modal-even: 30, 41, 59;
@@ -208,8 +213,13 @@
 }
 
 @keyframes spin {
-    0% {transform: rotate(0deg)}
-    0% {transform: rotate(-360deg)}
+    0% {
+        transform: rotate(0deg)
+    }
+
+    0% {
+        transform: rotate(-360deg)
+    }
 }
 
 /* * {
@@ -222,6 +232,7 @@
     height: 12px;
     width: 12px;
 }
+
 *::-webkit-scrollbar-track {
     border-radius: 20px;
     background-color: var(--scrollbar-track);
@@ -309,8 +320,8 @@ select:-webkit-autofill:focus {
     transform: translate(-50%, -50%);
 }
 
-input[type=date]::-webkit-calendar-picker-indicator{
-	display:none;
+input[type=date]::-webkit-calendar-picker-indicator {
+    display: none;
 }
 
 input::-webkit-outer-spin-button,
@@ -319,11 +330,6 @@ input::-webkit-inner-spin-button {
 }
 
 body.dragging * {
-  cursor: grabbing !important;
-  user-select: none;
+    cursor: grabbing !important;
+    user-select: none;
 }
-
-
-
-
-

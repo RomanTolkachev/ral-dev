@@ -28,7 +28,7 @@ export const PersonalPage: FunctionComponent = () => {
                     <span>id</span><span>{userInfo?.id}</span>
                 </li>
                 <li className='flex justify-between gap-6'>
-                    <span>роль</span><span>{userInfo?.role ?? "не присвоена"}</span>
+                    <span>роль</span><span>{userInfo?.roles ?? "не присвоена"}</span>
                 </li>
             </ul>
             <MainButton onClick={reFetchUser} color={'red'} className='!w-32'>Выход</MainButton>
