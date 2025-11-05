@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CreatePermissionsService;
+use App\Models\CertificatesShortInfo;
+use App\Models\RalShortInfoView;
 use App\Models\AccreditationArea;
-use App\Services\ConfirmRelationsService;
 
 class TestController
 {
     public function __invoke()
     {
-        $service = new ConfirmRelationsService();
-        dump($service->prepareRalations([], AccreditationArea::class));
+        CreatePermissionsService::forModel(new CertificatesShortInfo);
+        CreatePermissionsService::forModel(new RalShortInfoView);
+        CreatePermissionsService::forModel(new AccreditationArea);
+
+        return 'ok';
     }
 }

@@ -1,14 +1,14 @@
 import { FunctionComponent, useContext } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
-import { isEqual } from 'lodash'
+import isEqual from 'lodash-es/isEqual'
 import { AnimatePresence, motion } from 'motion/react'
 import { enterExitAnimation as animationParams } from '@/shared/framer-motion/enter-exit-animation'
 import { SVG } from '@/Components/utils/SVG'
-import { MainButton } from '@/Components/Buttons/MainButton'
 import openCalendarPicker from './lib/openCalendarPicker'
 import dateRangeValidation from './lib/dateRangeValidation'
-import { CustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
+import { CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/CustomFormProvider'
+import { MainButton } from '@/shared/ui/Buttons/MainButton'
 
 interface IProps {
     className?: string
@@ -22,22 +22,21 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
     if (!handlers) return null
 
     const { customSubmitHandler } = handlers
-    const inputName = inputData.header
-    const defaultValue = formState!.defaultValues![inputName];
+    const { headerLabel } = inputData
+    const defaultValue = formState!.defaultValues![headerLabel];
 
     return (
         <Controller
-            name={inputName}
+            name={headerLabel}
             control={control}
             rules={{ validate: dateRangeValidation }}
             render={({ field: { value = ["", ""], onChange }, fieldState: { error } }) => {
-
 
                 return (
                     <div className={`${className} p-1 space-y-2 text-input-text`}>
                         <div className="custom-date w-full flex items-center gap-4">
                             <div className="relative gap-4 flex items-center">
-                            <span className="select-none">от</span>
+                                <span className="select-none">от</span>
                                 <input
                                     type="date"
                                     value={value[0]}
@@ -56,7 +55,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
 
                         <div className="custom-date w-full flex items-center gap-4">
                             <div className="relative gap-4 flex items-center">
-                            <span className="select-none">от</span>
+                                <span className="select-none">от</span>
                                 <input
                                     type="date"
                                     value={value[1]}
@@ -88,8 +87,7 @@ export const CalendarInput: FunctionComponent<IProps> = ({ className, inputData 
                             }}
                             isDisabled={isEqual(value, defaultValue)}
                             color="violet"
-                            className={`w-full mx-auto ${isEqual(value, defaultValue) ? 'bg-gray-300' : ''
-                                }`}
+                            className={`w-full mx-auto ${isEqual(value, defaultValue) ? 'bg-gray-300' : ''}`}
                         >
                             Применить
                         </MainButton>

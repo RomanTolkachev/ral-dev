@@ -18,12 +18,12 @@ declare global {
      */
     interface IConfig<T extends string> {
         DICTIONARY: Record<T, string>;
-        DEFAULT_COLUMNS: T[];
-        DEFAULT_FILTERS: Partial<Record<T, string[]>> & TDefaultPaginationRequest;
-        DEFAULT_REQUEST: {page: number, perPage: string, user_columns: T[]}
+        DEFAULT_REQUEST: {page: number, perPage: string}
         CELL_WIDTH?: Partial<Record<T, number>>;
         ORDERABLE_CELLS: T[]
         HIDDEN_COLUMNS: T[]
+        TABLE_NAME: string
+        ROW_CLICK_FN: "navigate" | "none"
     }
 }
 

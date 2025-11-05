@@ -1,0 +1,12 @@
+@keyframes ring-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 0 4px rgba(var(--ring-pulse), 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 0 6px rgba(var(--ring-pulse), 0.9);
+  }
+}
+
+.pulse {
+  animation: ring-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

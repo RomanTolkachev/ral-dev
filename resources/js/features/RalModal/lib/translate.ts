@@ -44,6 +44,8 @@ export const translate = (accessorKey: ReactNode | undefined): string => {
             return 'ТР ТС/ЕАЭС (НЧ)'
         case 'regulations':
             return 'ТР ТС/ЕАЭС (НЧ)'
+        case 'custom_number':
+            return 'Номер расширенный'
         default:
             return 'дефолт'
     }

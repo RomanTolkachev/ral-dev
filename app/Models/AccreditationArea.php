@@ -14,9 +14,10 @@ class AccreditationArea extends Model
     public $table = "accreditation_area";
     public $timestamps = false;
 
+    protected $with = ['ralShortInfoView'];
+
     public function ralShortInfoView(): BelongsTo
     {
         return $this->belongsTo(RalShortInfoView::class, 'id_ral', 'id');
     }
-
 }

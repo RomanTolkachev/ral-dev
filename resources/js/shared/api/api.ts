@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 import qs from 'qs'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import IPagination from '../types/pagination'
@@ -6,13 +6,13 @@ import { IUser } from '../types/user'
 import { TRalModel } from '@/features/ralTable/model/types'
 
 // export const LOCAL_URL: 'http://127.0.0.1:8000/api' = 'http://127.0.0.1:8000/api'
-export const LOCAL_URL: "/api" = "/api"
-export const WEB_URL: "/" = "/"
+export const LOCAL_URL = "/api"
+export const WEB_URL = "/"
 
 export const axiosApi = axios.create({
     baseURL: LOCAL_URL,
     withCredentials: true,
-    timeout: 10000,
+    timeout: 15000,
 })
 
 const webApi = axios.create({
@@ -33,7 +33,7 @@ export const fetchRalFilters = (queries?: Record<string, any>) =>
         },
     }).then(res => res.data)
 
-export const fetchAbstractFilters = (tableName:string, queries?: Record<string, any>) =>
+export const fetchTableFilters = (tableName: string, queries?: Record<string, any>) =>
     axiosApi.get<ISearchingFormItem[]>(`/${tableName}/filters`, {
         params: queries,
         withCredentials: true,
@@ -42,10 +42,11 @@ export const fetchAbstractFilters = (tableName:string, queries?: Record<string, 
         },
     }).then(res => res.data)
 
-export const fetchAbstractTable = (tableName: string, queries: Record<string, any>) =>
+export const fetchAbstractTable = (tableName: string, queries: Record<string, any>, signal?: AbortSignal) =>
     axiosApi.get<IPagination>(`${tableName}`, {
         params: queries,
         withCredentials: true,
+        signal,
         paramsSerializer: function (params) {
             return decodeURIComponent(qs.stringify(params, { arrayFormat: 'brackets' }))
         },
@@ -73,13 +74,13 @@ export const fetchCookies = () => {
     return webApi.get<void>(`/sanctum/csrf-cookie`);
 }
 
-export const login = async (payload: {email: string, password: string}):Promise<IUser> => {
+export const login = async (payload: { email: string, password: string }): Promise<IUser> => {
     await fetchCookies()
     return axiosApi.post(`/login`, {
         email: payload.email,
         password: payload.password,
-      }, {
-        withCredentials: true, 
+    }, {
+        withCredentials: true,
         headers: {
             'Accept': "application/json",
             'Content-Type': 'application/json',
@@ -89,17 +90,17 @@ export const login = async (payload: {email: string, password: string}):Promise<
 
 export const getUser = () => {
     return axiosApi.get<IUser>(`/user`, {
-        headers: {Accept: "application/json" },
+        headers: { Accept: "application/json" },
         withCredentials: true,
     }).then(res => res.data)
 }
 
 export const getTableSettings = (userId: string, tableName: string): Promise<TRalModel[]> => {
     return axiosApi.get<TRalModel[]>(`/settings`, {
-        params: {userId, tableName},
+        params: { userId, tableName },
         headers: {
-            Accept: "application/json", 
-            'Content-Type': 'application/json', 
+            Accept: "application/json",
+            'Content-Type': 'application/json',
         },
         withCredentials: true,
     }).then(res => res.data)

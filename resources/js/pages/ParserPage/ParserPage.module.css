@@ -1,0 +1,36 @@
+/* ParserPage.module.css */
+
+.shadowActiveLight {
+  box-shadow: 0px -6px 12px rgba(var(--shadow-basic), 0.45);
+  position: relative;
+  z-index: 30;
+}
+
+.shadowActiveLight::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    rgba(var(--shadow-basic), 0) 0%,
+    rgba(var(--shadow-basic), 1) 40%,
+    rgba(var(--shadow-basic), 1) 60%,
+    rgba(var(--shadow-basic), 0) 100%
+  );
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+.shadowActiveLeft::before {
+  left: 45%;
+  width: 90%;
+}
+
+.shadowActiveRight::before {
+  left: 55%;
+  width: 90%;
+}

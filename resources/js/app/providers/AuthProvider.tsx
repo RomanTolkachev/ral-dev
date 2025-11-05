@@ -2,8 +2,8 @@ import { getUser, login, logOut } from '@/shared/api/api';
 import { IUser } from '@/shared/types/user';
 import { UseMutateFunction, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { createContext, FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
-import { FormProvider, useForm, UseFormReturn } from 'react-hook-form';
+import { createContext, FunctionComponent, PropsWithChildren } from 'react';
+import { useForm, UseFormReturn } from 'react-hook-form';
 
 interface Props {
     className?: string;
@@ -40,7 +40,6 @@ const AuthProvider: FunctionComponent<PropsWithChildren<Props>> = ({ className, 
     const {
         data: fetchedUser,
         isFetching,
-        refetch,
         isLoading,
         isFetched
     } = useQuery({

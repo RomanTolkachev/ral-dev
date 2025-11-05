@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { FunctionComponent } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { IIconData } from '../model/types';
 
 interface Props {

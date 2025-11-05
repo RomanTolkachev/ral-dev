@@ -4,49 +4,52 @@ namespace App\UseCases\Certificates\GetCertificatesList;
 
 use App\Models\CertificatesShortInfo;
 use App\Models\DictionaryRegulation;
-use App\Services\ConfirmRelationsService;
-use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Str;
 use App\UseCases\Certificates\shared\GetCertificatesFilter;
+use App\Services\GetTableSettings;
+use Illuminate\Support\Facades\Cache;
 
-
-class GetCertificatesListHandler
+readonly class GetCertificatesListHandler
 {
-
-    protected $filter;
-
-    public function __construct(GetCertificatesListRequest $request)
-    {
-        $this->filter = new GetCertificatesFilter(
-            new CertificatesShortInfo,
-            $request
-        );
-    }
-
-    public function execute(int $page, int $itemsPerPage, array $columns, Request $request): GetCertificatesListResource
-    {
+    public function execute(
+        int $page,
+        int $itemsPerPage,
+        User | null $user,
+        User $defaultUser,
+        GetCertificatesFilter $filter
+    ): GetCertificatesListResource {
 
         $model = CertificatesShortInfo::with(["ralShortInfoView", "certificateApplicant", 'certificationAuthority', "statusChange"]);
 
-        $regulationsMap = DictionaryRegulation::pluck('values_reg')->toArray();
+        $columns = GetTableSettings::for($user, $defaultUser, "certificates_short_info");
+
+        $regulationsMap = Cache::remember("dictionaryRegulations", 3600, fn() => DictionaryRegulation::pluck('values_reg')->toArray());
 
         $result = $model->filter(
-            $this->filter
+            $filter
         )
+
+        // dd($result->toSql(), $model->filter($filter)->getBindings());
             ->paginate(
                 page: $page,
                 perPage: $itemsPerPage
             );
 
-        $result->getCollection()->transform(function ($certificate) use ($regulationsMap) {
-            if ($certificate->technicalReglaments) {
-                $certificate->technicalReglaments = $this->replaceRegulations(
-                    $certificate->technicalReglaments,
-                    $regulationsMap
-                );
-            }
-            return $certificate;
-        });
+        $result->setCollection(
+            collect($result->items())
+                ->customToFlat()
+                ->sortByTemplate($columns)
+                ->map(function ($certificate) use ($regulationsMap) {
+                    if (!empty($certificate['technicalReglaments'])) {
+                        $certificate['technicalReglaments'] = $this->replaceRegulations(
+                            $certificate['technicalReglaments'],
+                            $regulationsMap
+                        );
+                    }
+                    return $certificate;
+                })
+        );
 
         return new GetCertificatesListResource($result);
     }

@@ -1,6 +1,4 @@
 import { QueryKey, useQueryClient } from "@tanstack/react-query";
-import { isArray } from "lodash";
-
 
 /** 
 *    Функция получает агруметами параметр поиска, ключи из useQuery и все кэнированные данные
@@ -11,7 +9,7 @@ function findExistingDatabyKey(searchableParam: string, paramsKeys: QueryKey[], 
     if (paramsKeys.length) {
         for (const item of paramsKeys) {
             const queryData: Record<string, any> | undefined = cachedClient.getQueryData(item);
-            if (queryData && queryData.data && isArray(queryData.data) && queryData.data.length) {
+            if (queryData && queryData.data && Array.isArray(queryData.data) && queryData.data.length) {
                 foundedData = queryData.data.find((item: Record<string, any>) => {
                     return item.id.toString() === searchableParam
                 });

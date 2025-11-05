@@ -7,38 +7,33 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Collection;
 use Closure;
 
+
+/**
+ * @method Illuminate\Support\Collection map
+ */
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         Vite::prefetch(concurrency: 3);
 
         Collection::macro('customToFlat', function () {
-
-                            // dd($this);
             return $this->map(function ($item) {
+                // Преобразуем модель в массив
+                $array = $item->toArray();
                 $result = [];
 
-                $processNested = function ($array, $parentKey = null) use (&$result, &$processNested) {
-                    if (!is_array($array)) return;
+                $processNested = function ($nestedArray, $parentKey = null) use (&$result, &$processNested) {
+                    if (!is_array($nestedArray)) return;
 
-                    // Обработка списков у связанных моделей - конкатенируем через //
-                    if (array_keys($array) === range(0, count($array) - 1)) {
+                    // Обработка списков отношений
+                    if (array_is_list($nestedArray)) {
                         $concatenated = [];
-                        foreach ($array as $item) {
-                            if (!is_array($item)) continue;
-                            foreach ($item as $k => $v) {
+                        foreach ($nestedArray as $nestedItem) {
+                            if (!is_array($nestedItem)) continue;
+                            foreach ($nestedItem as $k => $v) {
                                 $value = (string)($v ?? '');
                                 $concatenated[$k] = isset($concatenated[$k])
                                     ? $concatenated[$k] . ' // ' . $value
@@ -51,8 +46,8 @@ class AppServiceProvider extends ServiceProvider
                         return;
                     }
 
-                    // Обработка ассоциативных массивов - добавляем связанным моделям префикс __ и переносим на верхний уровень
-                    foreach ($array as $k => $v) {
+                    // Обработка обычных массивов
+                    foreach ($nestedArray as $k => $v) {
                         $newKey = $parentKey ? "{$parentKey}__{$k}" : $k;
                         if (is_array($v)) {
                             $processNested($v, $newKey);
@@ -62,15 +57,13 @@ class AppServiceProvider extends ServiceProvider
                     }
                 };
 
-                foreach ($item as $k => $v) {
+                foreach ($array as $k => $v) {
                     if (is_array($v)) {
                         $processNested($v, $k);
                     } else {
                         $result[$k] = $v;
                     }
                 }
-
-
 
                 return $result;
             });

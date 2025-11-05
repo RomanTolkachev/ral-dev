@@ -9,6 +9,9 @@ use Carbon\Carbon;
  * @property-read integer $page
  * @property-read integer $perPage
  * @property-read array $user_columns
+ * @method array query() Получить все query параметры
+ * @method void merge(array $attributes) Объединить данные с запросом
+ * @method mixed user() Получить пользователя
  */
 class GetCertificatesListRequest extends FormRequest
 {
@@ -32,8 +35,6 @@ class GetCertificatesListRequest extends FormRequest
         return [
             'page' => ['required', 'integer', 'between:1,100000'],
             'perPage' => ['required', 'integer', 'between:1,500'],
-            'user_columns' => ['required', 'array', 'min:1'],
-            'user_columns.*' => ['required', 'string']
         ];
     }
 

@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router'
+import { useSearchParams } from 'react-router-dom'
 import qs from 'qs'
 
 type QueryParams = Record<string, any>

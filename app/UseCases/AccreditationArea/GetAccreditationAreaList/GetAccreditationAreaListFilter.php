@@ -4,16 +4,17 @@ namespace App\UseCases\AccreditationArea\GetAccreditationAreaList;
 
 use App\Models\AccreditationArea;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use App\Http\Filters\AbstractFilter;
 
 class GetAccreditationAreaListFilter extends AbstractFilter
 {
     protected AccreditationArea $model;
 
-    public function __construct(AccreditationArea $model, GetAccreditationAreaListRequest $request)
+    public function __construct(AccreditationArea $model, Request $request)
     {
         $this->model = $model;
-        parent::__construct($request);
+        parent::__construct($request->input());
     }
 
     protected function fullGost(array $values): Builder
@@ -41,18 +42,18 @@ class GetAccreditationAreaListFilter extends AbstractFilter
 
     protected function ralShortInfoViewFullName(array $values): Builder
     {
-        return $this->builder->whereHas("ralShortInfoView", function($query) use($values) {
+        return $this->builder->whereHas("ralShortInfoView", function ($query) use ($values) {
             $query->where(function ($q) use ($values) {
                 foreach ($values as $value) {
-                    $q->orWhere('applicantFullName', 'like', "%{$value}%");
+                    $q->orWhere('FullName', 'like', "%{$value}%");
                 }
             });
         });
     }
 
-    protected function ralShortInfoViewRegNumber(array $values): Builder
+    protected function ralShortInfoViewCustomNumber(array $values): Builder
     {
-        return $this->builder->whereHas("ralShortInfoView", function($query) use($values) {
+        return $this->builder->whereHas("ralShortInfoView", function ($query) use ($values) {
             $query->where(function ($q) use ($values) {
                 foreach ($values as $value) {
                     $q->orWhere('RegNumber', 'like', "%{$value}%");

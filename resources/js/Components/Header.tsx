@@ -1,10 +1,10 @@
 import { FunctionComponent, memo, useContext } from 'react';
-import { Toggle } from './Buttons/Toggle';
 import { SVG } from './utils/SVG';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '@/app/providers/AuthProvider';
 import { Preloader } from './utils/Preloader';
 import { motion } from 'motion/react';
+import { Toggle } from '@/shared/ui/Buttons/Toggle';
 
 interface IProps {
     className?: string
@@ -50,12 +50,12 @@ const Header: FunctionComponent<IProps> = ({ className }) => {
                     </div>
                     <div className='flex gap-5 items-center'>
                         <div className='min-w-8'>
-                            {user ? <Link to="/personal">{user}</Link> : loading ? <Preloader widthStyles='w-6' /> :
+                            {user ? <Link to="/personal/bio">{user}</Link> : loading ? <Preloader widthStyles='w-6' /> :
                                 <Link to={`/login`} state={{ from: location.pathname }} >войти</Link>}
 
                         </div>
                         {user &&
-                            <Link to={`${location.pathname}/settings`} state={{ from: location.pathname }} className={`${location.pathname === '/' ? "hidden" : ""}`}>
+                            <Link to={`${location.pathname}/settings/${location.search}`} state={{ from: location.pathname }} className={`${location.pathname === '/' ? "hidden" : ""}`}>
                                 <motion.div whileHover={{ scale: 1.05, cursor: "pointer" }}><SVG gear className='size-6' /></motion.div>
                             </Link>
                         }

@@ -19,6 +19,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "group": "group / Группа продукции ЕАЭС",
     "certType": "certType / Тип сертификата",
     "certObjectType": "certObjectType / Тип объекта сертификации",
+    "custom_certification_authority": "Рег. номер ОС - исх. (расш.)",
 
     // Информация о заявителе
     "applicantLegalSubjectType": "applicantLegalSubjectType / Тип заявителя",
@@ -70,6 +71,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "ral_short_info_view__NPstatus": "ral_short_info_view__ NPstatus",
     "ral_short_info_view__NP_status_change_date": "ral_short_info_view__ NP_status_change_date / Дата изм. статуса НЧ",
     "ral_short_info_view__regulations": "ral_short_info_view__ regulations",
+    "ral_short_info_view__custom_number": "Рег. номер ИЛ (расш.)",
 
     // Поля из certificate_applicant
     "certificate_applicant__id": "certificate_applicant__ id / ID заявителя",
@@ -105,7 +107,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "certification_authority__idCertificationAuthority": "certification_authority__idCertificationAuthority / ID органа",
     "certification_authority__fullName": "certification_authority__ fullName / Полное наименование",
     "certification_authority__accredOrgName": "certification_authority__ accredOrgName / Аккредитующий орган",
-    "certification_authority__attestatRegNumber": "Рег. номер ОС",
+    "certification_authority__attestatRegNumber": "Рег. номер ОС - акт.",
     "certification_authority__attestatRegDate": "certification_authority__ attestatRegDate / Дата регистрации аттестата",
     "certification_authority__attestatEndDate": "certification_authority__ attestatEndDate / Дата окончания аттестата",
     "certification_authority__idRal": "certification_authority__ idRal / ID в РАЛ",
@@ -123,7 +125,7 @@ const DICTIONARY: Record<TCertificateModel, string> = {
     "status_change__comment": "status_change__ comment / Комментарий",
     "status_change__publish_date": "status_change__ publish_date / Дата публикации",
     "status_change__status_changes_by": "status_change__ status_changes_by / Изменено",
-    "status_change__id": "status_change__ id / ID изменения",
+    "status_change__id": "status_change__id / ID изменения",
     "status_change__idChangeStatus": "status_change__ idChangeStatus / ID статуса"
 };
 
@@ -272,7 +274,6 @@ const DEFAULT_REQUEST = {
     page: 1,
     perPage: '25',
     order: "",
-    user_columns: DEFAULT_COLUMNS
 }
 
 const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
@@ -292,6 +293,7 @@ const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
     "group": 200,
     "certType": 200,
     "certObjectType": 200,
+    "custom_certification_authority": 210,
 
     // Поля заявителя (без префиксов)
     "applicantLegalSubjectType": 200,
@@ -397,7 +399,8 @@ const CELL_WIDTH: Partial<Record<TCertificateModel, number>> = {
     "status_change__publish_date": 150,
     "status_change__status_changes_by": 150,
     "status_change__id": 150,
-    "status_change__idChangeStatus": 150
+    "status_change__idChangeStatus": 150,
+    ral_short_info_view__custom_number: 210
 };
 
 const ORDERABLE_CELLS: TCertificateModel[] = ["update_status_date", "date", "endDate"]
@@ -406,18 +409,17 @@ const HIDDEN_COLUMNS: TCertificateModel[] = ["ral_short_info_view__link", "certi
 
 export const config: IConfig<TCertificateModel> = {
     DICTIONARY,
-    DEFAULT_COLUMNS,
-    DEFAULT_FILTERS,
+    ROW_CLICK_FN: "none",
     DEFAULT_REQUEST,
     CELL_WIDTH,
     ORDERABLE_CELLS,
     HIDDEN_COLUMNS,
+    TABLE_NAME: "certificates_short_info"
 }
 
 export default {
     DEFAULT_FILTERS,
     DEFAULT_REQUEST,
-    DEFAULT_COLUMNS,
     DICTIONARY,
     CELL_WIDTH,
     ORDERABLE_CELLS,

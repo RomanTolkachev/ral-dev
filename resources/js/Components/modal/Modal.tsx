@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "motion/react";
 import { SVG } from "../utils/SVG";
 import { useParams } from "react-router-dom";
 
@@ -28,7 +28,7 @@ const Modal: React.FunctionComponent<IModalProps> = ({
 }) => {
 
     const params = useParams();
-    // функции для закрытия модалки
+
     const innerRef: React.RefObject<HTMLDivElement> =
         React.useRef<HTMLDivElement>(null);
 

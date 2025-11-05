@@ -1,10 +1,11 @@
-import { CustomSubmitHandlerContext, ICustomSubmitHandlerContext } from "@/shared/api/AbstractFormProvider";
+import { CustomSubmitHandlerContext } from "@/shared/ui/Table/providers/CustomFormProvider";
 import { ISearchingFormItem } from "@/shared/types/searchingFilters";
 import { FC, useContext, useState, KeyboardEvent, useRef, ReactNode } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { enterExitAnimation as animationParams } from "@/shared/framer-motion/enter-exit-animation";
 import { SVG } from "@/Components/utils/SVG";
+import { ICustomSubmitHandlerContext } from "@/shared/ui/Table/model";
 
 interface IProps {
     className?: string;
@@ -23,7 +24,7 @@ export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
         handleSubmit 
     } = useFormContext();
     
-    const inputName = inputData.header;
+    const {headerLabel: inputName} = inputData;
     const error = errors[inputName];
     const [inputText, setInputText] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -50,7 +51,7 @@ export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
         inputRef.current?.focus();
 
         // Используем handleSubmit для правильного времени выполнения
-        handleSubmit(customSubmitHandler)();
+        handleSubmit((data) => customSubmitHandler(data))();
     };
 
     const handleRemove = async (valueToRemove: string) => {
@@ -58,7 +59,7 @@ export const MultiSelect: FC<IProps> = ({ className, inputData }) => {
         setValue(inputName, newValues, { shouldDirty: true });
         
         // Используем handleSubmit для правильного времени выполнения
-        handleSubmit(customSubmitHandler)();
+        handleSubmit((data) => customSubmitHandler(data))();
     };
 
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {

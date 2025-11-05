@@ -1,0 +1,1 @@
+export { prepareTab } from "./prepareTab"

@@ -5,18 +5,18 @@ namespace App\UseCases\Certificates\shared;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Filters\AbstractFilter;
 use App\Models\CertificatesShortInfo;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\StatusChange;
 
 class GetCertificatesFilter extends AbstractFilter
 {
 
     protected $model;
-    // protected $request;
-    public function __construct(CertificatesShortInfo $model, $request)
+
+    public function __construct(CertificatesShortInfo $model, Request $request)
     {
         $this->model = $model;
-        parent::__construct($request);
+        parent::__construct($request->input());
     }
 
     protected function certificateName(array $values): Builder
@@ -38,7 +38,6 @@ class GetCertificatesFilter extends AbstractFilter
 
     protected function order(string $value): Builder
     {
-        // $query = $this->builder;
         $formattedColumn = preg_replace('/_desc$/', "", $value);
         $query = $this->builder->whereNotNull($formattedColumn);
         if (str_ends_with($value, 'desc')) {
@@ -48,65 +47,15 @@ class GetCertificatesFilter extends AbstractFilter
             $query = $query->orderBy($formattedColumn);
             return $query;
         }
-        // ->where(preg_replace('/_(asc|desc)$/i', '', $value), '<>', '');
-        // $formattedColumn = preg_replace('/_desc$/', "", $value);
-        // dd("зашли");
-        // if (str_ends_with($value, 'desc')) {
-        //     $query = $query->orderByRaw("
-        //     CASE 
-        //         WHEN {$formattedColumn} IS NULL THEN 1
-        //         ELSE 0
-        //     END,
-        //     CASE 
-        //         WHEN {$formattedColumn} IS NULL THEN 
-        //             CASE 
-        //                 WHEN ISDATE({$formattedColumn}) = 1 THEN '1800-12-31'
-        //                 ELSE '~'
-        //             END
-        //         ELSE {$formattedColumn}
-        //     END DESC
-        // ");
-        // } else {
-        //     $query = $query->orderByRaw("
-        //     CASE 
-        //         WHEN {$formattedColumn} IS NULL THEN 1
-        //         ELSE 0
-        //     END,
-        //     CASE 
-        //         WHEN {$formattedColumn} IS NULL THEN 
-        //             CASE 
-        //                 WHEN ISDATE({$formattedColumn}) = 1 THEN '9999-12-31'
-        //                 ELSE '~~'
-        //             END
-        //         ELSE {$formattedColumn}
-        //     END ASC
-        // ");
-        // }
-        // return $query;
     }
+
     protected function statusChangeStatusChangesBy(array $values): Builder
     {
         $query = $this->builder;
-        $ids = StatusChange::where(function ($q) use ($values) {
-            foreach ($values as $value) {
-                $q->orWhere('status_changes_by', $value);
-            }
-        })->distinct()->pluck('certificate_id')->toArray();
 
-        if (empty($ids)) {
-            return $query->whereRaw('1 = 0');
-        }
-
-        $tempTable = '##temp_ids_' . uniqid();
-        DB::statement("CREATE TABLE {$tempTable} (certificate_id INT PRIMARY KEY)");
-
-        foreach (array_chunk($ids, 1000) as $chunk) {
-            DB::table($tempTable)->insert(
-                array_map(fn($id) => ['certificate_id' => $id], $chunk)
-            );
-        }
-
-        return $query->join(DB::raw("{$tempTable} tmp2"), 'certificates_short_info.id', '=', 'tmp2.certificate_id');
+        return $query->whereHas("statusChange", function ($q) use ($values) {
+            $q->whereIn("status_changes_by", $values);
+        });
     }
 
     protected function updateStatusDate(array $values): Builder
@@ -154,35 +103,79 @@ class GetCertificatesFilter extends AbstractFilter
     {
         return $this->builder->whereHas('techReglaments', function ($query) use ($values) {
             $query->where(function ($q) use ($values) {
-                foreach ($values as $value) {
-                    $q->orWhere('tech_reg_code', 'like', "%{$value}%");
-                }
+                $q->whereIn('tech_reg_code',  $values);
             });
         }, '>=', count($values)); // третий параметр ищет количество связей. На самом деле, если поставить = 2, то все равно будет искать >=
     }
+    protected function expertFio(array $values): Builder
+    {
+        return $this->builder->where(function ($q) use ($values) {
+            foreach ($values as $item) {
+                $q->orWhere('expertFio', 'like', "%$item%");
+            }
+        });
+    }
 
-    // проверить, если будут косяки
-    // protected function technicalReglaments(array $values): Builder
-    // {
-    //     // 1. Находим ID техрегламентов, соответствующих любому из условий
-    //     $techRegIds = DB::table('dictionary_regulations')
-    //         ->where(function ($query) use ($values) {
-    //             foreach ($values as $value) {
-    //                 $query->orWhere('tech_reg_code', 'like', "%{$value}%");
-    //             }
-    //         })
-    //         ->pluck('id')
-    //         ->toArray();
+    protected function customCertificationAuthority(array $values): Builder
+    {
+        return $this->builder->where(function ($query) use ($values) {
+            foreach ($values as $value) {
+                $query->orWhere('certificationAuthorityAttestatRegNumber', 'LIKE', "%$value%");
+            }
+        });
+    }
+    protected function certificateApplicantFullName(array $values): Builder
+    {
+        $values = array_filter(array_map('trim', $values));
+        if (empty($values)) {
+            return $this->builder;
+        }
 
-    //     // 2. Ищем сертификаты, связанные со ВСЕМИ найденными техрегламентами
-    //     return $this->builder->where(function ($query) use ($techRegIds) {
-    //         foreach ($techRegIds as $regId) {
-    //             $query->whereHas('techReglaments', function ($q) use ($regId) {
-    //                 $q->where('dictionary_regulations.id', $regId);
-    //             });
-    //         }
-    //     });
-    // }
+        $valuesSql = collect($values)
+            ->map(fn($v) => "('%" . str_replace("'", "''", $v) . "%')")
+            ->implode(',');
+
+        $patterns = "(VALUES {$valuesSql})";
+
+        $mainTable = $this->builder->getModel()->getTable();
+
+        return $this->builder
+            ->join('certificate_applicant as ca', 'ca.certificate_id', '=', "{$mainTable}.id")
+            ->join(DB::raw("{$patterns} AS patterns(val)"), function ($join) {
+                $join->on('ca.fullName', 'LIKE', 'patterns.val');
+            });
+    }
+
+    protected function certificateApplicantInn(array $values): Builder
+    {
+        return $this->builder->where(function ($query) use ($values) {
+            foreach ($values as $value) {
+                $query->whereHas('certificateApplicant', function ($q) use ($value) {
+                    $q->where('inn', 'like', "%$value%");
+                });
+            }
+        });
+    }
+    protected function certificateApplicantOgrn(array $values): Builder
+    {
+        return $this->builder->where(function ($query) use ($values) {
+            foreach ($values as $value) {
+                $query->whereHas('certificateApplicant', function ($q) use ($value) {
+                    $q->where('ogrn', "like", "%$value%");
+                });
+            }
+        });
+    }
+    protected function ralShortInfoViewCustomNumber(array $values): Builder
+    {
+        return $this->builder->where(function ($query) use ($values) {
+            foreach ($values as $value) {
+                $query->whereHas('ralShortInfoView', function ($q) use ($value) {
+                    $q->where('RegNumber', 'LIKE', "%$value%");
+                });
+            }
+        });
+    }
 
     protected function ralShortInfoViewRegNumber(array $values): Builder
     {

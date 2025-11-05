@@ -63,6 +63,7 @@ export default {
                 'header-text': 'rgba(var(--header-text))',
                 'cell-text': 'rgba(var(--cell-text))',
                 'gray-light-gray': 'rgba(var(--gray-light-gray))',
+                'link-active': 'var(--link-active)',
 
                 // Checkbox
                 'checkbox-custom': 'rgba(var(--checkbox-custom))',

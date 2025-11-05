@@ -1,8 +1,8 @@
 export interface ISearchingFormItem {
-    header: string | any;
-    headerType: string;
-    sortValues: {
-        type: 'checkBox' | 'date' | 'huge' | 'multi' | 'singleText' | "multiVariants";
+    headerLabel: string | any;
+    type: 'checkBox' | 'date' | 'huge' | 'multi' | 'singleText' | "multiVariants";
+    defaultValue: string[]
+    values?: {
         checkboxValues?: any[];
         min?: string;
         max?: string;

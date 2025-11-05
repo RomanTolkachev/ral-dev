@@ -1,0 +1,1 @@
+export {Table as AbstractTable} from "./ui/Table"

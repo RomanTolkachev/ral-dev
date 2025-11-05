@@ -112,6 +112,18 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
         ],
+
+        'laravel_services' => [
+            'driver' => env('DB_LARAVEL_SERVICES_CONNECTION', 'sqlsrv'),
+            'host' => env('DB_LARAVEL_SERVICES_HOST', '127.0.0.1'),
+            'port' => env('DB_LARAVEL_SERVICES_PORT', '1433'),
+            'database' => env('DB_LARAVEL_SERVICES_DATABASE', 'laravel_services'),
+            'username' => env('DB_LARAVEL_SERVICES_USERNAME', 'forge'),
+            'password' => env('DB_LARAVEL_SERVICES_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
     ],
 
     /*

@@ -1,10 +1,11 @@
+import { FC, lazy, Suspense } from "react";
 import { FunctionComponent, useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
 import { axiosApi } from "@/shared/api/api";
 import { Preloader } from "@/Components/utils/Preloader";
 import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import transpondInTwoCols from "../lib/transpondInTwoCols";
-import RalModalCell from "./RalModalCell";
+import { CustomCell } from "@/shared/ui/Table/ui/CustomCell";
 
 
 interface IProps {
@@ -18,31 +19,34 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
     const [certificationBodyData, setCertificationbodyData] = useState<ICertData | undefined>(undefined)
     const { ralId } = useParams();
 
-    /** 
-    *    модалка всегда запрашивает подробную информацию
-    */
+
+    // модалка всегда запрашивает подробную информацию
     useEffect(() => { // TODO: или тут тоже через react query нужно?
-        axiosApi.get<Record<string, any>>('/ral/certification_body', {
+        axiosApi.get<Record<string, any>>('/ral_short_info/certification_body', {
             params: { cert_id: ralId }
-        }).then(res => res ? (setCertificationbodyData(res.data)) : null); // TODO: нужно продумать тут catch и правильно ли указывать null в тернарнике
+        }).then(res => res ? (setCertificationbodyData(res.data)) : null); 
     }, [ralId])
 
     let cols: ColumnDef<any>[] = [
         {
             accessorKey: "param",
             header: 'параметр',
-            cell: (props: any) => { return <>{props.getValue()}</> },
+            cell: (props: any) => props.getValue(),
+            enableResizing: true,
+            size: 70
         },
         {
             accessorKey: "value",
             header: 'значение',
-            cell: (props: any) => { return <>{props.getValue()}</> },
+            cell: (props: any) => props.getValue(),
         }
     ];
 
-    let tableData = useMemo<Record<string, any>[] | []>(() => {
+    const tableData = useMemo<Record<string, any>[] | []>(() => {
         return certificationBodyData ? transpondInTwoCols(certificationBodyData, "param", "value") : []
     }, [certificationBodyData])
+
+    console.log(tableData)
 
     const table = useReactTable({
         data: tableData,
@@ -50,22 +54,19 @@ export const RalModal: FunctionComponent<IProps> = ({ className }) => {
         getCoreRowModel: getCoreRowModel(),
     })
 
-
     return (
+        
         <div className="w-full h-full px-2">
             <div className="h-full rounded-[20px]">
                 {tableData.length ?
                     <table
+                    style={{ width: table.getTotalSize() }}
                         className={`relative min-h-full min-w-full max-h-full text-sm table-fixed rounded-t-md [&_td]:border-r [&_td]:border-r-filter-dropdown-button`}>
                         <tbody className={'font-medium text-table-base'}>
                             {table.getRowModel().rows.map((row) => {
                                 return (
-                                    <tr className={'even:bg-row-modal-even odd:bg-row-modal-odd [&_td:first-child]:text-nowrap [&_td]:text-start [&_ul]'} key={row.id}>
-                                        {row.getVisibleCells().map((cell) => {
-                                            return (
-                                                <RalModalCell key={cell.id} cellData={cell} />
-                                            )
-                                        })}
+                                    <tr key={row.id} className={'even:bg-row-modal-even odd:bg-row-modal-odd [&_td:first-child]:text-nowrap [&_td]:text-start [&_ul]'}>
+                                        {row.getVisibleCells().map(cell => <td style={{width: cell.column.getSize()}} key={cell.id}><CustomCell cellData={cell} /></td>)}
                                     </tr>
                                 )
                             })}

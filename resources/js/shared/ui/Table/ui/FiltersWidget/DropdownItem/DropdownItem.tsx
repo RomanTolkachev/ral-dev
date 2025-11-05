@@ -1,0 +1,117 @@
+import { FunctionComponent, useState, useMemo } from 'react'
+import { motion, Variants } from 'motion/react'
+import { ISearchingFormItem } from '@/shared/types/searchingFilters'
+import { CalendarInput } from '@/Components/Inputs/CalendarInput/CalendarInput'
+import { CheckBoxCustom } from '@/Components/Inputs/CheckBoxCustom'
+import { useFormContext } from 'react-hook-form'
+import useParamsCustom from '@/shared/query/useParamsCustom'
+import { MultiSelect } from '../../../../../../Components/Inputs/Multiselect/MultiSelect'
+import { SingleText } from '../../../../../../Components/Inputs/SingleText'
+import { MultiSelectVariants } from '@/Components/Inputs/MultiSelectVariants/MultiSelectVariants'
+import { DropdownFilterButton } from '../../../../Buttons/DropdownFilterButton'
+
+interface IProps {
+    className?: string
+    formName?: string
+    inputData: ISearchingFormItem
+}
+
+const listVariants: Variants = {
+    open: {
+        height: 'fit-content',
+        transition: {
+            type: 'spring',
+            ease: 'easeInOut',
+            duration: 0.25,
+        },
+    },
+    closed: {
+        height: 0,
+        transition: {
+            duration: 0.15,
+        },
+    },
+}
+
+const itemVariants: Variants = {
+    closed: {},
+    open: {},
+}
+
+export const DropdownItem: FunctionComponent<IProps> = ({ inputData, className }) => {
+
+    const { watch } = useFormContext();
+    const { headerLabel } = inputData;
+    const [_, getQuery] = useParamsCustom();
+    const queries = getQuery();
+
+    const [isOpen, setIsOpen] = useState(() => {
+        const queryValue = queries[headerLabel];
+        return !!queryValue && (Array.isArray(queryValue))
+            ? queryValue.some(item => !!item)
+            : !!queryValue;
+    });
+
+    const fieldValue = watch(headerLabel);
+
+    const isDirty = useMemo(() => {
+        if (fieldValue === undefined || fieldValue === null) return false;
+
+        if (Array.isArray(fieldValue)) {
+            return fieldValue.some(item => {
+                if (item === undefined || item === null) return false;
+                if (typeof item === 'string') return item.trim() !== '';
+                return !!item;
+            });
+        }
+
+        if (typeof fieldValue === 'string') return fieldValue.trim() !== '';
+
+        return !!fieldValue;
+    }, [fieldValue]);
+
+    const checkedCount = useMemo(() => {
+        return inputData.type === 'checkBox'
+            ? (Array.isArray(fieldValue) ? fieldValue.length : 0)
+            : 0;
+    }, [fieldValue, inputData.type]);
+
+    const renderInput = () => {
+        switch (inputData.type) {
+            case 'date':
+                return <CalendarInput inputData={inputData} />;
+            case 'checkBox':
+                return <CheckBoxCustom inputData={inputData} />;
+            case 'multi':
+                return <MultiSelect inputData={inputData} />;
+            case 'multiVariants':
+                return <MultiSelectVariants inputData={inputData} />;
+            case 'singleText':
+                return <SingleText inputData={inputData} />;
+            default:
+                return null;
+        }
+    };
+
+    return (
+        <motion.div
+            initial={'closed'}
+            animate={isOpen ? 'open' : 'closed'}
+            variants={itemVariants}
+            className={`${className} h-fit`}
+        >
+            <DropdownFilterButton
+                clickHandler={() => setIsOpen(!isOpen)}
+                className={'mb-2 relative'}
+                inputName={headerLabel}
+                isOpen={isOpen}
+                hasAlert={isDirty}
+                children={headerLabel}
+                checkedCount={checkedCount}
+            />
+            <motion.div className={'overflow-hidden'} variants={listVariants}>
+                {renderInput()}
+            </motion.div>
+        </motion.div>
+    );
+};

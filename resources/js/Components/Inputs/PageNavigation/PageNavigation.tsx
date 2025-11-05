@@ -1,8 +1,8 @@
-import { FunctionComponent, useContext, useRef, useCallback, useEffect } from 'react'
+import { FunctionComponent, useContext } from 'react'
 import { useFormContext, Controller } from 'react-hook-form'
-import PageNavButton from '@/Components/Buttons/PageNaVButton'
 import { SVG } from '@/Components/utils/SVG'
-import { CustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider'
+import { CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/CustomFormProvider'
+import PageNavButton from '@/shared/ui/Buttons/PageNaVButton'
 
 interface IProps {
     className?: string
@@ -22,30 +22,52 @@ export const PageNavigation: FunctionComponent<IProps> = ({
 }) => {
     const { control, trigger, getValues, setValue } = useFormContext()
     const handlers = useContext(CustomSubmitHandlerContext)
-    const debounceTimeoutRef = useRef<null | number>()
 
     if (!handlers) return null
     const { customSubmitHandler } = handlers
-
-    const debouncedSubmit = useCallback(() => {
-        if (debounceTimeoutRef.current) {
-            clearTimeout(debounceTimeoutRef.current)
-        }
-        debounceTimeoutRef.current = setTimeout(() => {
-            customSubmitHandler(getValues())
-        }, 500)
-    }, [customSubmitHandler, getValues])
 
     const handlePageChange = async (newPage: number) => {
         setValue('page', newPage, { shouldDirty: true });
         customSubmitHandler({ ...getValues(), page: newPage });
     }
 
-    useEffect(() => {
-        return () => {
-            debounceTimeoutRef.current && clearTimeout(debounceTimeoutRef.current)
+    const validateNumber = (value: string): number | null => {
+        const numericValue = value.replace(/[^0-9]/g, '');
+        return numericValue ? parseInt(numericValue, 10) : null;
+    }
+
+    const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>, updateForm: (value: any) => void) => {
+        const rawValue = e.target.value;
+        
+        if (rawValue === '') {
+            updateForm('');
+            return;
         }
-    }, [])
+
+        const numericValue = validateNumber(rawValue);
+        
+        if (numericValue !== null) {
+            updateForm(numericValue);
+            
+            const isValid = await trigger();
+            if (isValid) {
+                customSubmitHandler(getValues(), 500);
+            }
+        }
+    }
+
+    const handleBlur = (value: any, updateForm: (value: any) => void) => {
+        if (value === '' || value === null || value === undefined) {
+            updateForm(1);
+            customSubmitHandler({ ...getValues(), page: 1 });
+        } else if (value > lastPage) {
+            updateForm(lastPage);
+            customSubmitHandler({ ...getValues(), page: lastPage });
+        } else if (value < 1) {
+            updateForm(1);
+            customSubmitHandler({ ...getValues(), page: 1 });
+        }
+    }
 
     return (
         <Controller
@@ -54,7 +76,10 @@ export const PageNavigation: FunctionComponent<IProps> = ({
             rules={{
                 required: 'поле не может быть пустым',
                 min: { value: 1, message: "значение не может быть меньше 1" },
-                max: { value: lastPage, message: "такая страница отсутствует" }
+                max: { value: lastPage, message: "такая страница отсутствует" },
+                validate: {
+                    isNumber: (value) => !isNaN(value) || 'должно быть числом'
+                }
             }}
             render={({ field: { onChange: updateForm, value = 1 }, fieldState: { error } }) => (
                 <div className='flex items-center gap-2'>
@@ -73,23 +98,28 @@ export const PageNavigation: FunctionComponent<IProps> = ({
                             className={` ${currentPage === 1 ? "text-[rgb(var(--page-nav-icon-inactive))]" : "text-[rgb(var(--page-nav-icon-active))]"}`}
                             navArrow />
                     </PageNavButton>
-                    <input
-                        min={1}
-                        max={lastPage}
-                        value={value}
-                        onChange={async (e) => {
-                            const newValue = e.target.valueAsNumber
-                            updateForm(newValue)
-                            const isValid = await trigger()
-                            isValid && debouncedSubmit() // Только для ручного ввода
-                        }}
-                        className={
-                            `${error && 'ring-2 !ring-error border-transparent '}` +
-                            ` ${className} bg-input-primary w-20 text-input-text text-sm text-center h-8 shadow-input-page border-black/10 rounded-full focus:border-transparent ` +
-                            'focus:ring-2 focus:ring-input-border-active'
-                        }
-                        type="number"
-                    />
+                    
+                    <div className="relative">
+                        <input
+                            value={value}
+                            onChange={(e) => handleInputChange(e, updateForm)}
+                            onBlur={() => handleBlur(value, updateForm)}
+                            disabled={isPending}
+                            className={
+                                `${error && 'ring-2 !ring-error border-transparent '}` +
+                                ` ${className} bg-input-primary w-20 text-input-text text-sm text-center h-8 shadow-input-page border-black/10 rounded-full focus:border-transparent ` +
+                                'focus:ring-2 focus:ring-input-border-active'
+                            }
+                            type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                        />
+                        
+                        {isPending && (
+                            <div className="absolute inset-0 bg-background-block/50 rounded-full cursor-not-allowed z-10" />
+                        )}
+                    </div>
+                    
                     {error && (
                         <div className={'text-error'}>
                             {error.message}

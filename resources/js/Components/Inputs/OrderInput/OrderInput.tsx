@@ -1,5 +1,5 @@
 import { SVG } from '@/Components/utils/SVG';
-import { CustomSubmitHandlerContext } from '@/shared/api/AbstractFormProvider';
+import { CustomSubmitHandlerContext } from '@/shared/ui/Table/providers/CustomFormProvider';
 import { motion, useAnimate } from 'motion/react';
 import { FC, useContext } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';

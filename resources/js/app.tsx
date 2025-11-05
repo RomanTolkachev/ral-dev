@@ -6,11 +6,11 @@ import { rootReducer } from '@/features/store/root-reducer'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import ReactDOM from "react-dom/client"
-import MainLayout from './Layouts/MainLayout'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import AuthProvider from './app/providers/AuthProvider'
 import { CookiesProvider } from 'react-cookie';
+import RootLayout from './Layouts/RootLayout'
 
 export const store = configureStore({
     reducer: rootReducer, //@ts-ignore
@@ -18,7 +18,13 @@ export const store = configureStore({
 })
 
 const root: ReactDOM.Root = ReactDOM.createRoot(document.getElementById('app') as HTMLElement);
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      structuralSharing: false, // Отключаем структурное сравнение
+    },
+  },
+});
 
 root.render(
     <QueryClientProvider client={queryClient}>
@@ -27,7 +33,7 @@ root.render(
             <BrowserRouter>
                 <CookiesProvider>
                     <AuthProvider>
-                        <MainLayout />
+                        <RootLayout />
                     </AuthProvider>
                 </CookiesProvider>
             </BrowserRouter>
