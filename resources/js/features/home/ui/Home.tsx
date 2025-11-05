@@ -32,10 +32,11 @@ const Home: FunctionComponent<IProps> = ({ className }) => {
 
     return (
         <div className="p-2 h-full">
-            <div className={`my-block bg-center bg-cover bg-no-repeat h-full ${isLight ? "bg-[url('/bg/main_bg_light.png')]" : "bg-[url('/bg/main_bg_dark.webp')]"} min-w-[800px]`}>
+            <div className={`relative my-block bg-center bg-cover bg-no-repeat h-full ${isLight ? "bg-[url('/bg/main_bg_light.png')]" : "bg-[url('/bg/main_bg_dark.webp')]"} min-w-[800px]`}>
                 <section className={`${className} pt-20 grid gap-16 grid-cols-5 w-full items-center  max-w-screen-lg mx-auto`}>
                     {sortedIconsData.map((icon) => <HomeCard isLight={isLight} iconData={icon} key={icon.order} />)}
                 </section>
+                <div className="p-2 text-table-base absolute bottom-0 w-fit">версия</div>
             </div>
         </div>
     )
