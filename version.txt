@@ -1,5 +1,0 @@
-Feature: version
-Version: 1.1
-Branch: version__1.1
-Commit: a948c48
-Date: 2025-11-05 14:47:52
