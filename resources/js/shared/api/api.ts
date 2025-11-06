@@ -3,7 +3,7 @@ import qs from 'qs'
 import { ISearchingFormItem } from '@/shared/types/searchingFilters'
 import IPagination from '../types/pagination'
 import { IUser } from '../types/user'
-import { TRalModel } from '@/features/ralTable/model/types'
+import { TRalModel } from '@/features/RalTable/model/types'
 
 // export const LOCAL_URL: 'http://127.0.0.1:8000/api' = 'http://127.0.0.1:8000/api'
 export const LOCAL_URL = "/api"

@@ -5,7 +5,7 @@ import React, {
     useRef,
     cloneElement,
 } from 'react';
-import { Tooltip } from './Tooltip'; // путь к твоему Tooltip
+import { Tooltip } from './ToolTip';
 
 interface WrappingTooltipProps {
     content: ReactNode;

@@ -6,9 +6,9 @@ import { getNPStatusColor, getStatusColor } from "./lib/getColor";
 import { LinkWithCircle } from "./LinkWithCircle/LinkWithCircle";
 import { TNPStatus, TStatus } from "./model";
 import { TColumnAccessors } from "@/features";
-import { Tooltip } from "@/Components/toolTip/ToolTip";
 import { makeClamp, makeList } from "./lib";
 import { CustomLink } from "./CustomLink";
+import { Tooltip } from "@/Components/toolTip/ToolTip";
 
 type Props = {
     cellData: Cell<any, unknown>;

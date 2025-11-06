@@ -15,7 +15,7 @@ import { AddUserForm } from "@/features/permissions";
 import { ParserPage } from "@/pages/ParserPage/ParserPage";
 
 const Settings = lazy(() => import("@/shared/ui/Table/ui/settings/ui/Settings").then(module => ({ default: module.Settings })))
-const RalModal = lazy(() => import("@/features/ralModal/ui/RalModal").then(module => ({ default: module.RalModal })))
+const RalModal = lazy(() => import("@/features/RalModal/ui/RalModal").then(module => ({ default: module.RalModal })))
 const Modal = lazy(() => import("@/Components/modal/Modal"));
 
 export const Router: FC = () => {
