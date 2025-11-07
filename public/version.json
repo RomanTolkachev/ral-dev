@@ -1,8 +1,8 @@
 {
-  "feature": "dev",
+  "feature": "cookie_log",
   "version": "1.1", 
-  "branch": "dev__1.1",
-  "commit": "2912592",
+  "branch": "cookie_log__1.1",
+  "commit": "76cdd36",
   "author": "Роман Толкачёв",
-  "date": "2025-11-07 11:23:51"
+  "date": "2025-11-07 11:38:15"
 }
