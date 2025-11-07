@@ -1,8 +1,8 @@
 {
-  "feature": "cookie_log",
+  "feature": "bugfix_for_stateful_domains",
   "version": "1.1", 
-  "branch": "cookie_log__1.1",
-  "commit": "76cdd36",
+  "branch": "bugfix_for_stateful_domains__1.1",
+  "commit": "0a1bbd0",
   "author": "Роман Толкачёв",
-  "date": "2025-11-07 11:38:15"
+  "date": "2025-11-07 12:05:57"
 }

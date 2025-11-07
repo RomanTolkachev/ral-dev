@@ -26,7 +26,6 @@ class CookieLogServiceProvider extends ServiceProvider
         Route::matched(function ($event) {
             $request = $event->request;
             
-            // Логируем только API routes
             if ($this->isApiRoute($request)) {
                 $this->logApiRequest($request);
             }
