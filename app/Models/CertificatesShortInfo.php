@@ -58,7 +58,7 @@ class CertificatesShortInfo extends Model
     {
         return $this->hasOne(
             CertificateApplicant::class,
-            'id'
+            'certificate_id'
         );
     }
 
