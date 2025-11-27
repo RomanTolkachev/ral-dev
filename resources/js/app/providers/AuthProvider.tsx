@@ -51,12 +51,12 @@ const AuthProvider: FunctionComponent<PropsWithChildren<Props>> = ({ className, 
     const useLogin = useMutation<IUser, AxiosError, { email: string; password: string }>({
         mutationFn: login,
         retry: (_errCount, err: AxiosError) => [422].includes(err.status!) ? false : true,
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['user'] }),
+        onSuccess: () =>  queryClient.invalidateQueries(),
     })
 
     const { mutate } = useMutation({
         mutationFn: logOut,
-        onSuccess: () => queryClient.removeQueries({ queryKey: ["user"]})
+        onSuccess: () => queryClient.invalidateQueries()
     })
 
     const contextValue = {
