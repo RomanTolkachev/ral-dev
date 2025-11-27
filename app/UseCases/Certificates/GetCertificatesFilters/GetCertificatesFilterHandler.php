@@ -160,7 +160,7 @@ class GetCertificatesFilterHandler
             'defaultValue' => [],
         ],
         [
-            'headerLabel' => "certificate_applicant__fullName",
+            'headerLabel' => "applicantName",
             'type' => 'multi',
             'defaultValue' => [],
         ],
