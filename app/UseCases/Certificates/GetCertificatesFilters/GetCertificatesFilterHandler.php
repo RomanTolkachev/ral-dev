@@ -10,71 +10,11 @@ use App\Models\CertificatesShortInfo;
 class GetCertificatesFilterHandler
 {
 
-    public function execute(User | null $currentUser, User $defaultUser, $query, GetCertificatesFilter $filter)
+    public function execute()
     {
-        $requestedColumns = GetTableSettings::for($currentUser, $defaultUser, "certificates_short_info");
-
-        $filters = $this->availableFilters;
-
-        // Подставляем динамические значения
-        foreach ($filters as &$filterItem) {
-            if ($filterItem['headerLabel'] === 'technicalReglaments') {
-                $filterItem['values']['checkboxValues'] = $this->getTechReglamentCodes($filter);
-            }
-            if ($filterItem['headerLabel'] === 'certificate_status') {
-                $filterItem['values']['checkboxValues'] = $this->getCertificateStatuses($filter);
-            }
-        }
-
-        // Фильтруем доступные фильтры по пользовательским настройкам
-        $handledColumns = array_filter($filters, function ($value) use ($requestedColumns) {
-            return in_array($value["headerLabel"], $requestedColumns);
-        });
-
-        return array_values($handledColumns);
+        return $this->availableFilters;
     }
 
-    protected function getCertificateStatuses(GetCertificatesFilter $filter): array
-    {
-        $label = 'certificate_status';
-        $originalFilters = $filter->getInputs()[$label] ?? [];
-
-        // Клонируем фильтр чтобы не менять оригинал
-        $statusFilter = clone $filter;
-
-        // Применяем ВСЕ фильтры КРОМЕ статуса
-        $query = CertificatesShortInfo::with(["ralShortInfoView", "certificateApplicant", 'certificationAuthority', "statusChange"]);
-        $filteredQuery = $statusFilter->apply($query, exclude: [$label]);
-
-        // Получаем только статусы отфильтрованных записей
-        $res = $filteredQuery->distinct()
-            ->pluck('certificate_status')
-            ->toArray();
-
-        return array_values(array_unique(array_merge($originalFilters, $res)));
-    }
-
-    protected function getTechReglamentCodes(GetCertificatesFilter $filter): array
-    {
-        $label = 'technicalReglaments';
-        $originalFilters = $filter->getInputs()[$label] ?? [];
-
-        // Клонируем фильтр чтобы не менять оригинал
-        $techRegFilter = clone $filter;
-
-        // Применяем ВСЕ фильтры КРОМЕ техрегламентов
-        $query = CertificatesShortInfo::with(["ralShortInfoView", "certificateApplicant", 'certificationAuthority', "statusChange"]);
-        $filteredQuery = $techRegFilter->apply($query, exclude: [$label]);
-
-        // Получаем только техрегламенты отфильтрованных записей
-        $res = $filteredQuery->join('certificate_tech_reglaments_link', 'certificates_short_info.id', '=', 'certificate_tech_reglaments_link.certificate_id')
-            ->join('dictionary_regulations', 'certificate_tech_reglaments_link.tech_reg_id', '=', 'dictionary_regulations.id')
-            ->distinct()
-            ->pluck('dictionary_regulations.tech_reg_code')
-            ->toArray();
-
-        return array_values(array_unique(array_merge($originalFilters, $res)));
-    }
 
 
     /**
@@ -91,7 +31,7 @@ class GetCertificatesFilterHandler
             'type' => 'multiVariants',
             'defaultValue' => [],
             'values' => [
-                'checkboxValues' => [], // будет подставлено в execute()
+                'checkboxValues' => self::techicalReglamentsCheckboxValues,
             ],
         ],
         [
@@ -166,7 +106,7 @@ class GetCertificatesFilterHandler
         ],
     ];
 
-    private $techicalReglamentsCheckboxValues = [
+    private const array techicalReglamentsCheckboxValues = [
         "ТР ТС 001/2011",
         "ТР ТС 025/2012",
         "ТР ТС 028/2012",

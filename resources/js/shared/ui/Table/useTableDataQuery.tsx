@@ -32,6 +32,7 @@ const useTableDataQuery = ({ tableName, defaultRequest }: TParams) => {
         retry: (fails, err) => fails < 2,
         placeholderData: keepPreviousData, // пока мы фетчим, у нас будет старая data
         staleTime: 1000 * 60 * 5, // 5 минут - данные считаются свежими
+        gcTime: 1000 * 60 * 0.5,
     })
 
     return useTableReturn
