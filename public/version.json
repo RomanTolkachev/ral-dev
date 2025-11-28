@@ -1,8 +1,8 @@
 {
-  "feature": "hotfix_model_brake_certificate_applicant",
-  "version": "dev-1ace33c", 
-  "branch": "hotfix_model_brake_certificate_applicant",
-  "commit": "1ace33c",
+  "feature": "hotfix",
+  "version": "dev-37aae34", 
+  "branch": "hotfix",
+  "commit": "37aae34",
   "author": "Роман Толкачёв",
-  "date": "2025-11-27 14:04:57"
+  "date": "2025-11-28 13:04:28"
 }

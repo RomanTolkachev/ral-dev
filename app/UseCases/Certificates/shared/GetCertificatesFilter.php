@@ -39,7 +39,7 @@ class GetCertificatesFilter extends AbstractFilter
     protected function order(string $value): Builder
     {
         $formattedColumn = preg_replace('/_desc$/', "", $value);
-        $query = $this->builder->whereNotNull($formattedColumn);
+        $query = $this->builder;
         if (str_ends_with($value, 'desc')) {
             $query = $query->orderByDesc($formattedColumn);
             return $query;

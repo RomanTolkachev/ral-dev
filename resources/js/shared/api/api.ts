@@ -12,12 +12,12 @@ export const WEB_URL = "/"
 export const axiosApi = axios.create({
     baseURL: LOCAL_URL,
     withCredentials: true,
-    timeout: 15000,
+    timeout: 60000,
 })
 
 const webApi = axios.create({
     baseURL: WEB_URL,
-    timeout: 10000,
+    timeout: 60000,
     withCredentials: true,
     headers: {
         Accept: "aplication/json"
