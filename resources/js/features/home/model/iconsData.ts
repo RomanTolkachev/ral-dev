@@ -12,7 +12,7 @@ const iconsData: IIconData[] = [
     {
         iconPath: "/main_logos/wolf_light.png",
         reactLink: "",
-        straightLink: "",
+        straightLink: "http://webserver2.certico.local/directory/certificates",
         order: 2,
         bg: "#A3AFCD",
         title: "Ночной дозор"
