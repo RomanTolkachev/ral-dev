@@ -124,27 +124,6 @@ class GetCertificatesFilter extends AbstractFilter
             }
         });
     }
-    // protected function certificateApplicantFullName(array $values): Builder // эта херня все ломает из-за неправильного join
-    // {
-    //     $values = array_filter(array_map('trim', $values));
-    //     if (empty($values)) {
-    //         return $this->builder;
-    //     }
-
-    //     $valuesSql = collect($values)
-    //         ->map(fn($v) => "('%" . str_replace("'", "''", $v) . "%')")
-    //         ->implode(',');
-
-    //     $patterns = "(VALUES {$valuesSql})";
-
-    //     $mainTable = $this->builder->getModel()->getTable();
-
-    //     return $this->builder
-    //         ->join('certificate_applicant as ca', 'ca.certificate_id', '=', "{$mainTable}.id")
-    //         ->join(DB::raw("{$patterns} AS patterns(val)"), function ($join) {
-    //             $join->on('ca.fullName', 'LIKE', 'patterns.val');
-    //         });
-    // }
 
     protected function certificateApplicantInn(array $values): Builder
     {
@@ -183,6 +162,17 @@ class GetCertificatesFilter extends AbstractFilter
             $query->where(function ($q) use ($values) {
                 foreach ($values as $value) {
                     $q->orWhere('applicantName', 'LIKE', "%$value%");
+                }
+            });
+        });
+    }
+
+    protected function productFullName(array $values): Builder
+    {
+        return $this->builder->where(function ($query) use ($values) {
+            $query->where(function ($q) use ($values) {
+                foreach ($values as $value) {
+                    $q->orWhere('productFullName', 'LIKE', "%$value%");
                 }
             });
         });
