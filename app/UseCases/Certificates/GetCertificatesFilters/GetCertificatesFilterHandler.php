@@ -104,6 +104,11 @@ class GetCertificatesFilterHandler
             'type' => 'multi',
             'defaultValue' => [],
         ],
+        [
+            'headerLabel' => "productFullName",
+            'type' => 'multi',
+            'defaultValue' => [],
+        ],
     ];
 
     private const array techicalReglamentsCheckboxValues = [

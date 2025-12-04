@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useEffect, useLayoutEffect, useMemo, useState } from "react"
+import { FunctionComponent, useLayoutEffect, useMemo, useState } from "react"
 import HomeCard from "./HomeCard"
 import iconsData from "../model/iconsData"
 import { useQuery } from "@tanstack/react-query";
