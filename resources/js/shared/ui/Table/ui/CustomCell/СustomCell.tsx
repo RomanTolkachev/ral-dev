@@ -6,9 +6,9 @@ import { getNPStatusColor, getStatusColor } from "./lib/getColor";
 import { LinkWithCircle } from "./LinkWithCircle/LinkWithCircle";
 import { TNPStatus, TStatus } from "./model";
 import { TColumnAccessors } from "@/features";
-import { Tooltip } from "@/Components/toolTip/ToolTip";
 import { makeClamp, makeList } from "./lib";
 import { CustomLink } from "./CustomLink";
+import { Tooltip } from "@/Components/toolTip/ToolTip";
 
 type Props = {
     cellData: Cell<any, unknown>;
@@ -82,7 +82,7 @@ export const CustomCell: FC<Props> = ({ cellData }): ReactNode => {
         case "manufacterFilialFullNames":
         case "fullName":
         case "applicantFullName":
-        case "productFullName":
+
         case "applicantFilialFullNames":
         case "productIdentificationName":
         case "productBatchSize":
@@ -100,6 +100,14 @@ export const CustomCell: FC<Props> = ({ cellData }): ReactNode => {
             return wrapWithTooltip(
                 <span style={makeClamp(2)}>{stringValue}</span>,
                 stringValue,
+            );
+
+        case "productFullName":
+            return wrapWithTooltip(
+                <span style={makeClamp(2)}>
+                    {highlight(stringValue, currentQuery.productFullName)}
+                </span>,
+                highlight(stringValue, currentQuery.productFullName),
             );
 
         case "okpd":
@@ -238,7 +246,7 @@ export const CustomCell: FC<Props> = ({ cellData }): ReactNode => {
 
         case "certificate_name":
             let [val, link] = stringValue.split("*");
-            return <CustomLink value={val} link={link} queryValue={currentQuery.certificate_name}/>;
+            return <CustomLink value={val} link={link} queryValue={currentQuery.certificate_name} />;
 
         case "custom_number":
         case "custom_certification_authority":

@@ -18,7 +18,7 @@ class CertificatesShortInfo extends Model
 
     public $timestamps = false;
 
-    protected $with = ['ralShortInfoView', 'certificateApplicant', 'certificationAuthority', 'statusChange'];
+    protected $with = ['ralShortInfoView', 'certificateApplicant', 'certificationAuthority', 'statusChange', 'ralByAttestatRegNumber'];
 
     protected $appends = ['custom_certification_authority'];
 

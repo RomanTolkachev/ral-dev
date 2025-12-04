@@ -1,5 +1,21 @@
 import { IIconData } from "./types";
 
+const getBaseUrl = (): string => {
+  const hostname = window.location.hostname;
+  
+  if (hostname.includes('certico.ru')) {
+    return 'https://webserver.certico.ru';
+  }
+  if (hostname.includes('certico.local')) {
+    return 'http://webserver2.certico.local';
+  }
+  return 'http://127.0.0.1:8000';
+};
+
+const baseUrl = getBaseUrl();
+
+console.log(baseUrl)
+
 const iconsData: IIconData[] = [
     {
         iconPath: "/main_logos/bear_light.png",
@@ -11,8 +27,8 @@ const iconsData: IIconData[] = [
     },
     {
         iconPath: "/main_logos/wolf_light.png",
-        reactLink: "",
-        straightLink: "",
+        reactLink: `/directory/certificates`,
+        straightLink: ``,
         order: 2,
         bg: "#A3AFCD",
         title: "Ночной дозор"
