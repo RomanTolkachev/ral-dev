@@ -20,10 +20,10 @@ export default defineConfig({
         chunkSizeWarningLimit: 600,
     },
     server: {
-        host: '0.0.0.0', // слушать все интерфейсы
+        host: '0.0.0.0', 
         port: 5173,
         hmr: {
-            host: 'localhost', // HMR всегда через localhost
+            host: 'localhost',
             protocol: 'ws'
         },
     },
