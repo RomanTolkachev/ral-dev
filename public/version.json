@@ -1,8 +1,8 @@
 {
-  "feature": "add_filter",
-  "version": "dev-ecacf82", 
-  "branch": "add_filter",
-  "commit": "ecacf82",
+  "feature": "hotfix",
+  "version": "dev-d6d9ffd", 
+  "branch": "hotfix",
+  "commit": "d6d9ffd",
   "author": "Роман Толкачёв",
-  "date": "2025-12-04 10:07:57"
+  "date": "2025-12-05 09:11:00"
 }
